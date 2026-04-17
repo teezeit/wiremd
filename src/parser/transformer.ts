@@ -424,6 +424,31 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'image'
   );
 
+  // [[Button](url)]* — explicit linked-button syntax.
+  // CommonMark forbids nested links so remark parses this as:
+  //   text:"["  +  link  +  text:"]*" (or "]{.secondary}", etc.)
+  if (
+    node.children.length === 3 &&
+    node.children[0].type === 'text' && node.children[0].value === '[' &&
+    node.children[1].type === 'link' &&
+    node.children[2].type === 'text' && /^\](\*)?(\s*\{[^}]*\})?$/.test(node.children[2].value)
+  ) {
+    const linkNode = node.children[1];
+    const suffix: string = node.children[2].value;
+    const isPrimary = suffix.includes('*');
+    const attrMatch = suffix.match(/\{([^}]*)\}/);
+    const attrs = attrMatch ? parseAttributes(`{${attrMatch[1]}}`) : {};
+    return {
+      type: 'button',
+      content: extractTextContent(linkNode),
+      href: linkNode.url || '#',
+      props: {
+        ...attrs,
+        variant: isPrimary ? 'primary' : attrs.variant,
+      },
+    };
+  }
+
   // If it has rich content and is not a special pattern, return as a rich text paragraph
   if (hasRichContent) {
     let content = extractTextContent(node);

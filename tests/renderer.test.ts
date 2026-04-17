@@ -258,6 +258,20 @@ Spans two
       expect(html).toMatch(/<a href="\.\/start\.md"/);
       expect(html).toContain('wmd-button-primary');
     });
+
+    it('should render [[Button](url)] as a clickable <a> button', () => {
+      const ast = parse('[[Go to Docs](./docs.md)]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*">/);
+      expect(html).not.toContain('<button');
+    });
+
+    it('should render [[Button]*(url)] as primary <a> button', () => {
+      const ast = parse('[[Get Started](./start.md)]*');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<a href="\.\/start\.md"/);
+      expect(html).toContain('wmd-button-primary');
+    });
   });
 
   describe('Dropdowns', () => {
