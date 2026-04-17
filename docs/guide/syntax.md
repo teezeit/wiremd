@@ -131,6 +131,59 @@ Enterprise-grade security
 Grows with your needs
 ```
 
+### File Includes
+
+Embed the contents of another `.md` file inline using the wikilink `![[...]]` syntax:
+
+```markdown
+![[shared/_nav.md]]
+```
+
+The path is resolved relative to the file containing the include — the same convention as Obsidian transclusion. Subdirectories and parent paths both work:
+
+```markdown
+![[shared/_nav.md]]       <!-- subdirectory -->
+![[../shared/_nav.md]]    <!-- parent directory -->
+```
+
+**Common pattern — sidebar nav shared across pages:**
+
+```
+my-prototype/
+├── shared/
+│   ├── _nav.md       ← write once
+│   └── _footer.md    ← write once
+├── home.md
+├── about.md
+└── pricing.md
+```
+
+```markdown
+<!-- shared/_nav.md — written once, included on every page -->
+[[ Acme | [Home](../home.md) | [About](../about.md) | [Pricing](../pricing.md) | [Sign In](../home.md) ]]
+```
+
+```markdown
+<!-- home.md -->
+![[shared/_nav.md]]
+
+::: hero
+# Welcome
+:::
+
+![[shared/_footer.md]]
+```
+
+Update `_nav.md` once and every page reflects the change instantly.
+
+**Missing file** — if the target file does not exist, a visible warning is rendered instead of silently failing:
+
+```
+> ⚠️ Could not include: shared/_nav.md
+```
+
+**Note:** only `.md` files are supported. `![[image.png]]` and standard image syntax `![alt](img.png)` are left untouched.
+
 ### Button Links
 
 Wrap a Markdown link inside button brackets to make a clickable button that navigates:
