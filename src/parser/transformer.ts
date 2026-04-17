@@ -29,143 +29,11 @@ export function transformToWiremdAST(
     theme: 'sketch',
   };
 
-  const children: WiremdNode[] = [];
-
-  // Visit all nodes in the MDAST with context for dropdown options and grid layouts
-  let i = 0;
-  while (i < mdast.children.length) {
-    const node = mdast.children[i];
-    const nextNode = mdast.children[i + 1];
-
-    // Check if this is a heading with grid class
-    if (node.type === 'heading') {
-      const content = extractTextContent(node);
-      const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
-
-      if (gridMatch) {
-        const columns = parseInt(gridMatch[1], 10);
-        const gridHeadingLevel = node.depth;
-
-        // This is a grid container - collect grid items
-        const gridItems: WiremdNode[] = [];
-        const headingTransformed = transformHeading(node, options);
-
-        i++; // Move to next node
-
-        // Collect child headings as grid items
-        while (i < mdast.children.length) {
-          const childNode = mdast.children[i];
-
-          // Grid items are headings one level deeper
-          if (
-            childNode.type === 'heading' &&
-            childNode.depth === gridHeadingLevel + 1
-          ) {
-            const gridItem: WiremdNode[] = [];
-
-            // Add the heading
-            const childNextNode = mdast.children[i + 1];
-            const headingNode = transformNode(childNode, options, childNextNode);
-            if (headingNode) {
-              gridItem.push(headingNode);
-            }
-
-            i++;
-
-            // Collect content until next heading at same or higher level
-            while (i < mdast.children.length) {
-              const contentNode = mdast.children[i];
-
-              if (
-                contentNode.type === 'heading' &&
-                contentNode.depth <= gridHeadingLevel + 1
-              ) {
-                break; // Stop at next grid item or parent level
-              }
-
-              const contentNextNode = mdast.children[i + 1];
-              const contentTransformed = transformNode(contentNode, options, contentNextNode);
-              if (contentTransformed) {
-                gridItem.push(contentTransformed);
-
-                // Skip consumed nodes
-                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') {
-                  i++;
-                }
-              }
-
-              i++;
-            }
-
-            // Hoist col-span from heading text to grid-item wrapper
-            const headingContent = extractTextContent(childNode);
-            const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
-            const gridItemProps: any = { classes: [] };
-            if (colSpanMatch) {
-              gridItemProps.classes.push(`col-span-${colSpanMatch[1]}`);
-            }
-
-            // Add as grid item
-            gridItems.push({
-              type: 'grid-item',
-              props: gridItemProps,
-              children: gridItem,
-            });
-          } else if (
-            childNode.type === 'heading' &&
-            childNode.depth <= gridHeadingLevel
-          ) {
-            // Same or higher level heading — end of grid section
-            break;
-          } else if (gridItems.length === 0) {
-            // Non-heading content before any items — silently skip
-            i++;
-            continue;
-          } else {
-            // Non-heading content after items — end of grid section
-            break;
-          }
-        }
-
-        // Create grid node
-        children.push({
-          type: 'grid',
-          columns,
-          props: (headingTransformed as any).props || {},
-          children: gridItems,
-        });
-
-        continue;
-      }
-    }
-
-    const transformed = transformNode(node, options, nextNode);
-    if (transformed) {
-      children.push(transformed);
-
-      // If this was a select node and we consumed the next list, skip it
-      if (transformed.type === 'select' && nextNode && nextNode.type === 'list') {
-        i++; // Skip the next node (list) as it was consumed
-      }
-      // Also check if it's a container with a select child that has consumed the list
-      if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {
-        const hasSelectWithOptions = (transformed.children || []).some((child: any) =>
-          child.type === 'select' && child.options && child.options.length > 0
-        );
-        if (hasSelectWithOptions) {
-          i++; // Skip the next node (list) as it was consumed by the select
-        }
-      }
-    }
-
-    i++;
-  }
-
   return {
     type: 'document',
     version: SYNTAX_VERSION,
     meta,
-    children,
+    children: processNodeList(mdast.children as any[], options),
   };
 }
 
@@ -256,27 +124,98 @@ function transformNode(
 }
 
 /**
+ * Process a list of MDAST nodes into wiremd nodes, detecting grid layouts.
+ * Shared by both the top-level document pass and container children.
+ */
+function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode[] {
+  const result: WiremdNode[] = [];
+  let i = 0;
+
+  while (i < nodeChildren.length) {
+    const node = nodeChildren[i];
+    const nextNode = nodeChildren[i + 1];
+
+    if (node.type === 'heading') {
+      const content = extractTextContent(node);
+      const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
+
+      if (gridMatch) {
+        const columns = parseInt(gridMatch[1], 10);
+        const gridHeadingLevel = node.depth;
+        const gridItems: WiremdNode[] = [];
+        const headingTransformed = transformHeading(node, options);
+
+        i++;
+
+        while (i < nodeChildren.length) {
+          const childNode = nodeChildren[i];
+
+          if (childNode.type === 'heading' && childNode.depth === gridHeadingLevel + 1) {
+            const gridItem: WiremdNode[] = [];
+            const childNextNode = nodeChildren[i + 1];
+            const headingNode = transformNode(childNode, options, childNextNode);
+            if (headingNode) gridItem.push(headingNode);
+            i++;
+
+            while (i < nodeChildren.length) {
+              const contentNode = nodeChildren[i];
+              if (contentNode.type === 'heading' && contentNode.depth <= gridHeadingLevel + 1) break;
+              const contentNextNode = nodeChildren[i + 1];
+              const contentTransformed = transformNode(contentNode, options, contentNextNode);
+              if (contentTransformed) {
+                gridItem.push(contentTransformed);
+                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') i++;
+              }
+              i++;
+            }
+
+            const headingContent = extractTextContent(childNode);
+            const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
+            const gridItemProps: any = { classes: [] };
+            if (colSpanMatch) gridItemProps.classes.push(`col-span-${colSpanMatch[1]}`);
+
+            gridItems.push({ type: 'grid-item', props: gridItemProps, children: gridItem });
+          } else if (childNode.type === 'heading' && childNode.depth <= gridHeadingLevel) {
+            break;
+          } else if (gridItems.length === 0) {
+            i++;
+            continue;
+          } else {
+            break;
+          }
+        }
+
+        result.push({
+          type: 'grid',
+          columns,
+          props: (headingTransformed as any).props || {},
+          children: gridItems,
+        });
+        continue;
+      }
+    }
+
+    const transformed = transformNode(node, options, nextNode);
+    if (transformed) {
+      result.push(transformed);
+      if (transformed.type === 'select' && nextNode && nextNode.type === 'list') i++;
+      if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {
+        const hasSelectWithOptions = (transformed.children || []).some((child: any) =>
+          child.type === 'select' && child.options && child.options.length > 0
+        );
+        if (hasSelectWithOptions) i++;
+      }
+    }
+    i++;
+  }
+
+  return result;
+}
+
+/**
  * Transform container node (:::)
  */
 function transformContainer(node: any, options: ParseOptions): WiremdNode {
-  const children: WiremdNode[] = [];
-  const nodeChildren = node.children || [];
-
-  for (let i = 0; i < nodeChildren.length; i++) {
-    const child = nodeChildren[i];
-    const nextChild = nodeChildren[i + 1];
-    const transformed = transformNode(child, options, nextChild);
-
-    if (transformed) {
-      children.push(transformed);
-
-      // Skip next node if it was consumed (dropdown options)
-      if (transformed.type === 'select' && nextChild && nextChild.type === 'list') {
-        i++;
-      }
-    }
-  }
-
   const props = parseAttributes(node.attributes || '');
   const containerType: string = (node.containerType || '').trim();
 
@@ -284,7 +223,7 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
     type: 'container',
     containerType: containerType as any,
     props,
-    children,
+    children: processNodeList(node.children || [], options) as any,
   };
 }
 

@@ -371,10 +371,46 @@ function renderIcon(node: any, context: RenderContext): string {
 function renderContainer(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, `container-${node.containerType}`, node.props);
+
+  const nodeClasses: string[] = node.props?.classes || [];
+  if (node.containerType === 'layout' && nodeClasses.includes('sidebar-main')) {
+    return renderSidebarMainLayout(node, context, classes);
+  }
+
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
 
   return `<div class="${classes}">
   ${childrenHTML}
+</div>`;
+}
+
+function renderSidebarMainLayout(node: any, context: RenderContext, classes: string): string {
+  const { classPrefix: prefix } = context;
+  const children: any[] = node.children || [];
+
+  const sections: { name: string; nodes: any[] }[] = [];
+  let current: { name: string; nodes: any[] } | null = null;
+
+  for (const child of children) {
+    const childClasses: string[] = child.props?.classes || [];
+    if (child.type === 'heading' && (childClasses.includes('sidebar') || childClasses.includes('main'))) {
+      if (current) sections.push(current);
+      current = { name: childClasses.includes('sidebar') ? 'sidebar' : 'main', nodes: [] };
+    } else if (current) {
+      current.nodes.push(child);
+    }
+  }
+  if (current) sections.push(current);
+
+  const sectionsHTML = sections.map((s) => {
+    const contentHTML = s.nodes.map((child: any) => renderNode(child, context)).join('\n    ');
+    return `  <div class="${prefix}layout-${s.name}">
+    ${contentHTML}
+  </div>`;
+  }).join('\n');
+
+  return `<div class="${classes}">
+${sectionsHTML}
 </div>`;
 }
 

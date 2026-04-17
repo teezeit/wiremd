@@ -516,6 +516,90 @@ Quick
       const result = parse(input);
       expect((result.children[0] as any).props.card).toBeFalsy();
     });
+
+    it('should parse a grid nested inside a container as a grid node', () => {
+      const input = `
+::: card
+
+## Features {.grid-3}
+
+### Fast
+Quick
+
+### Secure
+Safe
+
+### Powerful
+Strong
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const card = result.children[0] as any;
+      expect(card.type).toBe('container');
+      expect(card.containerType).toBe('card');
+      // The grid must be a grid node, not a plain heading
+      const grid = card.children[0];
+      expect(grid.type).toBe('grid');
+      expect(grid.columns).toBe(3);
+      expect(grid.children).toHaveLength(3);
+      expect(grid.children[0].type).toBe('grid-item');
+    });
+  });
+
+  describe('Sidebar layout', () => {
+    it('should parse :::layout {.sidebar-main} as a layout container', () => {
+      const input = `
+::: layout {.sidebar-main}
+
+## Sidebar {.sidebar}
+Nav here
+
+## Main {.main}
+Content here
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const layout = result.children[0] as any;
+      expect(layout.type).toBe('container');
+      expect(layout.containerType).toBe('layout');
+      expect(layout.props.classes).toContain('sidebar-main');
+    });
+
+    it('should parse grid inside sidebar-main layout as a grid node', () => {
+      const input = `
+::: layout {.sidebar-main}
+
+## Sidebar {.sidebar}
+Nav
+
+## Main {.main}
+
+## Stats {.grid-3}
+
+### Done
+48
+
+### Active
+12
+
+### Pending
+5
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const layout = result.children[0] as any;
+      // Find the grid in the layout's children
+      const grid = layout.children.find((c: any) => c.type === 'grid');
+      expect(grid).toBeDefined();
+      expect(grid.columns).toBe(3);
+      expect(grid.children).toHaveLength(3);
+    });
   });
 
   describe('Button link syntax [[text](url)]', () => {
