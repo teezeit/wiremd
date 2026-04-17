@@ -98,6 +98,32 @@ Try our product today
 :::
 ```
 
+Containers can be nested — blank lines between blocks let remark separate them:
+
+```markdown
+::: modal
+
+::: card
+
+Are you sure you want to delete this item?
+
+[Cancel] [Delete]{.danger}
+
+:::
+
+:::
+```
+
+Place inline content directly on the opener line to inject it as the first child of the container:
+
+```markdown
+::: alert Warning: this action cannot be undone
+
+[Cancel] [Confirm]{.danger}
+
+:::
+```
+
 ### Grid Layouts
 
 `{.grid-N}` on a heading creates an N-column layout. Child `###` headings become grid items. The heading label itself is **declaration-only** — it is never rendered in the output; it only names the grid for the author.

@@ -328,6 +328,46 @@ Are you sure?
       expect(result.children[0].type).toBe('container');
       expect(result.children[0].children).toHaveLength(3);
     });
+
+    it('should nest a container inside another container', () => {
+      const input = `
+::: modal
+
+::: card
+
+Nested content
+
+:::
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const modal = result.children[0];
+      expect(modal.type).toBe('container');
+      expect(modal.containerType).toBe('modal');
+      const card = modal.children[0];
+      expect(card.type).toBe('container');
+      expect(card.containerType).toBe('card');
+      expect(card.children[0].type).toBe('paragraph');
+    });
+
+    it('should extract inline content from the opener line', () => {
+      const input = `
+::: alert Warning: this action is irreversible
+
+[Cancel] [Confirm]{.danger}
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const alert = result.children[0];
+      expect(alert.type).toBe('container');
+      expect(alert.containerType).toBe('alert');
+      expect(alert.children[0].type).toBe('paragraph');
+      expect(alert.children[0].content).toBe('Warning: this action is irreversible');
+    });
   });
 
   describe('Inline Container Syntax (Navigation)', () => {
