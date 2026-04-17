@@ -17,6 +17,8 @@ interface ServerOptions {
   renderFile?: (mdPath: string) => string;
   /** Root directory for resolving linked .md files. Defaults to dirname(outputPath). */
   rootDir?: string;
+  /** Entry .md filename (e.g. "index.md"). When set, GET / redirects to /{inputFile}. */
+  inputFile?: string;
 }
 
 const liveReloadScript = `
@@ -361,7 +363,7 @@ const liveReloadScript = `
 const wsClients: Set<any> = new Set();
 
 export function startServer(options: ServerOptions): ReturnType<typeof createServer> {
-  const { port, outputPath, renderFile } = options;
+  const { port, outputPath, renderFile, inputFile } = options;
   const rootDir = options.rootDir || dirname(outputPath);
 
   const injectScript = (html: string) => {
@@ -380,6 +382,11 @@ export function startServer(options: ServerOptions): ReturnType<typeof createSer
     let html: string | null = null;
 
     if (urlPath === '/' || urlPath === '') {
+      if (inputFile) {
+        res.writeHead(302, { Location: `/${inputFile}` });
+        res.end();
+        return;
+      }
       try {
         html = readFileSync(outputPath, 'utf-8');
       } catch {

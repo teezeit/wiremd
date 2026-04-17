@@ -30,7 +30,15 @@ describe('Multi-file routing', () => {
     expect(typeof server.close).toBe('function');
   });
 
-  it('should serve main file at /', async () => {
+  it('should redirect / to the entry file when inputFile is provided', async () => {
+    const renderFile = vi.fn().mockReturnValue('<html><body>Main Page</body></html>');
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.', inputFile: 'test-other.md' });
+    const res = await fetch(`http://localhost:${TEST_PORT}/`, { redirect: 'manual' });
+    expect(res.status).toBe(302);
+    expect(res.headers.get('location')).toBe('/test-other.md');
+  });
+
+  it('should serve main file at / when no inputFile provided (fallback)', async () => {
     server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT });
     const res = await fetch(`http://localhost:${TEST_PORT}/`);
     expect(res.status).toBe(200);

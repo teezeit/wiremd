@@ -10,7 +10,7 @@
  */
 
 import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
-import { resolve, dirname, join } from 'path';
+import { resolve, dirname, join, basename } from 'path';
 import { pathToFileURL } from 'url';
 import { parse } from '../parser/index.js';
 import { renderToHTML, renderToJSON } from '../renderer/index.js';
@@ -293,6 +293,7 @@ export function main(): void {
         outputPath: options.output,
         renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath }),
         rootDir: dirname(options.input),
+        inputFile: basename(options.input),
       });
       console.log('');
     }
