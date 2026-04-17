@@ -97,14 +97,32 @@ export function transformToWiremdAST(
               i++;
             }
 
+            // Hoist col-span from heading text to grid-item wrapper
+            const headingContent = extractTextContent(childNode);
+            const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
+            const gridItemProps: any = { classes: [] };
+            if (colSpanMatch) {
+              gridItemProps.classes.push(`col-span-${colSpanMatch[1]}`);
+            }
+
             // Add as grid item
             gridItems.push({
               type: 'grid-item',
-              props: {},
+              props: gridItemProps,
               children: gridItem,
             });
+          } else if (
+            childNode.type === 'heading' &&
+            childNode.depth <= gridHeadingLevel
+          ) {
+            // Same or higher level heading — end of grid section
+            break;
+          } else if (gridItems.length === 0) {
+            // Non-heading content before any items — silently skip
+            i++;
+            continue;
           } else {
-            // Not a grid item heading, stop collecting
+            // Non-heading content after items — end of grid section
             break;
           }
         }
@@ -260,10 +278,11 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
   }
 
   const props = parseAttributes(node.attributes || '');
+  const containerType: string = (node.containerType || '').trim();
 
   return {
     type: 'container',
-    containerType: node.containerType as any,
+    containerType: containerType as any,
     props,
     children,
   };

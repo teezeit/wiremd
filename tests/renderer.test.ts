@@ -167,6 +167,81 @@ Powerful
       expect(html).toContain('Feature Two');
       expect(html).toContain('Feature Three');
     });
+
+    it('should render wmd-grid-item-card class when card modifier is set', () => {
+      const input = `
+## Features {.grid-3 card}
+
+### Fast
+Quick
+
+### Secure
+Safe
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-grid-item-card/);
+    });
+
+    it('should NOT render wmd-grid-item-card class without card modifier', () => {
+      const input = `
+## Features {.grid-3}
+
+### Fast
+Quick
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).not.toMatch(/class="[^"]*wmd-grid-item-card/);
+    });
+
+    it('should NOT render grid heading label text in output', () => {
+      const input = `
+## MyGridLabel {.grid-3}
+
+### Item One
+Content
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).not.toContain('MyGridLabel');
+    });
+
+    it('should render col-span class on grid item', () => {
+      const input = `
+## Pricing {.grid-3}
+
+### Wide {.col-span-2}
+Spans two columns
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-col-span-2/);
+    });
+
+    it('should include col-span mobile reset in CSS', () => {
+      const ast = parse('## G {.grid-3}\n\n### Item\nContent');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/max-width:\s*768px[\s\S]*?col-span-2[\s\S]*?grid-column:\s*span 1/);
+    });
+
+    it('should render col-span combined with card modifier', () => {
+      const input = `
+## Pricing {.grid-3 card}
+
+### Wide {.col-span-2}
+Spans two
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-grid-item-card/);
+      expect(html).toMatch(/class="[^"]*wmd-col-span-2/);
+    });
   });
 
   describe('Dropdowns', () => {

@@ -63,6 +63,7 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'grid-item':
       return renderGridItem(node, context);
 
+
     case 'heading':
       return renderHeading(node, context);
 
@@ -410,16 +411,19 @@ function renderGrid(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'grid', node.props);
   const columns = node.columns || 3;
   const gridClass = `${classes} ${prefix}grid-${columns}`;
-  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+  const isCard = !!node.props?.card;
+  const childrenHTML = (node.children || []).map((child: any) => renderGridItem(child, context, isCard)).join('\n  ');
 
   return `<div class="${gridClass}" style="--grid-columns: ${columns}">
   ${childrenHTML}
 </div>`;
 }
 
-function renderGridItem(node: any, context: RenderContext): string {
+function renderGridItem(node: any, context: RenderContext, isCard = false): string {
   const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'grid-item', node.props);
+  const extraClasses = isCard ? [...(node.props?.classes || []), 'grid-item-card'] : (node.props?.classes || []);
+  const itemProps = { ...node.props, classes: extraClasses };
+  const classes = buildClasses(prefix, 'grid-item', itemProps);
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n    ');
 
   return `<div class="${classes}">

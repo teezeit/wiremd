@@ -485,5 +485,85 @@ Advanced features included
       });
       expect(result.children[0].children).toHaveLength(4);
     });
+
+    it('should set card prop on grid node when card modifier is present', () => {
+      const input = `
+## Features {.grid-3 card}
+
+### Fast
+Quick
+
+### Secure
+Safe
+
+### Scalable
+Grows
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0]).toMatchObject({ type: 'grid', columns: 3 });
+      expect((result.children[0] as any).props.card).toBe(true);
+    });
+
+    it('should not set card prop on grid node without card modifier', () => {
+      const input = `
+## Features {.grid-3}
+
+### Fast
+Quick
+      `.trim();
+
+      const result = parse(input);
+      expect((result.children[0] as any).props.card).toBeFalsy();
+    });
+  });
+
+  describe('Grid col-span', () => {
+    it('should hoist col-span class from heading to grid-item', () => {
+      const input = `
+## Pricing {.grid-3}
+
+### Starter {.col-span-1}
+$9/mo
+
+### Pro {.col-span-2}
+$29/mo
+      `.trim();
+
+      const result = parse(input);
+      const grid = result.children[0] as any;
+      expect(grid.type).toBe('grid');
+      expect(grid.children[0].props.classes).toContain('col-span-1');
+      expect(grid.children[1].props.classes).toContain('col-span-2');
+    });
+
+    it('should leave grid-item without col-span when not specified', () => {
+      const input = `
+## Layout {.grid-3}
+
+### Item One
+Content
+      `.trim();
+
+      const result = parse(input);
+      const item = (result.children[0] as any).children[0];
+      expect(item.props.classes).not.toContain('col-span-1');
+      expect(item.props.classes).not.toContain('col-span-2');
+    });
+
+    it('should not render grid heading label text as a child node', () => {
+      const input = `
+## Features {.grid-3}
+
+### Fast
+Quick
+      `.trim();
+
+      const result = parse(input);
+      const grid = result.children[0] as any;
+      const types = grid.children.map((c: any) => c.type);
+      expect(types).not.toContain('heading');
+      expect(types.every((t: string) => t === 'grid-item')).toBe(true);
+    });
   });
 });
