@@ -288,7 +288,12 @@ export function main(): void {
     // Start dev server if requested
     if (options.serve) {
       const port = options.serve;
-      startServer({ port, outputPath: options.output });
+      startServer({
+        port,
+        outputPath: options.output,
+        renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath }),
+        rootDir: dirname(options.input),
+      });
       console.log('');
     }
 
