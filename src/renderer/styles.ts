@@ -11,24 +11,21 @@
  * Get CSS for the specified style
  */
 export function getStyleCSS(style: string, prefix: string): string {
+  // Reset browser link defaults for buttons rendered as <a> tags via [[Text](url)] syntax
+  const linkButtonReset = `a.${prefix}button { text-decoration: none; color: inherit; }\n`;
+
+  let themeCSS: string;
   switch (style) {
-    case 'sketch':
-      return getSketchStyle(prefix);
-    case 'clean':
-      return getCleanStyle(prefix);
-    case 'wireframe':
-      return getWireframeStyle(prefix);
-    case 'none':
-      return getNoneStyle(prefix);
-    case 'tailwind':
-      return getTailwindStyle(prefix);
-    case 'material':
-      return getMaterialStyle(prefix);
-    case 'brutal':
-      return getBrutalStyle(prefix);
-    default:
-      return getSketchStyle(prefix);
+    case 'sketch':    themeCSS = getSketchStyle(prefix); break;
+    case 'clean':     themeCSS = getCleanStyle(prefix); break;
+    case 'wireframe': themeCSS = getWireframeStyle(prefix); break;
+    case 'none':      themeCSS = getNoneStyle(prefix); break;
+    case 'tailwind':  themeCSS = getTailwindStyle(prefix); break;
+    case 'material':  themeCSS = getMaterialStyle(prefix); break;
+    case 'brutal':    themeCSS = getBrutalStyle(prefix); break;
+    default:          themeCSS = getSketchStyle(prefix);
   }
+  return linkButtonReset + themeCSS;
 }
 
 /**

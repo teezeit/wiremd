@@ -266,6 +266,13 @@ Spans two
       expect(html).not.toContain('<button');
     });
 
+    it('should reset link styling on button <a> tags', () => {
+      const ast = parse('[[Docs](./docs.md)]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('text-decoration: none');
+      expect(html).toContain('color: inherit');
+    });
+
     it('should render [[Button]*(url)] as primary <a> button', () => {
       const ast = parse('[[Get Started](./start.md)]*');
       const html = renderToHTML(ast, { style: 'sketch' });
