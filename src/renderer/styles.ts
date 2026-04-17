@@ -11,24 +11,21 @@
  * Get CSS for the specified style
  */
 export function getStyleCSS(style: string, prefix: string): string {
+  // Reset browser link defaults for buttons rendered as <a> tags via [[Text](url)] syntax
+  const linkButtonReset = `a.${prefix}button { text-decoration: none; color: inherit; }\n`;
+
+  let themeCSS: string;
   switch (style) {
-    case 'sketch':
-      return getSketchStyle(prefix);
-    case 'clean':
-      return getCleanStyle(prefix);
-    case 'wireframe':
-      return getWireframeStyle(prefix);
-    case 'none':
-      return getNoneStyle(prefix);
-    case 'tailwind':
-      return getTailwindStyle(prefix);
-    case 'material':
-      return getMaterialStyle(prefix);
-    case 'brutal':
-      return getBrutalStyle(prefix);
-    default:
-      return getSketchStyle(prefix);
+    case 'sketch':    themeCSS = getSketchStyle(prefix); break;
+    case 'clean':     themeCSS = getCleanStyle(prefix); break;
+    case 'wireframe': themeCSS = getWireframeStyle(prefix); break;
+    case 'none':      themeCSS = getNoneStyle(prefix); break;
+    case 'tailwind':  themeCSS = getTailwindStyle(prefix); break;
+    case 'material':  themeCSS = getMaterialStyle(prefix); break;
+    case 'brutal':    themeCSS = getBrutalStyle(prefix); break;
+    default:          themeCSS = getSketchStyle(prefix);
   }
+  return linkButtonReset + themeCSS;
 }
 
 /**
@@ -273,6 +270,13 @@ body.${prefix}root {
   transform: rotate(0.3deg) translateY(-1px);
   box-shadow: 2px 3px 0 rgba(0,0,0,0.15);
   background: #f8f8f8;
+}
+
+.${prefix}nav-item.${prefix}active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+  transform: rotate(0.3deg);
 }
 
 .${prefix}nav .${prefix}button {
@@ -727,6 +731,12 @@ body.${prefix}root {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.${prefix}nav-item.${prefix}active {
+  background: #343a40;
+  color: #fff;
+  border-color: #343a40;
+}
+
 /* Grid */
 .${prefix}grid {
   display: grid;
@@ -1113,6 +1123,12 @@ body.${prefix}root {
 
 .${prefix}nav-item:hover {
   background: #f5f5f5;
+  border-color: #000;
+}
+
+.${prefix}nav-item.${prefix}active {
+  background: #000;
+  color: #fff;
   border-color: #000;
 }
 
@@ -1655,6 +1671,12 @@ body {
   border-color: #9ca3af;
   color: #111827;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.${prefix}nav-item.${prefix}active {
+  background: #7c3aed;
+  color: #fff;
+  border-color: #7c3aed;
 }
 
 .${prefix}brand {
@@ -2255,6 +2277,12 @@ body {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.${prefix}nav-item.${prefix}active {
+  background: #1565c0;
+  color: #fff;
+  border-color: #1565c0;
 }
 
 .${prefix}brand {
@@ -2862,6 +2890,14 @@ body {
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0 #000000;
   background: #ffffff;
+}
+
+.${prefix}nav-item.${prefix}active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+  transform: translate(4px, 4px);
+  box-shadow: none;
 }
 
 .${prefix}brand {

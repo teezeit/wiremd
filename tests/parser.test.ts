@@ -518,6 +518,43 @@ Quick
     });
   });
 
+  describe('Button link syntax [[text](url)]', () => {
+    it('should parse [[Button](url)] as button with href', () => {
+      const result = parse('[[Go to Docs](./docs.md)]');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        content: 'Go to Docs',
+        href: './docs.md',
+      });
+    });
+
+    it('should parse [[Button]*(url)] as primary button with href', () => {
+      const result = parse('[[Get Started](./start.md)]*');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        href: './start.md',
+        props: { variant: 'primary' },
+      });
+    });
+
+    it('should parse [[Button](url)] with attributes', () => {
+      const result = parse('[[Sign Up](./signup.md)]{.secondary}');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        href: './signup.md',
+        props: { classes: ['secondary'] },
+      });
+    });
+
+    it('should parse [[Button](url)] with external URL', () => {
+      const result = parse('[[Google](https://www.google.com)]');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        href: 'https://www.google.com',
+      });
+    });
+  });
+
   describe('Grid col-span', () => {
     it('should hoist col-span class from heading to grid-item', () => {
       const input = `

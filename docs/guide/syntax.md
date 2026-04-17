@@ -131,6 +131,23 @@ Enterprise-grade security
 Grows with your needs
 ```
 
+### Button Links
+
+Wrap a Markdown link inside button brackets to make a clickable button that navigates:
+
+```markdown
+[[Go to Docs](./docs.md)]
+[[Get Started](./start.md)]*
+```
+
+The `*` suffix makes it a primary button. Attributes work too:
+
+```markdown
+[[Sign Up](./signup.md)]{.secondary}
+```
+
+When using `wiremd --serve`, clicking a button link renders the target `.md` file in the same browser tab — no build step required. This is the recommended way to wire up multi-page navigation in prototypes.
+
 **Column spanning** — `{.col-span-N}` on a child heading spans multiple columns:
 
 ```markdown

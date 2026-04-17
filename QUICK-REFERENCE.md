@@ -19,7 +19,10 @@
 | **Radio** | `- ( )` / `- (*)` | `- (*) Option 1` |
 | **Icon** | `:name:` | `:home: :user: :gear:` |
 | **Nav Bar** | `[[ A \| B \| C ]]` | `[[ Home \| About \| [Login] ]]` |
+| **Nav Link** | `[[ [Text](url) \| ... ]]` | `[[ [About](./about.md) \| ... ]]` |
 | **Breadcrumbs** | `[[ A > B > C ]]` | `[[ Home > Products > Item ]]` |
+| **Button Link** | `[[Text](url)]` | `[[About](./about.md)]` |
+| **Primary Button Link** | `[[Text](url)]*` | `[[Get Started](./start.md)]*` |
 
 ## Containers
 
@@ -131,6 +134,17 @@ Message
 # Breadcrumbs
 [[ Home > Products > Category > Item ]]
 ```
+
+### Multi-file Navigation
+
+When running `wiremd --serve`, clicking a button link navigates to and renders that `.md` file:
+
+```markdown
+# Shared navbar (paste in each page)
+[[ :logo: MyApp | [Home](./home.md) | [About](./about.md) | [Contact](./contact.md)* ]]
+```
+
+The dev server (`--serve <port>`) redirects `/` to the entry file and renders any `.md` on demand — no build step needed between page navigations.
 
 ## Grid Pattern
 
