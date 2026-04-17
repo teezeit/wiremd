@@ -244,6 +244,22 @@ Spans two
     });
   });
 
+  describe('Button links', () => {
+    it('should render button with href as <a> tag', () => {
+      const ast = parse('[Go to Docs]{href:./docs.md}');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*">/);
+      expect(html).not.toContain('<button');
+    });
+
+    it('should render primary button with href as <a> tag', () => {
+      const ast = parse('[Get Started]*{href:./start.md}');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<a href="\.\/start\.md"/);
+      expect(html).toContain('wmd-button-primary');
+    });
+  });
+
   describe('Dropdowns', () => {
     it('should render a dropdown with options', () => {
       const input = `

@@ -122,6 +122,11 @@ function renderButton(node: any, context: RenderContext): string {
     ? node.children.map((child: any) => renderNode(child, context)).join('')
     : escapeHtml(node.content);
 
+  const href = node.href || node.props?.href;
+  if (href) {
+    return `<a href="${escapeHtml(href)}" class="${classes}${loading}">${contentHTML}</a>`;
+  }
+
   return `<button class="${classes}${loading}"${disabled}>${contentHTML}</button>`;
 }
 
