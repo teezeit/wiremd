@@ -121,6 +121,36 @@ Content
       expect(html).toContain('Sign In');
     });
 
+    it('should render *active* nav items without literal asterisks', () => {
+      const input = `[[ Home | *About* | Contact ]]`;
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).not.toContain('*About*');
+      expect(html).toContain('About');
+      expect(html).toContain('wmd-nav-item');
+    });
+
+    it('should render [Link](url)* nav item as primary button', () => {
+      const input = `[[ Home | [Get Started](./start.md)* ]]`;
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('href="./start.md"');
+      expect(html).toContain('wmd-button-primary');
+    });
+
+    it('should render nav items with links as <a> tags with href', () => {
+      const input = `[[ :logo: MyApp | Home | [About](./about.md) | [Contact](./contact.md) ]]`;
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('href="./about.md"');
+      expect(html).toContain('href="./contact.md"');
+      expect(html).toContain('About');
+      expect(html).toContain('Contact');
+    });
+
     it('should render navigation items with button styling', () => {
       const input = `[[ Logo | Sign In | Help ]]`;
       const ast = parse(input);
@@ -241,6 +271,27 @@ Spans two
       const html = renderToHTML(ast, { style: 'sketch' });
       expect(html).toMatch(/class="[^"]*wmd-grid-item-card/);
       expect(html).toMatch(/class="[^"]*wmd-col-span-2/);
+    });
+  });
+
+  describe('Multiple inline button-links', () => {
+    it('should render two [[btn](url)] on one line as button elements (not a paragraph)', () => {
+      const ast = parse('[[Get Started](./about.md)]* [[See Features](./about.md)]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      // Must render as <a class="wmd-button..."> — not as a <p> wrapping raw links
+      expect(html).toMatch(/<a href="\.\/about\.md" class="[^"]*wmd-button-primary[^"]*">Get Started<\/a>/);
+      expect(html).toMatch(/<a href="\.\/about\.md" class="[^"]*wmd-button[^"]*">See Features<\/a>/);
+      // Must not wrap in a <p> paragraph element with literal brackets
+      expect(html).not.toMatch(/<p[^>]*wmd-paragraph/);
+    });
+
+    it('should render two [[btn](url)] on one line without literal bracket text', () => {
+      const ast = parse('[[Docs](./docs.md)] [[API](./api.md)]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      // No literal ][ in the output (would appear between two paragraph-rendered links)
+      expect(html).not.toMatch(/\].*\[/);
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*">Docs<\/a>/);
+      expect(html).toMatch(/<a href="\.\/api\.md" class="[^"]*wmd-button[^"]*">API<\/a>/);
     });
   });
 

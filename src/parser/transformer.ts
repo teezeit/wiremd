@@ -300,6 +300,29 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
   for (const item of items) {
     const trimmed = item.trim();
 
+    // Check if it's an active/emphasized item: *Text* or **Text**
+    const activeMatch = trimmed.match(/^\*\*?([^*]+)\*\*?$/);
+    if (activeMatch) {
+      children.push({
+        type: 'nav-item',
+        content: activeMatch[1],
+        props: { classes: ['active'] },
+      });
+      continue;
+    }
+
+    // Check if it's a link nav-item: [Text](url) or [Text](url)*
+    const linkMatch = trimmed.match(/^\[([^\]]+)\]\(([^)]+)\)(\*)?$/);
+    if (linkMatch) {
+      children.push({
+        type: 'nav-item',
+        content: linkMatch[1],
+        href: linkMatch[2],
+        props: { variant: linkMatch[3] ? 'primary' : undefined },
+      });
+      continue;
+    }
+
     // Check if it's a button: [Text] or [Text]*
     const buttonMatch = trimmed.match(/^\[([^\]]+)\](\*)?$/);
     if (buttonMatch) {
@@ -415,6 +438,50 @@ function transformHeading(node: any, _options: ParseOptions): WiremdNode {
 }
 
 /**
+ * Detect one or more [[Text](url)]* patterns in a paragraph's children.
+ * Remark produces alternating text/link nodes because CommonMark forbids nested links:
+ *   "[", link, "]*[", link, "]"
+ * Returns button nodes, or null if the children don't match this pattern at all.
+ */
+function tryParseButtonLinkSequence(children: any[]): WiremdNode[] | null {
+  if (!children || children.length < 3 || children.length % 2 === 0) return null;
+
+  // Must alternate: text, link, text, link, text, ...
+  for (let i = 0; i < children.length; i++) {
+    if (i % 2 === 0 && children[i].type !== 'text') return null;
+    if (i % 2 === 1 && children[i].type !== 'link') return null;
+  }
+
+  // First text must be exactly "[" (optionally with leading whitespace)
+  if (!/^\s*\[$/.test(children[0].value)) return null;
+
+  // Last text must be "]" + optional "*" + optional "{attrs}" + nothing else
+  const lastText: string = children[children.length - 1].value;
+  if (!/^\](\*)?\s*(\{[^}]*\})?\s*$/.test(lastText)) return null;
+
+  // Each middle text (between two links) must be "]...[" — closes previous, opens next
+  for (let i = 2; i <= children.length - 3; i += 2) {
+    if (!/^\](\*)?\s*(\{[^}]*\})?\s*\[$/.test(children[i].value)) return null;
+  }
+
+  return children
+    .filter((_: any, i: number) => i % 2 === 1) // keep only link nodes
+    .map((linkNode: any, idx: number) => {
+      const closingText: string = children[idx * 2 + 2].value;
+      const closeMatch = closingText.match(/^\](\*)?\s*(\{[^}]*\})?/);
+      const isPrimary = !!(closeMatch && closeMatch[1]);
+      const attrStr = (closeMatch && closeMatch[2]) || '';
+      const attrs = attrStr ? parseAttributes(attrStr) : {};
+      return {
+        type: 'button' as const,
+        content: extractTextContent(linkNode),
+        href: linkNode.url || '#',
+        props: { ...attrs, variant: isPrimary ? 'primary' : (attrs as any).variant },
+      };
+    });
+}
+
+/**
  * Transform paragraph node
  * This is where we'll detect buttons, inputs, etc.
  */
@@ -424,28 +491,17 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'image'
   );
 
-  // [[Button](url)]* — explicit linked-button syntax.
-  // CommonMark forbids nested links so remark parses this as:
-  //   text:"["  +  link  +  text:"]*" (or "]{.secondary}", etc.)
-  if (
-    node.children.length === 3 &&
-    node.children[0].type === 'text' && node.children[0].value === '[' &&
-    node.children[1].type === 'link' &&
-    node.children[2].type === 'text' && /^\](\*)?(\s*\{[^}]*\})?$/.test(node.children[2].value)
-  ) {
-    const linkNode = node.children[1];
-    const suffix: string = node.children[2].value;
-    const isPrimary = suffix.includes('*');
-    const attrMatch = suffix.match(/\{([^}]*)\}/);
-    const attrs = attrMatch ? parseAttributes(`{${attrMatch[1]}}`) : {};
+  // [[Button](url)]* — one or more linked-button patterns on the same line.
+  // CommonMark forbids nested links so remark produces alternating text/link children:
+  //   "[", link, "]*", "[", link, "]"  for two buttons, etc.
+  const buttonLinks = tryParseButtonLinkSequence(node.children);
+  if (buttonLinks !== null) {
+    if (buttonLinks.length === 1) return buttonLinks[0];
     return {
-      type: 'button',
-      content: extractTextContent(linkNode),
-      href: linkNode.url || '#',
-      props: {
-        ...attrs,
-        variant: isPrimary ? 'primary' : attrs.variant,
-      },
+      type: 'container',
+      containerType: 'button-group',
+      children: buttonLinks as any,
+      props: {},
     };
   }
 

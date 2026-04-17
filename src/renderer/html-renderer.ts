@@ -392,14 +392,18 @@ function renderNav(node: any, context: RenderContext): string {
 
 function renderNavItem(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'nav-item', node.props);
   const href = node.href || '#';
 
-  // Handle both content (string) and children (array of nodes)
   const contentHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
     : escapeHtml(node.content);
 
+  if (node.props?.variant === 'primary') {
+    const classes = `${buildClasses(prefix, 'button', node.props)} ${prefix}button-primary`;
+    return `<a href="${href}" class="${classes.trim()}" style="text-decoration:none;color:inherit;">${contentHTML}</a>`;
+  }
+
+  const classes = buildClasses(prefix, 'nav-item', node.props);
   return `<a href="${href}" class="${classes}">${contentHTML}</a>`;
 }
 
