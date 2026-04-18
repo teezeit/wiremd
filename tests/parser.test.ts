@@ -240,6 +240,77 @@ describe('Parser', () => {
     });
   });
 
+  describe('Icon in Table Cells', () => {
+    it('should parse icon at start of body cell', () => {
+      const input = `
+| Status | Item |
+|--------|------|
+| :check: Done | Task A |
+      `.trim();
+      const result = parse(input);
+      expect(result.children[0].type).toBe('table');
+      const row = (result.children[0] as any).children[1]; // table-row
+      expect(row.type).toBe('table-row');
+      const cell = row.children[0];
+      expect(cell.type).toBe('table-cell');
+      expect(cell.children).toBeDefined();
+      expect(cell.children[0]).toMatchObject({ type: 'icon', props: { name: 'check' } });
+      expect(cell.children[1]).toMatchObject({ type: 'text', content: 'Done' });
+    });
+
+    it('should parse icon-only cell (no trailing text)', () => {
+      const input = `
+| Status |
+|--------|
+| :x: |
+      `.trim();
+      const result = parse(input);
+      const row = (result.children[0] as any).children[1];
+      const cell = row.children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'icon', props: { name: 'x' } });
+      expect(cell.children).toHaveLength(1);
+    });
+
+    it('should parse icon with hyphenated name in cell', () => {
+      const input = `
+| Status |
+|--------|
+| :arrow-right: Go |
+      `.trim();
+      const result = parse(input);
+      const row = (result.children[0] as any).children[1];
+      const cell = row.children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'icon', props: { name: 'arrow-right' } });
+      expect(cell.children[1]).toMatchObject({ type: 'text', content: 'Go' });
+    });
+
+    it('should parse icon at start of header cell', () => {
+      const input = `
+| :star: Rating | Value |
+|---------------|-------|
+| Good | 5 |
+      `.trim();
+      const result = parse(input);
+      const header = (result.children[0] as any).children[0]; // table-header
+      expect(header.type).toBe('table-header');
+      const cell = header.children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'icon', props: { name: 'star' } });
+      expect(cell.children[1]).toMatchObject({ type: 'text', content: 'Rating' });
+    });
+
+    it('should not modify cells without icon syntax', () => {
+      const input = `
+| Status | Item |
+|--------|------|
+| Done | Task A |
+      `.trim();
+      const result = parse(input);
+      const row = (result.children[0] as any).children[1];
+      const cell = row.children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'text', content: 'Done' });
+    });
+  });
+
   describe('Complex Forms', () => {
     it('should parse a simple contact form', () => {
       const input = `
