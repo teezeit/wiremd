@@ -1387,10 +1387,11 @@ function transformTable(node: any, options: ParseOptions): WiremdNode {
               type: 'icon',
               props: { name: iconMatch[1] },
             });
-            if (iconMatch[2]) {
+            const remainder = iconMatch[2].trim();
+            if (remainder) {
               cellChildren.push({
                 type: 'text',
-                content: iconMatch[2],
+                content: remainder,
                 props: {},
               });
             }
