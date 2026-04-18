@@ -14,6 +14,13 @@ export function getStyleCSS(style: string, prefix: string): string {
   // Reset browser link defaults for buttons rendered as <a> tags via [[Text](url)] syntax
   const linkButtonReset = `a.${prefix}button { text-decoration: none; color: inherit; }\n`;
 
+  // Structural rules shared across themes — required for tabs visibility toggling
+  const tabsStructural = `
+.${prefix}tab-headers { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+.${prefix}tab-header { cursor: pointer; font-family: inherit; }
+.${prefix}tab-panel[hidden] { display: none; }
+`;
+
   let themeCSS: string;
   switch (style) {
     case 'sketch':    themeCSS = getSketchStyle(prefix); break;
@@ -25,7 +32,7 @@ export function getStyleCSS(style: string, prefix: string): string {
     case 'brutal':    themeCSS = getBrutalStyle(prefix); break;
     default:          themeCSS = getSketchStyle(prefix);
   }
-  return linkButtonReset + themeCSS;
+  return linkButtonReset + tabsStructural + themeCSS;
 }
 
 /**
@@ -544,6 +551,45 @@ body.${prefix}root {
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* Tabs */
+.${prefix}tabs {
+  margin: 12px 0;
+}
+
+.${prefix}tab-header {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  transform: rotate(-0.2deg);
+  transition: all 0.1s;
+}
+
+.${prefix}tab-header:hover {
+  transform: rotate(-0.2deg) translateY(-1px);
+  box-shadow: 2px 3px 0 rgba(0,0,0,0.15);
+  background: #f8f8f8;
+}
+
+.${prefix}tab-header.${prefix}active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.${prefix}tab-panels {
+  padding: 12px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
 }
 `;
 }
