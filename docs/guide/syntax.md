@@ -124,6 +124,25 @@ Place inline content directly on the opener line to inject it as the first child
 :::
 ```
 
+### Tabs
+
+`{.tabs}` on a heading creates a tabbed panel. Child headings one level deeper become tab labels; their content becomes the panel body. The first tab is active by default — add `{.active}` to a child heading to override.
+
+```markdown
+## Settings {.tabs}
+
+### Profile
+Name
+[_____________________________]{required}
+
+### Notifications
+[ ] Email alerts
+[ ] SMS alerts
+
+### Security {.active}
+[Change Password]
+```
+
 ### Grid Layouts
 
 `{.grid-N}` on a heading creates an N-column layout. Child `###` headings become grid items. The heading label itself is **declaration-only** — it is never rendered in the output; it only names the grid for the author.

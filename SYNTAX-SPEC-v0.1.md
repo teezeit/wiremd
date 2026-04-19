@@ -400,16 +400,25 @@ Home > Products > Category > Current Page
 ### 7.3 Tabs
 
 ```markdown
-[Overview]* | Details | Reviews | FAQ
+## Settings {.tabs}
 
-Content for Overview tab...
+### Profile
+Name
+[_____________________________]{required}
+
+### Notifications
+[ ] Email alerts
+[ ] SMS alerts
+
+### Security {.active}
+[Change Password]
 ```
 
 **Parser Rules:**
-- Pipe-separated button-like elements
-- `*` suffix indicates active tab
-- Following content belongs to active tab
-- Each H2 can start a new tab content section
+- `{.tabs}` class on a heading declares a tabs container
+- Child headings one level deeper become tab panels (label = heading text)
+- First tab is active by default; add `{.active}` to a child heading to override
+- Any wiremd content is valid inside a tab panel
 
 ### 7.4 Badges/Pills
 
