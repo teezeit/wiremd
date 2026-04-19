@@ -46,3 +46,4 @@ temp/
 # OS
 .DS_Store
 Thumbs.db
+vscode-extension/*.vsix
