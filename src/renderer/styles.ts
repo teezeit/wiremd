@@ -558,7 +558,7 @@ body.${prefix}root {
 
 /* Tabs */
 .${prefix}tabs { margin: 12px 0; }
-.${prefix}tab-headers { border-bottom-color: #000; }
+.${prefix}tab-headers { border-bottom-color: #666; }
 .${prefix}tab-header { color: #666; }
 .${prefix}tab-header:hover { color: #000; }
 .${prefix}tab-header.${prefix}active { border-bottom-color: #000; color: #000; }
