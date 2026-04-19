@@ -56,7 +56,7 @@ src/
 
 ## Testing
 
-Tests live in `tests/`. Key files: `parser.test.ts` (29 tests), `renderer.test.ts` (19 tests), `integration.test.ts`, `cli.test.ts`, `error-handling.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
+Tests live in `tests/`. 515 tests across 14 files. Key files: `parser.test.ts` (29 tests), `renderer.test.ts`, `react-renderer.test.ts`, `tailwind-renderer.test.ts`, `integration.test.ts`, `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `api-examples.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
 
 ## Build output
 

@@ -123,13 +123,18 @@ The list items directly following a dropdown become its options.
 
 ## Tab bars (within a page)
 
-Since `[[ ]]` doesn't support hrefs and `:::tabs` is not implemented, render tab navigation with plain markdown links:
+Use a button group — `*` marks the active tab:
 
 ```markdown
-**Active Tab** · [Other Tab](other.html) · [Third Tab](third.html)
+[Overview]* [Details] [Raw Data]
 ```
 
-Bold = active tab. Plain links for inactive tabs. Tab links use just the filename since all tabs share the same directory.
+`:::tabs` is not implemented. For multi-page tab sets (where each tab is a separate file), use
+numbered files (`01-overview.md`, `02-details.md`) and plain markdown links between them:
+
+```markdown
+**Overview** · [Details](02-details.html) · [Raw Data](03-raw-data.html)
+```
 
 ---
 
@@ -235,20 +240,43 @@ The `## Sidebar {.sidebar}` and `## Main {.main}` headings are stripped from out
 
 Grid items are `###` headings (and their content) under a `## {.grid-N}` heading.
 
+**Layout only** (equal columns, no card chrome — use for metrics, stats, KPI rows):
 ```markdown
-## Features {.grid-3}
+## Key Metrics {.grid-3}
 
-### :rocket: Fast
-Blazing fast performance.
+### Revenue
+$124,500
 
-### :shield: Secure
-Enterprise-grade security.
+### Users
+3,842
 
-### :gear: Flexible
-Works with any stack.
+### Conversion
+4.2%
 ```
 
-Supports: `.grid-2`, `.grid-3`, `.grid-4`, `.grid-auto` (auto-fit columns)
+**Grid of cards** (each item gets card styling — use for feature lists, channel breakdowns):
+```markdown
+## Channels {.grid-3 card}
+
+### :rocket: Organic
+**42%** of traffic
+
+### :chart: Paid
+**31%** of traffic
+
+### :bell: Email
+**27%** of traffic
+```
+
+Add `card` to the class to get card chrome; omit it for a plain layout grid.
+
+Supported widths: `.grid-2`, `.grid-3`, `.grid-4`, `.grid-auto` (auto-fit columns)
+
+Column spans (make one item wider):
+```markdown
+### Featured Item {.col-span-2}
+Spans two columns.
+```
 
 ---
 
@@ -269,6 +297,47 @@ Common icons: `:home:` `:user:` `:gear:` `:chart:` `:bell:` `:shield:` `:rocket:
 | Bob     | Member | Invited | [Edit] [Remove] |
 | Charlie | Viewer | Active  | [Edit] [Remove] |
 ```
+
+---
+
+## Progress bars
+
+Visual progress indicator using `#` for filled and `_` for empty:
+
+```markdown
+Storage [##########________] 60%
+Upload  [####______________] 20%
+Done    [##################] 100%
+```
+
+---
+
+## Component mapping (JSX / HTML → wiremd)
+
+| Component | wiremd |
+|-----------|--------|
+| `<Button variant="primary">` | `[Label]*` |
+| `<Button variant="secondary">` | `[Label]{.secondary}` |
+| `<Button variant="danger">` | `[Label]{variant:danger}` |
+| `<Button disabled>` | `[Label]{state:disabled}` |
+| `<Input placeholder="...">` | `[placeholder___________]` |
+| `<Input type="password">` | `[*********************]` |
+| `<Textarea rows={4}>` | `[Placeholder...]{rows:4}` |
+| `<Select>` / `<Combobox>` | `[Option___________v]` + list items |
+| `<Checkbox>` | `- [ ] Label` / `- [x] Label` |
+| `<RadioGroup>` | `- ( ) Option` / `- (*) Selected` |
+| `<Table>` | markdown table |
+| `<Card>` | `:::card` block |
+| `<Dialog>` / `<Modal>` | `:::modal` block at bottom of file |
+| `<Alert variant="success">` | `:::alert success` |
+| Flex row of cards | `## Section {.grid-3 card}` |
+| Stats row (no card) | `## Section {.grid-3}` |
+| `<Tabs>` (in-page) | button group `[Tab1]* [Tab2] [Tab3]` |
+| `<Tabs>` (multi-page) | one `.md` file per tab |
+| Loading state | `> **Loading state:** spinner + "Loading..."` |
+| Empty state | `> **Empty state:** "No items yet" + [Add Item]*` |
+| Error state | `:::alert error` block or `{state:error}` on input |
+| Sidebar + main | `:::layout {.sidebar-main}` |
 
 ---
 
