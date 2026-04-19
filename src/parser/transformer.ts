@@ -1447,11 +1447,27 @@ function transformTable(node: any, options: ParseOptions): WiremdNode {
       // Transform cell content
       for (const child of cell.children || []) {
         if (child.type === 'text') {
-          cellChildren.push({
-            type: 'text',
-            content: child.value,
-            props: {},
-          });
+          const iconMatch = /^:([a-z-]+):\s*([\s\S]*)$/.exec(child.value);
+          if (iconMatch) {
+            cellChildren.push({
+              type: 'icon',
+              props: { name: iconMatch[1] },
+            });
+            const remainder = iconMatch[2].trim();
+            if (remainder) {
+              cellChildren.push({
+                type: 'text',
+                content: remainder,
+                props: {},
+              });
+            }
+          } else {
+            cellChildren.push({
+              type: 'text',
+              content: child.value,
+              props: {},
+            });
+          }
         } else if (child.type === 'strong') {
           cellChildren.push({
             type: 'text',
