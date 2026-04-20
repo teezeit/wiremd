@@ -151,7 +151,6 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
           const childNode = nodeChildren[i];
 
           if (childNode.type === 'heading' && childNode.depth === tabsHeadingLevel + 1) {
-            const tabPanelChildren: WiremdNode[] = [];
             const tabHeadingContent = extractTextContent(childNode);
             const tabAttrMatch = tabHeadingContent.match(/^(.+?)(\{[^}]+\})$/);
             let tabLabel = tabHeadingContent;
@@ -164,15 +163,11 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
 
             i++;
 
+            const rawTabNodes: any[] = [];
             while (i < nodeChildren.length) {
               const contentNode = nodeChildren[i];
               if (contentNode.type === 'heading' && contentNode.depth <= tabsHeadingLevel + 1) break;
-              const contentNextNode = nodeChildren[i + 1];
-              const contentTransformed = transformNode(contentNode, options, contentNextNode);
-              if (contentTransformed) {
-                tabPanelChildren.push(contentTransformed);
-                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') i++;
-              }
+              rawTabNodes.push(contentNode);
               i++;
             }
 
@@ -181,7 +176,7 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
               label: tabLabel,
               active: isActive,
               props: tabProps,
-              children: tabPanelChildren as any,
+              children: processNodeList(rawTabNodes, options) as any,
             });
           } else if (childNode.type === 'heading' && childNode.depth <= tabsHeadingLevel) {
             break;
@@ -217,21 +212,13 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
           const childNode = nodeChildren[i];
 
           if (childNode.type === 'heading' && childNode.depth === gridHeadingLevel + 1) {
-            const gridItem: WiremdNode[] = [];
-            const childNextNode = nodeChildren[i + 1];
-            const headingNode = transformNode(childNode, options, childNextNode);
-            if (headingNode) gridItem.push(headingNode);
+            const rawItemNodes: any[] = [childNode];
             i++;
 
             while (i < nodeChildren.length) {
               const contentNode = nodeChildren[i];
               if (contentNode.type === 'heading' && contentNode.depth <= gridHeadingLevel + 1) break;
-              const contentNextNode = nodeChildren[i + 1];
-              const contentTransformed = transformNode(contentNode, options, contentNextNode);
-              if (contentTransformed) {
-                gridItem.push(contentTransformed);
-                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') i++;
-              }
+              rawItemNodes.push(contentNode);
               i++;
             }
 
@@ -240,7 +227,7 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
             const gridItemProps: any = { classes: [] };
             if (colSpanMatch) gridItemProps.classes.push(`col-span-${colSpanMatch[1]}`);
 
-            gridItems.push({ type: 'grid-item', props: gridItemProps, children: gridItem });
+            gridItems.push({ type: 'grid-item', props: gridItemProps, children: processNodeList(rawItemNodes, options) });
           } else if (childNode.type === 'heading' && childNode.depth <= gridHeadingLevel) {
             break;
           } else if (gridItems.length === 0) {
