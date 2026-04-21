@@ -273,7 +273,7 @@ Format
 2. **Blank line before `:::` when last line has inline elements.** Buttons, backtick code, bold, links, or list items on the final line of a container — add an empty line before `:::`.
 3. **`[[ ]]` nav doesn't support hrefs.** Links inside `[[ ]]` silently drop the URL. Use plain markdown links for cross-page navigation.
 4. **`:::tabs` and `:::accordion` don't exist.** Use button groups (`[Tab]*  [Other]`) for in-page tabs; use one file per tab for multi-page tab sets.
-5. **`:::display` is VS Code-only.** The include directive doesn't work in the CLI renderer.
+5. **Use `![[file.md]]` for includes, not `:::display`.** `:::display` is obsolete. `![[path/to/file.md]]` works in both the CLI and VS Code preview — path resolves relative to the current file.
 
 ---
 
