@@ -228,10 +228,6 @@ body.${prefix}root {
   transform: rotate(-0.3deg);
 }
 
-.${prefix}container-card {
-  max-width: 400px;
-}
-
 .${prefix}container-hero {
   background: linear-gradient(135deg, #FFF9E6 0%, #FFE6CC 100%);
   text-align: center;
@@ -765,7 +761,6 @@ body.${prefix}root {
 }
 
 .${prefix}container-card {
-  max-width: 400px;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
@@ -1235,10 +1230,6 @@ body.${prefix}root {
   );
   text-align: center;
   padding: 48px 24px;
-}
-
-.${prefix}container-card {
-  max-width: 400px;
 }
 
 .${prefix}container-modal {
