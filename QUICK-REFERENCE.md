@@ -23,6 +23,7 @@
 | **Breadcrumbs** | `[[ A > B > C ]]` | `[[ Home > Products > Item ]]` |
 | **Button Link** | `[[Text](url)]` | `[[About](./about.md)]` |
 | **Primary Button Link** | `[[Text](url)]*` | `[[Get Started](./start.md)]*` |
+| **File Include** | `![[path/to/file.md]]` | `![[components/nav.md]]` |
 
 ## Containers
 
@@ -256,6 +257,7 @@ wiremd supports **all standard Markdown** syntax:
 | Grid not working | Use `###` for grid items under `## {.grid-N}` |
 | Button looks wrong | Check for `(url)` - that makes it a link |
 | Attributes ignored | Put `{...}` immediately after element (space OK) |
+| Include not rendering | Check path is relative to the current file and ends in `.md` |
 
 ---
 

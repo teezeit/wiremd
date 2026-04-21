@@ -17,7 +17,7 @@ import { transformToWiremdAST } from './transformer.js';
 import { remarkWiremdContainers } from './remark-containers.js';
 import { remarkWiremdInlineContainers } from './remark-inline-containers.js';
 
-const INCLUDE_PATTERN = /!\[\[([^\]]+\.md)\]\]/g;
+const INCLUDE_PATTERN = /!\[\[\s*([^\]]+?\.md)\s*\]\]/g;
 
 export function resolveIncludes(markdown: string, basePath: string): string {
   const dir = dirname(resolve(basePath));

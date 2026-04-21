@@ -878,6 +878,7 @@ Content
 ✓ Tables (basic)
 ✓ State (loading, empty, error)
 ✓ Attributes (classes, key-value, states)
+✓ File includes (`![[path.md]]`)
 
 ### 16.2 Deferred to v0.2+
 
@@ -885,7 +886,6 @@ Content
 ⏳ Responsive attributes and breakpoints
 ⏳ Animations and transitions
 ⏳ Component library system
-⏳ Template/partial includes
 ⏳ Variables and theming system
 ⏳ Conditional rendering
 ⏳ Data binding expressions
