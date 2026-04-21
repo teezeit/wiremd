@@ -63,6 +63,9 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'grid-item':
       return renderGridItem(node, context);
 
+    case 'row':
+      return renderRow(node, context);
+
 
     case 'heading':
       return renderHeading(node, context);
@@ -482,13 +485,24 @@ function renderGridItem(node: any, context: RenderContext, isCard = false): stri
   </div>`;
 }
 
+function renderRow(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'row', node.props);
+  const childrenHTML = (node.children || []).map((child: any) => renderGridItem(child, context)).join('\n  ');
+
+  return `<div class="${classes}">
+  ${childrenHTML}
+</div>`;
+}
+
 function renderHeading(node: any, context: RenderContext): string {
+  if (!node.content && !node.children?.length) return '';
+
   const { classPrefix: prefix } = context;
   const level = node.level || 1;
   const classes = buildClasses(prefix, `h${level}`, node.props);
   const content = node.content || '';
 
-  // Handle children (like icons in headings)
   const childrenHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
     : escapeHtml(content);
