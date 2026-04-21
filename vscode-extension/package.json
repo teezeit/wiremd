@@ -3,7 +3,7 @@
   "displayName": "Wiremd Live Preview",
   "description": "Live preview for Wiremd markdown mockups",
   "version": "0.1.0",
-  "publisher": "wiremd",
+  "publisher": "eclectic-ai",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.75.0"
@@ -127,9 +127,11 @@
   "scripts": {
     "vscode:prepublish": "npm run bundle",
     "bundle": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
+    "dev": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --watch & esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --watch",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "package": "vsce package",
+    "publish": "vsce publish",
     "lint": "eslint src --ext ts"
   },
   "dependencies": {
@@ -140,10 +142,10 @@
     "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "@vscode/vsce": "^3.9.1",
+    "esbuild": "^0.20.0",
     "eslint": "^8.0.0",
-    "typescript": "^5.0.0",
-    "@vscode/vsce": "^2.22.0",
-    "esbuild": "^0.20.0"
+    "typescript": "^5.0.0"
   },
   "repository": {
     "type": "git",
