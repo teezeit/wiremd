@@ -337,4 +337,29 @@ Email
       expect(html).toContain('text-gray-900');
     });
   });
+
+  describe('Row layout', () => {
+    it('should render ## {.row} as a flex container', () => {
+      const ast = parse('## Toolbar {.row}\n[Save]* [Cancel]');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('flex');
+      expect(html).toContain('items-center');
+      expect(html).toContain('gap-3');
+    });
+
+    it('should render row with right alignment as justify-end', () => {
+      const ast = parse('## Actions {.row .right}\n[+ New]*');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('justify-end');
+    });
+
+    it('should render row with center alignment as justify-center', () => {
+      const ast = parse('## Status {.row .center}\n:check: All good');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('justify-center');
+    });
+  });
 });

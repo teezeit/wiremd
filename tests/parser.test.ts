@@ -657,6 +657,185 @@ Strong
       expect(grid.children).toHaveLength(3);
       expect(grid.children[0].type).toBe('grid-item');
     });
+
+    it('should detect nested grid inside a grid item (issue #15)', () => {
+      const input = `
+## Outer {.grid-2}
+
+### Item A
+
+#### Inner {.grid-2}
+
+##### Nested 1
+Content 1
+
+##### Nested 2
+Content 2
+
+### Item B
+Solo
+      `.trim();
+
+      const result = parse(input);
+      const outer = result.children[0] as any;
+      expect(outer.type).toBe('grid');
+      expect(outer.columns).toBe(2);
+
+      const itemA = outer.children[0];
+      expect(itemA.type).toBe('grid-item');
+      const inner = itemA.children.find((c: any) => c.type === 'grid');
+      expect(inner).toBeDefined();
+      expect(inner.columns).toBe(2);
+      expect(inner.children).toHaveLength(2);
+    });
+
+    it('should detect nested grid inside a tab panel (issue #15)', () => {
+      const input = `
+## Tabs {.tabs}
+
+### Panel A
+
+#### Inner {.grid-2}
+
+##### Left
+L
+
+##### Right
+R
+
+### Panel B
+Solo
+      `.trim();
+
+      const result = parse(input);
+      const tabs = result.children[0] as any;
+      expect(tabs.type).toBe('tabs');
+
+      const panelA = tabs.children[0];
+      expect(panelA.type).toBe('tab');
+      const inner = panelA.children.find((c: any) => c.type === 'grid');
+      expect(inner).toBeDefined();
+      expect(inner.columns).toBe(2);
+    });
+  });
+
+  describe('Row layout', () => {
+    it('should parse ## {.row} as a row node with grid-item children', () => {
+      const input = `
+## Toolbar {.row}
+
+###
+[All]* [Active]
+
+###
+[+ New]*
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0]).toMatchObject({ type: 'row' });
+      const row = result.children[0] as any;
+      expect(row.children).toHaveLength(2);
+      expect(row.children[0].type).toBe('grid-item');
+      expect(row.children[1].type).toBe('grid-item');
+    });
+
+    it('should auto-wrap direct children as implicit grid-items (no ### needed)', () => {
+      const input = `
+## Toolbar {.row}
+
+[All]* [Active] [Archived]
+
+[Search___________________________]
+
+[+ New Item]*
+
+##
+      `.trim();
+
+      const result = parse(input);
+      const row = result.children[0] as any;
+      expect(row.type).toBe('row');
+      expect(row.children).toHaveLength(3);
+      expect(row.children.every((c: any) => c.type === 'grid-item')).toBe(true);
+    });
+
+    it('should suppress ## label in row output', () => {
+      const input = `
+## MyRowLabel {.row}
+
+###
+Button
+      `.trim();
+
+      const result = parse(input);
+      const row = result.children[0] as any;
+      // row node exists — label is on props, not rendered as child content
+      expect(row.type).toBe('row');
+    });
+
+    it('should parse ## {.row} inside a :::card container', () => {
+      const input = `
+::: card
+
+## Toolbar {.row}
+
+###
+[Save]*
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const card = result.children[0] as any;
+      const row = card.children.find((c: any) => c.type === 'row');
+      expect(row).toBeDefined();
+      expect(row.children[0].type).toBe('grid-item');
+    });
+  });
+
+  describe('Alignment on grid/row items', () => {
+    it('should add align-right class to grid-item when ### has {.right}', () => {
+      const input = `
+## Toolbar {.row}
+
+### {.left}
+[All]*
+
+### {.right}
+[+ New]*
+      `.trim();
+
+      const result = parse(input);
+      const row = result.children[0] as any;
+      expect(row.children[0].props.classes).toContain('align-left');
+      expect(row.children[1].props.classes).toContain('align-right');
+    });
+
+    it('should add align-center class to grid-item when ### has {.center}', () => {
+      const input = `
+## Toolbar {.row}
+
+### {.center}
+Centered
+      `.trim();
+
+      const result = parse(input);
+      const row = result.children[0] as any;
+      expect(row.children[0].props.classes).toContain('align-center');
+    });
+
+    it('should support alignment inside ## {.grid-N} as well', () => {
+      const input = `
+## Layout {.grid-2}
+
+### {.right}
+Right item
+      `.trim();
+
+      const result = parse(input);
+      const grid = result.children[0] as any;
+      expect(grid.children[0].props.classes).toContain('align-right');
+    });
   });
 
   describe('Sidebar layout', () => {
@@ -971,6 +1150,95 @@ Text
       const overviewTab = tabs.children[0] as any;
       const card = overviewTab.children.find((c: any) => c.type === 'container' && c.containerType === 'card');
       expect(card).toBeDefined();
+    });
+  });
+
+  describe('Mixed inline elements (buttons + inputs + selects on adjacent lines)', () => {
+    it('should parse buttons + input on one line as a button-group with input child', () => {
+      const result = parse('[Both Buttons] [+ In the same line]* [Search___________________________]');
+      const node = result.children[0] as any;
+      expect(node.type).toBe('container');
+      expect(node.containerType).toBe('button-group');
+      expect(node.children).toHaveLength(3);
+      expect(node.children[0]).toMatchObject({ type: 'button', content: 'Both Buttons' });
+      expect(node.children[1]).toMatchObject({ type: 'button', content: '+ In the same line' });
+      expect(node.children[2].type).toBe('input');
+    });
+
+    it('should parse buttons+input line adjacent to select as button-group with all 4 children', () => {
+      const md = '[Both Buttons] [+ In the same line]* [Search___________________________]\n[Select_______v]';
+      const result = parse(md);
+      const node = result.children[0] as any;
+      expect(node.type).toBe('container');
+      expect(node.containerType).toBe('button-group');
+      expect(node.children).toHaveLength(4);
+      expect(node.children[0]).toMatchObject({ type: 'button', content: 'Both Buttons' });
+      expect(node.children[1]).toMatchObject({ type: 'button', content: '+ In the same line' });
+      expect(node.children[2].type).toBe('input');
+      expect(node.children[3].type).toBe('select');
+    });
+
+    it('should parse pure button lines adjacent to select as button-group', () => {
+      const md = '[All]* [Active]\n[Select_______v]';
+      const result = parse(md);
+      const node = result.children[0] as any;
+      expect(node.type).toBe('container');
+      expect(node.containerType).toBe('button-group');
+      expect(node.children).toHaveLength(3);
+      expect(node.children[0]).toMatchObject({ type: 'button', content: 'All' });
+      expect(node.children[1]).toMatchObject({ type: 'button', content: 'Active' });
+      expect(node.children[2].type).toBe('select');
+    });
+
+    it('should parse select on same line as buttons as button-group with select child', () => {
+      const md = '[Both Buttons] [+ In the same line]* [Search___________________________] [Select_______v]';
+      const result = parse(md);
+      const node = result.children[0] as any;
+      expect(node.type).toBe('container');
+      expect(node.containerType).toBe('button-group');
+      expect(node.children).toHaveLength(4);
+      expect(node.children[0]).toMatchObject({ type: 'button', content: 'Both Buttons' });
+      expect(node.children[1]).toMatchObject({ type: 'button', content: '+ In the same line' });
+      expect(node.children[2].type).toBe('input');
+      expect(node.children[3].type).toBe('select');
+    });
+
+    it('should parse all-adjacent buttons+input+button as button-group (last line is button)', () => {
+      const md = '[All]*\n[Active]\n[Archived]\n[Search__________________________]\n[+ New Item]*';
+      const result = parse(md);
+      const node = result.children[0] as any;
+      expect(node.type).toBe('container');
+      expect(node.containerType).toBe('button-group');
+      expect(node.children).toHaveLength(5);
+      expect(node.children[0]).toMatchObject({ type: 'button', content: 'All' });
+      expect(node.children[1]).toMatchObject({ type: 'button', content: 'Active' });
+      expect(node.children[2]).toMatchObject({ type: 'button', content: 'Archived' });
+      expect(node.children[3].type).toBe('input');
+      expect(node.children[4]).toMatchObject({ type: 'button', content: '+ New Item' });
+    });
+
+    it('should still treat plain text + input as form-group (label pattern)', () => {
+      const md = 'Search\n[Search___________________________]';
+      const result = parse(md);
+      const node = result.children[0] as any;
+      expect(node.type).toBe('container');
+      expect(node.containerType).toBe('form-group');
+      expect(node.children[0]).toMatchObject({ type: 'text', content: 'Search' });
+      expect(node.children[1].type).toBe('input');
+    });
+
+    it('should produce form-group (not button-group) when plain text label is above input inside a row', () => {
+      const md = `## Toolbar {.row}\n\ntext\n[Search__________________________]\n\n##`;
+      const result = parse(md);
+      const row = result.children[0] as any;
+      expect(row.type).toBe('row');
+      const item = row.children[0] as any;
+      expect(item.type).toBe('grid-item');
+      const formGroup = item.children[0] as any;
+      expect(formGroup.type).toBe('container');
+      expect(formGroup.containerType).toBe('form-group');
+      expect(formGroup.children[0]).toMatchObject({ type: 'text', content: 'text' });
+      expect(formGroup.children[1].type).toBe('input');
     });
   });
 });

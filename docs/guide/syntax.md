@@ -205,6 +205,55 @@ $9/mo
 $29/mo — most popular, spans two columns
 ```
 
+### Row Layout
+
+`{.row}` creates a horizontal flex row where each child becomes a flex item.
+
+**Implicit items** — content directly under `## {.row}` is auto-wrapped (no `###` needed):
+
+```markdown
+## Toolbar {.row}
+[All]* [Active] [Archived]
+```
+
+**Explicit items** — use `###` headings when you need per-item alignment control:
+
+```markdown
+## Toolbar {.row}
+
+### {.left}
+[All]* [Active] [Archived]
+
+### {.right}
+[+ New Item]*
+```
+
+**Row-level alignment** — add `{.right}` or `{.center}` to the `##` heading to align all content:
+
+```markdown
+## Actions {.row .right}
+[Export] [+ New Item]*
+
+## Status {.row .center}
+:check: All systems operational
+```
+
+- `{.right}` → `justify-content: flex-end`
+- `{.center}` → `justify-content: center`
+- default → `justify-content: flex-start`
+
+**Item-level alignment** — `{.left}` / `{.center}` / `{.right}` on `###` children uses the margin-push pattern. Works in both `{.row}` and `{.grid-N}`:
+
+```markdown
+## Layout {.grid-2}
+
+### {.left}
+[All]* [Active]
+
+### {.right}
+[+ New Item]*
+```
+
 ## Component Examples
 
 ### Forms

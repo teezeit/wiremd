@@ -24,6 +24,21 @@ export function getStyleCSS(style: string, prefix: string): string {
 .${prefix}tab-panels { padding: 12px 0; }
 `;
 
+  // Structural rules for row layout and alignment — shared across all themes
+  const rowStructural = `
+.${prefix}row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.${prefix}row > .${prefix}grid-item { flex: 0 1 auto; min-width: 0; }
+.${prefix}row.${prefix}right { justify-content: flex-end; }
+.${prefix}row.${prefix}center { justify-content: center; }
+.${prefix}align-left { margin-right: auto; }
+.${prefix}align-right { margin-left: auto; }
+.${prefix}align-center { margin: auto; }
+.${prefix}container-button-group > .${prefix}input,
+.${prefix}container-button-group > .${prefix}select,
+.${prefix}row > .${prefix}grid-item > .${prefix}input,
+.${prefix}row > .${prefix}grid-item > .${prefix}select { display: inline-block; width: auto; }
+`;
+
   let themeCSS: string;
   switch (style) {
     case 'sketch':    themeCSS = getSketchStyle(prefix); break;
@@ -35,7 +50,7 @@ export function getStyleCSS(style: string, prefix: string): string {
     case 'brutal':    themeCSS = getBrutalStyle(prefix); break;
     default:          themeCSS = getSketchStyle(prefix);
   }
-  return linkButtonReset + tabsStructural + themeCSS;
+  return linkButtonReset + tabsStructural + rowStructural + themeCSS;
 }
 
 /**
@@ -195,14 +210,14 @@ body.${prefix}root {
   transform: rotate(-0.3deg);
 }
 
+.${prefix}container-card {
+  max-width: 400px;
+}
+
 .${prefix}container-hero {
   background: linear-gradient(135deg, #FFF9E6 0%, #FFE6CC 100%);
   text-align: center;
   padding: 48px 24px;
-}
-
-.${prefix}container-card {
-  max-width: 400px;
 }
 
 .${prefix}container-modal {

@@ -274,6 +274,55 @@ Spans two
     });
   });
 
+  describe('Row layout rendering', () => {
+    it('should render ## {.row} as a flex container', () => {
+      const input = `
+## Toolbar {.row}
+
+###
+[All]*
+
+###
+[+ New]*
+      `.trim();
+
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toContain('wmd-row');
+      expect(html).toContain('wmd-grid-item');
+      expect(html).toContain('display: flex');
+    });
+
+    it('should render align-left and align-right classes on grid-items', () => {
+      const input = `
+## Toolbar {.row}
+
+### {.left}
+[All]*
+
+### {.right}
+[+ New]*
+      `.trim();
+
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toContain('wmd-align-left');
+      expect(html).toContain('wmd-align-right');
+      expect(html).toContain('margin-right: auto');
+      expect(html).toContain('margin-left: auto');
+    });
+
+    it('should render align-center class on grid-item with {.center}', () => {
+      const input = `
+## Toolbar {.row}
+
+### {.center}
+Centered
+      `.trim();
+
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toContain('wmd-align-center');
+    });
+  });
+
   describe('Multiple inline button-links', () => {
     it('should render two [[btn](url)] on one line as button elements (not a paragraph)', () => {
       const ast = parse('[[Get Started](./about.md)]* [[See Features](./about.md)]');
@@ -627,6 +676,23 @@ Details panel
 
       expect(json).not.toContain('\n');
       expect(json).toContain('"type":"document"');
+    });
+  });
+
+  describe('Row — labeled input (form-group) renders as block inside flex item', () => {
+    it('should render form-group inside row as grid-item containing form-group, not button-group', () => {
+      const md = `## Toolbar {.row}\n\nSearch\n[Search__________________________]\n\n##`;
+      const html = renderToHTML(parse(md), { style: 'clean' });
+      expect(html).toContain('wmd-container-form-group');
+      expect(html).not.toMatch(/wmd-container-button-group[^"]*">\s*Search/);
+    });
+
+    it('CSS: row input override must use child combinator (>) not descendant ( ) to avoid breaking form-groups', () => {
+      const md = `## Toolbar {.row}\n\nSearch\n[Search__________________________]\n\n##`;
+      const html = renderToHTML(parse(md), { style: 'clean' });
+      // Descendant selector ".wmd-row .wmd-input" would override block display inside form-groups.
+      // Must use child combinator: ".wmd-row > .wmd-grid-item > .wmd-input" instead.
+      expect(html).not.toMatch(/\.wmd-row\s+\.wmd-input/);
     });
   });
 });
