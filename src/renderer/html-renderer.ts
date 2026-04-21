@@ -45,6 +45,9 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'icon':
       return renderIcon(node, context);
 
+    case 'badge':
+      return renderBadge(node, context);
+
     case 'container':
       return renderContainer(node, context);
 
@@ -137,6 +140,12 @@ function renderButton(node: any, context: RenderContext): string {
   }
 
   return `<button class="${classes}${loading}"${disabled}>${contentHTML}</button>`;
+}
+
+function renderBadge(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'badge', node.props);
+  return `<span class="${classes}">${escapeHtml(node.content)}</span>`;
 }
 
 function renderInput(node: any, context: RenderContext): string {
