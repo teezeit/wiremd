@@ -365,24 +365,10 @@ body.${prefix}root {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 12px;
-  background: #87CEEB;
-  border: 3px solid #4682B4;
-  border-radius: 8px;
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
 }
-.${prefix}layout-sidebar .${prefix}button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  margin: 2px 0;
-}
-.${prefix}layout-sidebar .${prefix}h4 {
-  margin: 12px 0 4px;
-  font-size: 0.85em;
-  opacity: 0.6;
-  text-transform: uppercase;
-}
+.${prefix}layout-sidebar .${prefix}container-sidebar { width: 100%; }
+.${prefix}layout-sidebar .${prefix}button { display: block; width: 100%; text-align: left; margin: 2px 0; }
+.${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.85em; opacity: 0.6; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main {
   min-width: 0;
@@ -892,11 +878,8 @@ body.${prefix}root {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 16px 24px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
 }
+.${prefix}layout-sidebar .${prefix}container-sidebar { width: 100%; }
 .${prefix}layout-sidebar .${prefix}button { display: block; width: 100%; text-align: left; margin: 2px 0; }
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.85em; opacity: 0.6; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
@@ -1339,10 +1322,8 @@ body.${prefix}root {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 12px 16px;
-  background: repeating-linear-gradient(90deg, #e0e0e0, #e0e0e0 2px, #d0d0d0 2px, #d0d0d0 4px);
-  border: 2px solid #000;
 }
+.${prefix}layout-sidebar .${prefix}container-sidebar { width: 100%; }
 .${prefix}layout-sidebar .${prefix}button { display: block; width: 100%; text-align: left; margin: 2px 0; }
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.85em; opacity: 0.6; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
@@ -1572,8 +1553,8 @@ body.${prefix}root {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 8px;
 }
+.${prefix}layout-sidebar .${prefix}container-sidebar { width: 100%; }
 .${prefix}layout-sidebar .${prefix}button { display: block; width: 100%; text-align: left; margin: 2px 0; }
 .${prefix}layout-sidebar .${prefix}h4 { margin: 8px 0 4px; font-size: 0.85em; opacity: 0.6; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 4px 0; }
@@ -2006,11 +1987,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 1rem 1.5rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
 }
+.${prefix}layout-sidebar .${prefix}container-sidebar { width: 100%; }
 .${prefix}layout-sidebar .${prefix}button { display: block; width: 100%; text-align: left; margin: 2px 0; }
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.75em; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #6b7280; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
@@ -2674,10 +2652,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 0 16px 16px;
-  background: #ede7f6;
-  border-right: 4px solid #6200ee;
 }
+.${prefix}layout-sidebar .${prefix}container-sidebar { width: 100%; }
 .${prefix}layout-sidebar .${prefix}button { display: block; width: 100%; text-align: left; margin: 2px 0; }
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.75em; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(0,0,0,0.54); }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
@@ -3344,11 +3320,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 16px 20px;
-  background: #ffd93d;
-  border: 3px solid #000;
-  box-shadow: 4px 4px 0 #000;
 }
+.${prefix}layout-sidebar .${prefix}container-sidebar { width: 100%; }
 .${prefix}layout-sidebar .${prefix}button { display: block; width: 100%; text-align: left; margin: 2px 0; }
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.85em; font-weight: 900; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
