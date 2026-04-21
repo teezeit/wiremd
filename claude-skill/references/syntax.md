@@ -397,12 +397,15 @@ All standard markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 
 ---
 
-## Include files (VS Code extension only)
+## File includes
 
-The VS Code preview supports splicing in other `.md` files:
+Inline another `.md` file using Obsidian-style include syntax:
 
 ```markdown
-:::display ./shared-nav.md:::
+![[shared/nav.md]]
+![[components/sidebar.md]]
 ```
 
-This resolves before parsing — the contents of `shared-nav.md` are inlined. Useful for shared navigation or repeated components. The CLI does not support this directive.
+The path resolves relative to the current file. Works in both the CLI and the VS Code preview — content is spliced in before parsing. If the file doesn't exist, a warning blockquote is rendered in its place.
+
+Useful for shared navigation, repeated components, or splitting a large wireframe into smaller files.

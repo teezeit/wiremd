@@ -202,6 +202,17 @@ Enterprise-grade security
 Grows with your needs
 ```
 
+### File Includes
+
+Inline another `.md` file with `![[path]]`:
+
+```markdown
+![[components/header.md]]
+![[shared/nav.md]]
+```
+
+The path resolves relative to the current file. If the referenced file doesn't exist, a warning blockquote is rendered instead. Works in the CLI and the VS Code preview.
+
 ### Button Links
 
 Wrap a Markdown link inside button brackets to make a clickable button that navigates:

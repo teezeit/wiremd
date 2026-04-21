@@ -4,7 +4,7 @@
  */
 
 import * as vscode from 'vscode';
-import { parse, renderToHTML } from 'wiremd';
+import { parse, resolveIncludes, renderToHTML } from 'wiremd';
 
 export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   public static readonly viewType = 'wiremd.preview';
@@ -317,7 +317,8 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     }
 
     const document = this.currentEditor.document;
-    const markdown = document.getText();
+    const raw = document.getText();
+    const markdown = resolveIncludes(raw, document.uri.fsPath);
 
     try {
       // Render using wiremd
