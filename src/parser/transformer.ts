@@ -236,9 +236,21 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
           } else if (childNode.type === 'heading' && childNode.depth <= containerHeadingLevel) {
             break;
           } else if (isRow) {
-            // Row: each direct child becomes its own implicit grid-item
-            gridItems.push({ type: 'grid-item', props: { classes: [] }, children: processNodeList([childNode], options) });
+            // Row: each direct child becomes its own implicit grid-item.
+            // Group dropdown paragraphs with their following option list so
+            // nextNode is visible inside processNodeList.
+            const groupNodes = [childNode];
             i++;
+            if (i < nodeChildren.length) {
+              const nextSibling = nodeChildren[i];
+              const nodeText = extractTextContent(childNode);
+              const isDropdown = childNode.type === 'paragraph' && /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
+              if (isDropdown && nextSibling.type === 'list') {
+                groupNodes.push(nextSibling);
+                i++;
+              }
+            }
+            gridItems.push({ type: 'grid-item', props: { classes: [] }, children: processNodeList(groupNodes, options) });
           } else if (gridItems.length === 0) {
             i++;
             continue;

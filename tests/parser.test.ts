@@ -773,6 +773,57 @@ Button
       expect(row.type).toBe('row');
     });
 
+    it('dropdown inside implicit row should have options populated (not empty)', () => {
+      const input = `
+## Filters {.row}
+
+[Select Team_________v]
+- All Teams
+- Team A
+- Team B
+
+##
+      `.trim();
+
+      const result = parse(input);
+      const row = result.children[0] as any;
+      expect(row.type).toBe('row');
+
+      const item = row.children.find((c: any) => {
+        const inner = c.children?.[0];
+        return inner?.type === 'select' || inner?.type === 'container';
+      }) as any;
+      expect(item).toBeDefined();
+
+      const select = item.children[0].type === 'select'
+        ? item.children[0]
+        : item.children[0].children?.find((n: any) => n.type === 'select');
+      expect(select).toBeDefined();
+      expect(select.options).toHaveLength(3);
+      expect(select.options[0].label).toBe('All Teams');
+    });
+
+    it('search + dropdown inside implicit row produces 2 grid-items (list not leaked as extra item)', () => {
+      const input = `
+## Filters {.row}
+
+[Search_______________]{type:search}
+
+[Select Team_________v]
+- All Teams
+- Team A
+- Team B
+
+##
+      `.trim();
+
+      const result = parse(input);
+      const row = result.children[0] as any;
+      expect(row.type).toBe('row');
+      // Should be exactly 2 items: search input + select — not 3 (search + select + stray list)
+      expect(row.children).toHaveLength(2);
+    });
+
     it('should parse ## {.row} inside a :::card container', () => {
       const input = `
 ::: card
