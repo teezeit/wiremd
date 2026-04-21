@@ -310,6 +310,43 @@ Spans two
       expect(html).toContain('margin-left: auto');
     });
 
+    it('dropdown inside implicit row renders <select> with <option> elements (not a stray <ul>)', () => {
+      const input = `
+## Filters {.row}
+
+[Select Team_________v]
+- All Teams
+- Team A
+- Team B
+
+##
+      `.trim();
+
+      const html = renderToHTML(parse(input), { style: 'clean' });
+      expect(html).toContain('<select');
+      expect(html).toContain('<option');
+      expect(html).toContain('All Teams');
+      expect(html).not.toMatch(/<ul[^>]*>[\s\S]*?All Teams/);
+    });
+
+    it('search + dropdown inside implicit row renders no stray bullet list', () => {
+      const input = `
+## Filters {.row}
+
+[Search_______________]{type:search}
+
+[Select Team_________v]
+- All Teams
+- Team A
+
+##
+      `.trim();
+
+      const html = renderToHTML(parse(input), { style: 'clean' });
+      expect(html).toContain('wmd-select');
+      expect(html).not.toMatch(/<ul[\s\S]*?All Teams/);
+    });
+
     it('should render align-center class on grid-item with {.center}', () => {
       const input = `
 ## Toolbar {.row}
