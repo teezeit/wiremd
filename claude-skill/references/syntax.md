@@ -288,6 +288,25 @@ Common icons: `:home:` `:user:` `:gear:` `:chart:` `:bell:` `:shield:` `:rocket:
 
 ---
 
+## Badges / Pills
+
+Pipe delimiters create inline status labels, counts, and tags:
+
+```markdown
+|Active|
+|Active|{.success}
+|3|{.warning}
+|Failed|{.error}
+|New|{.primary}
+Status: |Active|{.success}
+```
+
+Variants: `success` · `warning` · `error` · `primary` · (none = neutral gray)
+
+> **Gotcha:** `|` conflicts with Markdown table syntax. Do not use `|Label|` inside a table cell — it will be parsed as extra columns.
+
+---
+
 ## Tables
 
 ```markdown
@@ -330,6 +349,7 @@ Done    [##################] 100%
 | `<Card>` | `:::card` block |
 | `<Dialog>` / `<Modal>` | `:::modal` block at bottom of file |
 | `<Alert variant="success">` | `:::alert success` |
+| `<Badge>` / `<Chip>` / status pill | `\|Label\|{.variant}` |
 | Flex row of cards | `## Section {.grid-3 card}` |
 | Stats row (no card) | `## Section {.grid-3}` |
 | `<Tabs>` (in-page) | button group `[Tab1]* [Tab2] [Tab3]` |

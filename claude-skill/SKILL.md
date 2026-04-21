@@ -137,6 +137,9 @@ $124,500
 # Icons — use anywhere in text, headings, nav, buttons
 :home: :user: :gear: :chart: :bell: :shield: :rocket: :check: :x: :search: :edit: :trash: :plus:
 
+# Badges / pills — inline status labels and counts
+|Active|{.success}  |Pending|{.warning}  |Failed|{.error}  |New|{.primary}  |Draft|
+
 # Card, alert
 ::: card
 Content here
