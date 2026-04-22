@@ -211,6 +211,29 @@ Grows with your needs
 :::
 ```
 
+### Demo Blocks
+
+`:::demo` renders any wiremd content as a side-by-side split: **left** shows the live rendered components, **right** shows the raw source. Write it once — no duplication needed.
+
+```markdown
+:::demo
+## Login Form
+
+Username
+[_____________________________]{required}
+
+Password
+[*****________________________]{required}
+
+- [ ] Remember me
+
+[Sign In]*
+[Forgot Password?]
+:::
+```
+
+Works with any wiremd content: buttons, inputs, grids, tabs, badges, navigation. The code pane always reflects exactly what you wrote.
+
 ### File Includes
 
 Inline another `.md` file with `![[path]]`:
