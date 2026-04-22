@@ -7,21 +7,9 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { WiremdPreviewProvider } from './preview-provider';
+import { copyDirSync } from './utils';
 
 let previewProvider: WiremdPreviewProvider;
-
-function copyDirSync(src: string, dest: string) {
-  fs.mkdirSync(dest, { recursive: true });
-  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
-    if (entry.isDirectory()) {
-      copyDirSync(srcPath, destPath);
-    } else {
-      fs.copyFileSync(srcPath, destPath);
-    }
-  }
-}
 
 export function activate(context: vscode.ExtensionContext) {
   // Create preview provider
@@ -98,28 +86,32 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('wiremd.installClaudeSkill', async () => {
-      const workspaceFolders = vscode.workspace.workspaceFolders;
-      if (!workspaceFolders) {
-        vscode.window.showErrorMessage('Wiremd: No workspace folder open.');
-        return;
-      }
+      try {
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (!workspaceFolders) {
+          vscode.window.showErrorMessage('Wiremd: No workspace folder open.');
+          return;
+        }
 
-      const skillSrc = path.join(context.extensionPath, 'skills', 'wireframe');
-      if (!fs.existsSync(path.join(skillSrc, 'SKILL.md'))) {
-        vscode.window.showErrorMessage('Wiremd: Skill files not found in extension.');
-        return;
-      }
+        const skillSrc = path.join(context.extensionPath, 'skills', 'wireframe');
+        if (!fs.existsSync(path.join(skillSrc, 'SKILL.md'))) {
+          vscode.window.showErrorMessage('Wiremd: Skill files not found in extension.');
+          return;
+        }
 
-      const destDir = path.join(workspaceFolders[0].uri.fsPath, '.claude', 'skills', 'wireframe');
-      copyDirSync(skillSrc, destDir);
+        const destDir = path.join(workspaceFolders[0].uri.fsPath, '.claude', 'skills', 'wireframe');
+        copyDirSync(skillSrc, destDir);
 
-      context.globalState.update('wiremd.claudeSkillInstalled', true);
-      const open = await vscode.window.showInformationMessage(
-        'Wiremd skill installed to .claude/skills/wireframe/',
-        'Open Folder'
-      );
-      if (open) {
-        vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(destDir));
+        context.globalState.update('wiremd.claudeSkillInstalled', true);
+        const open = await vscode.window.showInformationMessage(
+          'Wiremd skill installed to .claude/skills/wireframe/',
+          'Open Folder'
+        );
+        if (open) {
+          vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(destDir));
+        }
+      } catch (err: any) {
+        vscode.window.showErrorMessage(`Wiremd: Failed to install skill — ${err.message}`);
       }
     })
   );

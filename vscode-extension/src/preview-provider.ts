@@ -380,7 +380,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       #wmd-toolbar .wmd-sep { width: 1px; height: 20px; background: #e0e0e0; margin: 0 4px; }
       #wmd-toolbar span { font-size: 13px; color: #333; }
       #wmd-toolbar-spacer { margin-left: auto; font-size: 12px; color: #666; }
-      #wmd-help, #wmd-skill { width: 28px; padding: 4px 0; font-weight: bold; border-radius: 50%; }
+      #wmd-help, #wmd-skill { width: 28px; height: 28px; padding: 0; font-weight: bold; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; }
       #wmd-error-overlay {
         display: none;
         position: fixed;
