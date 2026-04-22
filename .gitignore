@@ -50,3 +50,7 @@ Thumbs.db
 vscode-extension/*.vsix
 vscode-extension/QUICK-REFERENCE.md
 vscode-extension/docs/
+
+# Generated HTML artifacts
+examples/**/*.html
+docs/examples/**/*.html
