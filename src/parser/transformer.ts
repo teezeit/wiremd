@@ -571,11 +571,36 @@ function tryParseButtonLinkSequence(children: any[]): WiremdNode[] | null {
     });
 }
 
+function serializeMdastChildren(children: any[]): string {
+  return (children || []).map((child: any) => {
+    if (child.type === 'link') {
+      const text = (child.children || []).map((c: any) => c.value || '').join('');
+      return `[${text}](${child.url})`;
+    }
+    if (child.type === 'strong') return `**${serializeMdastChildren(child.children)}**`;
+    if (child.type === 'emphasis') return `*${serializeMdastChildren(child.children)}*`;
+    return child.value || '';
+  }).join('');
+}
+
 /**
  * Transform paragraph node
  * This is where we'll detect buttons, inputs, etc.
  */
 function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): WiremdNode {
+  // Check for [[...]] inline container before any other processing — handles nested containers
+  // where remark-inline-containers only runs on top-level nodes
+  if (node.children?.length) {
+    const serialized = serializeMdastChildren(node.children);
+    const inlineMatch = serialized.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?$/);
+    if (inlineMatch) {
+      const content = inlineMatch[1];
+      const attrs = inlineMatch[2] || '';
+      const items = content.split('|').map((item: string) => item.trim());
+      return transformInlineContainer({ type: 'wiremdInlineContainer', content, items, attributes: attrs.trim() }, _options);
+    }
+  }
+
   // Check if this paragraph has rich content (strong, emphasis, links, images, etc.)
   const hasRichContent = node.children && node.children.some((child: any) =>
     child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'image'

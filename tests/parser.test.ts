@@ -485,6 +485,19 @@ Nested content
       expect(children[3].type).toBe('button');
       expect(children[3].content).toBe('Get Started');
     });
+
+    it('should parse [[...]] with links inside a container block', () => {
+      const input = `::: demo\n[[ Logo | Home | [Login](./login.md) | [Sign Up]* ]]\n:::`;
+
+      const result = parse(input);
+      const nav = result.children[0].children[0];
+      expect(nav.type).toBe('nav');
+      expect(nav.children).toHaveLength(4);
+      expect(nav.children[0].type).toBe('nav-item');
+      expect(nav.children[1]).toMatchObject({ type: 'nav-item', content: 'Home' });
+      expect(nav.children[2]).toMatchObject({ type: 'nav-item', content: 'Login', href: './login.md' });
+      expect(nav.children[3]).toMatchObject({ type: 'button', content: 'Sign Up' });
+    });
   });
 
   describe('Breadcrumbs', () => {
