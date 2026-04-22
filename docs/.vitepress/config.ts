@@ -88,11 +88,66 @@ export default defineConfig({
       ],
       '/examples/': [
         {
-          text: 'Examples',
+          text: 'Quick Start',
           items: [
-            { text: 'Overview', link: '/examples/' }
+            { text: 'Overview', link: '/examples/' },
+            { text: 'Hello World', link: '/examples/hello' },
+            { text: 'Showcase', link: '/examples/showcase' },
+            { text: 'Demo Blocks', link: '/examples/demo-blocks' },
+            { text: 'Form Syntax', link: '/examples/form-syntax-demo' },
+            { text: 'Tabs', link: '/examples/tabs-demo' },
+            { text: 'Row Layout', link: '/examples/row-demo' },
+            { text: 'Sidebar Layout', link: '/examples/sidebar-layout' },
           ]
-        }
+        },
+        {
+          text: 'Gallery — Forms',
+          items: [
+            { text: 'Login Form', link: '/examples/gallery/forms/login-form' },
+            { text: 'Registration Form', link: '/examples/gallery/forms/registration-form' },
+            { text: 'Contact Form', link: '/examples/gallery/forms/contact-form' },
+            { text: 'Search Form', link: '/examples/gallery/forms/search-form' },
+            { text: 'Multi-Step Form', link: '/examples/gallery/forms/multi-step-form' },
+          ]
+        },
+        {
+          text: 'Gallery — Components',
+          items: [
+            { text: 'Card Layouts', link: '/examples/gallery/components/card-layouts' },
+            { text: 'Form Controls', link: '/examples/gallery/components/form-controls' },
+            { text: 'Modals & Dialogs', link: '/examples/gallery/components/modals-dialogs' },
+            { text: 'Navigation Patterns', link: '/examples/gallery/components/navigation-patterns' },
+            { text: 'Tables & Data Grids', link: '/examples/gallery/components/tables-data-grids' },
+          ]
+        },
+        {
+          text: 'Gallery — Dashboards',
+          items: [
+            { text: 'Admin Panel', link: '/examples/gallery/dashboards/admin-panel' },
+            { text: 'Analytics Dashboard', link: '/examples/gallery/dashboards/analytics-dashboard' },
+            { text: 'E-commerce Dashboard', link: '/examples/gallery/dashboards/ecommerce-dashboard' },
+            { text: 'Project Management', link: '/examples/gallery/dashboards/project-management' },
+            { text: 'Social Media', link: '/examples/gallery/dashboards/social-media-dashboard' },
+          ]
+        },
+        {
+          text: 'Gallery — Landing Pages',
+          items: [
+            { text: 'SaaS Product', link: '/examples/gallery/landing-pages/saas-product' },
+            { text: 'App Landing', link: '/examples/gallery/landing-pages/app-landing' },
+            { text: 'E-commerce Home', link: '/examples/gallery/landing-pages/ecommerce-home' },
+            { text: 'Agency Site', link: '/examples/gallery/landing-pages/agency-site' },
+            { text: 'Portfolio', link: '/examples/gallery/landing-pages/portfolio' },
+          ]
+        },
+        {
+          text: 'Gallery — Multi-Page',
+          items: [
+            { text: 'Home', link: '/examples/gallery/multi-page/home' },
+            { text: 'About', link: '/examples/gallery/multi-page/about' },
+            { text: 'Contact', link: '/examples/gallery/multi-page/contact' },
+          ]
+        },
       ],
       '/reference/': [
         {
