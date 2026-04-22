@@ -7,6 +7,7 @@ Use `::: demo` to show wiremd syntax side-by-side with its rendered output. Writ
 ## Form Components
 
 ::: demo
+
 ## Login Form
 
 Username
@@ -19,6 +20,7 @@ Password
 
 [Sign In]*
 [Forgot Password?]
+
 :::
 
 ---
@@ -53,6 +55,7 @@ Country
 - United States
 - United Kingdom
 - Germany
+
 :::
 
 ---
@@ -97,6 +100,7 @@ Custom
 [Contact Sales]
 
 :::
+
 :::
 
 ---
@@ -123,6 +127,7 @@ Bio
 :::
 
 :::
+
 :::
 
 ---
@@ -133,4 +138,5 @@ Bio
 ::: alert
 Payment method saved successfully.
 :::
+
 :::
