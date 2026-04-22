@@ -1,4 +1,4 @@
-[[ :logo: AppName | Home | Library | *:gear: Settings* | :user: Account ]]
+![[_nav.md]]
 
 [[ Settings > Profile ]]
 
@@ -19,7 +19,15 @@
 
 ::: main
 
+::: grid-2
+
 ### Profile Settings
+
+### {.right}
+
+[Save Changes]* [Cancel]
+
+:::
 
 ::: card
 
@@ -39,8 +47,6 @@ Job Title
 
 Bio
 [Tell us about yourself...]{rows:3}
-
-[Save Changes]* [Cancel]
 
 :::
 

@@ -1,40 +1,24 @@
-[[ :logo: AppName | Dashboard | *Reports* | :gear: Settings | :user: Account ]]
-
+![[_nav.md]]
 
 [[ Dashboard > Reports ]]
 
 ::: layout {.sidebar-main}
 
-::: sidebar
-
-#### Navigation
-
-[[Overview](#)]
-[[Reports](#)]
-[[Analytics](#)]
-[[Users](#)]
-[[Settings](#)]
-
----
-
-#### Filters
-
-Period
-[Jan 2025____________v]
-- Last 7 days
-- Last 30 days
-- This quarter
-- Custom range
-
-[Apply Filters]*
-
-:::
+![[_sidebar-nav.md]]
 
 ::: main
 
+::: grid-2
+
 ### Monthly Reports
 
-[Summary]* [Details] [Raw Data]
+### {.right}
+
+::: row {.right}
+[Export CSV] [Summary]* [Details]
+:::
+
+:::
 
 ---
 
@@ -47,15 +31,15 @@ Data last updated 2 hours ago. [Refresh Now]
 ::: grid-3
 
 ### Total Revenue
-$124,500
+**$124,500**
 ↑ 8% vs last period
 
 ### Active Users
-3,842
+**3,842**
 ↑ 12% vs last period
 
 ### Conversion Rate
-4.2%
+**4.2%**
 ↓ 0.3% vs last period
 
 :::
@@ -83,17 +67,22 @@ $124,500
 
 ---
 
-## Recent Transactions
+::: grid-2
+
+### Recent Transactions
+
+### {.right}
+
+[View All Transactions]*
+
+:::
 
 | Date   | Customer        | Amount  | Status  | Actions       |
 |--------|-----------------|---------|---------|---------------|
-| Jan 15 | Acme Corp       | $4,200  | Paid    | [View]        |
-| Jan 14 | Globex Inc      | $1,850  | Pending | [View] [Void] |
-| Jan 13 | Initech         | $3,100  | Paid    | [View]        |
-| Jan 12 | Umbrella Co     | $920    | Failed  | [Retry]       |
-| Jan 11 | Soylent Corp    | $7,400  | Paid    | [View]        |
-
-[Export CSV] [View All Transactions]*
+| Jan 15 | Acme Corp       | $4,200  | |Paid|{.success}    | [View]        |
+| Jan 14 | Globex Inc      | $1,850  | |Pending|{.warning} | [View] [Void] |
+| Jan 13 | Initech         | $3,100  | |Paid|{.success}    | [View]        |
+| Jan 12 | Umbrella Co     | $920    | |Failed|{.error}    | [Retry]       |
 
 :::
 
