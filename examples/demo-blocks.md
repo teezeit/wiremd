@@ -1,12 +1,12 @@
 # Demo Blocks
 
-Use `:::demo` to show wiremd syntax side-by-side with its rendered output. Write it once — no duplication needed.
+Use `::: demo` to show wiremd syntax side-by-side with its rendered output. Write it once — no duplication needed.
 
 ---
 
 ## Form Components
 
-:::demo
+::: demo
 ## Login Form
 
 Username
@@ -25,7 +25,7 @@ Password
 
 ## Buttons
 
-:::demo
+::: demo
 [Primary]*
 [Secondary]
 [Danger]{.danger}
@@ -36,7 +36,7 @@ Password
 
 ## Inputs
 
-:::demo
+::: demo
 Name
 [_____________________________]
 
@@ -59,7 +59,7 @@ Country
 
 ## Badges & Status
 
-:::demo
+::: demo
 |New|{.primary} |Beta|{.warning} |Deprecated|{.error} |Stable|{.success}
 :::
 
@@ -67,7 +67,7 @@ Country
 
 ## Navigation
 
-:::demo
+::: demo
 [[ Logo | Dashboard | Users | Settings | [Logout] ]]
 :::
 
@@ -75,7 +75,7 @@ Country
 
 ## Cards (Grid)
 
-:::demo
+::: demo
 ::: grid-3 card
 
 ### Free
@@ -103,7 +103,7 @@ Custom
 
 ## Tabs
 
-:::demo
+::: demo
 ::: tabs
 
 ::: tab Profile
@@ -129,7 +129,7 @@ Bio
 
 ## Alert States
 
-:::demo
+::: demo
 ::: alert
 Payment method saved successfully.
 :::

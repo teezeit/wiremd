@@ -942,9 +942,9 @@ Content
     });
   });
 
-  describe('Demo block (:::demo)', () => {
+  describe('Demo block (::: demo)', () => {
     it('renders a two-column layout with preview and code panes', () => {
-      const html = renderToHTML(parse(`:::demo
+      const html = renderToHTML(parse(`::: demo
 [Click Me]*
 :::`), { style: 'clean' });
       expect(html).toContain('wmd-demo-preview');
@@ -952,14 +952,14 @@ Content
     });
 
     it('renders the wiremd components in the preview pane', () => {
-      const html = renderToHTML(parse(`:::demo
+      const html = renderToHTML(parse(`::: demo
 [Submit]*
 :::`), { style: 'sketch' });
       expect(html).toContain('wmd-button');
     });
 
     it('shows the raw wiremd source in the code pane', () => {
-      const html = renderToHTML(parse(`:::demo
+      const html = renderToHTML(parse(`::: demo
 ## Login Form
 
 [_____________________________]{required}
@@ -969,7 +969,7 @@ Content
     });
 
     it('HTML-escapes angle brackets in the raw source', () => {
-      const html = renderToHTML(parse(`:::demo
+      const html = renderToHTML(parse(`::: demo
 ## Heading <with brackets>
 :::`), { style: 'clean' });
       expect(html).toContain('&lt;with brackets&gt;');

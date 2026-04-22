@@ -1680,9 +1680,9 @@ Nav
     });
   });
 
-  describe('Demo block (:::demo)', () => {
+  describe('Demo block (::: demo)', () => {
     it('parses to a demo node', () => {
-      const result = parse(`:::demo
+      const result = parse(`::: demo
 ## Login Form
 
 [Sign In]*
@@ -1691,7 +1691,7 @@ Nav
     });
 
     it('captures raw wiremd source in the raw field', () => {
-      const result = parse(`:::demo
+      const result = parse(`::: demo
 ## Login Form
 
 Username
@@ -1706,7 +1706,7 @@ Username
     });
 
     it('parses children as wiremd nodes', () => {
-      const result = parse(`:::demo
+      const result = parse(`::: demo
 ## My Form
 
 [Submit]*

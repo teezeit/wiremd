@@ -213,10 +213,10 @@ Grows with your needs
 
 ### Demo Blocks
 
-`:::demo` renders any wiremd content as a side-by-side split: **left** shows the live rendered components, **right** shows the raw source. Write it once — no duplication needed.
+`::: demo` renders any wiremd content as a side-by-side split: **left** shows the live rendered components, **right** shows the raw source. Write it once — no duplication needed.
 
 ```markdown
-:::demo
+::: demo
 ## Login Form
 
 Username
