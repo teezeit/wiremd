@@ -52,6 +52,12 @@ Time
 
 Search
 [_____________________________]{type:search}
+
+File upload
+[_____________________________]{type:file}
+
+Color
+[_____________________________]{type:color}
 :::
 
 ## With Placeholder

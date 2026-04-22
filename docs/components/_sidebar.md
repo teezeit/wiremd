@@ -8,6 +8,7 @@
 [[Textarea & Select](./textarea-select.md)]
 [[Checkboxes & Radio](./checkboxes-radio.md)]
 [[Badges](./badges.md)]
+[[Icons](./icons.md)]
 [[Navigation](./navigation.md)]
 [[Cards](./cards.md)]
 [[Tabs](./tabs.md)]

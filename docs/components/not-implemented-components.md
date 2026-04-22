@@ -8,9 +8,13 @@
 
 Components not yet in wiremd, with proposed syntax aligned to wiremd's design principles. All proposals follow the existing patterns: `{key:value}` attributes for progressive enhancement, `:::` containers for block components, and visually intuitive ASCII-like syntax.
 
-> **Already supported but easy to miss:** file upload (`[_____]{type:file}`), color input (`[_____]{type:color}`), and spinner (`:spinner:` icon).
+> **Already supported but easy to miss:** file upload (`[_____]{type:file}`), color input (`[_____]{type:color}`).
 
 ::: grid-3 card
+
+### UI Components
+Accordion
+[[Jump →](#ui-components)]
 
 ### Inputs
 Switch, Slider, Rating, Autocomplete, Toggle Button Group, Chip Input
@@ -31,6 +35,32 @@ Avatar, Chip, Timeline, DataGrid
 ### Surfaces
 Paper, Speed Dial
 [[Jump →](#surfaces)]
+
+:::
+
+---
+
+## UI Components
+
+::: grid-2
+
+### Accordion
+
+Collapsible content sections. Used for FAQs, settings panels, and expandable detail rows.
+
+The syntax parses correctly — `::: accordion` with `###` items — but the renderer has no implementation and produces unstyled output:
+
+```
+::: accordion
+### Frequently Asked
+Answer text here.
+
+### Another Question
+Answer text here.
+:::
+```
+
+Each `###` heading inside `::: accordion` would become a collapsible item.
 
 :::
 

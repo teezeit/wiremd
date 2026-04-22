@@ -38,6 +38,7 @@ export default defineConfig({
             { text: 'Textarea & Select', link: '/components/textarea-select' },
             { text: 'Checkboxes & Radio', link: '/components/checkboxes-radio' },
             { text: 'Badges', link: '/components/badges' },
+            { text: 'Icons', link: '/components/icons' },
             { text: 'Navigation', link: '/components/navigation' },
             { text: 'Cards', link: '/components/cards' },
             { text: 'Tabs', link: '/components/tabs' },

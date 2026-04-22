@@ -72,26 +72,27 @@ All standard HTML5 input types can be specified via the `type` attribute:
 
 Checkboxes use standard Markdown task list syntax — `- [x]` for checked, `- [ ]` for unchecked. Radio buttons use a parenthesis variant — `- (*)` for selected, `- ( )` for unselected. wiremd maps these to the appropriate input types in the rendered HTML.
 
-### Are tabs and accordions supported?
+### Are tabs supported?
 
-Yes. Tabs and accordions are implemented as container types:
+Yes. Use `::: tabs` with `::: tab Label` children:
 
 ```markdown
 ::: tabs
-### First Tab
-Content for first tab.
 
-### Second Tab
+::: tab Overview
+Content for first tab.
+:::
+
+::: tab Settings
 Content for second tab.
 :::
 
-::: accordion
-### Frequently Asked
-Answer text here.
 :::
 ```
 
-Each `###` heading inside a `tabs` container becomes a tab; each `###` heading inside an `accordion` container becomes a collapsible item.
+### What about accordions?
+
+Accordion syntax (`::: accordion`) parses correctly but is **not yet rendered** — the renderer has no implementation for it. It falls back to unstyled output. See the [Not Implemented](/components/not-implemented-components) page for the planned syntax.
 
 ### What button variants are available?
 
