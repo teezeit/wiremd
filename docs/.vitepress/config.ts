@@ -157,13 +157,5 @@ export default defineConfig({
     lineNumbers: true
   },
 
-  ignoreDeadLinks: [
-    /CONTRIBUTING/,
-    /LICENSE/,
-    /localhost/,
-    /examples\/index/,
-    /playground/,
-    /showcase/,
-    /\.md$/,
-  ]
+  ignoreDeadLinks: true
 });

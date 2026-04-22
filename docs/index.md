@@ -15,68 +15,23 @@ hero:
     - theme: alt
       text: GitHub
       link: https://github.com/teezeit/wiremd
-
-features:
-  - icon: 🖥️
-    title: VS Code Extension
-    details: Install from the marketplace, open any .md file, click the preview icon. No terminal needed.
-    link: /guide/vscode
-    linkText: Install extension
-  - icon: 🤖
-    title: Use with Claude
-    details: Tell Claude what screen you want — it writes and renders the wireframe for you automatically.
-    link: /guide/claude
-    linkText: Learn more
-  - icon: ⌨️
-    title: CLI
-    details: npm install -g wiremd, then wiremd file.md --style clean --serve 3001 --watch
-    link: /guide/installation
-    linkText: Install CLI
-  - icon: 🎨
-    title: 7 visual styles
-    details: sketch, clean, wireframe, material, brutal, tailwind, none — switch with one flag.
-    link: /components/styles
-    linkText: See styles
-  - icon: 🧩
-    title: 40+ components
-    details: Buttons, inputs, grids, tabs, navbars, cards, badges, alerts — all from plain text.
-    link: /components/
-    linkText: Browse components
-  - icon: 📤
-    title: Multiple output formats
-    details: Export as HTML, React/JSX, Tailwind-classed HTML, or JSON — same source, any target.
-    link: /api/
-    linkText: API docs
-  - icon: 🔀
-    title: Version control friendly
-    details: Plain text files work with git, PRs, and code review like any other source file.
-  - icon: ⚡
-    title: Fast
-    details: Under 100ms parse time. Live reload on save with --watch.
-  - icon: 📋
-    title: Example gallery
-    details: Ready-to-use templates for forms, dashboards, landing pages, and multi-page flows.
-    link: /examples/
-    linkText: Browse examples
 ---
 
-## From Markdown to Mockup
+::: demo
 
-Write a screen in plain text:
-
-```markdown
-## Login
+## Sign In
 
 Email
-[_____________________________]{type:email}
+[_____________________________]{type:email required}
 
 Password
-[_____________________________]{type:password}
+[_____________________________]{type:password required}
+
+- [ ] Remember me
 
 [Sign In]* [Forgot password?]
-```
 
-Run `wiremd login.md --style clean --serve 3001` — open your browser, see a rendered mockup. Edit and save, the preview reloads instantly.
+:::
 
 ## wiremd vs the alternatives
 
