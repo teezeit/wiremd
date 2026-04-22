@@ -1679,4 +1679,43 @@ Nav
       expect(grid.columns).toBe(3);
     });
   });
+
+  describe('Demo block (:::demo)', () => {
+    it('parses to a demo node', () => {
+      const result = parse(`:::demo
+## Login Form
+
+[Sign In]*
+:::`);
+      expect(result.children[0].type).toBe('demo');
+    });
+
+    it('captures raw wiremd source in the raw field', () => {
+      const result = parse(`:::demo
+## Login Form
+
+Username
+[_____________________________]{required}
+
+[Sign In]*
+:::`);
+      const demo = result.children[0] as any;
+      expect(demo.raw).toContain('## Login Form');
+      expect(demo.raw).toContain('[_____________________________]{required}');
+      expect(demo.raw).toContain('[Sign In]*');
+    });
+
+    it('parses children as wiremd nodes', () => {
+      const result = parse(`:::demo
+## My Form
+
+[Submit]*
+:::`);
+      const demo = result.children[0] as any;
+      const types = demo.children.map((c: any) => c.type);
+      expect(types).toContain('heading');
+      expect(types).toContain('button');
+    });
+
+  });
 });

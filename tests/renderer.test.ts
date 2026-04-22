@@ -941,4 +941,39 @@ Content
       expect(html).toContain('Page Title');
     });
   });
+
+  describe('Demo block (:::demo)', () => {
+    it('renders a two-column layout with preview and code panes', () => {
+      const html = renderToHTML(parse(`:::demo
+[Click Me]*
+:::`), { style: 'clean' });
+      expect(html).toContain('wmd-demo-preview');
+      expect(html).toContain('wmd-demo-code');
+    });
+
+    it('renders the wiremd components in the preview pane', () => {
+      const html = renderToHTML(parse(`:::demo
+[Submit]*
+:::`), { style: 'sketch' });
+      expect(html).toContain('wmd-button');
+    });
+
+    it('shows the raw wiremd source in the code pane', () => {
+      const html = renderToHTML(parse(`:::demo
+## Login Form
+
+[_____________________________]{required}
+:::`), { style: 'clean' });
+      expect(html).toContain('## Login Form');
+      expect(html).toContain('[_____________________________]{required}');
+    });
+
+    it('HTML-escapes angle brackets in the raw source', () => {
+      const html = renderToHTML(parse(`:::demo
+## Heading <with brackets>
+:::`), { style: 'clean' });
+      expect(html).toContain('&lt;with brackets&gt;');
+      expect(html).not.toContain('<with brackets>');
+    });
+  });
 });

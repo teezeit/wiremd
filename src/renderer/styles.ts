@@ -39,6 +39,14 @@ export function getStyleCSS(style: string, prefix: string): string {
 .${prefix}row > .${prefix}grid-item > .${prefix}select { display: inline-block; width: auto; }
 `;
 
+  const demoStructural = `
+.${prefix}demo { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #d0d0d0; border-radius: 6px; overflow: hidden; margin: 1rem 0; }
+.${prefix}demo-preview { padding: 1.5rem; border-right: 1px solid #d0d0d0; }
+.${prefix}demo-code { background: #f6f8fa; overflow: auto; }
+.${prefix}demo-code pre { margin: 0; padding: 1.25rem 1.5rem; font-size: 0.8em; font-family: 'Courier New', Courier, monospace; line-height: 1.6; white-space: pre; }
+.${prefix}demo-code code { display: block; color: #444; }
+`;
+
   let themeCSS: string;
   switch (style) {
     case 'sketch':    themeCSS = getSketchStyle(prefix); break;
@@ -50,7 +58,7 @@ export function getStyleCSS(style: string, prefix: string): string {
     case 'brutal':    themeCSS = getBrutalStyle(prefix); break;
     default:          themeCSS = getSketchStyle(prefix);
   }
-  return linkButtonReset + tabsStructural + rowStructural + themeCSS;
+  return linkButtonReset + tabsStructural + rowStructural + demoStructural + themeCSS;
 }
 
 /**

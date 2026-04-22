@@ -121,6 +121,9 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'breadcrumbs':
       return renderBreadcrumbs(node, context);
 
+    case 'demo':
+      return renderDemo(node, context);
+
     default:
       return `<!-- Unknown node type: ${(node as any).type} -->`;
   }
@@ -761,6 +764,16 @@ function buildClasses(prefix: string, baseClass: string, props: any): string {
   }
 
   return classes.join(' ');
+}
+
+function renderDemo(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const previewHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n');
+  const codeHTML = escapeHtml(node.raw || '');
+  return `<div class="${prefix}demo">
+  <div class="${prefix}demo-preview">${previewHTML}</div>
+  <div class="${prefix}demo-code"><pre><code>${codeHTML}</code></pre></div>
+</div>`;
 }
 
 /**

@@ -346,6 +346,15 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
     };
   }
 
+  if (containerType === 'demo') {
+    return {
+      type: 'demo',
+      raw: node.rawContent || '',
+      props,
+      children: processNodeList(node.children || [], options) as any,
+    };
+  }
+
   return {
     type: 'container',
     containerType: containerType as any,

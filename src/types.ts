@@ -103,7 +103,10 @@ export type WiremdNode =
   // State Components
   | { type: 'loading-state'; message?: string; props: ComponentProps; children?: WiremdNode[]; position?: Location }
   | { type: 'empty-state'; icon?: string; title?: string; props: ComponentProps; children: WiremdNode[]; position?: Location }
-  | { type: 'error-state'; icon?: string; title?: string; props: ComponentProps; children: WiremdNode[]; position?: Location };
+  | { type: 'error-state'; icon?: string; title?: string; props: ComponentProps; children: WiremdNode[]; position?: Location }
+
+  // Demo / showcase
+  | { type: 'demo'; raw: string; props: ComponentProps; children: WiremdNode[]; position?: Location };
 
 // ============================================================================
 // Type Guards

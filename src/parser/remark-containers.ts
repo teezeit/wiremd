@@ -249,6 +249,50 @@ function collectContainer(
   };
 }
 
+/** Reconstruct wiremd source text from MDAST inline children. */
+function mdastInlinesToText(children: any[]): string {
+  return (children || []).map((child: any) => {
+    switch (child.type) {
+      case 'text': return child.value;
+      case 'strong': return '**' + mdastInlinesToText(child.children) + '**';
+      case 'emphasis': return '_' + mdastInlinesToText(child.children) + '_';
+      case 'inlineCode': return '`' + child.value + '`';
+      case 'link': return '[' + mdastInlinesToText(child.children) + '](' + child.url + ')';
+      case 'image': return '![' + (child.alt || '') + '](' + child.url + ')';
+      default: return '';
+    }
+  }).join('');
+}
+
+/** Reconstruct wiremd source text from a list of MDAST block nodes. */
+function mdastNodesToText(nodes: any[]): string {
+  return nodes.map((node: any) => {
+    switch (node.type) {
+      case 'heading':
+        return '#'.repeat(node.depth) + ' ' + mdastInlinesToText(node.children);
+      case 'paragraph':
+        return mdastInlinesToText(node.children);
+      case 'list':
+        return node.children.map((item: any) => {
+          const prefix = node.ordered
+            ? '1. '
+            : item.checked === true ? '- [x] '
+            : item.checked === false ? '- [ ] '
+            : '- ';
+          return prefix + mdastNodesToText(item.children || []).replace(/\n/g, '\n  ');
+        }).join('\n');
+      case 'code':
+        return '```' + (node.lang || '') + '\n' + node.value + '\n```';
+      case 'blockquote':
+        return mdastNodesToText(node.children).split('\n').map((l: string) => '> ' + l).join('\n');
+      case 'wiremdContainer':
+        return ':::' + node.containerType + '\n' + mdastNodesToText(node.children) + '\n:::';
+      default:
+        return '';
+    }
+  }).filter(Boolean).join('\n\n');
+}
+
 /** Process a flat array of AST nodes and return nodes with containers properly nested. */
 function processNodes(nodes: any[]): any[] {
   const result: any[] = [];
@@ -259,6 +303,9 @@ function processNodes(nodes: any[]): any[] {
 
     if (parseContainerOpener(node)) {
       const { node: containerNode, nextIndex } = collectContainer(nodes, i);
+      if (containerNode.containerType === 'demo') {
+        containerNode.rawContent = mdastNodesToText(containerNode.children);
+      }
       result.push(containerNode);
       i = nextIndex;
     } else {
