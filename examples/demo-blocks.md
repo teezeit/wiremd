@@ -79,6 +79,7 @@ Country
 ## Cards (Grid)
 
 ::: demo
+
 ::: grid-3 card
 
 ### Free
@@ -108,6 +109,7 @@ Custom
 ## Tabs
 
 ::: demo
+
 ::: tabs
 
 ::: tab Profile
@@ -135,6 +137,7 @@ Bio
 ## Alert States
 
 ::: demo
+
 ::: alert
 Payment method saved successfully.
 :::

@@ -286,7 +286,7 @@ function mdastNodesToText(nodes: any[]): string {
       case 'blockquote':
         return mdastNodesToText(node.children).split('\n').map((l: string) => '> ' + l).join('\n');
       case 'wiremdContainer':
-        return ':::' + node.containerType + '\n' + mdastNodesToText(node.children) + '\n:::';
+        return '::: ' + node.containerType + '\n' + mdastNodesToText(node.children) + '\n:::';
       default:
         return '';
     }
