@@ -3,7 +3,7 @@
   "displayName": "Wiremd Live Preview",
   "description": "Live preview for Wiremd markdown mockups",
   "version": "0.1.0",
-  "publisher": "wiremd",
+  "publisher": "eclectic-ai",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.75.0"
