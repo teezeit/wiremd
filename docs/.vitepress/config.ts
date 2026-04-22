@@ -26,6 +26,8 @@ export default defineConfig({
           items: [
             { text: 'Getting Started', link: '/guide/getting-started' },
             { text: 'Installation', link: '/guide/installation' },
+            { text: 'VS Code Extension', link: '/guide/vscode' },
+            { text: 'Using with Claude', link: '/guide/claude' },
             { text: 'Syntax Reference', link: '/reference/syntax' },
             { text: 'Framework Integrations', link: '/guide/integrations' },
             { text: 'Homebrew', link: '/guide/homebrew' },

@@ -49,7 +49,8 @@ Both render to styled HTML in seconds.
 
 - **Multiple output formats** — HTML, React/JSX, Tailwind, or JSON from the same source file
 - **7 visual styles** — sketch, clean, wireframe, material, brutal, and more; switch with `--style`
-- **VS Code extension** — live preview panel that updates on save
+- **VS Code extension** — live preview panel that updates on save, no terminal required
+- **Claude integration** — describe a screen in plain English, Claude generates and renders the wireframe
 - **CLI and programmatic API** — use as a build step, in scripts, or directly from Node
 
 ## Community
