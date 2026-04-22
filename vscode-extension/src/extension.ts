@@ -89,6 +89,14 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand('wiremd.openQuickReference', () => {
+      const qrPath = path.join(context.extensionPath, 'QUICK-REFERENCE.md');
+      const uri = vscode.Uri.file(qrPath);
+      vscode.commands.executeCommand('markdown.showPreview', uri);
+    })
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand('wiremd.installClaudeSkill', async () => {
       const workspaceFolders = vscode.workspace.workspaceFolders;
       if (!workspaceFolders) {

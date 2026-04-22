@@ -47,3 +47,4 @@ temp/
 .DS_Store
 Thumbs.db
 vscode-extension/*.vsix
+vscode-extension/QUICK-REFERENCE.md

@@ -60,6 +60,12 @@
         "title": "Install Wiremd Claude Skill",
         "category": "Wiremd",
         "icon": "$(sparkle)"
+      },
+      {
+        "command": "wiremd.openQuickReference",
+        "title": "Open Quick Reference",
+        "category": "Wiremd",
+        "icon": "$(question)"
       }
     ],
     "menus": {
@@ -132,7 +138,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run bundle",
-    "bundle": "rm -rf ./skills && cp -r ../skills ./skills && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
+    "bundle": "rm -rf ./skills && cp -r ../skills ./skills && cp ../QUICK-REFERENCE.md ./QUICK-REFERENCE.md && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
     "dev": "node scripts/watch.mjs",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
