@@ -307,7 +307,7 @@ wiremd input.md --watch --watch-pattern "**/*.md"
 ls -la input.md
 
 # Try with specific ignore patterns
-wiremd input.md --watch --ignore-pattern "node_modules/**"
+wiremd input.md --watch --ignore "node_modules/**"
 ```
 
 ### Live server won't start
@@ -533,14 +533,14 @@ app.get('/wireframe/:id', (req, res) => {
 
 If you're still experiencing issues:
 
-1. **Check the documentation**: [API Reference](../api/), [Syntax Guide](./syntax.md)
-2. **Search existing issues**: [GitHub Issues](https://github.com/akonan/wiremd/issues)
+1. **Check the documentation**: [API Reference](../api/), [Syntax Guide](../reference/syntax.md)
+2. **Search existing issues**: [GitHub Issues](https://github.com/teezeit/wiremd/issues)
 3. **Create a new issue**: Include:
    - wiremd version (`npm list wiremd`)
    - Node.js version (`node --version`)
    - Minimal reproduction example
    - Error messages and stack traces
-4. **Join discussions**: [GitHub Discussions](https://github.com/akonan/wiremd/discussions)
+4. **Join discussions**: [GitHub Discussions](https://github.com/teezeit/wiremd/discussions)
 
 ## Debug Mode
 
@@ -619,4 +619,4 @@ ast.children.push({
 - [Getting Started](/guide/getting-started) - Basic usage
 - [API Reference](../api/) - Complete API docs
 - [Framework Integrations](/guide/integrations) - Framework-specific guides
-- [GitHub Issues](https://github.com/akonan/wiremd/issues) - Report bugs
+- [GitHub Issues](https://github.com/teezeit/wiremd/issues) - Report bugs

@@ -1,6 +1,6 @@
 # wiremd Syntax Guide
 
-This guide covers the wiremd syntax for creating UI wireframes. For the complete specification, see [SYNTAX-SPEC-v0.1.md](../../SYNTAX-SPEC-v0.1.md).
+This guide covers the wiremd syntax for creating UI wireframes. For the complete specification, see [SYNTAX-SPEC-v0.1.md](./syntax-spec.md).
 
 ## Basic Syntax
 
@@ -20,8 +20,10 @@ Square brackets create buttons:
 
 ```markdown
 [Click Me]
-[Submit]{.primary}
-[Cancel]{.secondary}
+[Submit]*
+[Submit]{variant:primary}   # Explicit form of primary
+[Cancel]{variant:secondary}
+[Delete]{variant:danger}
 ```
 
 ### Text Inputs
@@ -60,10 +62,10 @@ Country
 
 ### Classes and Attributes
 
-Add classes with `.classname`:
+Add classes with `.classname` (passed through to the rendered HTML element):
 
 ```markdown
-[Login]{.primary .large}
+[Login]{.large}
 ```
 
 Add attributes with `key:value`:
@@ -75,7 +77,16 @@ Add attributes with `key:value`:
 Combine both:
 
 ```markdown
-[Submit]{.primary type:submit disabled}
+[_____________________________]{type:email required state:error}
+```
+
+For button variants, use the `variant` key instead of class syntax — `{.primary}` on a button adds a raw CSS class, not a styled variant:
+
+```markdown
+[Submit]*                   # Primary button — preferred
+[Submit]{variant:primary}   # Equivalent explicit form
+[Delete]{variant:danger}    # Danger variant
+[Submit]{state:disabled}    # Disabled state
 ```
 
 ### Badges / Pills
@@ -120,7 +131,7 @@ Group elements in blocks with `:::`:
 ::: hero
 # Welcome
 Try our product today
-[Get Started]{.primary}
+[Get Started]*
 :::
 ```
 
@@ -133,7 +144,7 @@ Containers can be nested — blank lines between blocks let remark separate them
 
 Are you sure you want to delete this item?
 
-[Cancel] [Delete]{.danger}
+[Cancel] [Delete]{variant:danger}
 
 :::
 
@@ -145,7 +156,7 @@ Place inline content directly on the opener line to inject it as the first child
 ```markdown
 ::: alert Warning: this action cannot be undone
 
-[Cancel] [Confirm]{.danger}
+[Cancel] [Confirm]{variant:danger}
 
 :::
 ```
@@ -254,10 +265,10 @@ Wrap a Markdown link inside button brackets to make a clickable button that navi
 [[Get Started](./start.md)]*
 ```
 
-The `*` suffix makes it a primary button. Attributes work too:
+The `*` suffix makes it a primary button. The `variant` attribute works too:
 
 ```markdown
-[[Sign Up](./signup.md)]{.secondary}
+[[Sign Up](./signup.md)]{variant:secondary}
 ```
 
 When using `wiremd --serve`, clicking a button link renders the target `.md` file in the same browser tab — no build step required. This is the recommended way to wire up multi-page navigation in prototypes.
@@ -350,7 +361,7 @@ Message
 [                             ]
 [_____________________________]{rows:5}
 
-[Send]{.primary} [Cancel]
+[Send]* [Cancel]
 ```
 
 ### Navigation
@@ -366,7 +377,7 @@ Message
 ### Product Name
 This is a great product that solves your problems.
 **$99/month**
-[Buy Now]{.primary}
+[Buy Now]*
 :::
 ```
 
@@ -386,12 +397,12 @@ This is a great product that solves your problems.
 wiremd supports multiple visual styles:
 
 ```bash
-mdmock file.md --style sketch    # Default Balsamiq-style
-mdmock file.md --style clean     # Modern minimal
-mdmock file.md --style wireframe # Traditional grayscale
-mdmock file.md --style material  # Material Design
-mdmock file.md --style tailwind  # Tailwind-inspired
-mdmock file.md --style brutal    # Brutalist
+wiremd file.md --style sketch    # Default Balsamiq-style
+wiremd file.md --style clean     # Modern minimal
+wiremd file.md --style wireframe # Traditional grayscale
+wiremd file.md --style material  # Material Design
+wiremd file.md --style tailwind  # Tailwind-inspired
+wiremd file.md --style brutal    # Brutalist
 ```
 
 ### Custom Classes
@@ -429,7 +440,7 @@ Password
 ### Disabled State
 
 ```markdown
-[Submit]{disabled}
+[Submit]{state:disabled}
 ```
 
 ### Icons (with text)
@@ -456,6 +467,6 @@ Content here
 
 ## Next Steps
 
-- [Complete Syntax Specification](../../SYNTAX-SPEC-v0.1.md)
+- [Complete Syntax Specification](./syntax-spec.md)
 - [API Documentation](../api/)
 - [Examples Gallery](../examples/)

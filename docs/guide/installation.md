@@ -45,7 +45,7 @@ To contribute to wiremd or run from source:
 
 ```bash
 # Clone the repository
-git clone https://github.com/akonan/wiremd.git
+git clone https://github.com/teezeit/wiremd.git
 cd wiremd
 
 # Install dependencies
@@ -140,5 +140,5 @@ If it's less than 18.0.0, upgrade Node.js.
 ## Next Steps
 
 - [Getting Started Guide](./getting-started.md)
-- [Learn the Syntax](./syntax.md)
+- [Learn the Syntax](../reference/syntax.md)
 - [Explore Examples](../examples/)

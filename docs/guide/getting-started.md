@@ -61,36 +61,11 @@ writeFileSync('login.html', html);
 
 ## Basic Concepts
 
-### Components
-
-wiremd supports many UI components:
-
-- **Forms**: inputs, textareas, buttons, selects
-- **Layout**: sections, containers, grids
-- **Navigation**: nav bars, breadcrumbs, tabs
-- **Content**: headings, paragraphs, images, icons
-
-### Syntax Elements
-
-1. **Headings** - Define sections and structure
-2. **Brackets** - Create inputs and buttons `[...]`
-3. **Attributes** - Add properties `{type:email required}`
-4. **Classes** - Style components `{.primary}`
-5. **Containers** - Group elements `:::`
+wiremd components — forms, inputs, buttons, layout containers, navigation bars, and more — are expressed with a small set of Markdown extensions: brackets create inputs and buttons (`[...]`), curly-brace attributes set properties (`{type:email}`), classes apply styles (`{.primary}`), and triple-colon fences group elements into containers (`:::`). See the [syntax reference](../reference/syntax-spec.md) for the full picture.
 
 ## Visual Styles
 
-wiremd comes with multiple visual styles:
-
-- `sketch` - Balsamiq-inspired hand-drawn (default)
-- `clean` - Modern minimal design
-- `wireframe` - Traditional grayscale
-- `material` - Material Design
-- `tailwind` - Tailwind-inspired
-- `brutal` - Brutalist design
-- `none` - Unstyled semantic HTML
-
-Change style with the `--style` flag:
+wiremd ships with 7 visual styles: `sketch`, `clean`, `wireframe`, `material`, `tailwind`, `brutal`, and `none`. Pass `--style <name>` to pick one (default is `sketch`). See the [styles reference](../reference/syntax-spec.md) for descriptions and examples.
 
 ```bash
 wiremd my-wireframe.md --style clean
@@ -108,7 +83,7 @@ Open http://localhost:3000 in your browser. Changes to your markdown file will a
 
 ## Next Steps
 
-- [Learn the complete syntax](./syntax.md)
+- [Learn the complete syntax](../reference/syntax.md)
 - [Explore examples](../examples/)
 - [Read API documentation](../api/)
-- [Check the syntax specification](../../SYNTAX-SPEC-v0.1.md)
+- [Check the syntax specification](../reference/syntax-spec.md)

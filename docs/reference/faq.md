@@ -1,15 +1,13 @@
-# wiremd FAQ & Troubleshooting
+# wiremd FAQ
 
-> Common questions, issues, and solutions for wiremd users
+> Conceptual questions about how wiremd works and why it works that way
 
 ## Table of Contents
 
 - [Getting Started](#getting-started)
 - [Syntax Questions](#syntax-questions)
-- [Common Issues](#common-issues)
 - [Components](#components)
 - [Layout & Styling](#layout--styling)
-- [Advanced Usage](#advanced-usage)
 
 ---
 
@@ -17,188 +15,39 @@
 
 ### What is wiremd?
 
-wiremd is a text-first UI design tool that lets you create wireframes and mockups using Markdown syntax. Write your UI in plain text, render it as HTML with various visual styles.
-
-### How do I get started?
-
-1. Check out the [Syntax Showcase](examples/showcase.md) for interactive examples
-2. Use the [Quick Reference](QUICK-REFERENCE.md) for syntax lookups
-3. See [Installation Guide](docs/guide/installation.md) for setup instructions
+wiremd is a text-first UI design tool that converts Markdown with extended wireframing syntax into visual wireframes. Write your UI in plain text; render it as HTML with various visual styles, as a React component, as Tailwind-classed HTML, or as JSON.
 
 ### What Markdown flavor does wiremd use?
 
-wiremd is built on standard CommonMark Markdown with custom extensions for UI components. All standard Markdown syntax works as expected.
+wiremd is built on standard CommonMark Markdown (via unified/remark) with custom extensions for UI components. All standard Markdown syntax — headings, paragraphs, lists, tables, bold, italic, links — works as expected. The extensions add three things: `:::` container blocks for layout and component grouping, `[[ ]]` inline containers for navigation bars, and inline button/input shorthand such as `[Label]*` and `[_____]`.
 
 ### Can I use wiremd without installing anything?
 
-Currently, wiremd requires Node.js installation. A web-based version is planned for the future.
+wiremd requires Node.js. Install it as a library (`npm install wiremd`) for programmatic use, or install it globally (`npm install -g wiremd`) to use the `wiremd` CLI command. There is no web-based playground at this time.
+
+### Where can I find a quick lookup of all syntax?
+
+See [./quick-reference.md](./quick-reference.md) for a condensed syntax card, and [./syntax-spec.md](./syntax-spec.md) for the full formal specification.
 
 ---
 
 ## Syntax Questions
 
-### How do I know if something is a button or a link?
+### How does wiremd distinguish a button from a link?
 
-**Button:** `[Text]` - No URL following
-**Link:** `[Text](url)` - Has URL in parentheses
+A button uses square brackets with no URL: `[Label]`. A standard Markdown link uses square brackets followed by a URL in parentheses: `[Label](https://example.com)`. wiremd sees any bare `[Label]` (or `[Label]*` for primary, `[Label]{variant:danger}` for variants) as a button node, and any `[Label](url)` as a link node.
 
-```markdown
-[Click Me]           # Button
-[Click Me](http://example.com)  # Link
-```
+### How does label association work for inputs?
 
-### Why isn't my input showing a label?
+A line of plain text immediately above an input line — with no blank line between them — is treated as that input's label. A blank line breaks the association and the text is rendered as a paragraph instead.
 
-**Labels must be directly above inputs with NO blank line between them.**
+### What is the `![[path.md]]` syntax for?
 
-```markdown
-✅ Correct:
-Name
-[_____________________________]
+`![[path.md]]` is the file-include syntax. When wiremd parses a file it first runs `resolveIncludes`, which finds every `![[relative/path.md]]` pattern outside of fenced code blocks and replaces it with the contents of the referenced file. This lets you split large wireframes into reusable partials. Includes inside code fences are left untouched.
 
-❌ Wrong (blank line breaks association):
-Name
+### Are attribute curly braces part of standard Markdown?
 
-[_____________________________]
-```
-
-### How do I create a dropdown with options?
-
-Use the `v` suffix and put list items directly after:
-
-```markdown
-Country
-[Select country...v]
-- United States
-- Canada
-- United Kingdom
-```
-
-The list items must be directly after the dropdown (can have one blank line max).
-
-### Can I put placeholder text in inputs?
-
-Yes, put text before the underscores:
-
-```markdown
-[Enter your name___________]
-[email@example.com_________]{type:email}
-```
-
-**Note:** This syntax currently renders as a button in some cases - a known limitation being addressed.
-
-### How do I make a primary/highlighted button?
-
-Three ways:
-
-```markdown
-[Submit]*                  # Asterisk shorthand
-[Submit]{.primary}         # Class attribute
-[Submit]{variant:primary}  # Variant attribute
-```
-
----
-
-## Common Issues
-
-### My grid isn't working
-
-**Check these:**
-
-1. Use `::: grid-N` to open the container and `:::` to close it
-2. Grid items are `###` headings inside the container
-3. Each grid item starts with `###`
-
-```markdown
-✅ Correct:
-::: grid-3 card
-
-### Feature 1
-Content
-
-### Feature 2
-Content
-
-:::
-
-❌ Wrong (missing ### for items):
-::: grid-3 card
-Feature 1
-Feature 2
-:::
-```
-
-### Attributes are being ignored
-
-**Common causes:**
-
-1. **Too much space:** Attributes should be immediately after element (one space is OK)
-   ```markdown
-   ✅ [Button]{.primary}
-   ✅ [Button] {.primary}
-   ❌ [Button]   {.primary}  # Too much space
-   ```
-
-2. **Wrong syntax:** Use `{.class}` for classes, `{key:value}` for attributes
-   ```markdown
-   ✅ {.primary type:submit}
-   ❌ {primary type=submit}
-   ```
-
-3. **Applied to wrong element:** Attributes apply to the immediately preceding element
-
-### My navigation bar isn't rendering correctly
-
-**Check the syntax:**
-
-```markdown
-✅ Correct:
-[[ Home | Products | About ]]
-
-❌ Wrong (missing spaces around pipes):
-[[Home|Products|About]]
-
-❌ Wrong (single brackets):
-[ Home | Products | About ]
-```
-
-### Container not rendering
-
-**Check for:**
-
-1. Proper `:::` syntax with matching opening/closing
-2. Space after `:::`
-3. Container type is valid
-
-```markdown
-✅ Correct:
-::: card
-Content here
-:::
-
-❌ Wrong (no space after :::):
-:::card
-Content
-:::
-
-❌ Wrong (mismatched closing):
-::: card
-Content
-::
-```
-
-### Icons not showing
-
-**Check that:**
-
-1. Icon syntax uses colons: `:icon-name:`
-2. Icon name exists in the supported set
-3. No spaces inside colons: `:home:` not `: home :`
-
-```markdown
-✅ Correct: :home: :user: :gear:
-❌ Wrong: : home : :user-icon:
-```
+No. The `{key:value}` and `{.class}` attribute syntax is a wiremd extension. Attributes must appear immediately after the element they modify (one space is acceptable). They apply to the directly preceding element — a button, input, heading, or container.
 
 ---
 
@@ -206,247 +55,127 @@ Content
 
 ### What input types are supported?
 
-All HTML5 input types:
+All standard HTML5 input types can be specified via the `type` attribute:
 
 ```markdown
-{type:text}      # Default
-{type:email}     # Email with validation
-{type:password}  # Password (hidden)
-{type:tel}       # Telephone
-{type:url}       # URL
-{type:number}    # Number with spinners
-{type:date}      # Date picker
-{type:time}      # Time picker
-{type:search}    # Search box
-{type:color}     # Color picker
-{type:file}      # File upload
+[_____________________________]{type:text}
+[_____________________________]{type:email}
+[_____________________________]{type:password}
+[_____________________________]{type:tel}
+[_____________________________]{type:url}
+[_____________________________]{type:number}
+[_____________________________]{type:date}
+[_____________________________]{type:search}
+[_____________________________]{type:file}
 ```
 
-### How do I create radio buttons?
+### How do radio buttons and checkboxes work?
 
-Use the radio syntax with parentheses:
+Checkboxes use standard Markdown task list syntax — `- [x]` for checked, `- [ ]` for unchecked. Radio buttons use a parenthesis variant — `- (*)` for selected, `- ( )` for unselected. wiremd maps these to the appropriate input types in the rendered HTML.
+
+### Are tabs and accordions supported?
+
+Yes. Tabs and accordions are implemented as container types:
 
 ```markdown
-Choose a plan:
-- (*) Free Plan (selected)
-- ( ) Pro Plan
-- ( ) Enterprise
+::: tabs
+### First Tab
+Content for first tab.
+
+### Second Tab
+Content for second tab.
+:::
+
+::: accordion
+### Frequently Asked
+Answer text here.
+:::
 ```
 
-`(*)` indicates the selected radio button.
+Each `###` heading inside a `tabs` container becomes a tab; each `###` heading inside an `accordion` container becomes a collapsible item.
 
-### How do I create checkboxes?
+### What button variants are available?
 
-Use standard Markdown task list syntax:
+Three: `primary`, `secondary`, and `danger`. Use the asterisk shorthand for primary (`[Submit]*`), or the `variant` key-value attribute for any variant:
 
 ```markdown
-- [x] Checked item
-- [ ] Unchecked item
-- [x] Another checked item
+[Submit]*                   # Primary — preferred shorthand
+[Submit]{variant:primary}   # Primary — explicit form
+[Cancel]{variant:secondary} # Secondary
+[Delete]{variant:danger}    # Danger/destructive
 ```
 
-### Can I create multi-line textareas?
+**Note:** `{.primary}`, `{.secondary}`, and `{.danger}` (dot-prefix class syntax) add raw CSS classes, not variant classes. They have no built-in style definitions and will not produce styled buttons. Use `*` or `{variant:name}` instead.
 
-Yes, use the `{rows:N}` attribute:
+### Can I create disabled or loading button states?
 
-```markdown
-Comments
-[Your comments here...]{rows:5}
-
-# Or with more attributes:
-Description
-[Describe your project...]{rows:8 cols:60}
-```
-
-### How do I create disabled or loading states?
-
-Use state attributes:
+Yes, using the `state` attribute:
 
 ```markdown
 [Submit]{state:disabled}
 [Processing...]{state:loading}
-[Delete]{state:error}
 [Saved]{state:success}
+[Error]{state:error}
 ```
+
+**Note:** `{disabled}` (boolean syntax without `state:`) works on inputs, textareas, and selects, but is silently ignored on buttons. Always use `{state:disabled}` for buttons.
 
 ---
 
 ## Layout & Styling
 
-### What grid sizes are supported?
+### What grid sizes are available?
 
-Supported column counts: `grid-2`, `grid-3`, `grid-4`, `grid-5`. Add `card` for card chrome:
-- `::: grid-2` — 2 columns (plain layout)
-- `::: grid-3 card` — 3 columns with card styling
-- `::: grid-4 card` — 4 columns with card styling
+`grid-2` through `grid-5` (2, 3, 4, or 5 equal columns). Add `card` to get card chrome on each cell. On small viewports the columns collapse to a single column via CSS media queries.
 
-### Can I nest containers?
+### Can containers be nested?
 
-Yes! Containers can be nested:
+Yes. The `:::` container syntax supports arbitrary nesting. The remark-containers plugin tracks depth so an inner `:::` closes only its own block, not the outer one.
 
-```markdown
-::: hero
-# Welcome
+### What visual styles does the CLI support?
 
-::: card
-### Get Started
-[Sign Up]*
-:::
-:::
-```
+Seven styles, passed with `--style`:
 
-### What visual styles are available?
+| Style | Description |
+|---|---|
+| `sketch` | Balsamiq-inspired hand-drawn look (default) |
+| `clean` | Modern minimal design |
+| `wireframe` | Traditional grayscale with hatching |
+| `material` | Google Material Design with elevation |
+| `brutal` | Neo-brutalist with bold colors and thick borders |
+| `tailwind` | Utility-first design with purple accents |
+| `none` | Unstyled semantic HTML |
 
-wiremd supports multiple rendering styles:
+### What output formats are available?
 
-```bash
---style sketch      # Default: Balsamiq-style hand-drawn
---style clean       # Modern minimal design
---style wireframe   # Traditional grayscale
---style material    # Material Design
---style tailwind    # Tailwind-inspired
---style brutal      # Neo-brutalist
---style none        # Unstyled semantic HTML
-```
+The CLI supports `--format html` (default) and `--format json`. The Node.js API additionally exposes `renderToReact()` for JSX/TSX output and `renderToTailwind()` for Tailwind-classed HTML — these are not available as CLI flags and must be called programmatically.
 
-### How do I add custom CSS classes?
+### How are custom CSS classes applied?
 
-Use the class attribute syntax:
+Use the `{.classname}` attribute syntax on any element. Multiple classes can be space-separated within the same braces:
 
 ```markdown
-## Section {.my-custom-class}
 [Button]{.btn .btn-lg .custom}
-```
 
-Classes are applied to the rendered HTML element.
-
-### Can I use inline styles?
-
-Not currently. Use classes and apply CSS separately, or use the `style:none` option and add your own CSS.
-
----
-
-## Advanced Usage
-
-### Can I include one wiremd file in another?
-
-Not in v0.1. Template/partial includes are planned for v0.2+.
-
-### How do I create responsive layouts?
-
-Basic responsive support is included via CSS grid, but explicit breakpoint syntax is planned for v0.2+.
-
-Currently, grids automatically stack on mobile using CSS media queries.
-
-### Can I export to React/Vue/Svelte?
-
-HTML export is fully supported. React/Vue/Svelte component exports are in development and planned for Phase 5.
-
-### How do I create tabs or accordions?
-
-Tabs and accordions are planned but not yet implemented in v0.1. See [SYNTAX-SPEC-v0.1.md](SYNTAX-SPEC-v0.1.md#16-version-01-scope) for the roadmap.
-
-### Can I add custom JavaScript interactions?
-
-wiremd generates static HTML. For interactivity, you'll need to add JavaScript separately or wait for framework-specific renderers (React/Vue/Svelte).
-
-### How do I create modal/dialog overlays?
-
-Use the modal container:
-
-```markdown
-::: modal
-### Confirm Action
-Are you sure you want to proceed?
-
-[Confirm]* [Cancel]
+::: card {.highlight-card}
+Content
 :::
 ```
 
-The modal container is rendered but not automatically shown as an overlay. You'll need to add CSS/JS for overlay behavior.
+Classes are passed through to the rendered HTML element unchanged.
 
-### Can I validate forms?
+### Does wiremd generate JavaScript interactions?
 
-HTML5 validation attributes are supported:
-
-```markdown
-Email
-[_____________________________]{type:email required}
-
-Age
-[___]{type:number min:18 max:120}
-
-Website
-[_____________________________]{type:url}
-```
-
-The rendered HTML includes these validation attributes.
-
----
-
-## Troubleshooting Checklist
-
-When something isn't working, check:
-
-- [ ] Is there a blank line where there shouldn't be? (especially labels and inputs)
-- [ ] Are the brackets correct? `[[ ]]` for nav, `[ ]` for buttons/inputs
-- [ ] Are attribute curly braces immediately after the element?
-- [ ] For grids, is the content inside `::: grid-N` with `###` items and `:::` to close?
-- [ ] For containers, is there a space after `:::`?
-- [ ] For dropdowns, is the list directly after the `[...v]`?
-- [ ] Are you using the right syntax? Check [Quick Reference](QUICK-REFERENCE.md)
+No. wiremd generates static HTML (or JSX/JSON). Components such as tabs, accordions, and modals produce the correct semantic markup and ARIA-friendly structure, but client-side behaviour (switching tabs, expanding accordion items) must be provided by your own CSS and JavaScript, or by the framework you use with the React output.
 
 ---
 
 ## Getting Help
 
-### Where can I find examples?
-
-- [Syntax Showcase](examples/showcase.md) - Comprehensive interactive examples
-- [Examples folder](examples/) - Various example files
-- [Quick Reference](QUICK-REFERENCE.md) - Quick syntax lookup
-
 ### Where is the complete syntax specification?
 
-See [SYNTAX-SPEC-v0.1.md](SYNTAX-SPEC-v0.1.md) for the formal specification including parser rules and JSON schema.
+See [./syntax-spec.md](./syntax-spec.md) for the formal specification including parser rules and the JSON schema for every node type.
 
-### How do I report a bug?
+### How do I report a bug or request a feature?
 
-Check if it's a known issue in this FAQ, then:
-1. Search existing issues at [github.com/yourusername/wiremd/issues](https://github.com/yourusername/wiremd/issues)
-2. If not found, create a new issue with:
-   - Your wiremd syntax (minimal reproduction)
-   - Expected behavior
-   - Actual behavior
-   - wiremd version
-
-### How do I request a feature?
-
-Open an issue on GitHub with:
-- Clear description of the feature
-- Use case / why it's needed
-- Example syntax (if applicable)
-
-### Is there a community/forum?
-
-Check the GitHub Discussions page for community support and discussions.
-
----
-
-## Known Limitations (v0.1)
-
-These are known issues that will be addressed in future versions:
-
-1. **Placeholder text in inputs** sometimes renders as buttons
-2. **Tabs and accordions** not yet implemented
-3. **File upload inputs** have limited styling
-4. **No template/partial system** for reusable components
-5. **No responsive breakpoint syntax** (relies on CSS)
-6. **No JavaScript interactivity** in rendered output
-7. **Limited framework exports** (only HTML currently)
-
-See the [roadmap](markdown-mockup-project-plan.md) for planned features.
-
----
-
-*Last updated: 2025-11-15*
+Search existing issues first at [github.com/teezeit/wiremd/issues](https://github.com/teezeit/wiremd/issues). If your issue is not there, open a new one with a minimal reproduction (the smallest wiremd source that demonstrates the problem), the expected output, and the actual output. For feature requests, include a description, your use case, and an example of what the syntax might look like.

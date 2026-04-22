@@ -9,7 +9,7 @@
 | Component | Syntax | Example |
 |-----------|--------|---------|
 | **Button** | `[Text]` | `[Click Me]` |
-| **Primary Button** | `[Text]*` or `[Text]{.primary}` | `[Submit]*` |
+| **Primary Button** | `[Text]*` or `[Text]{variant:primary}` | `[Submit]*` |
 | **Text Input** | `[___]` | `[Name___________]` |
 | **Email Input** | `[___]{type:email}` | `[Email___]{type:email required}` |
 | **Password** | `[***]` or `{type:password}` | `[********]{type:password}` |
@@ -61,10 +61,11 @@ Grid items are defined by `###` headings inside the `::: grid-N` container.
 
 | Attribute Type | Syntax | Example |
 |----------------|--------|---------|
-| **Class** | `{.classname}` | `{.primary .large}` |
+| **Class** | `{.classname}` | `{.large}` |
 | **Key-Value** | `{key:value}` | `{type:email required}` |
+| **Variant** | `{variant:name}` | `{variant:danger}` |
 | **State** | `{state:name}` | `{state:disabled}` |
-| **Combined** | `{.class key:value state:name}` | `{.primary type:submit state:loading}` |
+| **Combined** | `{.class key:value state:name}` | `{variant:danger state:loading}` |
 
 ## Input Types
 
@@ -85,8 +86,8 @@ Grid items are defined by `###` headings inside the `::: grid-N` container.
 ```markdown
 {required}           # Required field
 {required:true}      # Also valid
-{disabled}           # Disabled
-{state:disabled}     # Also valid
+{disabled}           # Disabled (inputs, textarea, select only)
+{state:disabled}     # Disabled state (buttons and form elements)
 {state:error}        # Error state
 {min:1 max:100}      # Number constraints
 {rows:5}             # Textarea rows
@@ -97,14 +98,15 @@ Grid items are defined by `###` headings inside the `::: grid-N` container.
 
 ```markdown
 [Button]                    # Default
-[Button]*                   # Primary (asterisk shorthand)
-[Button]{.primary}          # Primary (class)
-[Button]{.secondary}        # Secondary
-[Button]{.outline}          # Outline
+[Button]*                   # Primary (reliable shorthand — preferred)
+[Button]{variant:primary}   # Primary (explicit variant)
+[Button]{variant:secondary} # Secondary
 [Button]{variant:danger}    # Danger/destructive
-[Button]{state:disabled}    # Disabled
+[Button]{state:disabled}    # Disabled (adds wmd-state-disabled class + HTML disabled)
 [Button]{state:loading}     # Loading
 ```
+
+> **Note:** `{.primary}` and `{.danger}` on buttons add raw CSS classes (`wmd-primary`, `wmd-danger`), not variant classes (`wmd-button-primary`). These have no built-in style definitions. Use `[Button]*` or `{variant:primary}` / `{variant:danger}` for styled variants. `{disabled}` (without `state:`) is silently ignored on buttons — use `{state:disabled}` instead.
 
 ## Form Pattern
 
@@ -143,14 +145,16 @@ Message
 
 ### Multi-file Navigation
 
-When running `wiremd --serve`, clicking a button link navigates to and renders that `.md` file:
+When running `wiremd --serve <port>`, clicking a button link navigates to and renders that `.md` file:
 
 ```markdown
 # Shared navbar (paste in each page)
 [[ :logo: MyApp | [Home](./home.md) | [About](./about.md) | [Contact](./contact.md)* ]]
 ```
 
-The dev server (`--serve <port>`) redirects `/` to the entry file and renders any `.md` on demand — no build step needed between page navigations.
+The dev server redirects `/` to the entry file and renders any `.md` on demand — no build step needed between page navigations.
+
+→ [Full CLI reference](./cli.md)
 
 ## Grid Pattern
 
@@ -273,7 +277,8 @@ wiremd supports **all standard Markdown** syntax:
 ---
 
 **See Also:**
+- [CLI Reference](./cli.md) - All flags, defaults, and flag interactions
 - [Complete Syntax Showcase](examples/showcase.md) - Interactive examples and tutorials
-- [Syntax Guide](docs/guide/syntax.md) - User-friendly guide with best practices
+- [Syntax Guide](./syntax.md) - User-friendly guide with best practices
 - [FAQ](FAQ.md) - Common questions and troubleshooting
 - [Formal Specification](SYNTAX-SPEC-v0.1.md) - Complete technical specification

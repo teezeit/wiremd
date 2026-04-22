@@ -48,10 +48,10 @@ Welcome to the comprehensive wiremd syntax guide! This document serves as both a
 - [🚀 Complete Page Example](#-complete-page-example)
 
 **Quick Links:**
-- [Quick Reference](../QUICK-REFERENCE.md) - One-page syntax cheat sheet
-- [FAQ](../FAQ.md) - Common questions and troubleshooting
-- [Syntax Guide](../docs/guide/syntax.md) - User-friendly guide
-- [Formal Specification](../SYNTAX-SPEC-v0.1.md) - Technical specification
+- [Quick Reference](../reference/quick-reference.md) - One-page syntax cheat sheet
+- [FAQ](../reference/faq.md) - Common questions and troubleshooting
+- [Syntax Guide](../reference/syntax.md) - User-friendly guide
+- [Formal Specification](../reference/syntax-spec.md) - Technical specification
 
 ---
 
@@ -791,23 +791,23 @@ Unable to load data
 
 ## 🎛️ Interactive Components
 
-### Tabs (Syntax Example - Not Yet Implemented)
+### Tabs
 
 ```markdown
 ::: tabs
-::: tab "Overview" active
+::: tab Overview {.active}
 Overview content here
 :::
-::: tab "Details"
+::: tab Details
 Details content here
 :::
-::: tab "Settings"
+::: tab Settings
 Settings content here
 :::
 :::
 ```
 
-### Accordion (Syntax Example - Not Yet Implemented)
+### Accordion (parsed but not yet rendered)
 
 ```markdown
 ::: accordion

@@ -24,12 +24,19 @@ wiremd syntax is designed to be:
 
 ```markdown
 [Button Text]                    # Basic button
-[Button Text]{.primary}          # Primary button with class
-[Button Text]{.secondary}        # Secondary button
-[Button Text]{.danger}           # Danger/destructive button
-[Button Text]*                   # Primary button (shorthand)
-[Button Text]{:disabled}         # Disabled state
+[Button Text]*                   # Primary button (shorthand — preferred)
+[Button Text]{variant:primary}   # Primary button (explicit)
+[Button Text]{variant:secondary} # Secondary button
+[Button Text]{variant:danger}    # Danger/destructive button
+[Button Text]{state:disabled}    # Disabled state
+[Button Text]{state:loading}     # Loading state
 ```
+
+**Variant vs. class syntax:**
+- `{variant:primary}` sets `props.variant` and renders as `wmd-button-primary` ✓
+- `{.primary}` sets a raw CSS class `wmd-primary` — no built-in button styling, not equivalent
+- `{:disabled}` and `{state:disabled}` are both parsed correctly; `{state:disabled}` is the canonical form
+- `{disabled}` (bare boolean) is silently ignored on buttons; use `{state:disabled}` instead
 
 **Parser Rules:**
 - `[Text]` where Text does not contain `]` and is not a markdown link
@@ -265,21 +272,24 @@ Main content
 ### 5.3 State Attributes
 
 ```markdown
-{:disabled}
-{:loading}
-{:active}
-{:error}
+{state:disabled}
+{state:loading}
+{state:active}
+{state:error}
 ```
 
 **Parser Rules:**
-- Curly braces with `:` prefix for states
-- Represents component state
-- Single state per element (primary state)
+- Curly braces with `state:value` key-value syntax for states
+- Represents component state; renders as `wmd-state-{value}` CSS class
+- On buttons, `{state:disabled}` also adds the HTML `disabled` attribute
+- Colon-prefix form (`{:disabled}`) is also accepted and parsed identically; `{state:disabled}` is the canonical form
+- `{disabled}` (bare boolean) works on inputs, textareas, and selects only — silently ignored on buttons
 
 ### 5.4 Combined Attributes
 
 ```markdown
-{.primary type:submit :disabled}
+{variant:primary state:loading}
+{type:email required state:error}
 ```
 
 **Parser Rules:**
@@ -379,7 +389,7 @@ Main content
 ### 7.1 Navigation Bars
 
 ```markdown
-[[ :logo: Brand | Link 1 | Link 2 | [Button] [Button]{.primary} ]]{.nav}
+[[ :logo: Brand | Link 1 | Link 2 | [Button] [Button]* ]]{.nav}
 ```
 
 **Components:**
@@ -454,10 +464,10 @@ Status: |Active|{.success}
 ### 8.1 Component States
 
 ```markdown
-[Button]{:disabled}      # Disabled state
-[Loading...]{:loading}   # Loading state
-[Success]{:success}      # Success state
-[Error]{:error}          # Error state
+[Button]{state:disabled}      # Disabled state
+[Loading...]{state:loading}   # Loading state
+[Success]{state:success}      # Success state
+[Error]{state:error}          # Error state
 ```
 
 ### 8.2 Loading States
@@ -468,7 +478,7 @@ Status: |Active|{.success}
 Please wait while we process your request
 :::
 
-[Submit]{:loading}
+[Submit]{state:loading}
 ```
 
 ### 8.3 Empty States
@@ -478,7 +488,7 @@ Please wait while we process your request
 :empty-box:
 ## No items found
 Get started by creating your first item
-[Create Item]{.primary}
+[Create Item]*
 :::
 ```
 
@@ -489,7 +499,7 @@ Get started by creating your first item
 :warning:
 ## Something went wrong
 We couldn't load this page
-[Retry]{.primary}
+[Retry]*
 :::
 ```
 
@@ -500,7 +510,7 @@ We couldn't load this page
 | Component | Syntax | Example |
 |-----------|--------|---------|
 | Button | `[Text]` | `[Click Me]` |
-| Primary Button | `[Text]*` or `[Text]{.primary}` | `[Submit]*` |
+| Primary Button | `[Text]*` or `[Text]{variant:primary}` | `[Submit]*` |
 | Text Input | `[___]` | `[Enter name___]` |
 | Email Input | `[___]{type:email}` | `[Email___]{type:email required}` |
 | Password | `[***]` | `[*********]` |
@@ -511,9 +521,10 @@ We couldn't load this page
 | Icon | `:name:` | `:house: :user:` |
 | Container | `::: type ... :::` | `::: hero ... :::` |
 | Inline Container | `[[ ... ]]` | `[[ A \| B \| C ]]` |
-| Class | `{.class}` | `{.primary}` |
+| Class | `{.class}` | `{.large}` |
 | Attribute | `{key:value}` | `{type:email}` |
-| State | `{:state}` | `{:disabled}` |
+| Variant | `{variant:name}` | `{variant:danger}` |
+| State | `{state:name}` | `{state:disabled}` |
 | Grid | `::: grid-N` … `:::` | `::: grid-3 card` |
 
 ---
@@ -658,7 +669,7 @@ Name
 Email
 [_____________________________]{type:email required}
 
-[Submit]{.primary}
+[Submit]*
 ```
 
 **Output (JSON):**
@@ -696,7 +707,7 @@ Email
     {
       "type": "button",
       "props": {
-        "classes": ["primary"]
+        "variant": "primary"
       },
       "content": "Submit"
     }

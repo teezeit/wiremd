@@ -317,9 +317,9 @@ See [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
 ## 📚 Additional Resources
 
 - **[Syntax Showcase](../showcase.md)** - Complete syntax reference
-- **[Quick Reference](../../QUICK-REFERENCE.md)** - One-page cheat sheet
-- **[Syntax Guide](../../docs/guide/syntax.md)** - User-friendly tutorial
-- **[FAQ](../../FAQ.md)** - Common questions and troubleshooting
+- **[Quick Reference](../../reference/quick-reference.md)** - One-page cheat sheet
+- **[Syntax Guide](../../reference/syntax.md)** - User-friendly tutorial
+- **[FAQ](../../reference/faq.md)** - Common questions and troubleshooting
 
 ---
 
@@ -370,12 +370,12 @@ See [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
 
 Found a bug? Have a suggestion? Want to request a new example?
 
-- **Issues:** [GitHub Issues](https://github.com/akonan/wiremd/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/akonan/wiremd/discussions)
+- **Issues:** [GitHub Issues](https://github.com/teezeit/wiremd/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/teezeit/wiremd/discussions)
 - **Email:** [Contact Us](mailto:[email protected])
 
 ---
 
 **Happy wireframing! 🎨**
 
-*This gallery is part of the [wiremd](https://github.com/akonan/wiremd) project - an open-source MIT-licensed tool for creating wireframes and mockups using Markdown syntax.*
+*This gallery is part of the [wiremd](https://github.com/teezeit/wiremd) project - an open-source MIT-licensed tool for creating wireframes and mockups using Markdown syntax.*
