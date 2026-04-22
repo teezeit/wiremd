@@ -61,6 +61,8 @@ export default defineConfig({
             { text: 'Button Links', link: '/components/button-links' },
             { text: 'Reuse Components', link: '/components/includes' },
             { text: 'Attributes & Classes', link: '/components/attributes' },
+            { text: 'Demo Blocks', link: '/components/demo' },
+            { text: 'Visual Styles', link: '/components/styles' },
           ]
         },
         {
@@ -137,7 +139,7 @@ export default defineConfig({
         {
           text: 'Reference',
           items: [
-            { text: 'Visual Styles', link: '/reference/styles' },
+            { text: 'Visual Styles', link: '/components/styles' },
             { text: 'CLI Reference', link: '/reference/cli' },
             { text: 'FAQ & Troubleshooting', link: '/reference/faq' },
           ]
@@ -167,7 +169,7 @@ export default defineConfig({
         {
           text: 'Reference',
           items: [
-            { text: 'Visual Styles', link: '/reference/styles' },
+            { text: 'Visual Styles', link: '/components/styles' },
             { text: 'CLI Reference', link: '/reference/cli' },
             { text: 'FAQ & Troubleshooting', link: '/reference/faq' },
           ]
@@ -190,7 +192,7 @@ export default defineConfig({
         {
           text: 'Reference',
           items: [
-            { text: 'Visual Styles', link: '/reference/styles' },
+            { text: 'Visual Styles', link: '/components/styles' },
             { text: 'CLI Reference', link: '/reference/cli' },
             { text: 'FAQ & Troubleshooting', link: '/reference/faq' },
           ]

@@ -33,7 +33,7 @@ features:
   - icon: 🎨
     title: 7 visual styles
     details: sketch, clean, wireframe, material, brutal, tailwind, none — switch with one flag.
-    link: /reference/styles
+    link: /components/styles
   - icon: 📋
     title: Examples
     details: Ready-to-use templates for forms, dashboards, landing pages, and multi-page flows.
