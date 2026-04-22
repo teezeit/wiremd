@@ -362,6 +362,21 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
   const items = node.items || [];
   const children: WiremdNode[] = [];
 
+  // Detect breadcrumb: single item containing ">" separator (e.g. [[ Home > Products > Item ]])
+  if (items.length === 1 && items[0].includes('>')) {
+    const crumbs = items[0].split(/\s*>\s*/).map((c: string) => c.trim()).filter(Boolean);
+    return {
+      type: 'breadcrumbs',
+      props,
+      children: crumbs.map((crumb: string, i: number) => ({
+        type: 'breadcrumb-item',
+        content: crumb,
+        current: i === crumbs.length - 1,
+        props: {},
+      })) as any,
+    };
+  }
+
   // Parse each item - could be text, icon, or button
   for (const item of items) {
     const trimmed = item.trim();
