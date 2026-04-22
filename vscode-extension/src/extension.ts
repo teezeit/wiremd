@@ -94,6 +94,7 @@ export function activate(context: vscode.ExtensionContext) {
       const destFile = path.join(destDir, 'wireframe.md');
       fs.copyFileSync(skillSrc, destFile);
 
+      context.globalState.update('wiremd.claudeSkillInstalled', true);
       const open = await vscode.window.showInformationMessage(
         'Wiremd Claude skill installed to .claude/skills/wireframe.md',
         'Open File'
@@ -103,6 +104,24 @@ export function activate(context: vscode.ExtensionContext) {
       }
     })
   );
+
+  // Prompt to install Claude skill on first activation
+  const skillInstalled = context.globalState.get('wiremd.claudeSkillInstalled', false);
+  if (!skillInstalled) {
+    vscode.window.showInformationMessage(
+      'Wiremd: Want Claude Code to generate wireframes for you? Install the Claude skill.',
+      'Install Skill',
+      'Not Now'
+    ).then((choice) => {
+      if (choice === 'Install Skill') {
+        vscode.commands.executeCommand('wiremd.installClaudeSkill').then(() => {
+          context.globalState.update('wiremd.claudeSkillInstalled', true);
+        });
+      } else if (choice === 'Not Now') {
+        context.globalState.update('wiremd.claudeSkillInstalled', true);
+      }
+    });
+  }
 
   // Auto-open preview if configured
   context.subscriptions.push(
