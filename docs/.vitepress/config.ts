@@ -14,8 +14,9 @@ export default defineConfig({
       { text: 'API', link: '/api/' },
       { text: 'Examples', link: '/examples/' },
       { text: 'Reference', link: '/reference/quick-reference' },
+      { text: 'Explanation', link: '/explanation/how-it-works' },
       { text: 'Contributing', link: '/contributing/testing' },
-      { text: 'GitHub', link: 'https://github.com/akonan/wiremd' }
+      { text: 'GitHub', link: 'https://github.com/teezeit/wiremd' }
     ],
 
     sidebar: {
@@ -25,7 +26,7 @@ export default defineConfig({
           items: [
             { text: 'Getting Started', link: '/guide/getting-started' },
             { text: 'Installation', link: '/guide/installation' },
-            { text: 'Syntax Reference', link: '/guide/syntax' },
+            { text: 'Syntax Reference', link: '/reference/syntax' },
             { text: 'Framework Integrations', link: '/guide/integrations' },
             { text: 'Homebrew', link: '/guide/homebrew' },
             { text: 'Troubleshooting', link: '/guide/troubleshooting' }
@@ -154,8 +155,19 @@ export default defineConfig({
           text: 'Reference',
           items: [
             { text: 'Quick Reference', link: '/reference/quick-reference' },
+            { text: 'Visual Styles', link: '/reference/styles' },
+            { text: 'CLI Reference', link: '/reference/cli' },
+            { text: 'Syntax Guide', link: '/reference/syntax' },
             { text: 'Syntax Spec v0.1', link: '/reference/syntax-spec' },
             { text: 'FAQ', link: '/reference/faq' },
+          ]
+        }
+      ],
+      '/explanation/': [
+        {
+          text: 'Explanation',
+          items: [
+            { text: 'How wiremd Works', link: '/explanation/how-it-works' },
           ]
         }
       ],
@@ -171,7 +183,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/akonan/wiremd' }
+      { icon: 'github', link: 'https://github.com/teezeit/wiremd' }
     ],
 
     footer: {
