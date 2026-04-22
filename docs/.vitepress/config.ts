@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress';
 
 export default defineConfig({
   title: 'wiremd',
-  description: 'Text-first UI design tool - Create wireframes and mockups using Markdown syntax',
+  description: 'Wireframes in plain text — write Markdown, render visual UI mockups',
   base: '/wiremd/',
 
   themeConfig: {
@@ -11,10 +11,8 @@ export default defineConfig({
     nav: [
       { text: 'Guide', link: '/guide/getting-started' },
       { text: 'Components', link: '/components/' },
-      { text: 'API', link: '/api/' },
       { text: 'Examples', link: '/examples/' },
       { text: 'Reference', link: '/reference/quick-reference' },
-      { text: 'Explanation', link: '/explanation/how-it-works' },
       { text: 'Contributing', link: '/contributing/testing' },
       { text: 'GitHub', link: 'https://github.com/teezeit/wiremd' }
     ],
@@ -25,13 +23,10 @@ export default defineConfig({
           text: 'Guide',
           items: [
             { text: 'Getting Started', link: '/guide/getting-started' },
-            { text: 'Installation', link: '/guide/installation' },
             { text: 'VS Code Extension', link: '/guide/vscode' },
             { text: 'Using with Claude', link: '/guide/claude' },
-            { text: 'Syntax Reference', link: '/reference/syntax' },
-            { text: 'Framework Integrations', link: '/guide/integrations' },
-            { text: 'Homebrew', link: '/guide/homebrew' },
-            { text: 'Troubleshooting', link: '/guide/troubleshooting' }
+            { text: 'CLI Install', link: '/guide/installation' },
+            { text: 'How wiremd works', link: '/guide/how-it-works' },
           ]
         }
       ],
@@ -57,7 +52,7 @@ export default defineConfig({
           items: [
             { text: 'Grid', link: '/components/grid' },
             { text: 'Row', link: '/components/row' },
-            { text: 'Sidebar Layout', link: '/components/sidebar-layout' },
+            { text: 'Page Layouts', link: '/components/page-layouts' },
           ]
         },
         {
@@ -72,21 +67,6 @@ export default defineConfig({
           text: 'Roadmap',
           items: [
             { text: 'Not Yet Implemented', link: '/components/not-implemented-components' },
-          ]
-        }
-      ],
-      '/api/': [
-        {
-          text: 'API Reference',
-          items: [
-            { text: 'Overview', link: '/api/' },
-            { text: 'Parser API', link: '/api/parser' },
-            { text: 'Renderer APIs', link: '/api/renderer' },
-            { text: 'JSON Schema', link: '/api/json-schema' },
-            { text: 'Type Definitions', link: '/api/types' },
-            { text: 'Plugin API', link: '/api/plugins' },
-            { text: 'Error Handling', link: '/api/errors' },
-            { text: 'Migration Guides', link: '/api/migration' }
           ]
         }
       ],
@@ -158,18 +138,48 @@ export default defineConfig({
           text: 'Reference',
           items: [
             { text: 'Quick Reference', link: '/reference/quick-reference' },
+            { text: 'Syntax Guide', link: '/reference/syntax' },
             { text: 'Visual Styles', link: '/reference/styles' },
             { text: 'CLI Reference', link: '/reference/cli' },
-            { text: 'Syntax Guide', link: '/reference/syntax' },
-            { text: 'FAQ', link: '/reference/faq' },
+            { text: 'FAQ & Troubleshooting', link: '/reference/faq' },
+          ]
+        },
+        {
+          text: 'API',
+          items: [
+            { text: 'Overview', link: '/api/' },
+            { text: 'Parser API', link: '/api/parser' },
+            { text: 'Renderer APIs', link: '/api/renderer' },
+            { text: 'JSON Schema', link: '/api/json-schema' },
+            { text: 'Type Definitions', link: '/api/types' },
+            { text: 'Plugin API', link: '/api/plugins' },
+            { text: 'Error Handling', link: '/api/errors' },
+            { text: 'Migration Guides', link: '/api/migration' },
           ]
         }
       ],
-      '/explanation/': [
+      '/api/': [
         {
-          text: 'Explanation',
+          text: 'Reference',
           items: [
-            { text: 'How wiremd Works', link: '/explanation/how-it-works' },
+            { text: 'Quick Reference', link: '/reference/quick-reference' },
+            { text: 'Syntax Guide', link: '/reference/syntax' },
+            { text: 'Visual Styles', link: '/reference/styles' },
+            { text: 'CLI Reference', link: '/reference/cli' },
+            { text: 'FAQ & Troubleshooting', link: '/reference/faq' },
+          ]
+        },
+        {
+          text: 'API',
+          items: [
+            { text: 'Overview', link: '/api/' },
+            { text: 'Parser API', link: '/api/parser' },
+            { text: 'Renderer APIs', link: '/api/renderer' },
+            { text: 'JSON Schema', link: '/api/json-schema' },
+            { text: 'Type Definitions', link: '/api/types' },
+            { text: 'Plugin API', link: '/api/plugins' },
+            { text: 'Error Handling', link: '/api/errors' },
+            { text: 'Migration Guides', link: '/api/migration' },
           ]
         }
       ],

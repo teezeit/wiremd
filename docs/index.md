@@ -1,69 +1,28 @@
 # wiremd
 
-**Write wireframes like you write code.**
+**Wireframes in plain text.**
 
-wiremd converts Markdown into visual UI mockups — no design tool, no drag-and-drop, no context switch. If you already prototype in your editor and document in Markdown, wiremd fits naturally into that workflow. It's built for developers who need to sketch a screen quickly, share it with a team, or generate a component scaffold, not for designers building pixel-perfect mockups.
-
-## Example
-
-A contact form in a few lines:
+Write a screen as Markdown, see it render as a visual mockup — no design tool, no drag-and-drop. Works in VS Code, through Claude, or from the command line.
 
 ```markdown
-## Contact Form
-
-Name
-[_____________________________]{required}
+## Login
 
 Email
-[_____________________________]{type:email required}
+[_____________________________]{type:email}
 
-[Submit]{.primary} [Cancel]
+Password
+[_____________________________]{type:password}
+
+[Sign In]* [Forgot password?]
 ```
-
-A page layout with navigation and a two-column grid:
-
-```markdown
-[[ nav | Logo | Home | About | [Sign in]* ]]
-
-::: grid-2
-::: card
-## Recent Activity
-Content here
-:::
-::: card
-## Quick Actions
-[New Project]* [Import]*
-:::
-:::
-```
-
-Both render to styled HTML in seconds.
 
 ## Get started
 
-**No terminal?** [Install the VS Code extension](./guide/vscode.md) — open any `.md` file and click preview. That's it.
+**No terminal?**
+[Install the VS Code extension](./guide/vscode.md) — open any `.md` file, click the preview icon. Done.
 
-**Using Claude?** [Describe what you want](./guide/claude.md) — Claude generates and renders the wireframe for you.
+**Want to describe it?**
+[Use Claude](./guide/claude.md) — tell Claude what screen you want, it writes and renders the wireframe for you.
 
-**CLI / npm:**
-
-1. **Install** — `npm install -g wiremd` ([full install options](./guide/installation.md))
-2. **Write** — create a `.md` file using [wiremd syntax](./reference/syntax.md)
-3. **Render** — `wiremd input.md --serve 3001` to preview in the browser, or `wiremd input.md -o output.html` to export
-
-## Key capabilities
-
-- **Multiple output formats** — HTML, React/JSX, Tailwind, or JSON from the same source file
-- **7 visual styles** — sketch, clean, wireframe, material, brutal, and more; switch with `--style`
-- **VS Code extension** — live preview panel that updates on save, no terminal required
-- **Claude integration** — describe a screen in plain English, Claude generates and renders the wireframe
-- **CLI and programmatic API** — use as a build step, in scripts, or directly from Node
-
-## Community
-
-- [GitHub Repository](https://github.com/teezeit/wiremd)
-- [Issue Tracker](https://github.com/teezeit/wiremd/issues)
-- [Discussions](https://github.com/teezeit/wiremd/discussions)
-- [Contributing Guide](./contributing/testing.md)
-
-wiremd is open source under the [MIT License](../LICENSE).
+**Developer / CLI:**
+`npm install -g wiremd` then `wiremd file.md --serve 3001` — or see the [full install guide](./guide/installation.md).

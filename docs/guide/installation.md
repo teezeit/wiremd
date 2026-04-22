@@ -1,12 +1,6 @@
 # Installation
 
-## VS Code extension (no terminal required)
-
-Install [wiremd preview](https://marketplace.visualstudio.com/items?itemName=eclectic-ai.wiremd-preview) from the VS Code Marketplace — search **wiremd preview** in the Extensions panel and click Install. See the [VS Code Extension guide](./vscode.md) for the full walkthrough.
-
-The sections below cover the npm package for CLI and API use.
-
----
+> This page covers the npm package for CLI and programmatic use. No terminal? [Install the VS Code extension](./vscode.md) instead.
 
 ## Requirements
 

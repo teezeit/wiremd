@@ -15,7 +15,7 @@ wiremd provides a powerful programmatic API for parsing and rendering wireframes
 ## Additional Resources
 
 - 🚀 **[Framework Integrations](../guide/integrations.md)** - Next.js, React, Vite, and more
-- 🔧 **[Troubleshooting Guide](../guide/troubleshooting.md)** - Common issues and solutions
+- 🔧 **[FAQ & Troubleshooting](../reference/faq.md)** - Common issues and solutions
 
 ## Installation
 

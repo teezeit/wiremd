@@ -1,6 +1,4 @@
-# wiremd FAQ
-
-> Conceptual questions about how wiremd works and why it works that way
+# FAQ & Troubleshooting
 
 ## Table of Contents
 
@@ -8,6 +6,7 @@
 - [Syntax Questions](#syntax-questions)
 - [Components](#components)
 - [Layout & Styling](#layout--styling)
+- [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -179,3 +178,64 @@ See [./syntax.md](./syntax.md) for the full syntax guide, [./quick-reference.md]
 ### How do I report a bug or request a feature?
 
 Search existing issues first at [github.com/teezeit/wiremd/issues](https://github.com/teezeit/wiremd/issues). If your issue is not there, open a new one with a minimal reproduction (the smallest wiremd source that demonstrates the problem), the expected output, and the actual output. For feature requests, include a description, your use case, and an example of what the syntax might look like.
+
+---
+
+## Troubleshooting
+
+### `wiremd: command not found`
+
+Install globally or use npx:
+
+```bash
+npm install -g wiremd   # then: wiremd file.md
+# or without installing:
+npx wiremd file.md
+```
+
+### Port already in use (`EADDRINUSE`)
+
+`--serve` requires an explicit port. If it's taken, pick another:
+
+```bash
+wiremd file.md --serve 3001
+```
+
+### Buttons appear as plain text
+
+Check for extra spaces or missing brackets:
+
+```markdown
+[Submit]*        ✓
+[ Submit ]       ✗ extra spaces
+[Submit          ✗ missing closing bracket
+```
+
+### Input fields not recognised
+
+The input must have enough underscores (at least 3) and no blank line between the label and the field:
+
+```markdown
+Username              ✓ label directly above
+[_____________________________]
+
+Username              ✗ blank line breaks association
+
+[_____________________________]
+```
+
+### Grid columns not appearing
+
+Each column needs a `###` heading inside the container:
+
+```markdown
+::: grid-3 card
+
+### Column 1
+Content
+
+### Column 2
+Content
+
+:::
+```
