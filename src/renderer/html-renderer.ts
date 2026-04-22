@@ -118,6 +118,9 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'tab':
       return renderTab(node, context);
 
+    case 'breadcrumbs':
+      return renderBreadcrumbs(node, context);
+
     default:
       return `<!-- Unknown node type: ${(node as any).type} -->`;
   }
@@ -465,6 +468,19 @@ function renderNavItem(node: any, context: RenderContext): string {
 
   const classes = buildClasses(prefix, 'nav-item', node.props);
   return `<a href="${href}" class="${classes}">${contentHTML}</a>`;
+}
+
+function renderBreadcrumbs(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const items: any[] = node.children || [];
+  const crumbsHTML = items.map((crumb: any, i: number) => {
+    const isLast = i === items.length - 1;
+    const label = escapeHtml(crumb.content || '');
+    return isLast
+      ? `<span class="${prefix}breadcrumb-item ${prefix}breadcrumb-current" aria-current="page">${label}</span>`
+      : `<span class="${prefix}breadcrumb-item"><a href="#">${label}</a></span><span class="${prefix}breadcrumb-sep" aria-hidden="true">›</span>`;
+  }).join('');
+  return `<nav class="${prefix}breadcrumbs" aria-label="breadcrumb">${crumbsHTML}</nav>`;
 }
 
 function renderBrand(node: any, context: RenderContext): string {

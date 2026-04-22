@@ -171,6 +171,40 @@ Content
     });
   });
 
+  describe('Breadcrumbs', () => {
+    it('should render [[ A > B > C ]] as a breadcrumb nav', () => {
+      const ast = parse('[[ Home > Products > Item ]]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('wmd-breadcrumbs');
+      expect(html).toContain('aria-label="breadcrumb"');
+      expect(html).toContain('Home');
+      expect(html).toContain('Products');
+      expect(html).toContain('Item');
+    });
+
+    it('should render intermediate items as links and the last as current', () => {
+      const ast = parse('[[ Docs > API > Reference ]]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('<a href="#">Docs</a>');
+      expect(html).toContain('<a href="#">API</a>');
+      expect(html).toContain('wmd-breadcrumb-current');
+      expect(html).toContain('aria-current="page"');
+      expect(html).toContain('Reference');
+      // last item should not be a link
+      expect(html).not.toMatch(/<a[^>]*>Reference<\/a>/);
+    });
+
+    it('should not render [[ A > B ]] as a nav', () => {
+      const ast = parse('[[ Home > Settings ]]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).not.toContain('wmd-nav"');
+      expect(html).toContain('wmd-breadcrumbs');
+    });
+  });
+
   describe('Grid Layout', () => {
     it('should render a 3-column grid', () => {
       const input = `

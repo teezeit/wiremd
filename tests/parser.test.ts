@@ -487,6 +487,36 @@ Nested content
     });
   });
 
+  describe('Breadcrumbs', () => {
+    it('should parse [[ A > B > C ]] as breadcrumbs, not nav', () => {
+      const result = parse('[[ Home > Products > Item ]]');
+      expect(result.children[0].type).toBe('breadcrumbs');
+    });
+
+    it('should produce correct breadcrumb-item children', () => {
+      const result = parse('[[ Home > Settings > Profile ]]');
+      const node = result.children[0];
+      expect(node.type).toBe('breadcrumbs');
+      expect(node.children).toHaveLength(3);
+      expect(node.children[0].type).toBe('breadcrumb-item');
+      expect(node.children[0].content).toBe('Home');
+      expect(node.children[1].content).toBe('Settings');
+      expect(node.children[2].content).toBe('Profile');
+    });
+
+    it('should mark only the last item as current', () => {
+      const result = parse('[[ Docs > API ]]');
+      const items = result.children[0].children;
+      expect(items[0].current).toBe(false);
+      expect(items[1].current).toBe(true);
+    });
+
+    it('should treat [[ A | B | C ]] as nav, not breadcrumbs', () => {
+      const result = parse('[[ Home | Products | Contact ]]');
+      expect(result.children[0].type).toBe('nav');
+    });
+  });
+
   describe('Dropdown/Select Syntax', () => {
     it('should parse a basic dropdown', () => {
       const input = `[Select option___________v]`;
