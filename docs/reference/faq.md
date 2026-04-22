@@ -18,7 +18,24 @@ wiremd is a text-first UI design tool that converts Markdown with extended wiref
 
 ### What Markdown flavor does wiremd use?
 
-wiremd is built on standard CommonMark Markdown (via unified/remark) with custom extensions for UI components. All standard Markdown syntax — headings, paragraphs, lists, tables, bold, italic, links — works as expected. The extensions add three things: `:::` container blocks for layout and component grouping, `[[ ]]` inline containers for navigation bars, and inline button/input shorthand such as `[Label]*` and `[_____]`.
+wiremd is built on standard CommonMark Markdown (via unified/remark) with custom extensions for UI components. All standard Markdown syntax works as expected:
+
+| Syntax | Example |
+|--------|---------|
+| Headings | `# H1`, `## H2`, `### H3` … `###### H6` |
+| Bold | `**bold**` |
+| Italic | `*italic*` |
+| Code (inline) | `` `code` `` |
+| Link | `[text](url)` |
+| Image | `![alt](image.jpg)` |
+| Unordered list | `- item` |
+| Ordered list | `1. item` |
+| Blockquote | `> quoted text` |
+| Table | `\| col \| col \|` with `---` separator row |
+| Horizontal rule | `---` |
+| Fenced code block | ` ``` ` … ` ``` ` |
+
+The extensions add three things on top: `:::` container blocks for layout and component grouping, `[[ ]]` inline containers for navigation bars, and inline button/input shorthand such as `[Label]*` and `[_____]`.
 
 ### Can I use wiremd without installing anything?
 
@@ -26,7 +43,7 @@ wiremd requires Node.js. Install it as a library (`npm install wiremd`) for prog
 
 ### Where can I find a quick lookup of all syntax?
 
-See [./syntax.md](./syntax.md) for the full syntax guide.
+See the [Components reference](../components/) for all syntax and components.
 
 ---
 
@@ -174,7 +191,7 @@ No. wiremd generates static HTML (or JSX/JSON). Components such as tabs, accordi
 
 ### Where is the complete syntax specification?
 
-See [./syntax.md](./syntax.md) for the full syntax guide and [../api/json-schema.md](../api/json-schema.md) for the JSON output schema.
+See the [Components reference](../components/) for all syntax and components, and [JSON Schema](../api/json-schema.md) for the JSON output schema.
 
 ### How do I report a bug or request a feature?
 

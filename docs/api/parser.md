@@ -485,4 +485,4 @@ You can fork these examples and experiment with your own wiremd syntax!
 - [Type Definitions](/api/types) - Complete type reference
 - [Renderer APIs](/api/renderer) - Rendering ASTs to various formats
 - [Error Handling](/api/errors) - Error handling guide
-- [Syntax Reference](/reference/syntax) - wiremd syntax documentation
+- [Syntax Reference](/components/) - wiremd syntax documentation

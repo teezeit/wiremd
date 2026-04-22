@@ -611,4 +611,4 @@ describe('Error Handling', () => {
 
 - [Parser API](/api/parser) - Parsing and validation
 - [Type Definitions](/api/types) - Error type definitions
-- [Syntax Reference](/reference/syntax) - Valid wiremd syntax
+- [Syntax Reference](/components/) - Valid wiremd syntax

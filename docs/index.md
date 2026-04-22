@@ -48,5 +48,5 @@ Open `http://localhost:3001`. The preview reloads as you save.
 
 - [VS Code extension](./guide/vscode.md) — live preview while editing
 - [Using with Claude](./guide/claude.md) — generate wireframes from descriptions
-- [Syntax reference](./reference/syntax.md) — all components and attributes
+- [Components](./components/) — all components and attributes
 - [Examples](./examples/) — full-page wireframe templates

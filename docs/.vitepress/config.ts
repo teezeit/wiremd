@@ -12,7 +12,7 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/vscode' },
       { text: 'Components', link: '/components/' },
       { text: 'Examples', link: '/examples/' },
-      { text: 'Reference', link: '/reference/syntax' },
+      { text: 'Reference', link: '/reference/faq' },
       { text: 'GitHub', link: 'https://github.com/teezeit/wiremd' }
     ],
 
@@ -136,7 +136,6 @@ export default defineConfig({
         {
           text: 'Reference',
           items: [
-            { text: 'Syntax Guide', link: '/reference/syntax' },
             { text: 'Visual Styles', link: '/reference/styles' },
             { text: 'CLI Reference', link: '/reference/cli' },
             { text: 'FAQ & Troubleshooting', link: '/reference/faq' },
@@ -167,7 +166,6 @@ export default defineConfig({
         {
           text: 'Reference',
           items: [
-            { text: 'Syntax Guide', link: '/reference/syntax' },
             { text: 'Visual Styles', link: '/reference/styles' },
             { text: 'CLI Reference', link: '/reference/cli' },
             { text: 'FAQ & Troubleshooting', link: '/reference/faq' },
@@ -191,7 +189,6 @@ export default defineConfig({
         {
           text: 'Reference',
           items: [
-            { text: 'Syntax Guide', link: '/reference/syntax' },
             { text: 'Visual Styles', link: '/reference/styles' },
             { text: 'CLI Reference', link: '/reference/cli' },
             { text: 'FAQ & Troubleshooting', link: '/reference/faq' },
