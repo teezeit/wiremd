@@ -132,7 +132,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run bundle",
-    "bundle": "rm -rf ./claude-skill && cp -r ../claude-skill ./claude-skill && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
+    "bundle": "rm -rf ./skill && cp -r ../skill ./skill && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
     "dev": "node scripts/watch.mjs",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",

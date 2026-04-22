@@ -83,7 +83,7 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const skillSrc = path.join(context.extensionPath, 'claude-skill', 'SKILL.md');
+      const skillSrc = path.join(context.extensionPath, 'skill', 'SKILL.md');
       if (!fs.existsSync(skillSrc)) {
         vscode.window.showErrorMessage('Wiremd: Skill file not found in extension.');
         return;
