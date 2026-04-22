@@ -54,3 +54,6 @@ vscode-extension/docs/
 # Generated HTML artifacts
 examples/**/*.html
 docs/examples/**/*.html
+
+# VitePress cache
+docs/.vitepress/cache/
