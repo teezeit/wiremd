@@ -24,6 +24,27 @@ Button links, file includes, attributes and custom classes.
 
 :::
 
+## Standard Markdown
+
+All standard CommonMark Markdown works inside wiremd files:
+
+| Syntax | Example |
+|--------|---------|
+| Headings | `# H1`, `## H2`, `### H3` … `###### H6` |
+| Bold | `**bold**` |
+| Italic | `*italic*` |
+| Inline code | `` `code` `` |
+| Link | `[text](url)` |
+| Image | `![alt](image.jpg)` |
+| Unordered list | `- item` |
+| Ordered list | `1. item` |
+| Blockquote | `> quoted text` |
+| Table | `\| col \| col \|` with `---` separator row |
+| Horizontal rule | `---` |
+| Fenced code block | ` ``` ` … ` ``` ` |
+
+wiremd extends this with UI components — nothing above is broken or overridden.
+
 ## Best Practices
 
 1. **Label inputs** — put label text on the line directly above the input, no blank line between them
