@@ -410,7 +410,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     <span>Viewport:</span>
     <button id="wmd-viewport">${this.getViewportLabel(this.currentViewport)} &#x25BE;</button>
     <span id="wmd-toolbar-spacer">${viewportWidth}</span>
-    <button id="wmd-skill" title="Install Claude Skill">&#x2728;</button>
+    <button id="wmd-skill" title="Install Wireframe Agent Skill">&#x2728;</button>
     <button id="wmd-help" title="Quick Reference">?</button>
   </div>
   <div id="wmd-error-overlay"></div>
