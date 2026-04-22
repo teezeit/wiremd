@@ -1,20 +1,33 @@
-[[ :logo: AppName | Home | Library | *:gear: Settings* | :user: Account ]]
+![[_nav.md]]
+
 [[ Settings > Profile ]]
 
 ::: layout {.sidebar-main}
+
 ::: sidebar
-- **[Profile](#)**
-- [Security](#)
-- [Notifications](#)
-- [Billing](#)
-- [Team](#)
-- [Integrations](#)
+
+#### Account
+
+[[Profile](#)]
+[[Security](#)]
+[[Notifications](#)]
+[[Billing](#)]
+[[Team](#)]
+[[Integrations](#)]
 
 :::
 
 ::: main
 
+::: grid-2
+
 ### Profile Settings
+
+### {.right}
+
+[Save Changes]* [Cancel]
+
+:::
 
 ::: card
 
@@ -34,8 +47,6 @@ Job Title
 
 Bio
 [Tell us about yourself...]{rows:3}
-
-[Save Changes]* [Cancel]
 
 :::
 

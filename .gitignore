@@ -36,6 +36,7 @@ pnpm-debug.log*
 
 # Generated HTML output from CLI
 examples/**/*.html
+skills/**/*.html
 
 # Temporary
 tmp/
@@ -47,3 +48,4 @@ temp/
 .DS_Store
 Thumbs.db
 vscode-extension/*.vsix
+vscode-extension/QUICK-REFERENCE.md
