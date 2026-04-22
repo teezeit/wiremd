@@ -13,7 +13,6 @@ export default defineConfig({
       { text: 'Components', link: '/components/' },
       { text: 'Examples', link: '/examples/' },
       { text: 'Reference', link: '/reference/quick-reference' },
-      { text: 'Contributing', link: '/contributing/testing' },
       { text: 'GitHub', link: 'https://github.com/teezeit/wiremd' }
     ],
 
@@ -155,6 +154,13 @@ export default defineConfig({
             { text: 'Error Handling', link: '/api/errors' },
             { text: 'Migration Guides', link: '/api/migration' },
           ]
+        },
+        {
+          text: 'Contributing',
+          items: [
+            { text: 'Testing', link: '/contributing/testing' },
+            { text: 'Publishing', link: '/contributing/publishing' },
+          ]
         }
       ],
       '/api/': [
@@ -183,6 +189,29 @@ export default defineConfig({
         }
       ],
       '/contributing/': [
+        {
+          text: 'Reference',
+          items: [
+            { text: 'Quick Reference', link: '/reference/quick-reference' },
+            { text: 'Syntax Guide', link: '/reference/syntax' },
+            { text: 'Visual Styles', link: '/reference/styles' },
+            { text: 'CLI Reference', link: '/reference/cli' },
+            { text: 'FAQ & Troubleshooting', link: '/reference/faq' },
+          ]
+        },
+        {
+          text: 'API',
+          items: [
+            { text: 'Overview', link: '/api/' },
+            { text: 'Parser API', link: '/api/parser' },
+            { text: 'Renderer APIs', link: '/api/renderer' },
+            { text: 'JSON Schema', link: '/api/json-schema' },
+            { text: 'Type Definitions', link: '/api/types' },
+            { text: 'Plugin API', link: '/api/plugins' },
+            { text: 'Error Handling', link: '/api/errors' },
+            { text: 'Migration Guides', link: '/api/migration' },
+          ]
+        },
         {
           text: 'Contributing',
           items: [
