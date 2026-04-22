@@ -42,22 +42,23 @@ npm install
 
 1. **Uninstall any installed Wiremd extension** from the Extensions sidebar (to avoid conflicts with the dev build)
 
-2. **Start watchers** in two terminals from the repo root:
-   ```bash
-   # Terminal 1 — rebuild wiremd on src/ changes
-   npm run dev
-
-   # Terminal 2 — rebuild extension on changes
-   cd vscode-extension && npm run dev
-   ```
-
-3. **Launch VS Code with the dev extension loaded** (run from repo root):
+2. **Launch VS Code with the dev extension loaded** (run from repo root):
    ```bash
    code --extensionDevelopmentPath=$(pwd)/vscode-extension .
    ```
    This loads the dev build into your current window — no second window needed.
 
-4. **Iterate**: edit `src/`, watchers rebuild automatically, then `Cmd+Shift+P` → "Developer: Reload Window"
+3. **Start both watchers** in two terminals:
+   ```bash
+   # Terminal 1 (repo root) — rebuilds wiremd dist/ on src/ changes
+   npm run dev
+
+   # Terminal 2 (vscode-extension/) — rebundles extension whenever wiremd dist/ changes
+   cd vscode-extension && npm run dev
+   ```
+   The extension watcher (`scripts/watch.mjs`) watches `../dist/index.cjs` and triggers `npm run bundle` only after vite finishes — no race condition.
+
+4. **Reload the window**: `Cmd+Shift+P` → "Developer: Reload Window"
 
 ### Building
 

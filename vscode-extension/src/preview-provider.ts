@@ -321,53 +321,18 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     const markdown = resolveIncludes(raw, document.uri.fsPath);
 
     try {
-      // Render using wiremd
       const ast = parse(markdown);
-      const html = renderToHTML(ast, {
-        style: this.currentStyle as any,
-        pretty: true,
-        inlineStyles: true
-      });
-
-      return this.wrapHTML(html);
+      const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true });
+      return this.injectToolbar(html);
     } catch (error: any) {
       return this.getErrorHTML(error.message);
     }
   }
 
   /**
-   * Extract styles and body content from wiremd HTML
+   * Inject toolbar and VS Code bridge into the full wiremd HTML output
    */
-  private extractHTMLParts(html: string): { styles: string; content: string; fontLinks: string } {
-    // Extract <style> content
-    const styleMatch = html.match(/<style>([\s\S]*?)<\/style>/);
-    let styles = styleMatch ? styleMatch[1] : '';
-
-    // Extract @import statements and convert to link tags
-    const importMatches = styles.match(/@import\s+url\(['"]([^'"]+)['"]\);?/g) || [];
-    const fontLinks = importMatches
-      .map(imp => {
-        const urlMatch = imp.match(/url\(['"]([^'"]+)['"]\)/);
-        return urlMatch ? `<link rel="stylesheet" href="${urlMatch[1]}">` : '';
-      })
-      .join('\n  ');
-
-    // Remove @import statements from styles
-    styles = styles.replace(/@import\s+url\(['"]([^'"]+)['"]\);?\s*/g, '');
-
-    // Extract <body> content
-    const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/);
-    const content = bodyMatch ? bodyMatch[1] : html;
-
-    return { styles, content, fontLinks };
-  }
-
-  /**
-   * Wrap rendered HTML with preview chrome
-   */
-  private wrapHTML(content: string): string {
-    const { styles, content: bodyContent, fontLinks } = this.extractHTMLParts(content);
-
+  private injectToolbar(html: string): string {
     const viewportWidths: Record<string, string> = {
       desktop: '1440px',
       laptop: '1024px',
@@ -375,244 +340,83 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       mobile: '375px',
       full: '100%'
     };
-
     const viewportWidth = viewportWidths[this.currentViewport] || '100%';
 
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src https: data:; script-src 'unsafe-inline';">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <title>Wiremd Preview</title>
-  ${fontLinks}
-  <style>
-    /* Wiremd styles */
-    ${styles}
-
-    /* Preview wrapper styles - scoped to not interfere with wiremd content */
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #f5f5f5;
-      overflow-x: hidden;
-    }
-
-    /* Fix for div.wmd-root instead of body.wmd-root */
-    .wmd-root {
-      font-family: 'Kalam', 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif !important;
-      background: #f5f5dc;
-      color: #333 !important;
-      padding: 20px;
-    }
-
-    .wmd-root * {
-      color: inherit;
-    }
-
-    #toolbar {
-      position: sticky;
-      top: 0;
-      background: #ffffff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    #toolbar button {
-      padding: 6px 12px;
-      border: 1px solid #d0d0d0;
-      border-radius: 4px;
-      background: white;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-
-    #toolbar button:hover {
-      background: #f5f5f5;
-      border-color: #999;
-    }
-
-    #toolbar button:focus {
-      outline: 2px solid #007acc;
-      outline-offset: 2px;
-    }
-
-    #toolbar .dropdown-btn {
-      min-width: 120px;
-      text-align: left;
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-right: 8px;
-    }
-
-    #toolbar .dropdown-btn:hover {
-      background: #e8e8e8;
-      border-color: #007acc;
-    }
-
-    #toolbar span {
-      font-size: 13px;
-      color: #333;
-    }
-
-    .toolbar-separator {
-      width: 1px;
-      height: 20px;
-      background: #e0e0e0;
-      margin: 0 4px;
-    }
-
-    #viewport-indicator {
-      font-size: 12px;
-      color: #666;
-      margin-left: auto;
-    }
-
-    #preview-container {
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-      min-height: calc(100vh - 60px);
-    }
-
-    #preview-frame {
-      width: ${viewportWidth};
-      max-width: 100%;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      overflow: hidden;
-      transition: width 0.3s ease;
-    }
-
-    #error-overlay {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ff4444;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 2000;
-      max-width: 600px;
-      animation: slideDown 0.3s ease;
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(-20px);
+    const toolbarCSS = `
+    <style id="wmd-toolbar-styles">
+      #wmd-toolbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 9999;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       }
-      to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
+      #wmd-toolbar button {
+        padding: 6px 12px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        background: white;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: inherit;
       }
-    }
+      #wmd-toolbar button:hover { background: #f0f0f0; border-color: #999; }
+      #wmd-toolbar .wmd-sep { width: 1px; height: 20px; background: #e0e0e0; margin: 0 4px; }
+      #wmd-toolbar span { font-size: 13px; color: #333; }
+      #wmd-toolbar-spacer { margin-left: auto; font-size: 12px; color: #666; }
+      #wmd-error-overlay {
+        display: none;
+        position: fixed;
+        top: 52px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ff4444;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 6px;
+        z-index: 10000;
+        max-width: 600px;
+        font-family: -apple-system, sans-serif;
+        font-size: 13px;
+      }
+      #wmd-error-overlay.show { display: block; }
+      body { padding-top: 44px !important; }
+      ${this.currentViewport !== 'full' ? `body > * { max-width: ${viewportWidth}; margin-left: auto; margin-right: auto; }` : ''}
+    </style>`;
 
-    #error-overlay.show {
-      display: block;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 60px 20px;
-      color: #666;
-    }
-
-    .loading::after {
-      content: '...';
-      animation: dots 1.5s steps(4, end) infinite;
-    }
-
-    @keyframes dots {
-      0%, 20% { content: '.'; }
-      40% { content: '..'; }
-      60%, 100% { content: '...'; }
-    }
-  </style>
-</head>
-<body>
-  <div id="toolbar">
-    <button id="refresh-btn" title="Refresh Preview">🔄 Refresh</button>
-    <div class="toolbar-separator"></div>
-
+    const toolbarHTML = `
+  <div id="wmd-toolbar">
+    <button id="wmd-refresh">&#x1F504; Refresh</button>
+    <div class="wmd-sep"></div>
     <span>Style:</span>
-    <button id="style-btn" class="dropdown-btn" title="Change Style">
-      ${this.currentStyle.charAt(0).toUpperCase() + this.currentStyle.slice(1)} ▾
-    </button>
-
-    <div class="toolbar-separator"></div>
-
+    <button id="wmd-style">${this.currentStyle.charAt(0).toUpperCase() + this.currentStyle.slice(1)} &#x25BE;</button>
+    <div class="wmd-sep"></div>
     <span>Viewport:</span>
-    <button id="viewport-btn" class="dropdown-btn" title="Change Viewport">
-      ${this.getViewportLabel(this.currentViewport)} ▾
-    </button>
-
-    <span id="viewport-indicator">${viewportWidth}</span>
+    <button id="wmd-viewport">${this.getViewportLabel(this.currentViewport)} &#x25BE;</button>
+    <span id="wmd-toolbar-spacer">${viewportWidth}</span>
   </div>
-
-  <div id="error-overlay"></div>
-
-  <div id="preview-container">
-    <div id="preview-frame" class="wmd-root wmd-${this.currentStyle}">
-      ${bodyContent}
-    </div>
-  </div>
-
+  <div id="wmd-error-overlay"></div>
   <script>
     const vscode = acquireVsCodeApi();
-
-    // Restore state
-    const state = vscode.getState() || {};
-
-    // Handle refresh button
-    document.getElementById('refresh-btn').addEventListener('click', () => {
-      vscode.postMessage({ type: 'ready' });
-    });
-
-    // Handle style button - trigger VS Code command
-    document.getElementById('style-btn').addEventListener('click', () => {
-      vscode.postMessage({ type: 'requestStyleChange' });
-    });
-
-    // Handle viewport button - trigger VS Code command
-    document.getElementById('viewport-btn').addEventListener('click', () => {
-      vscode.postMessage({ type: 'requestViewportChange' });
-    });
-
-    // Handle messages from extension
+    document.getElementById('wmd-refresh').addEventListener('click', () => vscode.postMessage({ type: 'ready' }));
+    document.getElementById('wmd-style').addEventListener('click', () => vscode.postMessage({ type: 'requestStyleChange' }));
+    document.getElementById('wmd-viewport').addEventListener('click', () => vscode.postMessage({ type: 'requestViewportChange' }));
     window.addEventListener('message', (event) => {
-      const message = event.data;
-      switch (message.type) {
-        case 'error':
-          showError(message.message);
-          break;
+      if (event.data.type === 'error') {
+        const el = document.getElementById('wmd-error-overlay');
+        el.textContent = '⚠️ ' + event.data.message;
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 5000);
       }
     });
-
-    function showError(message) {
-      const overlay = document.getElementById('error-overlay');
-      overlay.textContent = '⚠️ ' + message;
-      overlay.classList.add('show');
-      setTimeout(() => {
-        overlay.classList.remove('show');
-      }, 5000);
-    }
-
-    // Intercept .md link clicks and navigate in preview
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a');
       if (!a) return;
@@ -622,12 +426,15 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
         vscode.postMessage({ type: 'navigate', href });
       }
     });
-
-    // Notify ready
     vscode.postMessage({ type: 'ready' });
-  </script>
-</body>
-</html>`;
+  <\/script>`;
+
+    // Add CSP and toolbar styles to <head>, inject toolbar HTML at start of <body>
+    const withCSP = html.replace(
+      '<head>',
+      `<head>\n  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src https: data:; script-src 'unsafe-inline';">${toolbarCSS}`
+    );
+    return withCSP.replace(/(<body[^>]*>)/, `$1\n${toolbarHTML}`);
   }
 
   /**

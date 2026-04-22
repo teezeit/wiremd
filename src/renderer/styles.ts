@@ -67,7 +67,9 @@ function getSketchStyle(prefix: string): string {
 
 body.${prefix}root {
   font-family: 'Kalam', 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif;
-  background: #f5f5dc;
+  background-color: #fafafa;
+  background-image: radial-gradient(circle, #c8c8c8 1px, transparent 1px);
+  background-size: 20px 20px;
   color: #333;
   padding: 20px;
   margin: 0;

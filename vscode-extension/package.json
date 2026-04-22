@@ -127,7 +127,7 @@
   "scripts": {
     "vscode:prepublish": "npm run bundle",
     "bundle": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
-    "dev": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --watch & esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --watch",
+    "dev": "node scripts/watch.mjs",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "package": "vsce package",
