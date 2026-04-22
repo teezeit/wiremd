@@ -46,7 +46,17 @@ You can also set a default in your VS Code settings:
 
 ## Preview at different screen sizes
 
-Use the toolbar buttons to switch between viewport widths: Full, Desktop (1440px), Laptop (1024px), Tablet (768px), Mobile (375px).
+Click the **Viewport** button in the preview toolbar to pick a size: Desktop (1440px), Laptop (1024px), Tablet (768px), Mobile (375px), or Full Width.
+
+## Toolbar buttons
+
+| Button | Action |
+|--------|--------|
+| 🔄 Refresh | Force re-render the current file |
+| **Style ▾** | Pick a visual style |
+| **Viewport ▾** | Pick a preview width |
+| ✨ | Install the Claude skill into this workspace |
+| **?** | Open the component quick reference |
 
 ## Browse the component reference
 

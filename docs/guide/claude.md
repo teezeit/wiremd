@@ -28,7 +28,7 @@ The skill triggers automatically on wireframing requests — you don't need to i
 - "Mockup a confirmation modal for deleting an account"
 - "Document this component as a wireframe" *(with a React/JSX file open)*
 
-Claude will generate a `.md` file, render it with `wiremd --serve`, and give you the URL to open in your browser. The VS Code preview also updates live if you have it open.
+Claude will generate a `.md` file, render it with `wiremd <file>.md --style clean --serve 3001 --watch`, and give you the URL (`http://localhost:3001`) to open in your browser. The VS Code preview also updates live if you have it open.
 
 ### Iterating
 
