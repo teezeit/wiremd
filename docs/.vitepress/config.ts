@@ -80,6 +80,7 @@ export default defineConfig({
             { text: 'Overview', link: '/api/' },
             { text: 'Parser API', link: '/api/parser' },
             { text: 'Renderer APIs', link: '/api/renderer' },
+            { text: 'JSON Schema', link: '/api/json-schema' },
             { text: 'Type Definitions', link: '/api/types' },
             { text: 'Plugin API', link: '/api/plugins' },
             { text: 'Error Handling', link: '/api/errors' },
@@ -158,7 +159,6 @@ export default defineConfig({
             { text: 'Visual Styles', link: '/reference/styles' },
             { text: 'CLI Reference', link: '/reference/cli' },
             { text: 'Syntax Guide', link: '/reference/syntax' },
-            { text: 'Syntax Spec v0.1', link: '/reference/syntax-spec' },
             { text: 'FAQ', link: '/reference/faq' },
           ]
         }

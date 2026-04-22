@@ -27,7 +27,7 @@ wiremd requires Node.js. Install it as a library (`npm install wiremd`) for prog
 
 ### Where can I find a quick lookup of all syntax?
 
-See [./quick-reference.md](./quick-reference.md) for a condensed syntax card, and [./syntax-spec.md](./syntax-spec.md) for the full formal specification.
+See [./quick-reference.md](./quick-reference.md) for a condensed syntax card, or [./syntax.md](./syntax.md) for the full syntax guide.
 
 ---
 
@@ -174,7 +174,7 @@ No. wiremd generates static HTML (or JSX/JSON). Components such as tabs, accordi
 
 ### Where is the complete syntax specification?
 
-See [./syntax-spec.md](./syntax-spec.md) for the formal specification including parser rules and the JSON schema for every node type.
+See [./syntax.md](./syntax.md) for the full syntax guide, [./quick-reference.md](./quick-reference.md) for disambiguation rules, and [../api/json-schema.md](../api/json-schema.md) for the JSON output schema.
 
 ### How do I report a bug or request a feature?
 

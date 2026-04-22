@@ -6,6 +6,7 @@ wiremd provides a powerful programmatic API for parsing and rendering wireframes
 
 - **[Parser API](./parser.md)** - Parse markdown to AST
 - **[Renderer APIs](./renderer.md)** - Render to HTML, JSON, React, and Tailwind
+- **[JSON Schema](./json-schema.md)** - JSON output schema and AST node structure.
 - **[Type Definitions](./types.md)** - Complete TypeScript type reference
 - **[Plugin API](./plugins.md)** - Create custom renderers
 - **[Error Handling](./errors.md)** - Error handling guide

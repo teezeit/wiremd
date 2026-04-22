@@ -61,11 +61,11 @@ writeFileSync('login.html', html);
 
 ## Basic Concepts
 
-wiremd components — forms, inputs, buttons, layout containers, navigation bars, and more — are expressed with a small set of Markdown extensions: brackets create inputs and buttons (`[...]`), curly-brace attributes set properties (`{type:email}`), classes apply styles (`{.primary}`), and triple-colon fences group elements into containers (`:::`). See the [syntax reference](../reference/syntax-spec.md) for the full picture.
+wiremd components — forms, inputs, buttons, layout containers, navigation bars, and more — are expressed with a small set of Markdown extensions: brackets create inputs and buttons (`[...]`), curly-brace attributes set properties (`{type:email}`), classes apply styles (`{.primary}`), and triple-colon fences group elements into containers (`:::`). See the [syntax reference](../reference/syntax.md) for the full picture.
 
 ## Visual Styles
 
-wiremd ships with 7 visual styles: `sketch`, `clean`, `wireframe`, `material`, `tailwind`, `brutal`, and `none`. Pass `--style <name>` to pick one (default is `sketch`). See the [styles reference](../reference/syntax-spec.md) for descriptions and examples.
+wiremd ships with 7 visual styles: `sketch`, `clean`, `wireframe`, `material`, `tailwind`, `brutal`, and `none`. Pass `--style <name>` to pick one (default is `sketch`). See the [styles reference](../reference/styles.md) for descriptions and examples.
 
 ```bash
 wiremd my-wireframe.md --style clean
@@ -86,4 +86,4 @@ Open http://localhost:3000 in your browser. Changes to your markdown file will a
 - [Learn the complete syntax](../reference/syntax.md)
 - [Explore examples](../examples/)
 - [Read API documentation](../api/)
-- [Check the syntax specification](../reference/syntax-spec.md)
+- [Quick reference card](../reference/quick-reference.md)

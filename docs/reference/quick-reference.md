@@ -244,14 +244,55 @@ wiremd supports **all standard Markdown** syntax:
 
 ## Disambiguation Rules
 
+### Button vs. Link
+
 ```markdown
-[Text](url)      # Link (has URL)
-[Text]           # Button (no URL)
-[___]            # Input (has underscores)
-[***]            # Password input (has asterisks)
-[Text___v]       # Dropdown (has 'v' suffix)
+[Text](url)          # Link — has (url) following
+[Text]               # Button — no (url) following
+[Text]{.class}(url)  # Link with attributes
+```
+
+**Rule:** Presence of `(url)` determines link vs. button.
+
+### Input vs. Code
+
+```markdown
+[___]            # Input — contains underscores or asterisks
+[***]            # Password input — asterisks
+[text]           # Button (or link if followed by `(url)`)
+`code`           # Code — uses backticks, not square brackets
+```
+
+**Rule:** Square brackets with underscore/asterisk patterns = input.
+
+### Other inline forms
+
+```markdown
+[Text___v]       # Dropdown (has 'v' suffix after underscores)
 |Text|           # Badge/pill (pipe delimiters)
 ```
+
+### Container vs. HTML
+
+```markdown
+::: container    # wiremd container — processed by parser
+:::
+
+<div>            # Pass-through HTML — preserved as-is
+</div>
+```
+
+**Rule:** `:::` syntax is wiremd-specific; raw HTML is passed through unchanged.
+
+### Attribute Placement
+
+```markdown
+[Button]{.class}     # Preferred — immediately after element
+[Button] {.class}    # Also valid — space allowed
+{.class}             # Applied to preceding block element
+```
+
+**Rule:** Attributes apply to the immediately preceding element; `{...}` must not be separated by a blank line.
 
 ## Tips
 

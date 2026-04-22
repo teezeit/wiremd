@@ -1,6 +1,6 @@
 # wiremd Syntax Guide
 
-This guide covers the wiremd syntax for creating UI wireframes. For the complete specification, see [SYNTAX-SPEC-v0.1.md](./syntax-spec.md).
+This guide covers the wiremd syntax for creating UI wireframes.
 
 ## Basic Syntax
 
@@ -467,6 +467,6 @@ Content here
 
 ## Next Steps
 
-- [Complete Syntax Specification](./syntax-spec.md)
+- [Quick Reference](./quick-reference.md)
 - [API Documentation](../api/)
 - [Examples Gallery](../examples/)
