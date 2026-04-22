@@ -83,8 +83,10 @@ For the full syntax including all attributes, edge cases, and disambiguation rul
 ::: layout {.sidebar-main}
 
 ::: sidebar
-- [Dashboard](#)
-- **[Reports](#)**
+
+[[Dashboard](#)]
+[[Reports](#)]
+
 :::
 
 ::: main
@@ -185,15 +187,19 @@ See the renderable version at `references/examples/dashboard.md`.
 [[ Dashboard > Reports ]]
 
 ::: layout {.sidebar-main}
+
 ::: sidebar
-- [Overview](#)
-- **[Reports](#)**
-- [Analytics](#)
-- [Users](#)
+
+#### Navigation
+
+[[Overview](#)]
+[[Reports](#)]
+[[Analytics](#)]
+[[Users](#)]
 
 ---
 
-### Filters
+#### Filters
 
 [Jan 2025____________v]
 - Last 7 days

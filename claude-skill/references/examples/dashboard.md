@@ -1,18 +1,23 @@
 [[ :logo: AppName | Dashboard | *Reports* | :gear: Settings | :user: Account ]]
+
+
 [[ Dashboard > Reports ]]
 
 ::: layout {.sidebar-main}
 
 ::: sidebar
-- [Overview](#)
-- **[Reports](#)**
-- [Analytics](#)
-- [Users](#)
-- [Settings](#)
+
+#### Navigation
+
+[[Overview](#)]
+[[Reports](#)]
+[[Analytics](#)]
+[[Users](#)]
+[[Settings](#)]
 
 ---
 
-### Filters
+#### Filters
 
 Period
 [Jan 2025____________v]

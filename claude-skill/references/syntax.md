@@ -186,9 +186,13 @@ Are you sure you want to delete this item?
 :::
 
 ::: sidebar
-- [Home](../home.html)
-- [Settings](../settings.html)
-- [Logout](#)
+
+#### Section
+
+[[Home](#)]
+[[Settings](#)]
+[[Logout](#)]
+
 :::
 
 ::: footer
@@ -225,10 +229,12 @@ Two-column layout with a fixed 200px sidebar and fluid main area:
 ::: layout {.sidebar-main}
 
 ::: sidebar
-- [Dashboard](#)
-- **[Sessions](#)**
-- [Library](#)
-- [Settings](#)
+
+[[Dashboard](#)]
+[[Sessions](#)]
+[[Library](#)]
+[[Settings](#)]
+
 :::
 
 ::: main

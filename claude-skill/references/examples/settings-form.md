@@ -2,13 +2,17 @@
 [[ Settings > Profile ]]
 
 ::: layout {.sidebar-main}
+
 ::: sidebar
-- **[Profile](#)**
-- [Security](#)
-- [Notifications](#)
-- [Billing](#)
-- [Team](#)
-- [Integrations](#)
+
+#### Account
+
+[[Profile](#)]
+[[Security](#)]
+[[Notifications](#)]
+[[Billing](#)]
+[[Team](#)]
+[[Integrations](#)]
 
 :::
 
