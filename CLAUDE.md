@@ -54,6 +54,17 @@ src/
 
 **VS Code extension** (`vscode-extension/`): `src/extension.ts` registers commands; `src/preview-provider.ts` is the WebView that embeds the rendered HTML and refreshes on save. Depends on the parent package via `"wiremd": "file:.."`.
 
+**VS Code extension local development**: uninstall any installed Wiremd extension, then launch VS Code with the dev build loaded into your current window:
+```bash
+code --extensionDevelopmentPath=$(pwd)/vscode-extension .
+```
+Run both watchers in parallel terminals:
+```bash
+npm run dev                              # root: rebuilds dist/ on src/ changes
+cd vscode-extension && npm run dev       # extension: rebuilds dist/ on changes
+```
+After edits rebuild: `Cmd+Shift+P` → "Developer: Reload Window".
+
 ## Testing
 
 Tests live in `tests/`. 515 tests across 14 files. Key files: `parser.test.ts` (29 tests), `renderer.test.ts`, `react-renderer.test.ts`, `tailwind-renderer.test.ts`, `integration.test.ts`, `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `api-examples.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
