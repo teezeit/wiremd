@@ -54,6 +54,12 @@
         "title": "Change Preview Viewport",
         "category": "Wiremd",
         "icon": "$(device-mobile)"
+      },
+      {
+        "command": "wiremd.installClaudeSkill",
+        "title": "Install Wiremd Claude Skill",
+        "category": "Wiremd",
+        "icon": "$(sparkle)"
       }
     ],
     "menus": {

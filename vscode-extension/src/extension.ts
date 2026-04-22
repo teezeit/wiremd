@@ -4,6 +4,8 @@
  */
 
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
 import { WiremdPreviewProvider } from './preview-provider';
 
 let previewProvider: WiremdPreviewProvider;
@@ -69,6 +71,35 @@ export function activate(context: vscode.ExtensionContext) {
       });
       if (selected) {
         previewProvider.changeViewport(selected.value);
+      }
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('wiremd.installClaudeSkill', async () => {
+      const workspaceFolders = vscode.workspace.workspaceFolders;
+      if (!workspaceFolders) {
+        vscode.window.showErrorMessage('Wiremd: No workspace folder open.');
+        return;
+      }
+
+      const skillSrc = path.join(context.extensionPath, 'claude-skill', 'SKILL.md');
+      if (!fs.existsSync(skillSrc)) {
+        vscode.window.showErrorMessage('Wiremd: Skill file not found in extension.');
+        return;
+      }
+
+      const destDir = path.join(workspaceFolders[0].uri.fsPath, '.claude', 'skills');
+      fs.mkdirSync(destDir, { recursive: true });
+      const destFile = path.join(destDir, 'wireframe.md');
+      fs.copyFileSync(skillSrc, destFile);
+
+      const open = await vscode.window.showInformationMessage(
+        'Wiremd Claude skill installed to .claude/skills/wireframe.md',
+        'Open File'
+      );
+      if (open) {
+        vscode.window.showTextDocument(vscode.Uri.file(destFile));
       }
     })
   );
