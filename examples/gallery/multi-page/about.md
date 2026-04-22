@@ -9,7 +9,7 @@ Write your UI, see it instantly — no design software required.
 
 ---
 
-## The Team {.grid-3 card}
+::: grid-3 card
 
 ### :user: Alice Chen
 Co-founder & CEO
@@ -19,6 +19,8 @@ Co-founder & CTO
 
 ### :user: Sara Kim
 Head of Design
+
+:::
 
 ---
 

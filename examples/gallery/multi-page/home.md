@@ -12,7 +12,7 @@ The fastest way to prototype multi-page apps in Markdown.
 
 :::
 
-## Why MyApp {.grid-3 card}
+::: grid-3 card
 
 ### :rocket: Fast
 From idea to prototype in minutes, not hours.
@@ -22,6 +22,8 @@ Battle-tested across thousands of real projects.
 
 ### :gear: Flexible
 Works with any workflow, any team size.
+
+:::
 
 ---
 

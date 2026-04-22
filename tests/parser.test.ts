@@ -532,7 +532,7 @@ Nested content
   describe('Grid Layout Detection', () => {
     it('should parse a 3-column grid', () => {
       const input = `
-## Features {.grid-3}
+::: grid-3
 
 ### Feature One
 Fast and reliable
@@ -542,6 +542,8 @@ Secure and safe
 
 ### Feature Three
 Powerful tools
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -556,7 +558,7 @@ Powerful tools
 
     it('should parse grid items with icons', () => {
       const input = `
-## Features {.grid-3}
+::: grid-3
 
 ### :rocket: Fast
 Lightning quick rendering
@@ -566,6 +568,8 @@ Enterprise grade security
 
 ### :zap: Powerful
 Advanced features included
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -581,12 +585,14 @@ Advanced features included
 
     it('should parse grid with different column counts', () => {
       const input = `
-## Layout {.grid-4}
+::: grid-4
 
 ### Col 1
 ### Col 2
 ### Col 3
 ### Col 4
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -599,7 +605,7 @@ Advanced features included
 
     it('should set card prop on grid node when card modifier is present', () => {
       const input = `
-## Features {.grid-3 card}
+::: grid-3 card
 
 ### Fast
 Quick
@@ -609,6 +615,8 @@ Safe
 
 ### Scalable
 Grows
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -618,10 +626,12 @@ Grows
 
     it('should not set card prop on grid node without card modifier', () => {
       const input = `
-## Features {.grid-3}
+::: grid-3
 
 ### Fast
 Quick
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -632,7 +642,7 @@ Quick
       const input = `
 ::: card
 
-## Features {.grid-3}
+::: grid-3
 
 ### Fast
 Quick
@@ -642,6 +652,8 @@ Safe
 
 ### Powerful
 Strong
+
+:::
 
 :::
       `.trim();
@@ -660,20 +672,24 @@ Strong
 
     it('should detect nested grid inside a grid item (issue #15)', () => {
       const input = `
-## Outer {.grid-2}
+::: grid-2
 
 ### Item A
 
-#### Inner {.grid-2}
+::: grid-2
 
-##### Nested 1
+#### Nested 1
 Content 1
 
-##### Nested 2
+#### Nested 2
 Content 2
+
+:::
 
 ### Item B
 Solo
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -691,20 +707,28 @@ Solo
 
     it('should detect nested grid inside a tab panel (issue #15)', () => {
       const input = `
-## Tabs {.tabs}
+::: tabs
 
-### Panel A
+::: tab Panel A
 
-#### Inner {.grid-2}
+::: grid-2
 
-##### Left
+#### Left
 L
 
-##### Right
+#### Right
 R
 
-### Panel B
+:::
+
+:::
+
+::: tab Panel B
 Solo
+
+:::
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -720,15 +744,17 @@ Solo
   });
 
   describe('Row layout', () => {
-    it('should parse ## {.row} as a row node with grid-item children', () => {
+    it('should parse ::: row as a row node with grid-item children', () => {
       const input = `
-## Toolbar {.row}
+::: row
 
 ###
 [All]* [Active]
 
 ###
 [+ New]*
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -741,7 +767,7 @@ Solo
 
     it('should auto-wrap direct children as implicit grid-items (no ### needed)', () => {
       const input = `
-## Toolbar {.row}
+::: row
 
 [All]* [Active] [Archived]
 
@@ -749,7 +775,7 @@ Solo
 
 [+ New Item]*
 
-##
+:::
       `.trim();
 
       const result = parse(input);
@@ -759,30 +785,32 @@ Solo
       expect(row.children.every((c: any) => c.type === 'grid-item')).toBe(true);
     });
 
-    it('should suppress ## label in row output', () => {
+    it('should parse ::: row as a row node', () => {
       const input = `
-## MyRowLabel {.row}
+::: row
 
 ###
 Button
+
+:::
       `.trim();
 
       const result = parse(input);
       const row = result.children[0] as any;
-      // row node exists — label is on props, not rendered as child content
+      // row node exists
       expect(row.type).toBe('row');
     });
 
     it('dropdown inside implicit row should have options populated (not empty)', () => {
       const input = `
-## Filters {.row}
+::: row
 
 [Select Team_________v]
 - All Teams
 - Team A
 - Team B
 
-##
+:::
       `.trim();
 
       const result = parse(input);
@@ -805,7 +833,7 @@ Button
 
     it('search + dropdown inside implicit row produces 2 grid-items (list not leaked as extra item)', () => {
       const input = `
-## Filters {.row}
+::: row
 
 [Search_______________]{type:search}
 
@@ -814,7 +842,7 @@ Button
 - Team A
 - Team B
 
-##
+:::
       `.trim();
 
       const result = parse(input);
@@ -824,14 +852,15 @@ Button
       expect(row.children).toHaveLength(2);
     });
 
-    it('should parse ## {.row} inside a :::card container', () => {
+    it('should parse ::: row inside a :::card container', () => {
       const input = `
 ::: card
 
-## Toolbar {.row}
+::: row
 
-###
 [Save]*
+
+:::
 
 :::
       `.trim();
@@ -847,13 +876,15 @@ Button
   describe('Alignment on grid/row items', () => {
     it('should add align-right class to grid-item when ### has {.right}', () => {
       const input = `
-## Toolbar {.row}
+::: row
 
 ### {.left}
 [All]*
 
 ### {.right}
 [+ New]*
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -864,10 +895,12 @@ Button
 
     it('should add align-center class to grid-item when ### has {.center}', () => {
       const input = `
-## Toolbar {.row}
+::: row
 
 ### {.center}
 Centered
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -875,12 +908,14 @@ Centered
       expect(row.children[0].props.classes).toContain('align-center');
     });
 
-    it('should support alignment inside ## {.grid-N} as well', () => {
+    it('should support alignment inside ::: grid-N as well', () => {
       const input = `
-## Layout {.grid-2}
+::: grid-2
 
 ### {.right}
 Right item
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -894,11 +929,13 @@ Right item
       const input = `
 ::: layout {.sidebar-main}
 
-## Sidebar {.sidebar}
+::: sidebar
 Nav here
+:::
 
-## Main {.main}
+::: main
 Content here
+:::
 
 :::
       `.trim();
@@ -914,12 +951,13 @@ Content here
       const input = `
 ::: layout {.sidebar-main}
 
-## Sidebar {.sidebar}
+::: sidebar
 Nav
+:::
 
-## Main {.main}
+::: main
 
-## Stats {.grid-3}
+::: grid-3
 
 ### Done
 48
@@ -931,12 +969,18 @@ Nav
 5
 
 :::
+
+:::
+
+:::
       `.trim();
 
       const result = parse(input);
       const layout = result.children[0] as any;
-      // Find the grid in the layout's children
-      const grid = layout.children.find((c: any) => c.type === 'grid');
+      // Find the grid inside the main section
+      const main = layout.children.find((c: any) => c.containerType === 'main') as any;
+      expect(main).toBeDefined();
+      const grid = main.children.find((c: any) => c.type === 'grid');
       expect(grid).toBeDefined();
       expect(grid.columns).toBe(3);
       expect(grid.children).toHaveLength(3);
@@ -983,13 +1027,15 @@ Nav
   describe('Grid col-span', () => {
     it('should hoist col-span class from heading to grid-item', () => {
       const input = `
-## Pricing {.grid-3}
+::: grid-3
 
 ### Starter {.col-span-1}
 $9/mo
 
 ### Pro {.col-span-2}
 $29/mo
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -1001,10 +1047,12 @@ $29/mo
 
     it('should leave grid-item without col-span when not specified', () => {
       const input = `
-## Layout {.grid-3}
+::: grid-3
 
 ### Item One
 Content
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -1013,12 +1061,14 @@ Content
       expect(item.props.classes).not.toContain('col-span-2');
     });
 
-    it('should not render grid heading label text as a child node', () => {
+    it('should not render grid label text as a child node', () => {
       const input = `
-## Features {.grid-3}
+::: grid-3
 
 ### Fast
 Quick
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -1030,20 +1080,24 @@ Quick
 
     it('should parse a nested grid inside a grid item as a grid node', () => {
       const input = `
-## Outer {.grid-2}
+::: grid-2
 
 ### Left
 
-#### Inner {.grid-2}
+::: grid-2
 
-##### A
+#### A
 One
 
-##### B
+#### B
 Two
+
+:::
 
 ### Right
 Just text
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -1063,7 +1117,7 @@ Just text
 
     it('should parse a :::card inside a grid item (regression)', () => {
       const input = `
-## Layout {.grid-2}
+::: grid-2
 
 ### Left
 
@@ -1073,6 +1127,8 @@ Card content
 
 ### Right
 Text
+
+:::
       `.trim();
 
       const result = parse(input);
@@ -1085,32 +1141,40 @@ Text
 
   describe('Tabs Syntax', () => {
     const input = `
-## Product {.tabs}
+::: tabs
 
-### Overview
+::: tab Overview
 Overview panel text.
 
-### Details
+:::
+
+::: tab Details
 [Buy Now]*
 
-### Reviews
+:::
+
+::: tab Reviews
 Review content
+
+:::
+
+:::
     `.trim();
 
-    it('should parse heading with .tabs class into a tabs node', () => {
+    it('should parse ::: tabs into a tabs node', () => {
       const result = parse(input);
       expect(result.children).toHaveLength(1);
       expect(result.children[0].type).toBe('tabs');
     });
 
-    it('should produce one tab child per sub-heading', () => {
+    it('should produce one tab child per ::: tab', () => {
       const result = parse(input);
       const tabs = result.children[0] as any;
       expect(tabs.children).toHaveLength(3);
       expect(tabs.children.every((c: any) => c.type === 'tab')).toBe(true);
     });
 
-    it('should use sub-heading text as the tab label', () => {
+    it('should use ::: tab label as the tab label', () => {
       const result = parse(input);
       const tabs = result.children[0] as any;
       expect(tabs.children.map((t: any) => t.label)).toEqual(['Overview', 'Details', 'Reviews']);
@@ -1124,15 +1188,21 @@ Review content
       expect(tabs.children[2].active).toBe(false);
     });
 
-    it('should let {.active} on a sub-heading override the default active tab', () => {
+    it('should let {.active} on ::: tab line override the default active tab', () => {
       const result = parse(`
-## Product {.tabs}
+::: tabs
 
-### Overview
+::: tab Overview
 a
 
-### Details {.active}
+:::
+
+::: tab Details {.active}
 b
+
+:::
+
+:::
       `.trim());
       const tabs = result.children[0] as any;
       expect(tabs.children[0].active).toBe(false);
@@ -1147,7 +1217,7 @@ b
       expect(types).toContain('button');
     });
 
-    it('should not emit the parent heading as a separate node', () => {
+    it('should not emit a separate heading node for the tabs container', () => {
       const result = parse(input);
       const topTypes = result.children.map((c: any) => c.type);
       expect(topTypes).not.toContain('heading');
@@ -1155,20 +1225,28 @@ b
 
     it('should parse a nested grid inside a tab panel as a grid node', () => {
       const md = `
-## Product {.tabs}
+::: tabs
 
-### Overview
+::: tab Overview
 
-#### Stats {.grid-2}
+::: grid-2
 
-##### Users
+#### Users
 100
 
-##### Revenue
+#### Revenue
 $500
 
-### Details
+:::
+
+:::
+
+::: tab Details
 Just text
+
+:::
+
+:::
       `.trim();
 
       const result = parse(md);
@@ -1184,16 +1262,22 @@ Just text
 
     it('should parse a :::card inside a tab panel (regression)', () => {
       const md = `
-## Product {.tabs}
+::: tabs
 
-### Overview
+::: tab Overview
 
 ::: card
 Card content
 :::
 
-### Details
+:::
+
+::: tab Details
 Text
+
+:::
+
+:::
       `.trim();
 
       const result = parse(md);
@@ -1279,7 +1363,7 @@ Text
     });
 
     it('should produce form-group (not button-group) when plain text label is above input inside a row', () => {
-      const md = `## Toolbar {.row}\n\ntext\n[Search__________________________]\n\n##`;
+      const md = `::: row\n\ntext\n[Search__________________________]\n\n:::`;
       const result = parse(md);
       const row = result.children[0] as any;
       expect(row.type).toBe('row');
@@ -1357,6 +1441,212 @@ Text
       expect(badge).toBeDefined();
       expect(badge.content).toBe('Active');
       expect(badge.props.variant).toBe('success');
+    });
+  });
+
+  describe('::: container-based layout syntax', () => {
+    it('should parse ::: grid-3 as a grid node', () => {
+      const result = parse(`
+::: grid-3
+
+### Feature One
+Fast
+
+### Feature Two
+Secure
+
+### Feature Three
+Powerful
+
+:::
+      `.trim());
+      expect(result.children[0]).toMatchObject({ type: 'grid', columns: 3 });
+      expect(result.children[0].children).toHaveLength(3);
+      expect(result.children[0].children[0].type).toBe('grid-item');
+    });
+
+    it('should parse ::: grid-3 card as a card grid', () => {
+      const result = parse(`
+::: grid-3 card
+
+### Fast
+Quick
+
+### Secure
+Safe
+
+:::
+      `.trim());
+      expect(result.children[0]).toMatchObject({ type: 'grid', columns: 3 });
+      const grid = result.children[0] as any;
+      expect((grid.props.classes || []).includes('card') || grid.props.card).toBeTruthy();
+    });
+
+    it('should parse ::: grid-4 with 4 columns', () => {
+      const result = parse(`
+::: grid-4
+
+### A
+### B
+### C
+### D
+
+:::
+      `.trim());
+      expect(result.children[0]).toMatchObject({ type: 'grid', columns: 4 });
+      expect(result.children[0].children).toHaveLength(4);
+    });
+
+    it('should parse ::: row as a row node', () => {
+      const result = parse(`
+::: row
+
+[All]* [Active]
+
+[+ New]*
+
+:::
+      `.trim());
+      expect(result.children[0]).toMatchObject({ type: 'row' });
+      const row = result.children[0] as any;
+      expect(row.children.every((c: any) => c.type === 'grid-item')).toBe(true);
+    });
+
+    it('should parse ::: tabs with ::: tab children', () => {
+      const result = parse(`
+::: tabs
+
+::: tab Overview
+Overview content
+
+:::
+
+::: tab Details
+[Buy Now]*
+
+:::
+
+:::
+      `.trim());
+      expect(result.children[0]).toMatchObject({ type: 'tabs' });
+      const tabs = result.children[0] as any;
+      expect(tabs.children).toHaveLength(2);
+      expect(tabs.children.every((t: any) => t.type === 'tab')).toBe(true);
+    });
+
+    it('should use ::: tab label as the tab label', () => {
+      const result = parse(`
+::: tabs
+
+::: tab Overview
+a
+:::
+
+::: tab Details
+b
+:::
+
+:::
+      `.trim());
+      const tabs = result.children[0] as any;
+      expect(tabs.children.map((t: any) => t.label)).toEqual(['Overview', 'Details']);
+    });
+
+    it('should mark first tab active by default', () => {
+      const result = parse(`
+::: tabs
+
+::: tab Overview
+a
+:::
+
+::: tab Details
+b
+:::
+
+:::
+      `.trim());
+      const tabs = result.children[0] as any;
+      expect(tabs.children[0].active).toBe(true);
+      expect(tabs.children[1].active).toBe(false);
+    });
+
+    it('should mark tab active via {.active} on ::: tab line', () => {
+      const result = parse(`
+::: tabs
+
+::: tab Overview
+a
+:::
+
+::: tab Details {.active}
+b
+:::
+
+:::
+      `.trim());
+      const tabs = result.children[0] as any;
+      expect(tabs.children[0].active).toBe(false);
+      expect(tabs.children[1].active).toBe(true);
+    });
+
+    it('should parse ::: sidebar and ::: main inside ::: layout', () => {
+      const result = parse(`
+::: layout {.sidebar-main}
+
+::: sidebar
+Nav here
+:::
+
+::: main
+Content here
+:::
+
+:::
+      `.trim());
+      const layout = result.children[0] as any;
+      expect(layout.type).toBe('container');
+      expect(layout.containerType).toBe('layout');
+      expect(layout.props.classes).toContain('sidebar-main');
+      const sidebar = layout.children.find((c: any) => c.containerType === 'sidebar');
+      const main = layout.children.find((c: any) => c.containerType === 'main');
+      expect(sidebar).toBeDefined();
+      expect(main).toBeDefined();
+    });
+
+    it('should parse ::: grid-N inside ::: layout main section', () => {
+      const result = parse(`
+::: layout {.sidebar-main}
+
+::: sidebar
+Nav
+:::
+
+::: main
+
+::: grid-3
+
+### Done
+48
+
+### Active
+12
+
+### Pending
+5
+
+:::
+
+:::
+
+:::
+      `.trim());
+      const layout = result.children[0] as any;
+      const main = layout.children.find((c: any) => c.containerType === 'main') as any;
+      expect(main).toBeDefined();
+      const grid = main.children.find((c: any) => c.type === 'grid');
+      expect(grid).toBeDefined();
+      expect(grid.columns).toBe(3);
     });
   });
 });

@@ -19,7 +19,7 @@
 
 ## Basic Row — items at start (default)
 
-## Toolbar {.row}
+::: row
 
 :check: All systems operational:
 
@@ -28,14 +28,13 @@
 
 [Search__________________________]
 
-
-##
+:::
 
 ---
 
 ## Row aligned right
 
-## Actions {.row .right}
+::: row {.right}
 
 :check: All systems operational:
 
@@ -44,13 +43,13 @@
 
 [Search__________________________]
 
-##
+:::
 
 ---
 
 ## Row centered
 
-## Status {.row .center}
+::: row {.center}
 
 :check: All systems operational:
 
@@ -59,8 +58,7 @@
 
 [Search__________________________]
 
-
-##
+:::
 
 ---
 
@@ -71,13 +69,12 @@
 
 ### User Management
 
-## Card Toolbar {.row}
+::: row
 
 [All Users]* [Admins]
 [Inactive] [+ Invite User]*
 
-
-##
+:::
 
 | Name | Role | Status |
 |------|------|--------|
@@ -87,12 +84,11 @@
 
 :::
 
-##
 ---
 
 ## Grid with aligned items (### {.left} / {.right})
 
-## Layout {.grid-2}
+::: grid-2
 
 ### {.left}
 [All]* [Active] [Archived]
@@ -100,27 +96,27 @@
 ### {.right}
 [+ New Item]*
 
-##
+:::
 
 
 ---
 
 ## Tabs with row toolbar inside each panel
 
-## Settings {.tabs}
+::: tabs
 
-### General {.active}
+::: tab General
 
-#### Tab Toolbar {.row}
+::: grid-2
 
-#####
+###
 [Name_____________________________]{required}
 [Email_____________________________]{type:email required}
 
-##### {.right}
+### {.right}
 [Save Changes]*
 
-####
+:::
 
 | Name | Role | Status |
 |------|------|--------|
@@ -128,14 +124,15 @@
 | Bob | Editor | Active |
 | Carol | Viewer | Inactive |
 
+:::
 
-### Notifications
+::: tab Notifications
 
-##### Notif Toolbar {.row .right}
+::: row {.right}
 
 [Save]*
 
-#####
+:::
 
 - [x] Email notifications
 - [ ] SMS notifications
@@ -143,4 +140,6 @@
 
 [Save]*
 
+:::
 
+:::

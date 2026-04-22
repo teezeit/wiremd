@@ -124,8 +124,9 @@ function transformNode(
 }
 
 /**
- * Process a list of MDAST nodes into wiremd nodes, detecting grid layouts.
+ * Process a list of MDAST nodes into wiremd nodes.
  * Shared by both the top-level document pass and container children.
+ * Layout containers (grid, row, tabs) are now handled via ::: syntax in transformContainer.
  */
 function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode[] {
   const result: WiremdNode[] = [];
@@ -134,150 +135,6 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
   while (i < nodeChildren.length) {
     const node = nodeChildren[i];
     const nextNode = nodeChildren[i + 1];
-
-    if (node.type === 'heading') {
-      const content = extractTextContent(node);
-      const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
-      const rowMatch = !gridMatch && /\{[^}]*\.row\b[^}]*\}/.test(content);
-      const tabsMatch = !gridMatch && !rowMatch && /\{[^}]*\.tabs\b[^}]*\}/.test(content);
-
-      if (tabsMatch) {
-        const tabsHeadingLevel = node.depth;
-        const tabs: WiremdNode[] = [];
-        const headingTransformed = transformHeading(node, options);
-
-        i++;
-
-        while (i < nodeChildren.length) {
-          const childNode = nodeChildren[i];
-
-          if (childNode.type === 'heading' && childNode.depth === tabsHeadingLevel + 1) {
-            const tabHeadingContent = extractTextContent(childNode);
-            const tabAttrMatch = tabHeadingContent.match(/^(.+?)(\{[^}]+\})$/);
-            let tabLabel = tabHeadingContent;
-            let tabProps: any = { classes: [] };
-            if (tabAttrMatch) {
-              tabLabel = tabAttrMatch[1].trim();
-              tabProps = parseAttributes(tabAttrMatch[2]);
-            }
-            const isActive = (tabProps.classes || []).includes('active');
-
-            i++;
-
-            const rawTabNodes: any[] = [];
-            while (i < nodeChildren.length) {
-              const contentNode = nodeChildren[i];
-              if (contentNode.type === 'heading' && contentNode.depth <= tabsHeadingLevel + 1) break;
-              rawTabNodes.push(contentNode);
-              i++;
-            }
-
-            tabs.push({
-              type: 'tab',
-              label: tabLabel,
-              active: isActive,
-              props: tabProps,
-              children: processNodeList(rawTabNodes, options) as any,
-            });
-          } else if (childNode.type === 'heading' && childNode.depth <= tabsHeadingLevel) {
-            break;
-          } else if (tabs.length === 0) {
-            i++;
-            continue;
-          } else {
-            break;
-          }
-        }
-
-        if (tabs.length > 0 && !tabs.some((t: any) => t.active)) {
-          (tabs[0] as any).active = true;
-        }
-
-        const tabsProps = (headingTransformed as any).props || {};
-        result.push({
-          type: 'tabs',
-          props: { ...tabsProps, classes: (tabsProps.classes || []).filter((c: string) => c !== 'tabs') },
-          children: tabs as any,
-        });
-        continue;
-      }
-
-      if (rowMatch || gridMatch) {
-        const isRow = !!rowMatch;
-        const columns = isRow ? 0 : parseInt(gridMatch![1], 10);
-        const containerHeadingLevel = node.depth;
-        const gridItems: WiremdNode[] = [];
-        const headingTransformed = transformHeading(node, options);
-
-        i++;
-
-        while (i < nodeChildren.length) {
-          const childNode = nodeChildren[i];
-
-          if (childNode.type === 'heading' && childNode.depth === containerHeadingLevel + 1) {
-            const rawItemNodes: any[] = [childNode];
-            i++;
-
-            while (i < nodeChildren.length) {
-              const contentNode = nodeChildren[i];
-              if (contentNode.type === 'heading' && contentNode.depth <= containerHeadingLevel + 1) break;
-              rawItemNodes.push(contentNode);
-              i++;
-            }
-
-            const headingContent = extractTextContent(childNode);
-            const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
-            const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
-            const gridItemProps: any = { classes: [] };
-            if (colSpanMatch) gridItemProps.classes.push(`col-span-${colSpanMatch[1]}`);
-            if (alignMatch) gridItemProps.classes.push(`align-${alignMatch[1]}`);
-
-            gridItems.push({ type: 'grid-item', props: gridItemProps, children: processNodeList(rawItemNodes, options) });
-          } else if (childNode.type === 'heading' && childNode.depth <= containerHeadingLevel) {
-            break;
-          } else if (isRow) {
-            // Row: each direct child becomes its own implicit grid-item.
-            // Group dropdown paragraphs with their following option list so
-            // nextNode is visible inside processNodeList.
-            const groupNodes = [childNode];
-            i++;
-            if (i < nodeChildren.length) {
-              const nextSibling = nodeChildren[i];
-              const nodeText = extractTextContent(childNode);
-              const isDropdown = childNode.type === 'paragraph' && /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
-              if (isDropdown && nextSibling.type === 'list') {
-                groupNodes.push(nextSibling);
-                i++;
-              }
-            }
-            gridItems.push({ type: 'grid-item', props: { classes: [] }, children: processNodeList(groupNodes, options) });
-          } else if (gridItems.length === 0) {
-            i++;
-            continue;
-          } else {
-            break;
-          }
-        }
-
-        if (isRow) {
-          const rowProps = (headingTransformed as any).props || {};
-          result.push({
-            type: 'row',
-            props: { ...rowProps, classes: (rowProps.classes || []).filter((c: string) => c !== 'row') },
-            children: gridItems,
-          });
-        } else {
-          const gridProps = (headingTransformed as any).props || {};
-          result.push({
-            type: 'grid',
-            columns,
-            props: { ...gridProps, classes: (gridProps.classes || []).filter((c: string) => !/^grid-/.test(c)) },
-            children: gridItems,
-          });
-        }
-        continue;
-      }
-    }
 
     const transformed = transformNode(node, options, nextNode);
     if (transformed) {
@@ -297,11 +154,197 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
 }
 
 /**
+ * Collect ### headings inside a ::: grid-N container as grid-item nodes.
+ * The first heading depth encountered defines the item boundary level.
+ */
+function collectGridItemsFromContainer(
+  children: any[],
+  options: ParseOptions,
+  isCard: boolean,
+): WiremdNode[] {
+  const gridItems: WiremdNode[] = [];
+  const firstHeading = children.find((n: any) => n.type === 'heading');
+  if (!firstHeading) return gridItems;
+  const itemDepth = firstHeading.depth;
+
+  let i = 0;
+  while (i < children.length) {
+    const child = children[i];
+    if (child.type === 'heading' && child.depth === itemDepth) {
+      const rawItemNodes: any[] = [child];
+      i++;
+      while (i < children.length) {
+        const next = children[i];
+        if (next.type === 'heading' && next.depth <= itemDepth) break;
+        rawItemNodes.push(next);
+        i++;
+      }
+      const headingContent = extractTextContent(child);
+      const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
+      const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
+      const itemProps: any = { classes: [] };
+      if (isCard) itemProps.classes.push('card');
+      if (colSpanMatch) itemProps.classes.push(`col-span-${colSpanMatch[1]}`);
+      if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
+      gridItems.push({
+        type: 'grid-item',
+        props: itemProps,
+        children: processNodeList(rawItemNodes, options) as any,
+      });
+    } else {
+      i++;
+    }
+  }
+  return gridItems;
+}
+
+/**
+ * Wrap each direct child of a ::: row container as an implicit grid-item.
+ * When ### headings are present, uses heading-based grouping (supports alignment classes).
+ * Otherwise, each paragraph/node is its own grid-item.
+ * Dropdown paragraphs are always grouped with their following option list.
+ */
+function collectRowItemsFromContainer(
+  children: any[],
+  options: ParseOptions,
+): WiremdNode[] {
+  const items: WiremdNode[] = [];
+  const hasHeadings = children.some((n: any) => n.type === 'heading');
+
+  if (hasHeadings) {
+    const firstHeading = children.find((n: any) => n.type === 'heading');
+    const itemDepth = firstHeading.depth;
+    let i = 0;
+    while (i < children.length) {
+      const child = children[i];
+      if (child.type === 'heading' && child.depth === itemDepth) {
+        const headingContent = extractTextContent(child);
+        const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
+        const itemProps: any = { classes: [] };
+        if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
+        i++;
+        const rawItemNodes: any[] = [];
+        while (i < children.length) {
+          const next = children[i];
+          if (next.type === 'heading' && next.depth <= itemDepth) break;
+          if (next.type === 'paragraph') {
+            const nodeText = extractTextContent(next);
+            const isDropdown = /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
+            rawItemNodes.push(next);
+            i++;
+            if (isDropdown && i < children.length && children[i].type === 'list') {
+              rawItemNodes.push(children[i]);
+              i++;
+            }
+          } else {
+            rawItemNodes.push(next);
+            i++;
+          }
+        }
+        items.push({
+          type: 'grid-item',
+          props: itemProps,
+          children: processNodeList(rawItemNodes, options) as any,
+        });
+      } else {
+        i++;
+      }
+    }
+  } else {
+    let i = 0;
+    while (i < children.length) {
+      const child = children[i];
+      const groupNodes = [child];
+      i++;
+      if (child.type === 'paragraph') {
+        const nodeText = extractTextContent(child);
+        const isDropdown = /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
+        if (isDropdown && i < children.length && children[i].type === 'list') {
+          groupNodes.push(children[i]);
+          i++;
+        }
+      }
+      items.push({
+        type: 'grid-item',
+        props: { classes: [] },
+        children: processNodeList(groupNodes, options) as any,
+      });
+    }
+  }
+
+  return items;
+}
+
+/**
  * Transform container node (:::)
  */
 function transformContainer(node: any, options: ParseOptions): WiremdNode {
   const props = parseAttributes(node.attributes || '');
   const containerType: string = (node.containerType || '').trim();
+
+  // ::: grid-N  /  ::: grid-N card
+  const gridMatch = containerType.match(/^grid-(\d+)$/);
+  if (gridMatch) {
+    const columns = parseInt(gridMatch[1], 10);
+    const firstChild = node.children[0];
+    const hasCard =
+      (firstChild?.type === 'paragraph' &&
+        firstChild.children?.[0]?.type === 'text' &&
+        firstChild.children[0].value?.trim() === 'card') ||
+      (props.classes || []).includes('card');
+    const contentChildren = hasCard ? node.children.slice(1) : node.children;
+    return {
+      type: 'grid',
+      columns,
+      props: { ...props, card: hasCard, classes: (props.classes || []).filter((c: string) => c !== 'card') },
+      children: collectGridItemsFromContainer(contentChildren, options, hasCard) as any,
+    };
+  }
+
+  // ::: row
+  if (containerType === 'row') {
+    return {
+      type: 'row',
+      props,
+      children: collectRowItemsFromContainer(node.children || [], options) as any,
+    };
+  }
+
+  // ::: tabs  (children are ::: tab containers)
+  if (containerType === 'tabs') {
+    const tabs = (processNodeList(node.children || [], options) as any[]).filter(
+      (n: any) => n.type === 'tab',
+    );
+    if (tabs.length > 0 && !tabs.some((t: any) => t.active)) {
+      tabs[0].active = true;
+    }
+    return { type: 'tabs', props, children: tabs as any };
+  }
+
+  // ::: tab Label  /  ::: tab Label {.active}
+  if (containerType === 'tab') {
+    const firstChild = node.children[0];
+    let label = '';
+    let isActive = false;
+    let contentChildren = node.children || [];
+    if (
+      firstChild?.type === 'paragraph' &&
+      firstChild.children?.[0]?.type === 'text'
+    ) {
+      const raw: string = firstChild.children[0].value;
+      const m = raw.match(/^(.+?)(?:\s*(\{[^}]+\}))?$/);
+      label = m?.[1]?.trim() || raw.trim();
+      isActive = (m?.[2] || '').includes('active');
+      contentChildren = node.children.slice(1);
+    }
+    return {
+      type: 'tab',
+      label,
+      active: isActive,
+      props,
+      children: processNodeList(contentChildren, options) as any,
+    };
+  }
 
   return {
     type: 'container',

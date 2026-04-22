@@ -152,31 +152,36 @@ Place inline content directly on the opener line to inject it as the first child
 
 ### Tabs
 
-`{.tabs}` on a heading creates a tabbed panel. Child headings one level deeper become tab labels; their content becomes the panel body. The first tab is active by default — add `{.active}` to a child heading to override.
+`::: tabs` creates a tabbed panel. Child `::: tab Label` containers become tab panels. The first tab is active by default.
 
 ```markdown
-## Settings {.tabs}
+::: tabs
 
-### Profile
+::: tab Profile
 Name
 [_____________________________]{required}
+:::
 
-### Notifications
-[ ] Email alerts
-[ ] SMS alerts
+::: tab Notifications
+- [ ] Email alerts
+- [ ] SMS alerts
+:::
 
-### Security {.active}
+::: tab Security
 [Change Password]
+:::
+
+:::
 ```
 
 ### Grid Layouts
 
-`{.grid-N}` on a heading creates an N-column layout. Child `###` headings become grid items. The heading label itself is **declaration-only** — it is never rendered in the output; it only names the grid for the author.
+`::: grid-N` creates an N-column layout. Child `###` headings become grid items.
 
 **Pure layout grid** — no visual styling on items, useful for form columns or multi-column text:
 
 ```markdown
-## Contact {.grid-2}
+::: grid-2
 
 ### Details
 Name
@@ -185,12 +190,14 @@ Name
 ### Address
 Street
 [_____________________________]{required}
+
+:::
 ```
 
 **Card grid** — add `card` to render items with card chrome:
 
 ```markdown
-## Features {.grid-3 card}
+::: grid-3 card
 
 ### Fast
 Lightning quick performance
@@ -200,6 +207,8 @@ Enterprise-grade security
 
 ### Scalable
 Grows with your needs
+
+:::
 ```
 
 ### File Includes
@@ -233,62 +242,71 @@ When using `wiremd --serve`, clicking a button link renders the target `.md` fil
 **Column spanning** — `{.col-span-N}` on a child heading spans multiple columns:
 
 ```markdown
-## Pricing {.grid-3 card}
+::: grid-3 card
 
 ### Starter {.col-span-1}
 $9/mo
 
 ### Pro {.col-span-2}
 $29/mo — most popular, spans two columns
+
+:::
 ```
 
 ### Row Layout
 
-`{.row}` creates a horizontal flex row where each child becomes a flex item.
+`::: row` creates a horizontal flex row where each child becomes a flex item.
 
-**Implicit items** — content directly under `## {.row}` is auto-wrapped (no `###` needed):
+**Implicit items** — content directly inside `::: row` is auto-wrapped (no `###` needed):
 
 ```markdown
-## Toolbar {.row}
+::: row
 [All]* [Active] [Archived]
+:::
 ```
 
 **Explicit items** — use `###` headings when you need per-item alignment control:
 
 ```markdown
-## Toolbar {.row}
+::: row
 
 ### {.left}
 [All]* [Active] [Archived]
 
 ### {.right}
 [+ New Item]*
+
+:::
 ```
 
-**Row-level alignment** — add `{.right}` or `{.center}` to the `##` heading to align all content:
+**Row-level alignment** — add `{.right}` or `{.center}` to the container to align all content:
 
 ```markdown
-## Actions {.row .right}
+::: row {.right}
 [Export] [+ New Item]*
+:::
 
-## Status {.row .center}
+::: row {.center}
 :check: All systems operational
+:::
 ```
 
 - `{.right}` → `justify-content: flex-end`
 - `{.center}` → `justify-content: center`
 - default → `justify-content: flex-start`
 
-**Item-level alignment** — `{.left}` / `{.center}` / `{.right}` on `###` children uses the margin-push pattern. Works in both `{.row}` and `{.grid-N}`:
+**Item-level alignment** — `{.left}` / `{.center}` / `{.right}` on `###` children uses the margin-push pattern. Works in both `::: row` and `::: grid-N`:
 
 ```markdown
-## Layout {.grid-2}
+::: grid-2
 
 ### {.left}
 [All]* [Active]
 
 ### {.right}
 [+ New Item]*
+
+:::
 ```
 
 ## Component Examples
@@ -402,13 +420,15 @@ Password
 ### Multi-column Layout
 
 ```markdown
-## Two Columns {.grid-2}
+::: grid-2
 
 ### Left Column
 Content here
 
 ### Right Column
 Content here
+
+:::
 ```
 
 ## Next Steps

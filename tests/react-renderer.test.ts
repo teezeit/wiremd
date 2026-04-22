@@ -137,7 +137,7 @@ describe('React Renderer', () => {
 
   describe('Grid Layout', () => {
     it('should render a grid', () => {
-      const ast = parse('## Features {.grid-3}\n### Item 1\n### Item 2\n### Item 3');
+      const ast = parse('::: grid-3\n\n### Item 1\n### Item 2\n### Item 3\n\n:::');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('wmd-grid');
@@ -263,8 +263,8 @@ Email
   });
 
   describe('Row layout', () => {
-    it('should render ## {.row} as a div with wmd-row className', () => {
-      const ast = parse('## Toolbar {.row}\n[Save]* [Cancel]');
+    it('should render ::: row as a div with wmd-row className', () => {
+      const ast = parse('::: row\n[Save]* [Cancel]');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('className="wmd-row"');
@@ -273,7 +273,7 @@ Email
     });
 
     it('should render row with right alignment', () => {
-      const ast = parse('## Actions {.row .right}\n[+ New]*');
+      const ast = parse('::: row {.right}\n[+ New]*');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('wmd-row');

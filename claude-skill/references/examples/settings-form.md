@@ -2,7 +2,7 @@
 [[ Settings > Profile ]]
 
 ::: layout {.sidebar-main}
-## Settings Nav {.sidebar}
+::: sidebar
 - **[Profile](#)**
 - [Security](#)
 - [Notifications](#)
@@ -10,7 +10,9 @@
 - [Team](#)
 - [Integrations](#)
 
-## Main {.main}
+:::
+
+::: main
 
 ### Profile Settings
 
@@ -64,6 +66,8 @@ Notification frequency
 Deleting your account is permanent and cannot be undone.
 
 [Delete Account]{variant:danger}
+
+:::
 
 :::
 

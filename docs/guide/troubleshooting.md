@@ -75,17 +75,18 @@ try {
 
 ### Grid layouts not working
 
-**Problem**: Grid syntax doesn't create columns
+**Problem**: Grid syntax doesn't create columns — missing `###` items inside the container
 
 ```markdown
-## Features {.grid-3 card}
+::: grid-3 card
 Content here...
+:::
 ```
 
 **Solution**: Ensure proper structure with level-3 headings:
 
 ```markdown
-## Features {.grid-3 card}
+::: grid-3 card
 
 ### Column 1
 Content for column 1
@@ -95,6 +96,8 @@ Content for column 2
 
 ### Column 3
 Content for column 3
+
+:::
 ```
 
 ### Buttons not rendering

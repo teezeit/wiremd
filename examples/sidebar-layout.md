@@ -1,6 +1,6 @@
 ::: layout {.sidebar-main}
 
-## Sidebar {.sidebar}
+::: sidebar
 
 :folder: **Projects**
 
@@ -24,13 +24,15 @@
 
 [[+ New Project](./new-project.html)]*
 
-## Main {.main}
+:::
+
+::: main
 
 ## Overview
 
 A summary of your workspace activity and open tasks.
 
-## Stats {.grid-3 card}
+::: grid-3 card
 
 ### :check: Tasks Done
 **48** this week
@@ -40,6 +42,8 @@ A summary of your workspace activity and open tasks.
 
 ### :bell: Upcoming
 **5** due today
+
+:::
 
 ## Recent Projects
 
@@ -51,5 +55,7 @@ A summary of your workspace activity and open tasks.
 | Design System | Dan W. | Planning | Feb 1 | 12% |
 
 [[View All Projects →](./projects.html)]
+
+:::
 
 :::

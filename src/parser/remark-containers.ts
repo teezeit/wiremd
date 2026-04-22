@@ -203,6 +203,16 @@ function collectContainer(
       break;
     }
 
+    // Nested container opener — recurse (must precede implicit-closer check so that
+    // a paragraph like "::: tab Label\ncontent\n:::" is treated as a nested container,
+    // not as an implicit closer for the outer container).
+    if (parseContainerOpener(child)) {
+      const inner = collectContainer(nodes, i);
+      containerChildren.push(inner.node);
+      i = inner.nextIndex;
+      continue;
+    }
+
     // Implicit closer: paragraph whose last text node ends with \n:::
     // Happens when content and ::: share a paragraph (no blank line between them).
     // e.g. "[Save]* [Cancel]\n:::" — remark folds both into one paragraph.
@@ -227,14 +237,6 @@ function collectContainer(
         i++;
         break;
       }
-    }
-
-    // Nested container opener — recurse
-    if (parseContainerOpener(child)) {
-      const inner = collectContainer(nodes, i);
-      containerChildren.push(inner.node);
-      i = inner.nextIndex;
-      continue;
     }
 
     containerChildren.push(child);
