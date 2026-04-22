@@ -14,6 +14,29 @@ wiremd includes 7 built-in visual styles. Pass one with `--style` on the CLI or 
 
 `sketch` is the default when no style is specified.
 
+## Previews
+
+### sketch
+![sketch style](/screenshots/showcase-sketch-screenshot.png)
+
+### clean
+![clean style](/screenshots/showcase-clean-screenshot.png)
+
+### wireframe
+![wireframe style](/screenshots/showcase-wireframe-screenshot.png)
+
+### material
+![material style](/screenshots/showcase-material-screenshot.png)
+
+### brutal
+![brutal style](/screenshots/showcase-brutal-screenshot.png)
+
+### tailwind
+![tailwind style](/screenshots/showcase-tailwind-screenshot.png)
+
+### none
+![none style](/screenshots/showcase-none-screenshot.png)
+
 ## CLI
 
 ```bash
