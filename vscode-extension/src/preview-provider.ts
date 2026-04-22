@@ -388,8 +388,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
         font-size: 13px;
       }
       #wmd-error-overlay.show { display: block; }
-      body { padding-top: 44px !important; }
-      ${this.currentViewport !== 'full' ? `body > * { max-width: ${viewportWidth}; margin-left: auto; margin-right: auto; }` : ''}
+      #wmd-preview-wrapper { margin-top: 44px; }
     </style>`;
 
     const toolbarHTML = `
@@ -406,6 +405,16 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   <div id="wmd-error-overlay"></div>
   <script>
     const vscode = acquireVsCodeApi();
+    // Wrap existing body content in preview wrapper so margin-top on the wrapper
+    // pushes content below the fixed toolbar without touching body padding
+    const body = document.body;
+    const wrapper = document.createElement('div');
+    wrapper.id = 'wmd-preview-wrapper';
+    while (body.firstChild && body.firstChild.id !== 'wmd-toolbar' && body.firstChild.id !== 'wmd-error-overlay') {
+      wrapper.appendChild(body.firstChild);
+    }
+    body.appendChild(wrapper);
+
     document.getElementById('wmd-refresh').addEventListener('click', () => vscode.postMessage({ type: 'ready' }));
     document.getElementById('wmd-style').addEventListener('click', () => vscode.postMessage({ type: 'requestStyleChange' }));
     document.getElementById('wmd-viewport').addEventListener('click', () => vscode.postMessage({ type: 'requestViewportChange' }));
@@ -429,12 +438,14 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     vscode.postMessage({ type: 'ready' });
   <\/script>`;
 
-    // Add CSP and toolbar styles to <head>, inject toolbar HTML at start of <body>
+    // Inject CSP into <head>, toolbar styles just before </head> (after wiremd styles so they win),
+    // and toolbar HTML at start of <body>
     const withCSP = html.replace(
       '<head>',
-      `<head>\n  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src https: data:; script-src 'unsafe-inline';">${toolbarCSS}`
+      `<head>\n  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src https: data:; script-src 'unsafe-inline';">`
     );
-    return withCSP.replace(/(<body[^>]*>)/, `$1\n${toolbarHTML}`);
+    const withStyles = withCSP.replace('</head>', `${toolbarCSS}\n</head>`);
+    return withStyles.replace(/(<body[^>]*>)/, `$1\n${toolbarHTML}`);
   }
 
   /**
