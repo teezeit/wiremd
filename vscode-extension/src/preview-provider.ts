@@ -4,6 +4,8 @@
  */
 
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
 import { parse, resolveIncludes, renderToHTML } from 'wiremd';
 
 export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
@@ -15,6 +17,9 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   private currentStyle: string = 'sketch';
   private currentViewport: string = 'full';
   private disposables: vscode.Disposable[] = [];
+
+  private docsPanel: vscode.WebviewPanel | undefined;
+  private currentDocsFile: string = '';
 
   constructor(private readonly context: vscode.ExtensionContext) {
     // Watch for document changes
@@ -263,7 +268,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
         break;
 
       case 'requestQuickReference':
-        vscode.commands.executeCommand('wiremd.openQuickReference');
+        this.openDocs(this.context.extensionPath);
         break;
 
       case 'error':
@@ -380,7 +385,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       #wmd-toolbar .wmd-sep { width: 1px; height: 20px; background: #e0e0e0; margin: 0 4px; }
       #wmd-toolbar span { font-size: 13px; color: #333; }
       #wmd-toolbar-spacer { margin-left: auto; font-size: 12px; color: #666; }
-      #wmd-help, #wmd-skill { width: 28px; padding: 4px 0; font-weight: bold; border-radius: 50%; }
+      #wmd-help, #wmd-skill { width: 28px; height: 28px; padding: 0; font-weight: bold; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
       #wmd-error-overlay {
         display: none;
         position: fixed;
@@ -581,6 +586,122 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   }
 
   /**
+   * Open the component docs in a dedicated webview panel.
+   * Looks for docs/components/index.md bundled with the extension,
+   * falling back to the sibling repo path for local development.
+   */
+  public openDocs(extensionPath: string): void {
+    let docsFile = path.join(extensionPath, 'docs', 'components', 'index.md');
+    if (!fs.existsSync(docsFile)) {
+      docsFile = path.join(extensionPath, '..', 'docs', 'components', 'index.md');
+    }
+    if (!fs.existsSync(docsFile)) {
+      vscode.window.showErrorMessage('wiremd: could not find component docs');
+      return;
+    }
+
+    this.currentDocsFile = docsFile;
+
+    if (this.docsPanel) {
+      this.docsPanel.reveal(vscode.ViewColumn.One);
+    } else {
+      this.docsPanel = vscode.window.createWebviewPanel(
+        'wiremd.docs',
+        'wiremd Docs',
+        vscode.ViewColumn.One,
+        { enableScripts: true }
+      );
+      this.docsPanel.webview.onDidReceiveMessage(
+        (msg) => this.handleDocsMessage(msg),
+        null,
+        this.disposables
+      );
+      this.docsPanel.onDidDispose(() => {
+        this.docsPanel = undefined;
+      }, null, this.disposables);
+    }
+
+    this.refreshDocs();
+  }
+
+  private async refreshDocs(): Promise<void> {
+    if (!this.docsPanel || !this.currentDocsFile) { return; }
+    try {
+      const raw = fs.readFileSync(this.currentDocsFile, 'utf-8');
+      const resolved = resolveIncludes(raw, this.currentDocsFile);
+      const ast = parse(resolved);
+      const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true });
+      this.docsPanel.webview.html = this.injectDocsChrome(html);
+    } catch (err: any) {
+      this.docsPanel.webview.html = this.getErrorHTML(err.message);
+    }
+  }
+
+  private handleDocsMessage(message: any): void {
+    if (message.type !== 'navigate') { return; }
+    const dir = path.dirname(this.currentDocsFile);
+    const target = path.resolve(dir, message.href);
+    if (!target.endsWith('.md') || !fs.existsSync(target)) { return; }
+    this.currentDocsFile = target;
+    if (this.docsPanel) {
+      const name = path.basename(target, '.md').replace(/-/g, ' ');
+      this.docsPanel.title = `wiremd — ${name}`;
+    }
+    this.refreshDocs();
+  }
+
+  private injectDocsChrome(html: string): string {
+    const css = `
+    <style id="wmd-docs-styles">
+      #wmd-docs-bar {
+        position: fixed; top: 0; left: 0; right: 0;
+        background: #fff; border-bottom: 1px solid #e0e0e0;
+        padding: 8px 16px; display: flex; align-items: center; gap: 10px;
+        z-index: 9999; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px;
+      }
+      #wmd-docs-bar strong { font-weight: 600; letter-spacing: -0.01em; }
+      #wmd-docs-bar .wmd-docs-sep { color: #ccc; }
+      #wmd-docs-bar button {
+        padding: 4px 10px; border: 1px solid #d0d0d0; border-radius: 4px;
+        background: white; cursor: pointer; font-size: 13px; font-family: inherit;
+      }
+      #wmd-docs-bar button:hover { background: #f0f0f0; border-color: #999; }
+      body { padding-top: 44px !important; }
+    </style>`;
+
+    const bar = `
+  <div id="wmd-docs-bar">
+    <strong>wiremd</strong>
+    <span class="wmd-docs-sep">/</span>
+    <span>docs</span>
+    <button id="wmd-docs-home">Home</button>
+  </div>
+  <script>
+    const vscode = acquireVsCodeApi();
+    document.getElementById('wmd-docs-home').addEventListener('click', () => {
+      vscode.postMessage({ type: 'navigate', href: 'index.md' });
+    });
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (href && href.endsWith('.md')) {
+        e.preventDefault();
+        vscode.postMessage({ type: 'navigate', href });
+      }
+    });
+  <\/script>`;
+
+    const withCSP = html.replace(
+      '<head>',
+      `<head>\n  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src data:; script-src 'unsafe-inline';">`
+    );
+    const withCss = withCSP.replace('</head>', `${css}\n</head>`);
+    return withCss.replace(/(<body[^>]*>)/, `$1\n${bar}`);
+  }
+
+  /**
    * Dispose resources
    */
   public dispose(): void {
@@ -593,6 +714,10 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
 
     if (this.panel) {
       this.panel.dispose();
+    }
+
+    if (this.docsPanel) {
+      this.docsPanel.dispose();
     }
   }
 }

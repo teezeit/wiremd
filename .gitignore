@@ -49,3 +49,4 @@ temp/
 Thumbs.db
 vscode-extension/*.vsix
 vscode-extension/QUICK-REFERENCE.md
+vscode-extension/docs/
