@@ -102,6 +102,57 @@ $29/mo — spans two columns
 ### Grid item {.col-span-2}
 ```
 
+## Disambiguation rules
+
+### Button vs. link
+
+```
+[Text](url)    link — has (url) after the brackets
+[Text]         button — no (url)
+```
+
+### Input vs. button
+
+```
+[___________]  input — contains underscores
+[***********]  password input — contains asterisks
+[Text]         button — plain text, no underscores/asterisks
+```
+
+### Dropdown vs. input
+
+```
+[Select...v]   dropdown — ends with `v` after underscores
+[___________]  text input
+```
+
+### Badge vs. table cell
+
+```
+|Active|{.success}   badge — pipe delimiters with no spaces
+| Active |            table cell — spaces and alignment dashes context
+```
+
+Inside a table cell, escape badge pipes: `\|Active\|{.success}`
+
+### Container vs. raw HTML
+
+```
+::: card        wiremd container — processed by parser
+:::
+
+<div>           raw HTML — passed through unchanged
+</div>
+```
+
+### Attribute placement
+
+```
+[Button]{.class}     immediately after element (preferred)
+[Button] {.class}    one space is also valid
+                     blank line before {}: NOT applied to element
+```
+
 :::
 
 :::

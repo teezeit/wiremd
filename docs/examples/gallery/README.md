@@ -317,7 +317,7 @@ See [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
 ## 📚 Additional Resources
 
 - **[Syntax Showcase](../showcase.md)** - Complete syntax reference
-- **[Quick Reference](../../reference/quick-reference.md)** - One-page cheat sheet
+- **[Quick Reference](../../reference/syntax.md)** - One-page cheat sheet
 - **[Syntax Guide](../../reference/syntax.md)** - User-friendly tutorial
 - **[FAQ](../../reference/faq.md)** - Common questions and troubleshooting
 

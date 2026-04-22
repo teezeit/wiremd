@@ -467,6 +467,6 @@ Content here
 
 ## Next Steps
 
-- [Quick Reference](./quick-reference.md)
+- [Quick Reference](./syntax.md)
 - [API Documentation](../api/)
 - [Examples Gallery](../examples/)

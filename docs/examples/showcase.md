@@ -48,7 +48,7 @@ Welcome to the comprehensive wiremd syntax guide! This document serves as both a
 - [🚀 Complete Page Example](#-complete-page-example)
 
 **Quick Links:**
-- [Quick Reference](../reference/quick-reference.md) - One-page syntax cheat sheet
+- [Quick Reference](../reference/syntax.md) - One-page syntax cheat sheet
 - [FAQ](../reference/faq.md) - Common questions and troubleshooting
 - [Syntax Guide](../reference/syntax.md) - User-friendly guide
 - [JSON Schema](../api/json-schema.md) - AST and JSON output structure
