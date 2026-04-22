@@ -2,6 +2,11 @@
 
 All notable changes to the "wiremd-preview" extension will be documented in this file.
 
+## [0.1.4] - 2026-04-22
+
+### Added
+- Quick Reference button (`?`) in the preview toolbar — opens the wiremd syntax reference as a rendered Markdown preview
+
 ## [0.1.0] - 2024-01-09
 
 ### Added

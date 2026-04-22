@@ -258,6 +258,10 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
         vscode.commands.executeCommand('wiremd.changeViewport');
         break;
 
+      case 'requestInstallSkill':
+        vscode.commands.executeCommand('wiremd.installClaudeSkill');
+        break;
+
       case 'requestQuickReference':
         vscode.commands.executeCommand('wiremd.openQuickReference');
         break;
@@ -376,7 +380,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       #wmd-toolbar .wmd-sep { width: 1px; height: 20px; background: #e0e0e0; margin: 0 4px; }
       #wmd-toolbar span { font-size: 13px; color: #333; }
       #wmd-toolbar-spacer { margin-left: auto; font-size: 12px; color: #666; }
-      #wmd-help { width: 28px; padding: 4px 0; font-weight: bold; border-radius: 50%; }
+      #wmd-help, #wmd-skill { width: 28px; padding: 4px 0; font-weight: bold; border-radius: 50%; }
       #wmd-error-overlay {
         display: none;
         position: fixed;
@@ -406,6 +410,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     <span>Viewport:</span>
     <button id="wmd-viewport">${this.getViewportLabel(this.currentViewport)} &#x25BE;</button>
     <span id="wmd-toolbar-spacer">${viewportWidth}</span>
+    <button id="wmd-skill" title="Install Claude Skill">&#x2728;</button>
     <button id="wmd-help" title="Quick Reference">?</button>
   </div>
   <div id="wmd-error-overlay"></div>
@@ -424,6 +429,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     document.getElementById('wmd-refresh').addEventListener('click', () => vscode.postMessage({ type: 'ready' }));
     document.getElementById('wmd-style').addEventListener('click', () => vscode.postMessage({ type: 'requestStyleChange' }));
     document.getElementById('wmd-viewport').addEventListener('click', () => vscode.postMessage({ type: 'requestViewportChange' }));
+    document.getElementById('wmd-skill').addEventListener('click', () => vscode.postMessage({ type: 'requestInstallSkill' }));
     document.getElementById('wmd-help').addEventListener('click', () => vscode.postMessage({ type: 'requestQuickReference' }));
     window.addEventListener('message', (event) => {
       if (event.data.type === 'error') {
