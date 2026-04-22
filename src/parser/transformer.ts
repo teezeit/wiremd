@@ -387,6 +387,7 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
   }
 
   // Parse each item - could be text, icon, or button
+  let brandEmitted = false;
   for (const item of items) {
     const trimmed = item.trim();
 
@@ -456,12 +457,21 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
       continue;
     }
 
-    // Otherwise, it's a nav item (text)
-    children.push({
-      type: 'nav-item',
-      content: trimmed,
-      props: {},
-    });
+    // Otherwise, first plain text item is the brand; rest are nav items
+    if (!brandEmitted) {
+      brandEmitted = true;
+      children.push({
+        type: 'brand',
+        children: [{ type: 'text', content: trimmed, props: {} }] as any,
+        props: {},
+      });
+    } else {
+      children.push({
+        type: 'nav-item',
+        content: trimmed,
+        props: {},
+      });
+    }
   }
 
   return {
@@ -583,10 +593,6 @@ function serializeMdastChildren(children: any[]): string {
   }).join('');
 }
 
-/**
- * Transform paragraph node
- * This is where we'll detect buttons, inputs, etc.
- */
 function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): WiremdNode {
   // Check for [[...]] inline container before any other processing — handles nested containers
   // where remark-inline-containers only runs on top-level nodes
@@ -603,7 +609,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 
   // Check if this paragraph has rich content (strong, emphasis, links, images, etc.)
   const hasRichContent = node.children && node.children.some((child: any) =>
-    child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'image'
+    child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'inlineCode' || child.type === 'image'
   );
 
   // [[Button](url)]* — one or more linked-button patterns on the same line.
@@ -717,7 +723,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         currentText += `<strong>${extractTextContent(child)}</strong>`;
       } else if (child.type === 'emphasis') {
         currentText += `<em>${extractTextContent(child)}</em>`;
-      } else if (child.type === 'code') {
+      } else if (child.type === 'code' || child.type === 'inlineCode') {
         currentText += `<code>${extractTextContent(child)}</code>`;
       } else if (child.type === 'link') {
         currentText += `<a href="${child.url}">${extractTextContent(child)}</a>`;

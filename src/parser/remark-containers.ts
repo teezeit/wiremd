@@ -74,6 +74,15 @@ function makeContainerNode(
  * Collect and build a container starting at nodes[startIdx] (the opener paragraph).
  * Returns the container node and the index of the first node after the container.
  */
+function finishContainer(containerType: string, attrs: string, inline: string, children: any[], nextIndex: number): { node: any; nextIndex: number } {
+  const node = makeContainerNode(containerType, attrs, children);
+  if (inline) node.inline = inline;
+  if (containerType === 'demo') {
+    node.rawContent = mdastNodesToText(children);
+  }
+  return { node, nextIndex };
+}
+
 function collectContainer(
   nodes: any[],
   startIdx: number,
@@ -111,10 +120,7 @@ function collectContainer(
           children: [{ type: 'text', value: contentText }],
         });
       }
-      return {
-        node: makeContainerNode(opener.containerType, opener.attrs, children),
-        nextIndex: startIdx + 1,
-      };
+      return finishContainer(opener.containerType, opener.attrs, opener.inline, children, startIdx + 1);
     }
   }
 
@@ -124,7 +130,7 @@ function collectContainer(
   if (
     lastChild?.type === 'text' &&
     (lastChild.value.trim().endsWith(':::') ||
-      lastChild.value.includes('\n:::'))
+      /\n:::\s*$/.test(lastChild.value))
   ) {
     const processedChildren: any[] = [];
     let startChildIdx = 0;
@@ -157,10 +163,7 @@ function collectContainer(
         children: [{ type: 'text', value: opener.inline }],
       });
     }
-    return {
-      node: makeContainerNode(opener.containerType, opener.attrs, contentChildren),
-      nextIndex: startIdx + 1,
-    };
+    return finishContainer(opener.containerType, opener.attrs, opener.inline, contentChildren, startIdx + 1);
   }
 
   // === CASE 3: Multi-block container — collect until matching closer ::: ===
@@ -179,6 +182,9 @@ function collectContainer(
   //   ::: row
   //   [Search___]{type:search}
   // Remark folds both into one paragraph, so we must extract trailing lines.
+  // If the trailing content is itself a container opener (e.g. ::: card folded into
+  // ::: demo with no blank line), collect it recursively instead of pushing as text.
+  let pendingAfterOpener: any = null;
   if (
     openerNode.children.length === 1 &&
     openerNode.children[0].type === 'text'
@@ -186,14 +192,30 @@ function collectContainer(
     const fullText = openerNode.children[0].value as string;
     const afterOpener = fullText.split('\n').slice(1).join('\n').trim();
     if (afterOpener) {
-      containerChildren.push({
+      const syntheticPara = {
         type: 'paragraph',
         children: [{ type: 'text', value: afterOpener }],
-      });
+      };
+      if (parseContainerOpener(syntheticPara)) {
+        pendingAfterOpener = syntheticPara;
+      } else {
+        containerChildren.push(syntheticPara);
+      }
     }
   }
 
   let i = startIdx + 1;
+
+  if (pendingAfterOpener) {
+    // Build a virtual list so collectContainer can consume the nested opener
+    // plus the real nodes that follow it.
+    const virtualNodes = [pendingAfterOpener, ...nodes.slice(startIdx + 1)];
+    const inner = collectContainer(virtualNodes, 0);
+    containerChildren.push(inner.node);
+    // inner.nextIndex is relative to virtualNodes whose [0] is the synthetic para;
+    // real nodes start at startIdx+1, so advance i by (inner.nextIndex - 1).
+    i = startIdx + inner.nextIndex;
+  }
 
   while (i < nodes.length) {
     const child = nodes[i];
@@ -243,10 +265,7 @@ function collectContainer(
     i++;
   }
 
-  return {
-    node: makeContainerNode(opener.containerType, opener.attrs, containerChildren),
-    nextIndex: i,
-  };
+  return finishContainer(opener.containerType, opener.attrs, opener.inline, containerChildren, i);
 }
 
 /** Reconstruct wiremd source text from MDAST inline children. */
@@ -281,12 +300,40 @@ function mdastNodesToText(nodes: any[]): string {
             : '- ';
           return prefix + mdastNodesToText(item.children || []).replace(/\n/g, '\n  ');
         }).join('\n');
+      case 'table': {
+        const rows: string[][] = node.children.map((row: any) =>
+          row.children.map((cell: any) => mdastInlinesToText(cell.children || []))
+        );
+        if (!rows.length) return '';
+        const colWidths = rows[0].map((_: any, ci: number) =>
+          Math.max(...rows.map((r: string[]) => (r[ci] || '').length), 3)
+        );
+        const formatRow = (cells: string[]) =>
+          '| ' + cells.map((c, i) => c.padEnd(colWidths[i])).join(' | ') + ' |';
+        const separator = '| ' + colWidths.map(w => '-'.repeat(w)).join(' | ') + ' |';
+        return [formatRow(rows[0]), separator, ...rows.slice(1).map(formatRow)].join('\n');
+      }
       case 'code':
         return '```' + (node.lang || '') + '\n' + node.value + '\n```';
       case 'blockquote':
         return mdastNodesToText(node.children).split('\n').map((l: string) => '> ' + l).join('\n');
-      case 'wiremdContainer':
-        return '::: ' + node.containerType + '\n' + mdastNodesToText(node.children) + '\n:::';
+      case 'wiremdContainer': {
+        const inlineSuffix = node.inline ? ' ' + node.inline : '';
+        const attrs = node.attributes ? ' ' + node.attributes : '';
+        const opener = '::: ' + node.containerType + inlineSuffix + attrs;
+        // Skip the first child if it was injected from opener.inline (it's on the opener line)
+        let children = node.children || [];
+        if (node.inline) {
+          const first = children[0];
+          if (first?.type === 'paragraph' &&
+              first.children?.length === 1 &&
+              first.children[0]?.type === 'text' &&
+              first.children[0].value?.trim() === node.inline) {
+            children = children.slice(1);
+          }
+        }
+        return opener + '\n' + mdastNodesToText(children) + '\n:::';
+      }
       default:
         return '';
     }
@@ -303,9 +350,6 @@ function processNodes(nodes: any[]): any[] {
 
     if (parseContainerOpener(node)) {
       const { node: containerNode, nextIndex } = collectContainer(nodes, i);
-      if (containerNode.containerType === 'demo') {
-        containerNode.rawContent = mdastNodesToText(containerNode.children);
-      }
       result.push(containerNode);
       i = nextIndex;
     } else {

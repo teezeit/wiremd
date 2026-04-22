@@ -46,12 +46,10 @@ Email
 [_____________________________]{type:email required}
 
 Message
-[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]
-[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]
-[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]
+[Message...]{rows:4}
 
 Country
-[v Select country            v]
+[Select country_v]
 - United States
 - United Kingdom
 - Germany
@@ -117,8 +115,7 @@ Name
 [_____________________________]
 
 Bio
-[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]
-[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]
+[Bio...]{rows:3}
 
 [Save Changes]*
 :::
