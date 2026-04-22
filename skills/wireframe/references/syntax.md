@@ -217,6 +217,62 @@ View details below.
 :::
 ```
 
+A common real-world pattern — card with a header row and content:
+
+```markdown
+::: card
+
+::: grid-2
+
+### Sprint: Q2 Onboarding
+
+### {.right}
+
+Started: Apr 1 · |Due: Apr 30|{.warning}
+
+:::
+
+Before you can pitch to a decision maker, you need to get past the gatekeeper.
+
+|Prospecting and Outreach|
+
+:::
+```
+
+Tabs can contain grids, rows, and any other containers:
+
+```markdown
+::: tabs
+
+::: tab Overview
+
+::: row {.right}
+[Search_______________]{type:search}
+[All Teams___________v]
+
+- All Teams
+- Team A
+
+:::
+
+::: grid-3 card
+### :chart: Sessions
+**163**
+### :user: Active Users
+**42**
+### :star: Avg Score
+**87%**
+:::
+
+:::
+
+::: tab Details
+Content here.
+:::
+
+:::
+```
+
 **Note:** When the last line inside a container has inline code spans, bold, or links, add a blank line before the closing `:::` to avoid parser ambiguity.
 
 ---
@@ -249,6 +305,34 @@ Content for the main area goes here.
 
 :::
 ```
+
+---
+
+## Row
+
+`::: row` lays out its children horizontally. Use it for filter toolbars, search+action bars, or any group of inputs/buttons on one line.
+
+```markdown
+::: row
+[Search_______________]{type:search}
+[All Teams___________v]
+
+- All Teams
+- Team A
+- Team B
+
+:::
+```
+
+Add `{.right}` to push content to the right edge:
+
+```markdown
+::: row {.right}
+[+ New Item]*
+:::
+```
+
+Rows can be nested inside grids, cards, or tabs.
 
 ---
 
@@ -292,7 +376,62 @@ Add `card` after the column count to get card chrome; omit it for a plain layout
 
 Supported widths: `grid-2`, `grid-3`, `grid-4`, `grid-5`
 
-Column spans (make one item wider):
+### Section header with right-aligned action
+
+The most common `grid-2` pattern: title on the left, action button on the right. Use an empty `###` as a spacer cell.
+
+```markdown
+::: grid-2
+
+### Recent Sessions
+
+### {.right}
+
+[View All]*
+
+:::
+```
+
+The `{.right}` modifier aligns the cell's content to the right. An empty `###` with no text is a valid spacer — it creates an empty grid cell:
+
+```markdown
+::: grid-2
+
+###
+
+Left cell content with no heading.
+
+### {.right}
+
+[+ New Item]*
+
+:::
+```
+
+### KPI metrics row
+
+`### Title` + `**bold metric**` + supporting text is the standard pattern for stat/KPI grids:
+
+```markdown
+::: grid-3
+
+### Total Revenue
+**$124,500**
+↑ 8% vs last period
+
+### Active Users
+**3,842**
+↑ 12% vs last period
+
+### Conversion Rate
+**4.2%**
+↓ 0.3% vs last period
+
+:::
+```
+
+### Column spans
+
 ```markdown
 ### Featured Item {.col-span-2}
 Spans two columns.
@@ -372,6 +511,9 @@ Done    [##################] 100%
 | `<Badge>` / `<Chip>` / status pill | `\|Label\|{.variant}` |
 | Flex row of cards | `::: grid-3 card` … `:::` |
 | Stats row (no card) | `::: grid-3` … `:::` |
+| Horizontal filter/toolbar | `::: row` … `:::` |
+| Right-aligned action row | `::: row {.right}` … `:::` |
+| Section header + right action | `::: grid-2` with `### Title` + `### {.right}` |
 | `<Tabs>` | `::: tabs` with `::: tab Label` children |
 | `<Tabs>` (multi-page) | one `.md` file per tab |
 | Loading state | `> **Loading state:** spinner + "Loading..."` |

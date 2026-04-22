@@ -121,6 +121,45 @@ Role
 - [ ] Unchecked   - [x] Checked
 - ( ) Option A    - (*) Option B (selected)
 
+# Row — horizontal group of inputs, filters, or actions
+::: row
+[Search_______________]{type:search}
+[All Teams___________v]
+- All Teams
+- Team A
+:::
+
+# Row, right-aligned
+::: row {.right}
+[+ New Item]*
+:::
+
+# Section header with right-aligned action — VERY COMMON PATTERN
+::: grid-2
+### Section Title
+
+### {.right}
+
+[+ Add Item]*
+
+:::
+
+# KPI metric card
+::: grid-3
+### Total Revenue
+**$124,500**
+↑ 8% vs last period
+
+### Active Users
+**3,842**
+↑ 12% vs last period
+
+### Conversion
+**4.2%**
+↓ 0.3% vs last period
+
+:::
+
 # Grid — layout only, equal columns, no card chrome
 ::: grid-3
 ### Revenue
