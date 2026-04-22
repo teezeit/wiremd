@@ -1,4 +1,5 @@
 [[ :logo: AppName | Home | Library | *:gear: Settings* | :user: Account ]]
+
 [[ Settings > Profile ]]
 
 ::: layout {.sidebar-main}
