@@ -263,6 +263,60 @@ export function main(): void {
     process.exit(0);
   }
 
+  const inputIsDir = existsSync(options.input) && statSync(options.input).isDirectory();
+
+  if (inputIsDir) {
+    // Directory mode: serve all .md files, no single output file
+    if (!options.serve && !options.watch) {
+      console.error('Error: Directory input requires --serve or --watch');
+      process.exit(1);
+    }
+
+    const rootDir = resolve(options.input);
+    logger.watching(`Watching: ${chalk.bold(options.input)}`);
+
+    if (options.serve) {
+      const indexFile = existsSync(join(rootDir, 'index.md')) ? 'index.md' : undefined;
+      startServer({
+        port: options.serve,
+        rootDir,
+        inputFile: indexFile,
+        renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath }),
+      });
+      console.log('');
+    }
+
+    const ignorePatterns = [
+      '**/node_modules/**', '**/.git/**', '**/dist/**', '**/build/**',
+      ...(options.ignorePattern ? [options.ignorePattern] : []),
+    ];
+    const watchPaths = options.watchPattern ? [options.watchPattern] : [join(rootDir, '**/*.md')];
+    logger.info(`Ignoring: ${chalk.gray(ignorePatterns.join(', '))}`);
+    console.log('');
+
+    const watcher = chokidar.watch(watchPaths, {
+      ignored: ignorePatterns, persistent: true, ignoreInitial: true,
+      awaitWriteFinish: { stabilityThreshold: 100, pollInterval: 50 },
+    });
+
+    watcher
+      .on('change', (path) => {
+        logger.changed(`${chalk.bold('changed')}: ${chalk.dim(path.replace(process.cwd(), '.'))}`);
+        if (options.serve) notifyReload();
+      })
+      .on('add', (path) => {
+        logger.info(`New file: ${chalk.dim(path.replace(process.cwd(), '.'))}`);
+        if (options.serve) notifyReload();
+      })
+      .on('unlink', (path) => {
+        logger.warning(`Removed: ${chalk.dim(path.replace(process.cwd(), '.'))}`);
+        if (options.serve) notifyReload();
+      })
+      .on('ready', () => logger.info('Watcher ready. Press Ctrl+C to stop.'));
+
+    return;
+  }
+
   // Determine output path
   if (!options.output) {
     const ext = options.format === 'json' ? '.json' : '.html';
