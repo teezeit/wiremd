@@ -30,7 +30,7 @@ Award-winning creative agency specializing in branding, web design, and digital 
 
 ---
 
-## Our Services {.grid-3 card}
+::: grid-3 card
 
 ### :art: Brand Strategy & Design
 We craft compelling brand identities that resonate with your audience and stand out in the market.
@@ -68,13 +68,13 @@ Data-driven marketing strategies that drive growth and measurable results.
 
 [Learn More →]
 
-##
+:::
 
 ---
 
 ## Featured Work
 
-## Recent Projects {.grid-2 card}
+::: grid-2 card
 
 ### TechStart - Brand Redesign
 ![Case Study](https://via.placeholder.com/600x400)
@@ -104,7 +104,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 
 [View Case Study →]
 
-##
+:::
 
 [View All Projects →]
 
@@ -112,7 +112,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 
 ## Our Process
 
-## How We Work {.grid-4 card}
+::: grid-4 card
 
 ### 1. Discovery
 **Week 1**
@@ -146,7 +146,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 - QA testing
 - Launch & support
 
-##
+:::
 
 ---
 
@@ -154,7 +154,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 
 ::: card
 
-## Results That Speak for Themselves {.grid-4 card}
+::: grid-4 card
 
 ### 250+
 Projects Delivered
@@ -168,7 +168,7 @@ Industry Awards
 ### 12yrs
 In Business
 
-##
+:::
 
 :::
 
@@ -176,7 +176,7 @@ In Business
 
 ## Client Testimonials
 
-## What Our Clients Say {.grid-3 card}
+::: grid-3 card
 
 ### :star::star::star::star::star:
 *"CreativeCo transformed our brand. Their strategic approach and creative execution exceeded all expectations."*
@@ -196,13 +196,13 @@ Marketing Director, GlobalCorp
 **Emily Rodriguez**
 Founder, EcoMarket
 
-##
+:::
 
 ---
 
 ## Our Team
 
-## Meet the Creative Minds {.grid-4 card}
+::: grid-4 card
 
 ### John Doe
 ![Team Member](https://via.placeholder.com/250x250)
@@ -232,7 +232,7 @@ Founder, EcoMarket
 
 [LinkedIn] [Dribbble]
 
-##
+:::
 
 [View Full Team →] [We're Hiring! →]
 
@@ -240,7 +240,7 @@ Founder, EcoMarket
 
 ## Recognition & Awards
 
-## Industry Recognition {.grid-6 card}
+::: grid-6 card
 
 ### Awwwards
 5x Site of the Day
@@ -260,13 +260,13 @@ Team of the Year
 ### Fast Company
 Innovation Award
 
-##
+:::
 
 ---
 
 ## Our Expertise
 
-## Technologies We Love {.grid-3 card}
+::: grid-3 card
 
 ### Design
 - Figma
@@ -289,7 +289,7 @@ Innovation Award
 - Mailchimp
 - Hootsuite
 
-##
+:::
 
 ---
 
@@ -308,7 +308,7 @@ We'd love to hear about your vision and explore how we can help bring it to life
 
 ## Get in Touch
 
-## Contact Form {.grid-2}
+::: grid-2
 
 ### Send Us a Message
 
@@ -383,13 +383,13 @@ Sunday: Closed
 
 ![Office Photo](https://via.placeholder.com/500x300)
 
-##
+:::
 
 ---
 
 ## Latest from Our Blog
 
-## Recent Articles {.grid-3 card}
+::: grid-3 card
 
 ### The Future of Web Design
 ![Blog Post](https://via.placeholder.com/350x200)
@@ -418,7 +418,7 @@ Latest strategies to improve your search rankings and organic traffic.
 
 [Read More →]
 
-##
+:::
 
 [Visit Blog →]
 
@@ -426,7 +426,7 @@ Latest strategies to improve your search rankings and organic traffic.
 
 ::: footer
 
-## Links {.grid-4 card}
+::: grid-4 card
 
 ### Services
 - Brand Strategy
@@ -460,7 +460,7 @@ Latest strategies to improve your search rankings and organic traffic.
 - Press Kit
 - Support
 
-##
+:::
 
 ---
 

@@ -1,12 +1,14 @@
 # Tabs Demo
 
-A showcase of the `{.tabs}` heading-class syntax — interactive, JS-switched tab panels.
+A showcase of the `::: tabs` container syntax — interactive, JS-switched tab panels.
 
 ---
 
-## Product Details {.tabs}
+## Product Details
 
-### Overview
+::: tabs
+
+::: tab Overview
 This is the overview panel. Tap/click the other tab headers above to switch.
 
 **Key points:**
@@ -15,16 +17,18 @@ This is the overview panel. Tap/click the other tab headers above to switch.
 - 30-day returns
 
 [Buy Now]*  [Add to Cart]
+:::
 
-### Specifications
+::: tab Specifications
 | Spec | Value |
 |------|-------|
 | Weight | 250g |
 | Dimensions | 10 × 5 × 3 cm |
 | Material | Aluminium |
 | Warranty | 2 years |
+:::
 
-### Reviews {.active}
+::: tab Reviews
 > :star: :star: :star: :star: :star:
 >
 > "Fantastic build quality — exactly as described."
@@ -35,18 +39,25 @@ This is the overview panel. Tap/click the other tab headers above to switch.
 > "Works as advertised, shipping was fast."
 > — Another Buyer
 
-### FAQ
+:::
+
+::: tab FAQ
 **Q: Does it come with a charger?**
 A: Yes, a USB-C cable is included.
 
 **Q: Is there a mobile app?**
 A: Yes — available on iOS and Android.
+:::
+
+:::
 
 ---
 
-## Another Example {.tabs}
+## Another Example
 
-### Login
+::: tabs
+
+::: tab Login
 Username
 [_______________________]
 
@@ -54,8 +65,9 @@ Password
 [***********************]
 
 [Sign In]*
+:::
 
-### Register
+::: tab Register
 Email
 [Email___________________]
 
@@ -63,10 +75,14 @@ Password
 [***********************]
 
 [Create Account]*
+:::
 
-### Forgot?
+::: tab Forgot?
 Enter your email and we'll send a reset link.
 
 [Email___________________]
 
 [Send Reset Link]*
+:::
+
+:::

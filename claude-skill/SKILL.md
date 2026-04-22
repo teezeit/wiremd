@@ -81,12 +81,16 @@ For the full syntax including all attributes, edge cases, and disambiguation rul
 
 # Sidebar-main layout
 ::: layout {.sidebar-main}
-## Nav {.sidebar}
+
+::: sidebar
 - [Dashboard](#)
 - **[Reports](#)**
+:::
 
-## Content {.main}
+::: main
 ### Page Title
+:::
+
 :::
 
 # In-page tabs — use a button group, * marks the active tab
@@ -116,18 +120,20 @@ Role
 - ( ) Option A    - (*) Option B (selected)
 
 # Grid — layout only, equal columns, no card chrome
-## Key Metrics {.grid-3}
+::: grid-3
 ### Revenue
 $124,500
 ### Users
 3,842
 ### Conversion
 4.2%
+:::
 
 # Grid of cards — each item gets card styling
-## Channels {.grid-3 card}
+::: grid-3 card
 ### :rocket: Organic
 42% of traffic
+:::
 
 # Table
 | Name  | Role  | Status  | Actions         |
@@ -179,7 +185,7 @@ See the renderable version at `references/examples/dashboard.md`.
 [[ Dashboard > Reports ]]
 
 ::: layout {.sidebar-main}
-## Navigation {.sidebar}
+::: sidebar
 - [Overview](#)
 - **[Reports](#)**
 - [Analytics](#)
@@ -196,7 +202,9 @@ See the renderable version at `references/examples/dashboard.md`.
 
 [Apply Filters]*
 
-## Main {.main}
+:::
+
+::: main
 
 ### Monthly Reports
 
@@ -204,7 +212,7 @@ See the renderable version at `references/examples/dashboard.md`.
 
 ---
 
-## Key Metrics {.grid-3}
+::: grid-3
 
 ### Total Revenue
 $124,500
@@ -215,9 +223,11 @@ $124,500
 ### Conversion Rate
 4.2%
 
+:::
+
 ---
 
-## Performance by Channel {.grid-3 card}
+::: grid-3 card
 
 ### :rocket: Organic Search
 **42%** of traffic
@@ -230,6 +240,8 @@ $124,500
 ### :bell: Email
 **27%** of traffic
 ↑ 8% vs last month
+
+:::
 
 ---
 
@@ -272,7 +284,7 @@ Format
 1. **Label directly above input.** No blank line between label text and `[_____]` — it breaks the association.
 2. **Blank line before `:::` when last line has inline elements.** Buttons, backtick code, bold, links, or list items on the final line of a container — add an empty line before `:::`.
 3. **`[[ ]]` nav doesn't support hrefs.** Links inside `[[ ]]` silently drop the URL. Use plain markdown links for cross-page navigation.
-4. **`:::tabs` and `:::accordion` don't exist.** Use button groups (`[Tab]*  [Other]`) for in-page tabs; use one file per tab for multi-page tab sets.
+4. **`:::accordion` doesn't exist.** Use `::: tabs` with `::: tab Label` children for tabbed panels. For a simple button-group switcher, use `[Tab]*  [Other]`.
 5. **Use `![[file.md]]` for includes, not `:::display`.** `:::display` is obsolete. `![[path/to/file.md]]` works in both the CLI and VS Code preview — path resolves relative to the current file.
 
 ---

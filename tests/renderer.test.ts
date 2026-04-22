@@ -174,7 +174,7 @@ Content
   describe('Grid Layout', () => {
     it('should render a 3-column grid', () => {
       const input = `
-## Features {.grid-3}
+::: grid-3
 
 ### Feature One
 Fast
@@ -184,6 +184,8 @@ Secure
 
 ### Feature Three
 Powerful
+
+:::
       `.trim();
 
       const ast = parse(input);
@@ -200,13 +202,15 @@ Powerful
 
     it('should render wmd-grid-item-card class when card modifier is set', () => {
       const input = `
-## Features {.grid-3 card}
+::: grid-3 card
 
 ### Fast
 Quick
 
 ### Secure
 Safe
+
+:::
       `.trim();
 
       const ast = parse(input);
@@ -216,10 +220,12 @@ Safe
 
     it('should NOT render wmd-grid-item-card class without card modifier', () => {
       const input = `
-## Features {.grid-3}
+::: grid-3
 
 ### Fast
 Quick
+
+:::
       `.trim();
 
       const ast = parse(input);
@@ -227,25 +233,29 @@ Quick
       expect(html).not.toMatch(/class="[^"]*wmd-grid-item-card/);
     });
 
-    it('should NOT render grid heading label text in output', () => {
+    it('should NOT render grid label text in output', () => {
       const input = `
-## MyGridLabel {.grid-3}
+::: grid-3
 
 ### Item One
 Content
+
+:::
       `.trim();
 
       const ast = parse(input);
       const html = renderToHTML(ast, { style: 'sketch' });
-      expect(html).not.toContain('MyGridLabel');
+      expect(html).toMatch(/<div class="[^"]*wmd-grid[^"]*"/);
     });
 
     it('should render col-span class on grid item', () => {
       const input = `
-## Pricing {.grid-3}
+::: grid-3
 
 ### Wide {.col-span-2}
 Spans two columns
+
+:::
       `.trim();
 
       const ast = parse(input);
@@ -254,17 +264,19 @@ Spans two columns
     });
 
     it('should include col-span mobile reset in CSS', () => {
-      const ast = parse('## G {.grid-3}\n\n### Item\nContent');
+      const ast = parse('::: grid-3\n\n### Item\nContent\n\n:::');
       const html = renderToHTML(ast, { style: 'sketch' });
       expect(html).toMatch(/max-width:\s*768px[\s\S]*?col-span-2[\s\S]*?grid-column:\s*span 1/);
     });
 
     it('should render col-span combined with card modifier', () => {
       const input = `
-## Pricing {.grid-3 card}
+::: grid-3 card
 
 ### Wide {.col-span-2}
 Spans two
+
+:::
       `.trim();
 
       const ast = parse(input);
@@ -275,15 +287,17 @@ Spans two
   });
 
   describe('Row layout rendering', () => {
-    it('should render ## {.row} as a flex container', () => {
+    it('should render ::: row as a flex container', () => {
       const input = `
-## Toolbar {.row}
+::: row
 
 ###
 [All]*
 
 ###
 [+ New]*
+
+:::
       `.trim();
 
       const html = renderToHTML(parse(input), { style: 'sketch' });
@@ -294,13 +308,15 @@ Spans two
 
     it('should render align-left and align-right classes on grid-items', () => {
       const input = `
-## Toolbar {.row}
+::: row
 
 ### {.left}
 [All]*
 
 ### {.right}
 [+ New]*
+
+:::
       `.trim();
 
       const html = renderToHTML(parse(input), { style: 'sketch' });
@@ -312,14 +328,14 @@ Spans two
 
     it('dropdown inside implicit row renders <select> with <option> elements (not a stray <ul>)', () => {
       const input = `
-## Filters {.row}
+::: row
 
 [Select Team_________v]
 - All Teams
 - Team A
 - Team B
 
-##
+:::
       `.trim();
 
       const html = renderToHTML(parse(input), { style: 'clean' });
@@ -331,7 +347,7 @@ Spans two
 
     it('search + dropdown inside implicit row renders no stray bullet list', () => {
       const input = `
-## Filters {.row}
+::: row
 
 [Search_______________]{type:search}
 
@@ -339,7 +355,7 @@ Spans two
 - All Teams
 - Team A
 
-##
+:::
       `.trim();
 
       const html = renderToHTML(parse(input), { style: 'clean' });
@@ -349,10 +365,12 @@ Spans two
 
     it('should render align-center class on grid-item with {.center}', () => {
       const input = `
-## Toolbar {.row}
+::: row
 
 ### {.center}
 Centered
+
+:::
       `.trim();
 
       const html = renderToHTML(parse(input), { style: 'sketch' });
@@ -507,7 +525,7 @@ Email
       const input = `
 ::: card
 
-## Features {.grid-3}
+::: grid-3
 
 ### Fast
 Quick
@@ -517,6 +535,8 @@ Safe
 
 ### Powerful
 Strong
+
+:::
 
 :::
       `.trim();
@@ -534,12 +554,13 @@ Strong
       const input = `
 ::: layout {.sidebar-main}
 
-## Sidebar {.sidebar}
+::: sidebar
 Nav
+:::
 
-## Main {.main}
+::: main
 
-## Stats {.grid-3}
+::: grid-3
 
 ### Done
 48
@@ -549,6 +570,10 @@ Nav
 
 ### Pending
 5
+
+:::
+
+:::
 
 :::
       `.trim();
@@ -566,13 +591,18 @@ Nav
     const sidebarInput = `
 ::: layout {.sidebar-main}
 
-## Sidebar {.sidebar}
+::: sidebar
 - [Home](#)
 - [Settings](#)
 
-## Main {.main}
+:::
+
+::: main
+
 ### Dashboard
 Content here
+
+:::
 
 :::
     `.trim();
@@ -639,13 +669,19 @@ Content here
 
   describe('Tabs', () => {
     const input = `
-## Product {.tabs}
+::: tabs
 
-### Overview
+::: tab Overview
 Overview panel
 
-### Details
+:::
+
+::: tab Details
 Details panel
+
+:::
+
+:::
     `.trim();
 
     it('should render a tabs container with headers and panels', () => {
@@ -718,14 +754,14 @@ Details panel
 
   describe('Row — labeled input (form-group) renders as block inside flex item', () => {
     it('should render form-group inside row as grid-item containing form-group, not button-group', () => {
-      const md = `## Toolbar {.row}\n\nSearch\n[Search__________________________]\n\n##`;
+      const md = `::: row\n\nSearch\n[Search__________________________]\n\n:::`;
       const html = renderToHTML(parse(md), { style: 'clean' });
       expect(html).toContain('wmd-container-form-group');
       expect(html).not.toMatch(/wmd-container-button-group[^"]*">\s*Search/);
     });
 
     it('CSS: row input override must use child combinator (>) not descendant ( ) to avoid breaking form-groups', () => {
-      const md = `## Toolbar {.row}\n\nSearch\n[Search__________________________]\n\n##`;
+      const md = `::: row\n\nSearch\n[Search__________________________]\n\n:::`;
       const html = renderToHTML(parse(md), { style: 'clean' });
       // Descendant selector ".wmd-row .wmd-input" would override block display inside form-groups.
       // Must use child combinator: ".wmd-row > .wmd-grid-item > .wmd-input" instead.
@@ -771,6 +807,104 @@ Details panel
       expect(html).toContain('Status:');
       expect(html).toContain('wmd-badge-success');
       expect(html).toContain('Active');
+    });
+  });
+
+  describe('::: container-based layout rendering', () => {
+    it('should render ::: grid-3 as a 3-column grid', () => {
+      const input = `
+::: grid-3
+
+### Feature One
+Fast
+
+### Feature Two
+Secure
+
+### Feature Three
+Powerful
+
+:::
+      `.trim();
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toContain('wmd-grid');
+      expect(html).toContain('wmd-grid-3');
+      expect(html).toContain('--grid-columns: 3');
+      expect(html).toContain('Feature One');
+      expect(html).toContain('Feature Two');
+    });
+
+    it('should render ::: grid-3 card with card class on items', () => {
+      const input = `
+::: grid-3 card
+
+### Fast
+Quick
+
+### Secure
+Safe
+
+:::
+      `.trim();
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-grid-item-card/);
+    });
+
+    it('should render ::: row as a flex container', () => {
+      const input = `
+::: row
+
+[All]* [Active]
+
+[+ New]*
+
+:::
+      `.trim();
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toContain('wmd-row');
+    });
+
+    it('should render ::: tabs with tab headers and panels', () => {
+      const input = `
+::: tabs
+
+::: tab Overview
+Overview text
+
+:::
+
+::: tab Details
+[Buy Now]*
+
+:::
+
+:::
+      `.trim();
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toContain('wmd-tabs');
+      expect(html).toContain('Overview');
+      expect(html).toContain('Details');
+    });
+
+    it('should render ::: layout {.sidebar-main} with nested ::: sidebar and ::: main', () => {
+      const input = `
+::: layout {.sidebar-main}
+
+::: sidebar
+- [Home](#)
+:::
+
+::: main
+### Page Title
+Content
+:::
+
+:::
+      `.trim();
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toContain('wmd-layout-sidebar');
+      expect(html).toContain('wmd-layout-main');
+      expect(html).toContain('Page Title');
     });
   });
 });

@@ -191,7 +191,7 @@ Content goes here
 ### 4.1 Grid Layouts
 
 ```markdown
-## Features {.grid-3 card}
+::: grid-3 card
 
 ### Feature One
 Content
@@ -201,31 +201,35 @@ Content
 
 ### Feature Three
 Content
+
+:::
 ```
 
 **Parser Rules:**
-- Heading with `.grid-N` class where N is column count
-- Direct child headings become grid items
-- Supports: `.grid-2`, `.grid-3`, `.grid-4`, `.grid-auto`
+- `::: grid-N` container where N is column count
+- Child `###` headings become grid items
+- Supports: `grid-2`, `grid-3`, `grid-4`, `grid-5`
+- Add `card` modifier for card chrome on items
 
 ### 4.2 Sidebar + Main Layout
 
 ```markdown
 ::: layout {.sidebar-main}
 
-## Sidebar {.sidebar}
+::: sidebar
 Sidebar content
+:::
 
-## Main {.main}
+::: main
 Main content
+:::
 
 :::
 ```
 
 **Parser Rules:**
-- Container with layout type
-- Child sections with `.sidebar` and `.main` classes
-- Sections defined by headings with classes
+- `::: layout {.sidebar-main}` wrapper container
+- Child `::: sidebar` and `::: main` containers define the two panels
 
 ---
 
@@ -400,24 +404,29 @@ Home > Products > Category > Current Page
 ### 7.3 Tabs
 
 ```markdown
-## Settings {.tabs}
+::: tabs
 
-### Profile
+::: tab Profile
 Name
 [_____________________________]{required}
+:::
 
-### Notifications
-[ ] Email alerts
-[ ] SMS alerts
+::: tab Notifications
+- [ ] Email alerts
+- [ ] SMS alerts
+:::
 
-### Security {.active}
+::: tab Security
 [Change Password]
+:::
+
+:::
 ```
 
 **Parser Rules:**
-- `{.tabs}` class on a heading declares a tabs container
-- Child headings one level deeper become tab panels (label = heading text)
-- First tab is active by default; add `{.active}` to a child heading to override
+- `::: tabs` declares the tab container
+- Child `::: tab Label` containers become tab panels (label = text after `tab`)
+- First tab is active by default
 - Any wiremd content is valid inside a tab panel
 
 ### 7.4 Badges/Pills
@@ -505,7 +514,7 @@ We couldn't load this page
 | Class | `{.class}` | `{.primary}` |
 | Attribute | `{key:value}` | `{type:email}` |
 | State | `{:state}` | `{:disabled}` |
-| Grid | `{.grid-N}` | `{.grid-3 card}` |
+| Grid | `::: grid-N` … `:::` | `::: grid-3 card` |
 
 ---
 
@@ -731,7 +740,7 @@ Email
 
 **Input:**
 ```markdown
-## Features {.grid-3 card}
+::: grid-3 card
 
 ### :rocket: Fast
 Quick rendering
@@ -741,6 +750,8 @@ Enterprise security
 
 ### :zap: Powerful
 Advanced features
+
+:::
 ```
 
 **Output (JSON):**

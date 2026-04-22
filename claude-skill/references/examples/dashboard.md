@@ -2,7 +2,8 @@
 [[ Dashboard > Reports ]]
 
 ::: layout {.sidebar-main}
-## Navigation {.sidebar}
+
+::: sidebar
 - [Overview](#)
 - **[Reports](#)**
 - [Analytics](#)
@@ -22,7 +23,9 @@ Period
 
 [Apply Filters]*
 
-## Main {.main}
+:::
+
+::: main
 
 ### Monthly Reports
 
@@ -36,7 +39,7 @@ Data last updated 2 hours ago. [Refresh Now]
 
 ---
 
-## Key Metrics {.grid-3}
+::: grid-3
 
 ### Total Revenue
 $124,500
@@ -50,9 +53,11 @@ $124,500
 4.2%
 ↓ 0.3% vs last period
 
+:::
+
 ---
 
-## Performance by Channel {.grid-3 card}
+::: grid-3 card
 
 ### :rocket: Organic Search
 **42%** of traffic
@@ -68,6 +73,8 @@ $124,500
 **27%** of traffic
 
 `+8%` vs last month
+
+:::
 
 ---
 

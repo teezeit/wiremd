@@ -20,7 +20,7 @@ Version: |Beta|{.primary}
 | Bob | |Pending|{.warning} | Editor |
 | Carol | |Failed|{.error} | Viewer |
 
-## Issue List {.grid-3 card}
+::: grid-3 card
 
 ### Bug #42
 Memory leak in parser
@@ -34,7 +34,11 @@ Dark mode support
 Update API reference
 |Done|{.success}
 
-## Notification Bar {.row}
+:::
+
+## Notification Bar
+
+::: row
 
 ### Alerts
 |3|{.error}
@@ -44,3 +48,5 @@ Update API reference
 
 ### Updates
 |1|{.warning}
+
+:::

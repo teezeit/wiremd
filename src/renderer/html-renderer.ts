@@ -410,12 +410,18 @@ function renderSidebarMainLayout(node: any, context: RenderContext, classes: str
   let current: { name: string; nodes: any[] } | null = null;
 
   for (const child of children) {
-    const childClasses: string[] = child.props?.classes || [];
-    if (child.type === 'heading' && (childClasses.includes('sidebar') || childClasses.includes('main'))) {
+    if (child.type === 'container' && (child.containerType === 'sidebar' || child.containerType === 'main')) {
       if (current) sections.push(current);
-      current = { name: childClasses.includes('sidebar') ? 'sidebar' : 'main', nodes: [] };
-    } else if (current) {
-      current.nodes.push(child);
+      sections.push({ name: child.containerType, nodes: child.children || [] });
+      current = null;
+    } else {
+      const childClasses: string[] = child.props?.classes || [];
+      if (child.type === 'heading' && (childClasses.includes('sidebar') || childClasses.includes('main'))) {
+        if (current) sections.push(current);
+        current = { name: childClasses.includes('sidebar') ? 'sidebar' : 'main', nodes: [] };
+      } else if (current) {
+        current.nodes.push(child);
+      }
     }
   }
   if (current) sections.push(current);

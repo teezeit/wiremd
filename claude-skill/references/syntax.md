@@ -121,19 +121,28 @@ The list items directly following a dropdown become its options.
 
 ---
 
-## Tab bars (within a page)
+## Tabs
 
-Use a button group — `*` marks the active tab:
+`::: tabs` creates a tabbed panel. Child `::: tab Label` containers become the tab panels:
+
+```markdown
+::: tabs
+
+::: tab Overview
+Content for overview tab
+:::
+
+::: tab Details
+Content for details tab
+:::
+
+:::
+```
+
+For a simple button-group style switcher without panels, use `*` to mark the active item:
 
 ```markdown
 [Overview]* [Details] [Raw Data]
-```
-
-`:::tabs` is not implemented. For multi-page tab sets (where each tab is a separate file), use
-numbered files (`01-overview.md`, `02-details.md`) and plain markdown links between them:
-
-```markdown
-**Overview** · [Details](02-details.html) · [Raw Data](03-raw-data.html)
 ```
 
 ---
@@ -214,13 +223,15 @@ Two-column layout with a fixed 200px sidebar and fluid main area:
 
 ```markdown
 ::: layout {.sidebar-main}
-## Sidebar {.sidebar}
+
+::: sidebar
 - [Dashboard](#)
 - **[Sessions](#)**
 - [Library](#)
 - [Settings](#)
+:::
 
-## Main {.main}
+::: main
 ### Page Title
 
 Content for the main area goes here.
@@ -228,21 +239,20 @@ Content for the main area goes here.
 | Col A | Col B | Col C |
 |-------|-------|-------|
 | Data  | Data  | Data  |
+:::
 
 :::
 ```
-
-The `## Sidebar {.sidebar}` and `## Main {.main}` headings are stripped from output — they serve only as section markers. Everything between them becomes the respective panel.
 
 ---
 
 ## Grids
 
-Grid items are `###` headings (and their content) under a `## {.grid-N}` heading.
+Grid items are `###` headings (and their content) inside a `::: grid-N` container.
 
 **Layout only** (equal columns, no card chrome — use for metrics, stats, KPI rows):
 ```markdown
-## Key Metrics {.grid-3}
+::: grid-3
 
 ### Revenue
 $124,500
@@ -252,11 +262,13 @@ $124,500
 
 ### Conversion
 4.2%
+
+:::
 ```
 
 **Grid of cards** (each item gets card styling — use for feature lists, channel breakdowns):
 ```markdown
-## Channels {.grid-3 card}
+::: grid-3 card
 
 ### :rocket: Organic
 **42%** of traffic
@@ -266,11 +278,13 @@ $124,500
 
 ### :bell: Email
 **27%** of traffic
+
+:::
 ```
 
-Add `card` to the class to get card chrome; omit it for a plain layout grid.
+Add `card` after the column count to get card chrome; omit it for a plain layout grid.
 
-Supported widths: `.grid-2`, `.grid-3`, `.grid-4`, `.grid-auto` (auto-fit columns)
+Supported widths: `grid-2`, `grid-3`, `grid-4`, `grid-5`
 
 Column spans (make one item wider):
 ```markdown
@@ -350,9 +364,9 @@ Done    [##################] 100%
 | `<Dialog>` / `<Modal>` | `:::modal` block at bottom of file |
 | `<Alert variant="success">` | `:::alert success` |
 | `<Badge>` / `<Chip>` / status pill | `\|Label\|{.variant}` |
-| Flex row of cards | `## Section {.grid-3 card}` |
-| Stats row (no card) | `## Section {.grid-3}` |
-| `<Tabs>` (in-page) | button group `[Tab1]* [Tab2] [Tab3]` |
+| Flex row of cards | `::: grid-3 card` … `:::` |
+| Stats row (no card) | `::: grid-3` … `:::` |
+| `<Tabs>` | `::: tabs` with `::: tab Label` children |
 | `<Tabs>` (multi-page) | one `.md` file per tab |
 | Loading state | `> **Loading state:** spinner + "Loading..."` |
 | Empty state | `> **Empty state:** "No items yet" + [Add Item]*` |
