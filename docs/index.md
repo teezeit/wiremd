@@ -1,52 +1,41 @@
-# wiremd
-
-**Wireframes in plain text.**
-
-Write a screen as Markdown, see it render as a visual mockup — no design tool, no drag-and-drop.
-
-```markdown
-## Login
-
-Email
-[_____________________________]{type:email}
-
-Password
-[_____________________________]{type:password}
-
-[Sign In]* [Forgot password?]
-```
-
 ---
+layout: home
 
-## Get started
+hero:
+  name: wiremd
+  text: Wireframes in plain text.
+  tagline: Write a screen as Markdown, see it render as a visual mockup — no design tool, no drag-and-drop.
+  actions:
+    - theme: brand
+      text: Get started
+      link: /guide/overview
+    - theme: alt
+      text: Browse components
+      link: /components/
 
-**No terminal?**
-[Install the VS Code extension](./guide/vscode.md) — open any `.md` file, click the preview icon. Done.
-
-**Want to describe it?**
-[Use Claude](./guide/claude.md) — tell Claude what screen you want, it writes and renders the wireframe for you.
-
-**CLI:**
-
-Install:
-
-```bash
-npm install -g wiremd
-```
-
-Create `my-wireframe.md`, then render with live reload:
-
-```bash
-wiremd my-wireframe.md --style clean --serve 3001 --watch
-```
-
-Open `http://localhost:3001`. The preview reloads as you save.
-
+features:
+  - icon: 🖥️
+    title: VS Code Extension
+    details: Install from the marketplace, open any .md file, click the preview icon. No terminal needed.
+    link: /guide/vscode
+  - icon: 🤖
+    title: Use with Claude
+    details: Tell Claude what screen you want — it writes and renders the wireframe for you.
+    link: /guide/claude
+  - icon: ⌨️
+    title: CLI
+    details: npm install -g wiremd, then wiremd file.md --style clean --serve 3001 --watch
+    link: /guide/installation
+  - icon: 🧩
+    title: Components
+    details: Buttons, inputs, grids, tabs, navbars, cards — full reference with live examples.
+    link: /components/
+  - icon: 🎨
+    title: 7 visual styles
+    details: sketch, clean, wireframe, material, brutal, tailwind, none — switch with one flag.
+    link: /reference/styles
+  - icon: 📋
+    title: Examples
+    details: Ready-to-use templates for forms, dashboards, landing pages, and multi-page flows.
+    link: /examples/
 ---
-
-## Next steps
-
-- [VS Code extension](./guide/vscode.md) — live preview while editing
-- [Using with Claude](./guide/claude.md) — generate wireframes from descriptions
-- [Components](./components/) — all components and attributes
-- [Examples](./examples/) — full-page wireframe templates

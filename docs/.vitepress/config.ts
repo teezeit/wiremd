@@ -9,7 +9,7 @@ export default defineConfig({
     logo: '/logo.svg',
 
     nav: [
-      { text: 'Guide', link: '/guide/vscode' },
+      { text: 'Guide', link: '/guide/overview' },
       { text: 'Components', link: '/components/' },
       { text: 'Examples', link: '/examples/' },
       { text: 'Reference', link: '/reference/faq' },
@@ -21,6 +21,7 @@ export default defineConfig({
         {
           text: 'Guide',
           items: [
+            { text: 'Overview', link: '/guide/overview' },
             { text: 'VS Code Extension', link: '/guide/vscode' },
             { text: 'Using with Claude', link: '/guide/claude' },
             { text: 'CLI Install', link: '/guide/installation' },
