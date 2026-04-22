@@ -141,6 +141,6 @@ If it's less than 18.0.0, upgrade Node.js.
 
 ## Next Steps
 
-- [Getting Started Guide](./getting-started.md)
+- [Full install options](./installation.md)
 - [Learn the Syntax](../reference/syntax.md)
 - [Explore Examples](../examples/)

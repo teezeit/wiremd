@@ -247,7 +247,7 @@ if (errors.length > 0) {
 
 ## More Resources
 
-- [Getting Started Guide](../guide/getting-started.md)
+- [Getting Started](/)
 - [Syntax Reference](../reference/syntax.md)
 - [Examples](../examples/)
 - [GitHub Repository](https://github.com/teezeit/wiremd)
