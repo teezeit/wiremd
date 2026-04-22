@@ -41,9 +41,15 @@ Both render to styled HTML in seconds.
 
 ## Get started
 
+**No terminal?** [Install the VS Code extension](./guide/vscode.md) — open any `.md` file and click preview. That's it.
+
+**Using Claude?** [Describe what you want](./guide/claude.md) — Claude generates and renders the wireframe for you.
+
+**CLI / npm:**
+
 1. **Install** — `npm install -g wiremd` ([full install options](./guide/installation.md))
 2. **Write** — create a `.md` file using [wiremd syntax](./reference/syntax.md)
-3. **Render** — run `wiremd input.md --serve` to preview in the browser, or `wiremd input.md -o output.html` to export
+3. **Render** — `wiremd input.md --serve 3001` to preview in the browser, or `wiremd input.md -o output.html` to export
 
 ## Key capabilities
 

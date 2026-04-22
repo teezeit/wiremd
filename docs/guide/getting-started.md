@@ -2,6 +2,16 @@
 
 This guide will help you get started with wiremd, a text-first UI design tool for creating wireframes using Markdown syntax.
 
+## Choose your path
+
+| Path | Best for | What you need |
+|------|----------|---------------|
+| [VS Code extension](./vscode.md) | Designers, PMs, anyone who prefers a GUI | VS Code |
+| [Using with Claude](./claude.md) | Describe screens in plain English | Claude Code or claude.ai |
+| CLI (this page) | Developers, scripting, build pipelines | Node.js 18+ |
+
+---
+
 ## Installation
 
 Install wiremd using your preferred package manager:
