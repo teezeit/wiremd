@@ -452,8 +452,11 @@ Nested content
       });
       expect(result.children[0].children).toHaveLength(4);
       expect(result.children[0].children[0]).toMatchObject({
+        type: 'brand',
+      });
+      expect(result.children[0].children[1]).toMatchObject({
         type: 'nav-item',
-        content: 'Home',
+        content: 'Products',
       });
     });
 
@@ -493,7 +496,7 @@ Nested content
       const nav = result.children[0].children[0];
       expect(nav.type).toBe('nav');
       expect(nav.children).toHaveLength(4);
-      expect(nav.children[0].type).toBe('nav-item');
+      expect(nav.children[0].type).toBe('brand');
       expect(nav.children[1]).toMatchObject({ type: 'nav-item', content: 'Home' });
       expect(nav.children[2]).toMatchObject({ type: 'nav-item', content: 'Login', href: './login.md' });
       expect(nav.children[3]).toMatchObject({ type: 'button', content: 'Sign Up' });
@@ -1728,6 +1731,132 @@ Username
       const types = demo.children.map((c: any) => c.type);
       expect(types).toContain('heading');
       expect(types).toContain('button');
+    });
+
+    it('captures raw when demo is nested inside a layout container', () => {
+      const result = parse(`
+::: layout {.sidebar-main}
+
+::: main
+
+::: demo
+
+## Sign In
+
+[Submit]*
+
+:::
+
+:::
+
+:::`);
+      const layout = result.children[0] as any;
+      const main = layout.children.find((c: any) => c.containerType === 'main');
+      const demo = main.children.find((c: any) => c.type === 'demo');
+      expect(demo).toBeDefined();
+      expect(demo.raw).toContain('## Sign In');
+      expect(demo.raw).toContain('[Submit]*');
+    });
+
+    it('reconstructs checkbox syntax in raw field', () => {
+      const result = parse(`::: demo
+- [ ] Option A
+- [x] Option B
+
+:::`);
+      const demo = result.children[0] as any;
+      expect(demo.raw).toContain('- [ ] Option A');
+      expect(demo.raw).toContain('- [x] Option B');
+    });
+
+    it('reconstructs table syntax in raw field', () => {
+      const result = parse(`::: demo
+| Name | Role |
+|------|------|
+| Alice | Admin |
+
+:::`);
+      const demo = result.children[0] as any;
+      expect(demo.raw).toContain('| Name');
+      expect(demo.raw).toContain('| Alice');
+    });
+
+    it('reconstructs inline modifier on opener line in raw field', () => {
+      const result = parse(`::: demo
+
+::: grid-3 card
+
+### Fast
+Quick.
+
+### Simple
+Easy.
+
+### Flexible
+Versatile.
+
+:::
+
+:::`);
+      const demo = result.children[0] as any;
+      expect(demo.raw).toContain('::: grid-3 card');
+      expect(demo.raw).not.toMatch(/::: grid-3\ncard/);
+    });
+
+    it('captures full raw content when nested container has no blank line before demo opener', () => {
+      // Regression: '::: demo\n::: card' used to match CASE 2 via includes('\n:::')
+      // because '\n::: card' starts with '\n:::'. After fixing to /\n:::\s*$/, CASE 3 runs
+      // and rawContent captures the full card block, not just '::: card'.
+      const input = `::: demo
+::: card
+
+### Sprint 12
+
+:::
+
+:::`;
+      const result = parse(input);
+      const demo = result.children[0] as any;
+      expect(demo.type).toBe('demo');
+      expect(demo.raw).toContain('::: card');
+      expect(demo.raw).toContain('### Sprint 12');
+      expect(demo.raw).toContain(':::');
+    });
+
+    it('still closes via implicit closer when content ends with newline-colon-colon-colon', () => {
+      // CASE 2: paragraph with inline elements where the last text ends with \n:::
+      // e.g. ":::card\nSome **bold** text\n:::" — verifies the regex fix didn't break this
+      const result = parse(`::: card
+
+Some **bold** content
+
+:::`);
+      const card = result.children[0] as any;
+      expect(card.type).toBe('container');
+      expect(card.containerType).toBe('card');
+      const text = card.children.find((c: any) => c.type === 'paragraph');
+      expect(text).toBeDefined();
+    });
+
+    it('renders nested containers when no blank line between demo and child opener', () => {
+      // When ::: demo and ::: card share a paragraph (no blank line between them),
+      // the afterOpener extraction should still produce a real nested container.
+      const input = `::: demo
+::: card
+
+### Sprint 12
+[View]*
+
+:::
+
+:::`;
+      const result = parse(input);
+      const demo = result.children[0] as any;
+      expect(demo.type).toBe('demo');
+      expect(demo.children).toHaveLength(1);
+      expect(demo.children[0].type).toBe('container');
+      expect(demo.children[0].containerType).toBe('card');
+      expect(demo.raw).toContain('::: card');
     });
 
   });

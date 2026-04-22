@@ -42,8 +42,11 @@ export function getStyleCSS(style: string, prefix: string): string {
   const demoStructural = `
 .${prefix}demo { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #d0d0d0; border-radius: 6px; overflow: hidden; margin: 1rem 0; }
 .${prefix}demo-preview { padding: 1.5rem; border-right: 1px solid #d0d0d0; }
-.${prefix}demo-code { background: #f6f8fa; overflow: auto; }
-.${prefix}demo-code pre { margin: 0; padding: 1.25rem 1.5rem; font-size: 0.8em; font-family: 'Courier New', Courier, monospace; line-height: 1.6; white-space: pre; }
+.${prefix}demo-code { background: #f6f8fa; overflow: auto; display: flex; flex-direction: column; }
+.${prefix}demo-code-toolbar { display: flex; justify-content: flex-end; padding: 0.5rem 0.75rem 0; }
+.${prefix}demo-copy { background: none; border: 1px solid #ccc; border-radius: 4px; padding: 2px 8px; font-size: 0.75em; color: #666; cursor: pointer; font-family: inherit; }
+.${prefix}demo-copy:hover { background: #e8e8e8; color: #333; }
+.${prefix}demo-code pre { margin: 0; padding: 0.75rem 1.5rem 1.25rem; font-size: 0.8em; font-family: 'Courier New', Courier, monospace; line-height: 1.6; white-space: pre; }
 .${prefix}demo-code code { display: block; color: #444; }
 `;
 

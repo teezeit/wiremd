@@ -975,5 +975,42 @@ Content
       expect(html).toContain('&lt;with brackets&gt;');
       expect(html).not.toContain('<with brackets>');
     });
+
+    it('renders a copy button in the code pane', () => {
+      const html = renderToHTML(parse(`::: demo
+[Click Me]*
+:::`), { style: 'clean' });
+      expect(html).toContain('wmd-demo-copy');
+      expect(html).toContain('Copy');
+    });
+
+    it('shows table syntax in the code pane', () => {
+      const html = renderToHTML(parse(`::: demo
+| Name | Role |
+|------|------|
+| Alice | Admin |
+
+:::`), { style: 'clean' });
+      expect(html).toContain('| Name');
+      expect(html).toContain('| Alice');
+    });
+
+    it('shows ::: grid-3 card on one line in the code pane', () => {
+      const html = renderToHTML(parse(`
+::: demo
+
+::: grid-3 card
+
+### A
+content
+
+### B
+content
+
+:::
+
+:::`), { style: 'clean' });
+      expect(html).toContain('::: grid-3 card');
+    });
   });
 });

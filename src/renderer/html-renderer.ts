@@ -772,7 +772,12 @@ function renderDemo(node: any, context: RenderContext): string {
   const codeHTML = escapeHtml(node.raw || '');
   return `<div class="${prefix}demo">
   <div class="${prefix}demo-preview">${previewHTML}</div>
-  <div class="${prefix}demo-code"><pre><code>${codeHTML}</code></pre></div>
+  <div class="${prefix}demo-code">
+    <div class="${prefix}demo-code-toolbar">
+      <button class="${prefix}demo-copy" onclick="(function(btn){var code=btn.closest('.${prefix}demo-code').querySelector('code');navigator.clipboard.writeText(code.textContent).then(function(){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy'},1500)})})(this)">Copy</button>
+    </div>
+    <pre><code>${codeHTML}</code></pre>
+  </div>
 </div>`;
 }
 
