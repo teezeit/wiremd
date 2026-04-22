@@ -2,6 +2,27 @@
 
 This guide covers the wiremd syntax for creating UI wireframes.
 
+## Standard Markdown
+
+wiremd supports **all standard CommonMark Markdown**. Everything below works exactly as expected:
+
+| Syntax | Example |
+|--------|---------|
+| Headings | `# H1`, `## H2`, `### H3` … `###### H6` |
+| Bold | `**bold**` |
+| Italic | `*italic*` |
+| Code (inline) | `` `code` `` |
+| Link | `[text](url)` |
+| Image | `![alt](image.jpg)` |
+| Unordered list | `- item` |
+| Ordered list | `1. item` |
+| Blockquote | `> quoted text` |
+| Table | `\| col \| col \|` with `---` separator row |
+| Horizontal rule | `---` |
+| Fenced code block | ` ``` ` … ` ``` ` |
+
+wiremd adds UI components on top — standard Markdown is never broken.
+
 ## Basic Syntax
 
 ### Headings
@@ -464,6 +485,17 @@ Content here
 
 :::
 ```
+
+## Common Problems
+
+| Problem | Fix |
+|---------|-----|
+| Input has no label | Put label text directly above with no blank line |
+| Dropdown shows no options | Add list items directly after the dropdown line |
+| Grid not rendering | Use `###` headings for grid items inside `::: grid-N` |
+| Button rendered as link | Remove the `(url)` — `[Text](url)` is a link, `[Text]` is a button |
+| Attribute not applied | Put `{...}` immediately after element (space OK, blank line breaks association) |
+| Include not resolving | Check path is relative to the current file and ends in `.md` |
 
 ## Next Steps
 
