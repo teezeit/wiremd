@@ -234,7 +234,7 @@ Password
 
 Works with any wiremd content: buttons, inputs, grids, tabs, badges, navigation. The code pane always reflects exactly what you wrote.
 
-### File Includes
+### Reuse Components
 
 Inline another `.md` file with `![[path]]`:
 
