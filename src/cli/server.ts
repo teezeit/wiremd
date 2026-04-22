@@ -7,13 +7,13 @@
  */
 
 import { createServer, IncomingMessage, ServerResponse } from 'http';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
 import { createHash } from 'crypto';
-import { dirname, join } from 'path';
+import { dirname, join, relative } from 'path';
 
 interface ServerOptions {
   port: number;
-  outputPath: string;
+  outputPath?: string;
   renderFile?: (mdPath: string) => string;
   /** Root directory for resolving linked .md files. Defaults to dirname(outputPath). */
   rootDir?: string;
@@ -46,7 +46,7 @@ const liveReloadScript = `
     font-size: 14px;
   }
 
-  #wiremd-toolbar .status {
+#wiremd-toolbar .status {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -168,7 +168,6 @@ const liveReloadScript = `
   }
 
   #wiremd-preview-wrapper {
-    margin-top: 48px;
     transition: padding 0.3s ease;
   }
 
@@ -237,7 +236,7 @@ const liveReloadScript = `
 
 <div id="wiremd-toolbar">
   <div class="logo">⚡ Wiremd Live</div>
-  <div class="status" id="wiremd-status">
+<div class="status" id="wiremd-status">
     <div class="status-dot"></div>
     <span>Connecting...</span>
   </div>
@@ -277,10 +276,13 @@ const liveReloadScript = `
     }
     body.appendChild(wrapper);
 
+    body.style.paddingTop = '56px';
+
     const statusEl = document.getElementById('wiremd-status');
     const errorOverlay = document.getElementById('wiremd-error-overlay');
     const errorMessage = document.getElementById('wiremd-error-message');
     const reloadIndicator = document.getElementById('wiremd-reload-indicator');
+
 
     // Viewport switcher
     document.querySelectorAll('.viewport-btn').forEach(btn => {
@@ -362,9 +364,66 @@ const liveReloadScript = `
 
 const wsClients: Set<any> = new Set();
 
+interface TreeNode {
+  dirs: Record<string, TreeNode>;
+  files: string[];
+}
+
+function buildTree(dir: string, base: string): TreeNode {
+  const node: TreeNode = { dirs: {}, files: [] };
+  for (const entry of readdirSync(dir).sort()) {
+    if (entry.startsWith('_') || entry.startsWith('.')) continue;
+    const full = join(dir, entry);
+    if (statSync(full).isDirectory()) {
+      node.dirs[entry] = buildTree(full, base);
+    } else if (entry.endsWith('.md')) {
+      node.files.push(relative(base, full));
+    }
+  }
+  return node;
+}
+
+function renderTree(node: TreeNode, depth = 0): string {
+  const parts: string[] = [];
+  for (const file of node.files) {
+    const name = file.split('/').pop()!;
+    parts.push(`<li class="file"><a href="/${file}">${name}</a></li>`);
+  }
+  for (const [dirName, child] of Object.entries(node.dirs)) {
+    const inner = renderTree(child, depth + 1);
+    if (inner) {
+      const open = depth === 0 ? ' open' : '';
+      parts.push(`<li class="dir"><details${open}><summary>${dirName}</summary><ul>${inner}</ul></details></li>`);
+    }
+  }
+  return parts.join('');
+}
+
+function renderIndex(rootDir: string): string {
+  const tree = buildTree(rootDir, rootDir);
+  const inner = renderTree(tree);
+  const dirName = rootDir.split('/').pop();
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>wiremd</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:480px;margin:60px auto;padding:0 20px;color:#222}
+h1{font-size:1rem;color:#888;margin-bottom:1rem;font-weight:500}
+ul{list-style:none;padding:0;margin:0}
+li{margin:0}
+li.dir{margin-top:4px}
+details>ul{padding-left:16px;border-left:1px solid #e0e0e0;margin:2px 0 2px 8px}
+summary{cursor:pointer;padding:6px 8px;border-radius:4px;font-size:0.85rem;font-weight:600;color:#555;user-select:none;list-style:none}
+summary:hover{background:#f5f5f5}
+summary::before{content:'▸ ';font-size:0.75em;color:#aaa}
+details[open]>summary::before{content:'▾ '}
+a{display:block;padding:5px 8px;border-radius:4px;color:#333;text-decoration:none;font-size:0.9rem}
+a:hover{background:#f0f0f0}
+</style>
+</head><body><h1>${dirName}/</h1><ul>${inner}</ul></body></html>`;
+}
+
 export function startServer(options: ServerOptions): ReturnType<typeof createServer> {
   const { port, outputPath, renderFile, inputFile } = options;
-  const rootDir = options.rootDir || dirname(outputPath);
+  const rootDir = options.rootDir || (outputPath ? dirname(outputPath) : process.cwd());
 
   const injectScript = (html: string) => {
     const script = liveReloadScript.replace('__PORT__', String(port));
@@ -385,6 +444,12 @@ export function startServer(options: ServerOptions): ReturnType<typeof createSer
       if (inputFile) {
         res.writeHead(302, { Location: `/${inputFile}` });
         res.end();
+        return;
+      }
+      if (!outputPath) {
+        html = renderIndex(rootDir);
+        res.writeHead(200, { 'Content-Type': 'text/html', 'Cache-Control': 'no-cache, no-store, must-revalidate' });
+        res.end(injectScript(html));
         return;
       }
       try {

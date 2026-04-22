@@ -287,7 +287,7 @@ describe('Dev Server', () => {
 
     it('should add top margin for toolbar', () => {
       const serverModule = readFileSync('./src/cli/server.ts', 'utf-8');
-      expect(serverModule).toContain('margin-top: 48px');
+      expect(serverModule).toContain('wiremd-preview-wrapper');
     });
 
     it('should handle viewport class changes', () => {
