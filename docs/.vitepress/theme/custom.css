@@ -109,8 +109,8 @@
 /* Hide built-in appearance toggle — moved to sidebar */
 .VPNavBarAppearance { display: none !important; }
 
-/* Search is first in the DOM but should appear rightmost — use order to move it after menu/social */
-.VPNavBar .search { order: 10; }
+/* Search is first in DOM; move it rightmost so order is: Docs | Playground | GitHub | Search */
+.VPNavBar .search { order: 10 !important; }
 
 /* ─── appearance switcher in sidebar ────────────────────────────────────────── */
 
@@ -151,34 +151,32 @@
 
 .home-action {
   display: inline-block;
-  border-radius: 20px;
-  padding: 0 20px;
-  line-height: 38px;
+  padding: 8px 18px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: bold;
   text-decoration: none;
-  border: 1px solid var(--vp-button-alt-border);
-  color: var(--vp-button-alt-text);
-  background-color: var(--vp-button-alt-bg);
-  transition: border-color 0.25s, color 0.25s, background-color 0.25s;
+  color: #000;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  transform: rotate(-0.5deg);
+  transition: transform 0.1s, box-shadow 0.1s;
 }
 
 .home-action:hover {
-  border-color: var(--vp-button-alt-hover-border);
-  color: var(--vp-button-alt-hover-text);
-  background-color: var(--vp-button-alt-hover-bg);
+  transform: rotate(-0.5deg) translateY(-2px);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+  color: #000;
 }
 
 .home-action--brand {
-  border-color: var(--vp-button-brand-border);
-  color: var(--vp-button-brand-text);
-  background-color: var(--vp-button-brand-bg);
+  background: #87CEEB;
+  border-color: #4682B4;
 }
 
 .home-action--brand:hover {
-  border-color: var(--vp-button-brand-hover-border);
-  color: var(--vp-button-brand-hover-text);
-  background-color: var(--vp-button-brand-hover-bg);
+  background: #70BCDB;
 }
 
 /* ─── mini editor ───────────────────────────────────────────────────────────── */
