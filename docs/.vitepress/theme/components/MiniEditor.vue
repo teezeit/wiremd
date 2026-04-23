@@ -129,11 +129,13 @@ function render() {
     html = html.replace('</head>', [
       '<style>',
       'html{zoom:0.65}html,body{margin:0}',
-      // Override the responsive !important collapse — later !important wins in cascade
+      // Override responsive collapses — later !important wins in the cascade
       '.wmd-grid{grid-template-columns:repeat(var(--grid-columns,3),1fr)!important}',
       '.wmd-grid-2{grid-template-columns:repeat(2,1fr)!important}',
       '.wmd-grid-3{grid-template-columns:repeat(3,1fr)!important}',
       '.wmd-grid-4{grid-template-columns:repeat(4,1fr)!important}',
+      '.wmd-nav-content{flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important}',
+      '.wmd-brand{margin-right:auto!important}',
       '</style></head>',
     ].join(''))
     srcdoc.value = html
