@@ -9,10 +9,12 @@ export function initToolbar(opts: {
   styleSelect: HTMLSelectElement;
   tabs: HTMLElement;
   copyBtn: HTMLButtonElement;
+  copyLinkBtn: HTMLButtonElement;
   onExampleSelect: (example: Example) => void;
   onStyleChange: (style: string) => void;
   onTabChange: (tab: 'preview' | 'html') => void;
   onCopy: () => void;
+  onCopyLink: () => void;
 }) {
   // --- Examples dropdown ---
   const dropdownBtn = document.createElement('button');
@@ -73,6 +75,11 @@ export function initToolbar(opts: {
   // --- Copy button ---
   opts.copyBtn.addEventListener('click', () => {
     opts.onCopy();
+  });
+
+  // --- Copy link button ---
+  opts.copyLinkBtn.addEventListener('click', () => {
+    opts.onCopyLink();
   });
 }
 
