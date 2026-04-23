@@ -11,6 +11,7 @@ import {
 } from './splitter.js';
 import { initToolbar, showToast } from './toolbar.js';
 import { examples } from './examples.js';
+import { decodeShareHash, encodeShareHash } from './url-share.js';
 
 // --- DOM Elements ---
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -23,6 +24,7 @@ const errorMessage = $('error-message');
 const styleSelect = $<HTMLSelectElement>('style-select');
 const previewTabs = $('preview-tabs');
 const copyBtn = $<HTMLButtonElement>('copy-html-btn');
+const copyLinkBtn = $<HTMLButtonElement>('copy-link-btn');
 const examplesDropdown = $('examples-dropdown');
 const toast = $('toast');
 const divider = $('divider');
@@ -37,10 +39,10 @@ function renderMarkdown(markdown: string) {
   updateCopyButtonState();
 }
 
-async function copyHTML(html: string): Promise<boolean> {
+async function copyText(text: string): Promise<boolean> {
   if (navigator.clipboard?.writeText) {
     try {
-      await navigator.clipboard.writeText(html);
+      await navigator.clipboard.writeText(text);
       return true;
     } catch {
       // Fall back to the legacy copy path below.
@@ -48,7 +50,7 @@ async function copyHTML(html: string): Promise<boolean> {
   }
 
   const textarea = document.createElement('textarea');
-  textarea.value = html;
+  textarea.value = text;
   textarea.setAttribute('readonly', 'true');
   textarea.style.position = 'fixed';
   textarea.style.opacity = '0';
@@ -65,6 +67,14 @@ async function copyHTML(html: string): Promise<boolean> {
 
   return copied;
 }
+
+let isInitializing = true;
+
+function syncUrlToBuffer(value: string) {
+  const hash = encodeShareHash(value);
+  const url = window.location.pathname + window.location.search + hash;
+  window.history.replaceState(null, '', url);
+}
 	
 // --- Preview ---
 const preview = createPreview({
@@ -79,6 +89,9 @@ const editor = initEditor({
   container: monacoContainer,
   onChange: (value) => {
     renderMarkdown(value);
+    if (!isInitializing) {
+      syncUrlToBuffer(value);
+    }
   },
 });
 
@@ -88,6 +101,7 @@ initToolbar({
   styleSelect,
   tabs: previewTabs,
   copyBtn,
+  copyLinkBtn,
   onExampleSelect: (example) => {
     editor.setValue(example.code);
   },
@@ -107,8 +121,14 @@ initToolbar({
       return;
     }
 
-    const copied = await copyHTML(html);
+    const copied = await copyText(html);
     showToast(toast, copied ? 'Copied to clipboard!' : 'Copy failed');
+  },
+  onCopyLink: async () => {
+    editor.flushPendingChange();
+    syncUrlToBuffer(editor.getValue());
+    const copied = await copyText(window.location.href);
+    showToast(toast, copied ? 'Link copied!' : 'Copy failed');
   },
 });
 
@@ -179,7 +199,18 @@ window.addEventListener('resize', applySplit);
 applySplit();
 updateCopyButtonState();
 
-// --- Load first example on start ---
-if (examples.length > 0) {
-  editor.setValue(examples[0].code);
+// --- Load initial content: from URL hash if present, else first example ---
+const rawHash = window.location.hash ?? '';
+const sharedContent = decodeShareHash(rawHash);
+if (sharedContent !== null) {
+  editor.setValue(sharedContent);
+} else {
+  if (rawHash.length > 1) {
+    showToast(toast, 'Could not load shared link — opening default');
+  }
+  if (examples.length > 0) {
+    editor.setValue(examples[0].code);
+  }
 }
+
+isInitializing = false;

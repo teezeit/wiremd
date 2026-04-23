@@ -239,8 +239,54 @@ export class FakeDocument {
   }
 }
 
+export class FakeLocation {
+  pathname = '/';
+  search = '';
+  hash = '';
+
+  get href() {
+    return `${this.pathname}${this.search}${this.hash}`;
+  }
+}
+
+export class FakeHistory {
+  readonly calls: Array<{ state: unknown; title: string; url: string | undefined }> = [];
+
+  constructor(private readonly location: FakeLocation) {}
+
+  replaceState(state: unknown, title: string, url?: string) {
+    this.calls.push({ state, title, url });
+    if (url === undefined) return;
+    const hashIdx = url.indexOf('#');
+    if (hashIdx >= 0) {
+      this.location.hash = url.slice(hashIdx);
+      const before = url.slice(0, hashIdx);
+      const searchIdx = before.indexOf('?');
+      if (searchIdx >= 0) {
+        this.location.pathname = before.slice(0, searchIdx);
+        this.location.search = before.slice(searchIdx);
+      } else {
+        this.location.pathname = before;
+        this.location.search = '';
+      }
+    } else {
+      this.location.hash = '';
+      const searchIdx = url.indexOf('?');
+      if (searchIdx >= 0) {
+        this.location.pathname = url.slice(0, searchIdx);
+        this.location.search = url.slice(searchIdx);
+      } else {
+        this.location.pathname = url;
+        this.location.search = '';
+      }
+    }
+  }
+}
+
 export class FakeWindow {
   readonly eventTarget = createEventTarget();
+  readonly location = new FakeLocation();
+  readonly history = new FakeHistory(this.location);
   innerWidth = 1024;
 
   addEventListener(type: string, listener: EventListener) {

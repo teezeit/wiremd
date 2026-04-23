@@ -19,6 +19,7 @@ describe('editor toolbar', () => {
     const previewTab = document.createElement('button');
     const htmlTab = document.createElement('button');
     const copyBtn = document.createElement('button');
+    const copyLinkBtn = document.createElement('button');
 
     previewTab.className = 'ed-tab ed-tab--active';
     previewTab.dataset.tab = 'preview';
@@ -31,16 +32,19 @@ describe('editor toolbar', () => {
     const onStyleChange = vi.fn();
     const onTabChange = vi.fn();
     const onCopy = vi.fn();
+    const onCopyLink = vi.fn();
 
     initToolbar({
       examplesContainer: examplesContainer as unknown as HTMLElement,
       styleSelect: styleSelect as unknown as HTMLSelectElement,
       tabs: tabs as unknown as HTMLElement,
       copyBtn: copyBtn as unknown as HTMLButtonElement,
+      copyLinkBtn: copyLinkBtn as unknown as HTMLButtonElement,
       onExampleSelect,
       onStyleChange,
       onTabChange,
       onCopy,
+      onCopyLink,
     });
 
     const dropdownBtn = examplesContainer.children[0];
@@ -65,6 +69,9 @@ describe('editor toolbar', () => {
 
     copyBtn.click();
     expect(onCopy).toHaveBeenCalledTimes(1);
+
+    copyLinkBtn.click();
+    expect(onCopyLink).toHaveBeenCalledTimes(1);
 
     dropdownBtn.click();
     document.dispatchEvent('click');
