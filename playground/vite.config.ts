@@ -5,6 +5,7 @@ const projectSrcRoot = resolve(__dirname, '../src/');
 
 export default defineConfig({
   root: resolve(__dirname),
+  base: process.env.VITE_BASE ?? '/',
   server: {
     port: 5174,
     open: true,
@@ -12,6 +13,9 @@ export default defineConfig({
   resolve: {
     alias: {
       wiremd: resolve(__dirname, '../src/index.ts'),
+      // Stub Node.js built-ins — only used in resolveIncludes, which is never called in the browser
+      fs: resolve(__dirname, 'src/stubs/fs.ts'),
+      path: resolve(__dirname, 'src/stubs/path.ts'),
     },
   },
   build: {
