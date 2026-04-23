@@ -43,20 +43,3 @@ Available styles: `sketch` (default), `clean`, `wireframe`, `material`, `tailwin
 
 The **?** button in the preview toolbar opens the component docs rendered inside VS Code — a quick reference for all wiremd syntax and components.
 
----
-
-## Rebuilding after source changes
-
-If you change anything in `src/` (library or extension):
-
-```bash
-# 1. Rebuild the wiremd library
-cd ..   # repo root
-npm run build
-
-# 2. Rebuild and repackage the extension
-cd vscode-extension
-npm run compile
-```
-
-Then press `F5` to relaunch the Extension Development Host, or `Cmd+Shift+P` → **Developer: Reload Window** if running an installed `.vsix`.

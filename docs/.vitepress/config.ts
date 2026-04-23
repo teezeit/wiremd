@@ -26,76 +26,123 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Overview', link: '/components/' },
-          { text: 'Buttons', link: '/components/buttons' },
-          { text: 'Inputs', link: '/components/inputs' },
-          { text: 'Textarea & Select', link: '/components/textarea-select' },
-          { text: 'Checkboxes & Radio', link: '/components/checkboxes-radio' },
-          { text: 'Badges', link: '/components/badges' },
-          { text: 'Icons', link: '/components/icons' },
-          { text: 'Navigation', link: '/components/navigation' },
-          { text: 'Cards', link: '/components/cards' },
-          { text: 'Tabs', link: '/components/tabs' },
-          { text: 'Alerts', link: '/components/alerts' },
-          { text: 'Tables', link: '/components/tables' },
-        ]
-      },
-      {
-        text: 'Layout',
-        collapsed: false,
-        items: [
-          { text: 'Grid', link: '/components/grid' },
-          { text: 'Row', link: '/components/row' },
-          { text: 'Page Layouts', link: '/components/page-layouts' },
-        ]
-      },
-      {
-        text: 'Advanced',
-        collapsed: true,
-        items: [
-          { text: 'Button Links', link: '/components/button-links' },
-          { text: 'Reuse Components', link: '/components/includes' },
-          { text: 'Attributes & Classes', link: '/components/attributes' },
-          { text: 'Demo Blocks', link: '/components/demo' },
-          { text: 'Visual Styles', link: '/components/styles' },
-        ]
-      },
-      {
-        text: 'Examples',
-        collapsed: true,
-        items: [
-          { text: 'Overview', link: '/examples/' },
-          { text: 'Hello World', link: '/examples/hello' },
-          { text: 'Showcase', link: '/examples/showcase' },
-          { text: 'Form Syntax', link: '/examples/form-syntax-demo' },
-          { text: 'Tabs', link: '/examples/tabs-demo' },
-          { text: 'Row Layout', link: '/examples/row-demo' },
-          { text: 'Sidebar Layout', link: '/examples/sidebar-layout' },
+          {
+            text: 'Inputs',
+            collapsed: false,
+            items: [
+              { text: 'Buttons', link: '/components/buttons' },
+              { text: 'Inputs', link: '/components/inputs' },
+              { text: 'Textarea & Select', link: '/components/textarea-select' },
+              { text: 'Checkboxes & Radio', link: '/components/checkboxes-radio' },
+            ]
+          },
+          {
+            text: 'Display',
+            collapsed: false,
+            items: [
+              { text: 'Badges', link: '/components/badges' },
+              { text: 'Icons', link: '/components/icons' },
+              { text: 'Navigation', link: '/components/navigation' },
+              { text: 'Cards', link: '/components/cards' },
+              { text: 'Tabs', link: '/components/tabs' },
+              { text: 'Alerts', link: '/components/alerts' },
+              { text: 'Tables', link: '/components/tables' },
+            ]
+          },
+          {
+            text: 'Layout',
+            collapsed: false,
+            items: [
+              { text: 'Grid', link: '/components/grid' },
+              { text: 'Row', link: '/components/row' },
+              { text: 'Page Layouts', link: '/components/page-layouts' },
+            ]
+          },
+          {
+            text: 'Advanced',
+            collapsed: false,
+            items: [
+              { text: 'Button Links', link: '/components/button-links' },
+              { text: 'Reuse Components', link: '/components/includes' },
+              { text: 'Attributes & Classes', link: '/components/attributes' },
+              { text: 'Demo Blocks', link: '/components/demo' },
+            ]
+          },
+          {
+            text: 'Visual Styles',
+            collapsed: false,
+            items: [
+              { text: 'Visual Styles', link: '/components/styles' },
+            ]
+          },
+          { text: 'Not Yet Implemented', link: '/components/not-implemented-components' },
         ]
       },
       {
         text: 'Gallery',
         collapsed: true,
         items: [
-          { text: 'Login Form', link: '/examples/gallery/forms/login-form' },
-          { text: 'Registration Form', link: '/examples/gallery/forms/registration-form' },
-          { text: 'Contact Form', link: '/examples/gallery/forms/contact-form' },
-          { text: 'Search Form', link: '/examples/gallery/forms/search-form' },
-          { text: 'Multi-Step Form', link: '/examples/gallery/forms/multi-step-form' },
-          { text: 'Card Layouts', link: '/examples/gallery/components/card-layouts' },
-          { text: 'Form Controls', link: '/examples/gallery/components/form-controls' },
-          { text: 'Modals & Dialogs', link: '/examples/gallery/components/modals-dialogs' },
-          { text: 'Navigation Patterns', link: '/examples/gallery/components/navigation-patterns' },
-          { text: 'Tables & Data Grids', link: '/examples/gallery/components/tables-data-grids' },
-          { text: 'Admin Panel', link: '/examples/gallery/dashboards/admin-panel' },
-          { text: 'Analytics Dashboard', link: '/examples/gallery/dashboards/analytics-dashboard' },
-          { text: 'E-commerce Dashboard', link: '/examples/gallery/dashboards/ecommerce-dashboard' },
-          { text: 'Project Management', link: '/examples/gallery/dashboards/project-management' },
-          { text: 'Social Media', link: '/examples/gallery/dashboards/social-media-dashboard' },
-          { text: 'SaaS Product', link: '/examples/gallery/landing-pages/saas-product' },
-          { text: 'App Landing', link: '/examples/gallery/landing-pages/app-landing' },
-          { text: 'E-commerce Home', link: '/examples/gallery/landing-pages/ecommerce-home' },
-          { text: 'Agency Site', link: '/examples/gallery/landing-pages/agency-site' },
-          { text: 'Portfolio', link: '/examples/gallery/landing-pages/portfolio' },
+          {
+            text: 'Forms',
+            collapsed: false,
+            items: [
+              { text: 'Login Form', link: '/examples/gallery/forms/login-form' },
+              { text: 'Registration Form', link: '/examples/gallery/forms/registration-form' },
+              { text: 'Contact Form', link: '/examples/gallery/forms/contact-form' },
+              { text: 'Search Form', link: '/examples/gallery/forms/search-form' },
+              { text: 'Multi-Step Form', link: '/examples/gallery/forms/multi-step-form' },
+            ]
+          },
+          {
+            text: 'Components',
+            collapsed: false,
+            items: [
+              { text: 'Card Layouts', link: '/examples/gallery/components/card-layouts' },
+              { text: 'Form Controls', link: '/examples/gallery/components/form-controls' },
+              { text: 'Modals & Dialogs', link: '/examples/gallery/components/modals-dialogs' },
+              { text: 'Navigation Patterns', link: '/examples/gallery/components/navigation-patterns' },
+              { text: 'Tables & Data Grids', link: '/examples/gallery/components/tables-data-grids' },
+            ]
+          },
+          {
+            text: 'Dashboards',
+            collapsed: false,
+            items: [
+              { text: 'Admin Panel', link: '/examples/gallery/dashboards/admin-panel' },
+              { text: 'Analytics Dashboard', link: '/examples/gallery/dashboards/analytics-dashboard' },
+              { text: 'E-commerce Dashboard', link: '/examples/gallery/dashboards/ecommerce-dashboard' },
+              { text: 'Project Management', link: '/examples/gallery/dashboards/project-management' },
+              { text: 'Social Media', link: '/examples/gallery/dashboards/social-media-dashboard' },
+            ]
+          },
+          {
+            text: 'Landing Pages',
+            collapsed: false,
+            items: [
+              { text: 'SaaS Product', link: '/examples/gallery/landing-pages/saas-product' },
+              { text: 'App Landing', link: '/examples/gallery/landing-pages/app-landing' },
+              { text: 'E-commerce Home', link: '/examples/gallery/landing-pages/ecommerce-home' },
+              { text: 'Agency Site', link: '/examples/gallery/landing-pages/agency-site' },
+              { text: 'Portfolio', link: '/examples/gallery/landing-pages/portfolio' },
+            ]
+          },
+          {
+            text: 'Layouts',
+            collapsed: false,
+            items: [
+              { text: 'Sidebar Layout', link: '/examples/gallery/layouts/sidebar-layout' },
+              { text: 'Row Layout', link: '/examples/gallery/layouts/row-layout' },
+            ]
+          },
+          {
+            text: 'Multi-Page',
+            collapsed: false,
+            items: [
+              { text: 'Home', link: '/examples/gallery/multi-page/home' },
+              { text: 'About', link: '/examples/gallery/multi-page/about' },
+              { text: 'Contact', link: '/examples/gallery/multi-page/contact' },
+            ]
+          },
         ]
       },
       {
@@ -126,7 +173,6 @@ export default defineConfig({
         items: [
           { text: 'Testing', link: '/contributing/testing' },
           { text: 'Publishing', link: '/contributing/publishing' },
-          { text: 'Not Yet Implemented', link: '/components/not-implemented-components' },
         ]
       },
     ],
@@ -142,7 +188,9 @@ export default defineConfig({
 
     search: {
       provider: 'local'
-    }
+    },
+
+    outline: false
   },
 
   vite: {

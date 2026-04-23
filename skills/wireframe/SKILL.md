@@ -65,6 +65,7 @@ Default to `clean` unless the user specifies otherwise. See `references/styles.m
 | `clean` | Stakeholder review, internal handoff (default) |
 | `wireframe` | Low-fidelity explorations, documentation |
 | `material` | Material Design apps |
+| `tailwind` | Tailwind-based products, indigo/purple palette |
 | `brutal` | Bold, high-contrast concepts |
 | `none` | Custom CSS, embedding elsewhere |
 
