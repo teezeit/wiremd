@@ -130,6 +130,35 @@ npm run build
 npm link
 ```
 
+## Use with Claude
+
+This repo ships a **wireframe skill** that teaches Claude how to write wiremd syntax and render mockups. The install path depends on which Claude surface you use — there is **no universal deep link today** (neither Claude Desktop nor Claude Code register a `claude://install-plugin` URL scheme).
+
+### Claude Code CLI
+
+The repo is a Claude Code plugin marketplace. Inside a Claude Code session, run:
+
+```text
+/plugin marketplace add teezeit/wiremd
+/plugin install wireframe@wiremd
+```
+
+Then `/reload-plugins` (or restart the session). The skill auto-activates when you ask Claude to wireframe, mock up, or sketch a UI.
+
+### Claude Desktop, Claude.ai, Claude Cowork
+
+These surfaces install skills by uploading a `.zip` of the skill folder (no GitHub URL import exists).
+
+1. Download the latest skill bundle:
+   **[wireframe-skill.zip](https://github.com/teezeit/wiremd/releases/latest/download/wireframe-skill.zip)**
+   *(attached to each GitHub release; or build locally with `npm run skill:zip`)*
+2. Open Claude → **Settings → Capabilities → Skills → Upload skill**
+3. Select `wireframe-skill.zip`. The skill activates automatically for wireframing requests.
+
+### VS Code
+
+Install the **Wiremd** extension from the VS Code Marketplace for live preview as you type — no Claude required, but composes well with Claude's edits.
+
 ## CLI Usage
 
 ```bash
