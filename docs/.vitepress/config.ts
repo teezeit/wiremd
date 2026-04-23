@@ -254,7 +254,7 @@ export default defineConfig({
 
     nav: [
       { text: "Docs", link: "/guide/overview" },
-      { text: "Editor", link: "/editor/" },
+      { text: "Editor", link: "/editor/", target: "_blank" },
     ],
 
     socialLinks: [
