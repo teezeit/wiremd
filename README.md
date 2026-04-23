@@ -132,28 +132,38 @@ npm link
 
 ## Use with Claude
 
-This repo ships a **wireframe skill** that teaches Claude how to write wiremd syntax and render mockups. The install path depends on which Claude surface you use — there is **no universal deep link today** (neither Claude Desktop nor Claude Code register a `claude://install-plugin` URL scheme).
+This repo ships a **wireframe skill** that teaches Claude how to write wiremd syntax and render mockups. It's packaged as a Claude plugin marketplace (`.claude-plugin/marketplace.json`), so the same GitHub URL installs on every surface that supports marketplaces. A zip fallback is available for surfaces that only accept skill uploads.
 
-### Claude Code CLI
+### Claude Code (CLI)
 
-The repo is a Claude Code plugin marketplace. Inside a Claude Code session, run:
+Inside a Claude Code session:
 
 ```text
 /plugin marketplace add teezeit/wiremd
 /plugin install wireframe@wiremd
 ```
 
-Then `/reload-plugins` (or restart the session). The skill auto-activates when you ask Claude to wireframe, mock up, or sketch a UI.
+Then `/reload-plugins` (or restart the session).
 
-### Claude Desktop, Claude.ai, Claude Cowork
+### Claude Desktop
 
-These surfaces install skills by uploading a `.zip` of the skill folder (no GitHub URL import exists).
+1. Open **Settings → Plugins → Add Marketplace**
+2. Paste the repo URL: `https://github.com/teezeit/wiremd` (or the shorthand `teezeit/wiremd`)
+3. In the newly added **wiremd** marketplace, install the **wireframe** plugin
+
+### Claude.ai, Claude Cowork (zip upload)
+
+Surfaces that only accept skill uploads (no GitHub import) take a zip:
 
 1. Download the latest skill bundle:
    **[wireframe-skill.zip](https://github.com/teezeit/wiremd/releases/latest/download/wireframe-skill.zip)**
    *(attached to each GitHub release; or build locally with `npm run skill:zip`)*
 2. Open Claude → **Settings → Capabilities → Skills → Upload skill**
-3. Select `wireframe-skill.zip`. The skill activates automatically for wireframing requests.
+3. Select `wireframe-skill.zip`
+
+The skill activates automatically when you ask Claude to wireframe, mock up, or sketch a UI.
+
+> **Note:** There is no `claude://` deep link yet for one-click install from a browser — you'll need to paste the URL into the Add Marketplace dialog manually.
 
 ### VS Code
 

@@ -32,6 +32,35 @@ syntax into visual wireframes — 7 styles, no design tools needed.
 
 ---
 
+## Before you render
+
+Answer three questions up front — they determine what you build and how you hand it back.
+
+**1. What wiremd version is available?** Run `wiremd --version`. Require **≥ 0.1.7** for:
+
+- `::: layout {.sidebar-main}` — proper sidebar CSS (stock 0.1.5 stacks vertically)
+- `[[ [Label](./page.md) | ... ]]` — cross-page hrefs in nav (stock 0.1.5 drops them silently)
+- `![[file.md]]` — shared partial includes
+
+If older, build from source: `git clone https://github.com/teezeit/wiremd && cd wiremd && npm install && npm run build`, then invoke via `node path/to/wiremd-fork/bin/wiremd.js`.
+
+**2. Single page or multi-page?** Ask the user up front. For multi-page, scaffold from the start — don't bolt on later:
+
+- `_nav.md` shared across all pages via `![[_nav.md]]`
+- `_sidebar.md` if using sidebar layout
+- one `.md` per page at top level
+
+See `references/multi-page.md` for folder layout, cross-page link syntax, and the rebuild recipe.
+
+**3. Which render route does this environment support?** Triage by the tools Claude actually has — not by product name. See `references/rendering-modes.md` for the full table.
+
+- **Write files + run shell** (Claude Code, VS Code+terminal, Cowork/Desktop with filesystem + code-execution tools) → **files in folder** is the default. Render `.html` into the user's folder; they open via `file://` or double-click.
+- **User is on their own local terminal** → `--serve PORT --watch` for live iteration.
+- **Chat only (no filesystem, no exec)** → hand off the `.md` and direct the user to `https://tobiashoelzer.com/wiremd/editor` to paste and render.
+- **Never hand out a sandbox `localhost:PORT` URL** — it binds to Claude's host, not the user's. When in doubt, write HTML to the folder.
+
+---
+
 ## Rendering
 
 ```bash
@@ -329,9 +358,11 @@ Format
 
 1. **Label directly above input.** No blank line between label text and `[_____]` — it breaks the association.
 2. **Blank line before `:::` when last line has inline elements.** Buttons, backtick code, bold, links, or list items on the final line of a container — add an empty line before `:::`.
-3. **`[[ ]]` nav doesn't support hrefs.** Links inside `[[ ]]` silently drop the URL. Use plain markdown links for cross-page navigation.
+3. **`[[ ]]` nav hrefs require wiremd ≥ 0.1.7.** Earlier versions silently drop the URL and every item renders as `href="#"`. Mixed static + clickable works in 0.1.7+: `[[ *Home* | [About](./about.md) | [Contact](./contact.md) ]]`.
 4. **`:::accordion` doesn't exist.** Use `::: tabs` with `::: tab Label` children for tabbed panels. For a simple button-group switcher, use `[Tab]*  [Other]`.
 5. **Use `![[file.md]]` for includes, not `:::display`.** `:::display` is obsolete. `![[path/to/file.md]]` works in both the CLI and VS Code preview — path resolves relative to the current file.
+6. **Sandbox `--serve` is unreachable from the user's browser.** `wiremd --serve PORT` binds to `localhost` on Claude's host, not the user's. When Claude is running in Cowork/Desktop and the user is elsewhere, write HTML to a shared folder instead. See `references/rendering-modes.md`.
+7. **Static HTML keeps `.md` hrefs — rewrite after build.** `wiremd x.md -o x.html` preserves `./page.md` link targets. For `file://` double-click delivery, rewrite with: `sed -i -E 's|href="\./([A-Za-z0-9_-]+)\.md"|href="./\1.html"|g' *.html`. On macOS without GNU sed, use `sed -i ''`.
 
 ---
 
@@ -340,6 +371,9 @@ Format
 - `references/quick-reference.md` — one-page cheat sheet for all components (copied from QUICK-REFERENCE.md at build time)
 - `references/syntax.md` — full syntax, all attributes, disambiguation rules, component mapping, gotchas
 - `references/styles.md` — style guide with visual descriptions and use cases
+- `references/multi-page.md` — folder layout, shared `_nav.md`, cross-page links, rebuild recipe for `.md`→`.html` handoff
+- `references/rendering-modes.md` — decision table: files-in-folder, dev server, screenshot, web-editor handoff
 - `references/vscode.md` — VS Code extension install and live-preview workflow
 - `references/examples/dashboard.md` — renderable dashboard wireframe (point user to this path)
 - `references/examples/settings-form.md` — renderable settings/form wireframe (point user to this path)
+- `references/examples/multi-page/` — minimal 2-page prototype (`_nav.md` + `index.md` + `detail.md`) demonstrating shared nav, cross-page links, and the render-and-open-html flow

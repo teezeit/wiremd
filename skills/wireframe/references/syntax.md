@@ -117,7 +117,7 @@ The list items directly following a dropdown become its options.
 [[ Home > Section > Current Page ]]
 ```
 
-**Note:** `[Text](url)` links inside `[[ ]]` blocks drop the href — all items render as `href="#"`. For clickable tab bars, use plain markdown links instead (see below).
+**Version note:** Cross-page hrefs inside `[[ ]]` — e.g. `[[ *Home* | [About](./about.md) | [Contact](./contact.md) ]]` — require wiremd ≥ 0.1.7. Earlier versions silently drop the URL and render every item as `href="#"`. Run `wiremd --version` if you're unsure.
 
 ---
 
@@ -333,6 +333,8 @@ Add `{.right}` to push content to the right edge:
 ```
 
 Rows can be nested inside grids, cards, or tabs.
+
+If a specific widget (search input, dropdown) fails to render inside `::: row`, confirm `wiremd --version` — several row edge cases were fixed in 0.1.7. Fallback: move the problem input out of the row and into block-level form layout.
 
 ---
 
