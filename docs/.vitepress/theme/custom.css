@@ -104,6 +104,44 @@
   display: block;
 }
 
+/* ─── home action buttons ───────────────────────────────────────────────────── */
+
+.home-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+  flex-wrap: wrap;
+}
+
+.home-action {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid var(--vp-c-divider);
+  color: var(--vp-c-text-1);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.home-action:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+
+.home-action--brand {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: #fff;
+}
+
+.home-action--brand:hover {
+  background: var(--vp-c-brand-2);
+  border-color: var(--vp-c-brand-2);
+  color: #fff;
+}
+
 /* ─── mini editor ───────────────────────────────────────────────────────────── */
 
 .mini-editor {
