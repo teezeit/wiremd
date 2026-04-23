@@ -7,6 +7,8 @@ on:
     paths:
       - 'docs/**'
       - 'examples/**'
+      - 'playground/**'
+      - 'src/**'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
 
@@ -41,6 +43,13 @@ jobs:
 
       - name: Build VitePress site
         run: npm run docs:build
+
+      - name: Build playground
+        run: |
+          npm ci --prefix playground
+          VITE_BASE=/playground/ npm run build --prefix playground
+          mkdir -p docs/.vitepress/dist/playground
+          cp -r playground/dist/. docs/.vitepress/dist/playground/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
