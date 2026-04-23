@@ -10,22 +10,16 @@ const EXAMPLES: { label: string; code: string }[] = [
     label: 'Dashboard',
     code: `## Dashboard
 
-::: grid-3
+::: grid-3 card
 
-::: card
 ### 12,480
 Users · ↑ 8%
-:::
 
-::: card
 ### $48,200
 Revenue · ↑ 12%
-:::
 
-::: card
 ### 94.2%
 Uptime · ↓ 1%
-:::
 
 :::
 
