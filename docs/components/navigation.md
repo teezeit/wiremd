@@ -14,6 +14,22 @@
 [[ Logo | [Home](./index.md) | Products | Pricing | Login | [Sign Up]* ]]
 :::
 
+## Active state
+
+Wrap an item in `*asterisks*` to mark it as the active/current page:
+
+::: demo
+[[ Logo | Home | *Products* | About | Contact ]]
+:::
+
+## With icon and buttons
+
+Use `:icon:` for the brand logo and embed `[Button]` items for actions:
+
+::: demo
+[[ :logo: Brand | Home | Features | Pricing | [Sign In] | [Get Started]* ]]
+:::
+
 ## Breadcrumbs
 
 Use `[[ ... ]]` with `>` separators for breadcrumb trails.

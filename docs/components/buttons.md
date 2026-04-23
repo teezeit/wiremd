@@ -17,7 +17,7 @@ Square brackets create a button. Add `*` for primary variant.
 ## Variants
 
 ::: demo
-[Default] [Primary]* [Secondary]{.secondary} [Danger]{.danger}
+[Default] [Primary]* [Secondary]{variant:secondary} [Danger]{variant:danger}
 :::
 
 ## Disabled
@@ -45,12 +45,17 @@ Square brackets create a button. Add `*` for primary variant.
 ## Syntax
 
 ```
-[Label]            default button
-[Label]*           primary button
-[Label]{.danger}   danger variant
-[Label]{disabled}  disabled state
-[A] [B] [C]        button group (inline)
+[Label]                      default button
+[Label]*                     primary (preferred shorthand)
+[Label]{variant:primary}     primary (explicit)
+[Label]{variant:secondary}   secondary
+[Label]{variant:danger}      danger/destructive
+[Label]{state:disabled}      disabled  ← use state:disabled, not {disabled}
+[Label]{state:loading}       loading
+[A] [B] [C]                  button group (inline)
 ```
+
+> **Note:** `{.primary}` and `{.danger}` add raw CSS classes with no built-in styling — use `{variant:*}` instead. `{disabled}` (without `state:`) is silently ignored on buttons.
 
 :::
 

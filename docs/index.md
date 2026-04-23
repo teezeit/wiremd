@@ -1,58 +1,50 @@
-# wiremd Documentation
+---
+layout: home
 
-Welcome to the wiremd documentation! wiremd is a text-first UI design tool that lets you create wireframes and mockups using Markdown syntax.
+hero:
+  name: wiremd
+  text: Design UI Mockups with Markdown
+  tagline: The text-first wireframing tool. Create screens as fast as you can type — no clicking, no dragging, no design tool required.
+  actions:
+    - theme: brand
+      text: Get started
+      link: /guide/overview
+    - theme: alt
+      text: Browse components
+      link: /components/
+    - theme: alt
+      text: GitHub
+      link: https://github.com/teezeit/wiremd
+---
 
-## Quick Links
+::: demo
 
-- [Getting Started](./guide/getting-started.md)
-- [Installation](./guide/installation.md)
-- [Syntax Reference](./guide/syntax.md)
-- [API Documentation](./api/)
-- [Examples](./examples/)
-
-## What is wiremd?
-
-wiremd is a markdown-based UI wireframing tool that lets you create wireframes and mockups using familiar markdown syntax with intuitive extensions. Write your UI designs as text, render them as beautiful wireframes.
-
-### Key Features
-
-- **Markdown-first** - Valid markdown that degrades gracefully
-- **Visual syntax** - Looks like what it renders
-- **Fast to write** - Intuitive shortcuts for common patterns
-- **Extensible** - Add classes and attributes as needed
-- **Multiple outputs** - HTML, JSON, and framework components
-- **Multiple styles** - Balsamiq-style, clean, wireframe, and more
-
-## Quick Example
-
-```markdown
-## Contact Form
-
-Name
-[_____________________________]{required}
+## Sign In
 
 Email
 [_____________________________]{type:email required}
 
-[Submit]{.primary} [Cancel]
-```
+Password
+[_____________________________]{type:password required}
 
-This renders into a styled wireframe with a form, inputs, and buttons.
+- [ ] Remember me
 
-## Getting Started
+[Sign In]* [Forgot password?]
 
-1. [Install wiremd](./guide/installation.md)
-2. [Learn the syntax](./guide/syntax.md)
-3. [Explore examples](./examples/)
-4. [Read the API docs](./api/)
+:::
 
-## Community
+## wiremd vs the alternatives
 
-- [GitHub Repository](https://github.com/akonan/wiremd)
-- [Issue Tracker](https://github.com/akonan/wiremd/issues)
-- [Discussions](https://github.com/akonan/wiremd/discussions)
-- [Contributing Guide](../CONTRIBUTING.md)
+|  | wiremd | Figma | Balsamiq |
+|--|--------|-------|---------|
+| Text-based input | ✓ | ✗ | ✗ |
+| Works with git / version control | ✓ | partial | ✗ |
+| No design tool or account needed | ✓ | ✗ | ✗ |
+| AI-generated wireframes (Claude) | ✓ | ✗ | ✗ |
+| VS Code integration | ✓ | ✗ | ✗ |
+| Free and open source | ✓ | partial | ✗ |
 
-## License
+## Ready to start?
 
-wiremd is open source software licensed under the [MIT License](../LICENSE).
+Install the [VS Code extension](/guide/vscode) for the quickest path — no terminal, no setup.  
+Or `npm install -g wiremd` and [follow the CLI guide](/guide/installation).

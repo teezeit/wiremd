@@ -17,7 +17,7 @@ A Homebrew tap is a custom repository of formulas.
 
 2. **Clone the tap repository**
    ```bash
-   git clone https://github.com/akonan/homebrew-wiremd.git
+   git clone https://github.com/teezeit/homebrew-wiremd.git
    cd homebrew-wiremd
    ```
 
@@ -38,13 +38,13 @@ A Homebrew tap is a custom repository of formulas.
 
 ```bash
 # Add your tap
-brew tap akonan/wiremd
+brew tap teezeit/wiremd
 
 # Install wiremd
 brew install wiremd
 
 # Or install directly
-brew install akonan/wiremd/wiremd
+brew install teezeit/wiremd/wiremd
 ```
 
 ## Option 2: Submit to Homebrew Core
@@ -78,7 +78,7 @@ To get wiremd into the official Homebrew repository:
 Users can install directly from the formula URL:
 
 ```bash
-brew install https://raw.githubusercontent.com/akonan/wiremd/main/Formula/wiremd.rb
+brew install https://raw.githubusercontent.com/teezeit/wiremd/main/Formula/wiremd.rb
 ```
 
 ## Updating the Formula
@@ -237,14 +237,14 @@ bin.install_symlink Dir["#{libexec}/bin/*"]
 
 ```bash
 # From your tap
-brew tap akonan/wiremd
+brew tap teezeit/wiremd
 brew install wiremd
 
 # Direct install
-brew install akonan/wiremd/wiremd
+brew install teezeit/wiremd/wiremd
 
 # From formula URL (testing)
-brew install https://raw.githubusercontent.com/akonan/wiremd/main/Formula/wiremd.rb
+brew install https://raw.githubusercontent.com/teezeit/wiremd/main/Formula/wiremd.rb
 
 # Upgrade
 brew upgrade wiremd

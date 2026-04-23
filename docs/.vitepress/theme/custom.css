@@ -1,0 +1,116 @@
+/* ─── wiremd demo block ─────────────────────────────────────────────────────── */
+
+.wiremd-demo-block {
+  display: flex;
+  margin: 1.25rem 0;
+  border: 1.5px solid var(--vp-c-divider);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--vp-c-bg-soft);
+  background-image: radial-gradient(circle, var(--vp-c-divider) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* ─── left: rendered wireframe ──────────────────────────────────────────────── */
+
+.wiremd-demo-left {
+  flex: 1 1 55%;
+  min-width: 0;
+  padding: 0.6rem;
+  border-right: 1.5px solid var(--vp-c-divider);
+}
+
+.wiremd-demo-iframe {
+  width: 100%;
+  min-height: 40px;
+  border: none;
+  display: block;
+  background: transparent;
+}
+
+/* ─── right: source / editor panel ─────────────────────────────────────────── */
+
+.wiremd-demo-right {
+  flex: 0 0 42%;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 2rem 0.9rem 0.75rem;
+  /* solid bg covers the parent dot grid — gives a clean editor feel */
+  background: var(--vp-code-block-bg);
+}
+
+.wiremd-demo-copy {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  padding: 1px 8px;
+  font-size: 0.68rem;
+  font-family: var(--vp-font-family-base);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  line-height: 1.7;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.wiremd-demo-copy:hover {
+  color: var(--vp-c-text-1);
+  border-color: var(--vp-c-brand-1);
+}
+
+.wiremd-demo-pre {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  width: 100%;
+  /* no line-numbers or decorations */
+  counter-reset: none !important;
+}
+
+.wiremd-demo-pre code {
+  background: transparent !important;
+  /* editor look: slightly muted, monospace, tight */
+  color: var(--vp-c-text-3);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.65rem;
+  line-height: 1.65;
+  padding: 0 !important;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* ─── wiremd inline preview (non-demo containers, e.g. :::grid-3 card) ──────── */
+
+.wiremd-preview-block {
+  margin: 1rem 0;
+}
+
+.wiremd-preview-iframe {
+  width: 100%;
+  min-height: 40px;
+  border: none;
+  display: block;
+}
+
+/* ─── responsive: stack on narrow screens ───────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .wiremd-demo-block {
+    flex-direction: column;
+  }
+
+  .wiremd-demo-left {
+    border-right: none;
+    border-bottom: 1.5px solid var(--vp-c-divider);
+  }
+
+  .wiremd-demo-right {
+    padding-top: 2rem;
+  }
+}

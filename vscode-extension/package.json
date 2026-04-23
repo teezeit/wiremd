@@ -2,7 +2,7 @@
   "name": "wiremd-preview",
   "displayName": "Wiremd Live Preview",
   "description": "Live preview for Wiremd markdown mockups",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "publisher": "eclectic-ai",
   "icon": "icon.png",
   "engines": {
@@ -138,7 +138,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run bundle",
-    "bundle": "rm -rf ./skills && cp -r ../skills ./skills && cp ../QUICK-REFERENCE.md ./QUICK-REFERENCE.md && rm -rf ./docs && mkdir -p ./docs && cp -r ../docs/components ./docs/components && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
+    "bundle": "rm -rf ./skills && cp -r ../skills ./skills && rm -rf ./docs && mkdir -p ./docs && cp -r ../docs/components ./docs/components && cp -r ../docs/examples ./docs/examples && cp -r ../docs/reference ./docs/reference && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
     "dev": "node scripts/watch.mjs",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",

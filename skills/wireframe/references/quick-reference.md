@@ -1,8 +1,6 @@
 # wiremd Quick Reference
 
 > **One-page syntax reference for experienced users**
->
-> New to wiremd? See the [Syntax Showcase](examples/showcase.md) for detailed examples and tutorials.
 
 ## Component Syntax
 
@@ -265,10 +263,3 @@ wiremd supports **all standard Markdown** syntax:
 | Button looks wrong | Check for `(url)` - that makes it a link |
 | Attributes ignored | Put `{...}` immediately after element (space OK) |
 
----
-
-**See Also:**
-- [Complete Syntax Showcase](examples/showcase.md) - Interactive examples and tutorials
-- [Syntax Guide](docs/guide/syntax.md) - User-friendly guide with best practices
-- [FAQ](FAQ.md) - Common questions and troubleshooting
-- [Formal Specification](SYNTAX-SPEC-v0.1.md) - Complete technical specification

@@ -56,7 +56,7 @@ git push origin --tags
 
 ### 3. Create GitHub Release
 
-1. Go to https://github.com/akonan/wiremd/releases/new
+1. Go to https://github.com/teezeit/wiremd/releases/new
 2. Select the tag you just pushed (e.g., `v0.1.1`)
 3. Set release title (e.g., `v0.1.1`)
 4. Add release notes describing:
@@ -77,7 +77,7 @@ Once you publish the GitHub release:
   4. Build the project
   5. Publish to npm with provenance
 
-You can monitor the progress at: https://github.com/akonan/wiremd/actions
+You can monitor the progress at: https://github.com/teezeit/wiremd/actions
 
 ### 5. Verify Publication
 
@@ -114,7 +114,7 @@ npm publish --provenance --access public
 
 If the GitHub Action fails:
 
-1. Check the action logs: https://github.com/akonan/wiremd/actions
+1. Check the action logs: https://github.com/teezeit/wiremd/actions
 2. Common issues:
    - Tests failing: Fix tests and create a new release
    - Build errors: Fix build issues and create a new release
@@ -141,7 +141,7 @@ If you get permission errors:
 
 - **Package name**: `wiremd`
 - **npm page**: https://www.npmjs.com/package/wiremd
-- **Repository**: https://github.com/akonan/wiremd
+- **Repository**: https://github.com/teezeit/wiremd
 - **Registry**: npm (public)
 - **Author**: Antti Akonniemi <antti@kiskolabs.com>
 - **License**: MIT

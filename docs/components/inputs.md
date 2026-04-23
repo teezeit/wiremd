@@ -22,6 +22,10 @@ Email
 [_____________________________]{required}
 :::
 
+## Label association
+
+> **Critical:** label text must be on the line **directly above** the input — no blank line between them. A blank line breaks the association and the text renders as a paragraph instead.
+
 ## Input Types
 
 ::: demo
@@ -36,6 +40,24 @@ Phone
 
 Number
 [_____________________________]{type:number}
+
+URL
+[_____________________________]{type:url}
+
+Date
+[_____________________________]{type:date}
+
+Time
+[_____________________________]{type:time}
+
+Search
+[_____________________________]{type:search}
+
+File upload
+[_____________________________]{type:file}
+
+Color
+[_____________________________]{type:color}
 :::
 
 ## With Placeholder
@@ -43,6 +65,27 @@ Number
 ::: demo
 Search
 [_____________________________]{placeholder:"Search components..."}
+:::
+
+## Error state
+
+::: demo
+Email
+[_____________________________]{type:email state:error}
+:::
+
+## Number constraints
+
+::: demo
+Quantity
+[_____________________________]{type:number min:1 max:100}
+:::
+
+## Textarea columns
+
+::: demo
+Notes
+[_____________________________]{rows:5 cols:40}
 :::
 
 ## Disabled
