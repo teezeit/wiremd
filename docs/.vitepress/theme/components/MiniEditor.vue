@@ -161,6 +161,12 @@ onMounted(render)
       </div>
     </div>
     <div class="mini-editor__body">
+      <iframe
+        :srcdoc="srcdoc"
+        class="mini-editor__iframe"
+        sandbox="allow-same-origin"
+      />
+      <div class="mini-editor__divider" />
       <textarea
         v-model="source"
         @input="onInput"
@@ -168,12 +174,6 @@ onMounted(render)
         spellcheck="false"
         autocomplete="off"
         autocorrect="off"
-      />
-      <div class="mini-editor__divider" />
-      <iframe
-        :srcdoc="srcdoc"
-        class="mini-editor__iframe"
-        sandbox="allow-same-origin"
       />
     </div>
   </div>
