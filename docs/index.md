@@ -19,17 +19,6 @@ hero:
 
 <MiniEditor />
 
-## wiremd vs the alternatives
-
-|  | wiremd | Figma | Balsamiq |
-|--|--------|-------|---------|
-| Text-based input | ✓ | ✗ | ✗ |
-| Works with git / version control | ✓ | partial | ✗ |
-| No design tool or account needed | ✓ | ✗ | ✗ |
-| AI-generated wireframes (Claude) | ✓ | ✗ | ✗ |
-| VS Code integration | ✓ | ✗ | ✗ |
-| Free and open source | ✓ | partial | ✗ |
-
 ## Ready to start?
 
 Install the [VS Code extension](/guide/vscode) for the quickest path — no terminal, no setup.  

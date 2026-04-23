@@ -109,7 +109,20 @@ let timer: ReturnType<typeof setTimeout> | null = null
 
 function render() {
   try {
-    srcdoc.value = renderToHTML(parse(source.value), { style: style.value })
+    let html = renderToHTML(parse(source.value), { style: style.value })
+    // Scale down for the narrow preview pane and prevent the 768px media query
+    // from collapsing grid columns (the iframe is narrower than the breakpoint).
+    html = html.replace('</head>', [
+      '<style>',
+      'html{zoom:0.65}html,body{margin:0}',
+      // Override the responsive !important collapse — later !important wins in cascade
+      '.wmd-grid{grid-template-columns:repeat(var(--grid-columns,3),1fr)!important}',
+      '.wmd-grid-2{grid-template-columns:repeat(2,1fr)!important}',
+      '.wmd-grid-3{grid-template-columns:repeat(3,1fr)!important}',
+      '.wmd-grid-4{grid-template-columns:repeat(4,1fr)!important}',
+      '</style></head>',
+    ].join(''))
+    srcdoc.value = html
   } catch {
     // keep previous output on error
   }
