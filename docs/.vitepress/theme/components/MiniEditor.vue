@@ -8,17 +8,31 @@ type WiremdStyle = typeof STYLES[number]
 const EXAMPLES: { label: string; code: string }[] = [
   {
     label: 'This page',
-    code: `[[ wiremd | Docs | Components | GitHub ]]
+    code: `[[ wiremd | :search: Search | Docs | Playground | :github: ]]
 
----
-
-# wiremd
+## wiremd
 
 **Design UI Mockups with Markdown**
 
 The text-first wireframing tool. Create screens as fast as you can type — no clicking, no dragging, no design tool required.
 
-[Get Started]* [Browse Components] [GitHub]`,
+[Get Started]* [Browse Components]
+
+::: grid-3 card
+
+## Available Everywhere
+
+VS Code extension, CLI, and npm package — works wherever you do.
+
+## Fast
+
+Renders wireframes instantly. No canvas, no drag-and-drop.
+
+## Open Source
+
+MIT licensed. Free forever.
+
+:::`,
   },
   {
     label: 'Dashboard',

@@ -109,8 +109,8 @@
 /* Hide built-in appearance toggle — moved to sidebar */
 .VPNavBarAppearance { display: none !important; }
 
-/* Push search to the far right (before social links) */
-.VPNavBarSearch { margin-left: auto; }
+/* Search is first in the DOM but should appear rightmost — use order to move it after menu/social */
+.VPNavBar .search { order: 10; }
 
 /* ─── appearance switcher in sidebar ────────────────────────────────────────── */
 
