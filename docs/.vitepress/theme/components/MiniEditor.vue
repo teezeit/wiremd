@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, nextTick } from 'vue'
 import { parse, renderToHTML } from 'wiremd'
 
 const STYLES = ['sketch', 'clean', 'wireframe', 'material', 'brutal', 'tailwind'] as const
@@ -133,6 +133,16 @@ function onInput() {
   timer = setTimeout(render, 150)
 }
 
+function onKeydown(e: KeyboardEvent) {
+  if (e.key !== 'Tab') return
+  e.preventDefault()
+  const ta = e.target as HTMLTextAreaElement
+  const start = ta.selectionStart
+  const end = ta.selectionEnd
+  source.value = source.value.slice(0, start) + '  ' + source.value.slice(end)
+  nextTick(() => { ta.selectionStart = ta.selectionEnd = start + 2 })
+}
+
 function onExampleChange() {
   source.value = EXAMPLES[selectedIndex.value].code
   render()
@@ -167,14 +177,23 @@ onMounted(render)
         sandbox="allow-same-origin"
       />
       <div class="mini-editor__divider" />
-      <textarea
-        v-model="source"
-        @input="onInput"
-        class="mini-editor__textarea"
-        spellcheck="false"
-        autocomplete="off"
-        autocorrect="off"
-      />
+      <div class="mini-editor__editor-pane">
+        <div class="mini-editor__editor-header">
+          <span class="mini-editor__dot" style="background:#ff5f57"></span>
+          <span class="mini-editor__dot" style="background:#febc2e"></span>
+          <span class="mini-editor__dot" style="background:#28c840"></span>
+          <span class="mini-editor__editor-fname">wireframe.md</span>
+        </div>
+        <textarea
+          v-model="source"
+          @input="onInput"
+          @keydown="onKeydown"
+          class="mini-editor__textarea"
+          spellcheck="false"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </div>
     </div>
   </div>
 </template>
