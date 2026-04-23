@@ -5,7 +5,10 @@ import { parse, renderToHTML } from 'wiremd'
 const STYLES = ['sketch', 'clean', 'wireframe', 'material', 'brutal', 'tailwind'] as const
 type WiremdStyle = typeof STYLES[number]
 
-const DEFAULT = `## Dashboard
+const EXAMPLES: { label: string; code: string }[] = [
+  {
+    label: 'Dashboard',
+    code: `## Dashboard
 
 ::: grid-3
 
@@ -21,17 +24,92 @@ Revenue · ↑ 12%
 
 ::: card
 ### 94.2%
-Uptime
+Uptime · ↓ 1%
 :::
 
 :::
 
-Search [_______________________]
+Search [_________________________]
 
-[New Report]* [Export]  [Settings]`
+[New Report]* [Export]  [Settings]`,
+  },
+  {
+    label: 'Sign In',
+    code: `## Sign In
 
-const source = ref(DEFAULT)
+Email
+[_____________________________]{type:email}
+
+Password
+[_____________________________]{type:password}
+
+- [ ] Remember me
+
+[Sign In]* [Forgot password?]`,
+  },
+  {
+    label: 'Settings',
+    code: `## Account Settings
+
+::: tabs
+
+::: tab Profile
+Full Name
+[_______________________]
+
+Email
+[_______________________]{type:email}
+
+Bio
+[_______________________]{rows:3}
+
+[Save Changes]*
+:::
+
+::: tab Security
+Current Password
+[_______________________]{type:password}
+
+New Password
+[_______________________]{type:password}
+
+[Update Password]*
+:::
+
+:::`,
+  },
+  {
+    label: 'Product',
+    code: `::: card
+## Wireless Headphones
+
+|New| |Sale|
+
+Premium noise-cancelling · 30h battery
+
+**$149.00** ~~$249.00~~
+
+[Add to Cart]* [Save]
+:::`,
+  },
+  {
+    label: 'Data Table',
+    code: `## Users
+
+[+ Invite]* [Export]
+
+| Name | Role | Status |
+|------|------|--------|
+| Alice Martin | Admin | |Active| |
+| Bob Chen | Editor | |Active| |
+| Carol Wu | Viewer | |Pending|{.warning} |
+| Dave Lee | Editor | |Inactive|{.error} |`,
+  },
+]
+
 const style = ref<WiremdStyle>('sketch')
+const selectedIndex = ref(0)
+const source = ref(EXAMPLES[0].code)
 const srcdoc = ref('')
 let timer: ReturnType<typeof setTimeout> | null = null
 
@@ -48,6 +126,11 @@ function onInput() {
   timer = setTimeout(render, 150)
 }
 
+function onExampleChange() {
+  source.value = EXAMPLES[selectedIndex.value].code
+  render()
+}
+
 watch(style, render)
 onMounted(render)
 </script>
@@ -55,7 +138,12 @@ onMounted(render)
 <template>
   <div class="mini-editor">
     <div class="mini-editor__bar">
-      <span class="mini-editor__label">Try it live</span>
+      <div class="mini-editor__bar-left">
+        <span class="mini-editor__label">Example</span>
+        <select v-model="selectedIndex" @change="onExampleChange" class="mini-editor__select mini-editor__select--examples">
+          <option v-for="(ex, i) in EXAMPLES" :key="i" :value="i">{{ ex.label }}</option>
+        </select>
+      </div>
       <div class="mini-editor__controls">
         <select v-model="style" class="mini-editor__select">
           <option v-for="s in STYLES" :key="s" :value="s">{{ s }}</option>

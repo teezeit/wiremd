@@ -120,6 +120,13 @@
   padding: 0.4rem 0.75rem;
   background: var(--vp-c-bg-soft);
   border-bottom: 1.5px solid var(--vp-c-divider);
+  gap: 0.5rem;
+}
+
+.mini-editor__bar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .mini-editor__label {
@@ -128,6 +135,7 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--vp-c-text-3);
+  white-space: nowrap;
 }
 
 .mini-editor__controls {
@@ -145,6 +153,12 @@
   border-radius: 4px;
   padding: 1px 6px;
   cursor: pointer;
+}
+
+.mini-editor__select--examples {
+  font-family: var(--vp-font-family-base);
+  font-weight: 500;
+  color: var(--vp-c-text-1);
 }
 
 .mini-editor__link {
