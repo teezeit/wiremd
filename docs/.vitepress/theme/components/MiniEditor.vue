@@ -7,6 +7,20 @@ type WiremdStyle = typeof STYLES[number]
 
 const EXAMPLES: { label: string; code: string }[] = [
   {
+    label: 'This page',
+    code: `[[ wiremd | Docs | Components | GitHub ]]
+
+---
+
+# wiremd
+
+**Design UI Mockups with Markdown**
+
+The text-first wireframing tool. Create screens as fast as you can type — no clicking, no dragging, no design tool required.
+
+[Get Started]* [Browse Components] [GitHub]`,
+  },
+  {
     label: 'Dashboard',
     code: `## Dashboard
 
