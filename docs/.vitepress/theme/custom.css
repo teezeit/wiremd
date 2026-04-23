@@ -104,6 +104,42 @@
   display: block;
 }
 
+/* ─── top nav tweaks ─────────────────────────────────────────────────────────── */
+
+/* Hide built-in appearance toggle — moved to sidebar */
+.VPNavBarAppearance { display: none !important; }
+
+/* Push search to the far right (before social links) */
+.VPNavBarSearch { margin-left: auto; }
+
+/* ─── appearance switcher in sidebar ────────────────────────────────────────── */
+
+.appearance-switcher {
+  padding: 1rem 1.5rem 0.5rem;
+  border-top: 1px solid var(--vp-c-divider);
+  margin-top: 0.5rem;
+}
+
+.appearance-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--vp-c-divider);
+  background: transparent;
+  color: var(--vp-c-text-2);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  width: 100%;
+}
+
+.appearance-btn:hover {
+  color: var(--vp-c-text-1);
+  border-color: var(--vp-c-brand-1);
+}
+
 /* ─── home action buttons ───────────────────────────────────────────────────── */
 
 .home-actions {
@@ -115,31 +151,34 @@
 
 .home-action {
   display: inline-block;
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  border-radius: 20px;
+  padding: 0 20px;
+  line-height: 38px;
+  font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  border: 1px solid var(--vp-c-divider);
-  color: var(--vp-c-text-1);
-  transition: border-color 0.15s, color 0.15s;
+  border: 1px solid var(--vp-button-alt-border);
+  color: var(--vp-button-alt-text);
+  background-color: var(--vp-button-alt-bg);
+  transition: border-color 0.25s, color 0.25s, background-color 0.25s;
 }
 
 .home-action:hover {
-  border-color: var(--vp-c-brand-1);
-  color: var(--vp-c-brand-1);
+  border-color: var(--vp-button-alt-hover-border);
+  color: var(--vp-button-alt-hover-text);
+  background-color: var(--vp-button-alt-hover-bg);
 }
 
 .home-action--brand {
-  background: var(--vp-c-brand-1);
-  border-color: var(--vp-c-brand-1);
-  color: #fff;
+  border-color: var(--vp-button-brand-border);
+  color: var(--vp-button-brand-text);
+  background-color: var(--vp-button-brand-bg);
 }
 
 .home-action--brand:hover {
-  background: var(--vp-c-brand-2);
-  border-color: var(--vp-c-brand-2);
-  color: #fff;
+  border-color: var(--vp-button-brand-hover-border);
+  color: var(--vp-button-brand-hover-text);
+  background-color: var(--vp-button-brand-hover-bg);
 }
 
 /* ─── mini editor ───────────────────────────────────────────────────────────── */
@@ -212,7 +251,7 @@
 
 .mini-editor__body {
   display: flex;
-  height: 380px;
+  height: 480px;
 }
 
 .mini-editor__divider {
