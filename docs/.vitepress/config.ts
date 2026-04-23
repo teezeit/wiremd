@@ -254,7 +254,7 @@ export default defineConfig({
 
     nav: [
       { text: "Docs", link: "/guide/overview" },
-      { text: "Playground", link: "/playground/" },
+      { text: "Editor", link: "/editor/" },
     ],
 
     socialLinks: [

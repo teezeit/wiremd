@@ -47,9 +47,9 @@ jobs:
       - name: Build playground
         run: |
           npm ci --prefix playground
-          VITE_BASE=/playground/ npm run build --prefix playground
-          mkdir -p docs/.vitepress/dist/playground
-          cp -r playground/dist/. docs/.vitepress/dist/playground/
+          VITE_BASE=/wiremd/editor/ npm run build --prefix playground
+          mkdir -p docs/.vitepress/dist/editor
+          cp -r playground/dist/. docs/.vitepress/dist/editor/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
