@@ -20,6 +20,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
 
   private docsPanel: vscode.WebviewPanel | undefined;
   private currentDocsFile: string = '';
+  private docsHomeFile: string = '';
 
   constructor(private readonly context: vscode.ExtensionContext) {
     // Watch for document changes
@@ -601,6 +602,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     }
 
     this.currentDocsFile = docsFile;
+    this.docsHomeFile = docsFile;
 
     if (this.docsPanel) {
       this.docsPanel.reveal(vscode.ViewColumn.One);
@@ -631,13 +633,20 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       const resolved = resolveIncludes(raw, this.currentDocsFile);
       const ast = parse(resolved);
       const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true });
-      this.docsPanel.webview.html = this.injectDocsChrome(html);
+      const isExample = !this.currentDocsFile.includes(`${path.sep}components${path.sep}`);
+      this.docsPanel.webview.html = this.injectDocsChrome(html, isExample ? raw : undefined);
     } catch (err: any) {
       this.docsPanel.webview.html = this.getErrorHTML(err.message);
     }
   }
 
   private handleDocsMessage(message: any): void {
+    if (message.type === 'navigate-home') {
+      this.currentDocsFile = this.docsHomeFile;
+      if (this.docsPanel) { this.docsPanel.title = 'wiremd Docs'; }
+      this.refreshDocs();
+      return;
+    }
     if (message.type !== 'navigate') { return; }
     const dir = path.dirname(this.currentDocsFile);
     const target = path.resolve(dir, message.href);
@@ -650,7 +659,12 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     this.refreshDocs();
   }
 
-  private injectDocsChrome(html: string): string {
+  private injectDocsChrome(html: string, rawSource?: string): string {
+    const hasSource = rawSource !== undefined;
+    const escapedSource = hasSource
+      ? rawSource!.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      : '';
+
     const css = `
     <style id="wmd-docs-styles">
       #wmd-docs-bar {
@@ -668,7 +682,28 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       }
       #wmd-docs-bar button:hover { background: #f0f0f0; border-color: #999; }
       body { padding-top: 44px !important; }
+      #wmd-source-panel {
+        display: none; position: fixed; top: 44px; right: 0; bottom: 0;
+        width: 42%; background: #1e1e1e; color: #d4d4d4; overflow: auto;
+        font-family: monospace; font-size: 12px; line-height: 1.6;
+        padding: 16px; box-sizing: border-box; white-space: pre-wrap;
+        border-left: 1px solid #333; z-index: 9998;
+      }
+      #wmd-source-panel.visible { display: block; }
+      body.source-visible { margin-right: 42%; }
     </style>`;
+
+    const sourceButton = hasSource
+      ? `<button id="wmd-docs-source">Source</button>` : '';
+    const sourcePanel = hasSource
+      ? `<div id="wmd-source-panel"><pre>${escapedSource}</pre></div>` : '';
+    const sourceScript = hasSource ? `
+    document.getElementById('wmd-docs-source').addEventListener('click', () => {
+      const panel = document.getElementById('wmd-source-panel');
+      const isVisible = panel.classList.toggle('visible');
+      document.body.classList.toggle('source-visible', isVisible);
+      document.getElementById('wmd-docs-source').textContent = isVisible ? 'Preview' : 'Source';
+    });` : '';
 
     const bar = `
   <div id="wmd-docs-bar">
@@ -676,11 +711,13 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     <span class="wmd-docs-sep">/</span>
     <span>docs</span>
     <button id="wmd-docs-home">Home</button>
+    ${sourceButton}
   </div>
+  ${sourcePanel}
   <script>
     const vscode = acquireVsCodeApi();
     document.getElementById('wmd-docs-home').addEventListener('click', () => {
-      vscode.postMessage({ type: 'navigate', href: 'index.md' });
+      vscode.postMessage({ type: 'navigate-home' });
     });
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a');
@@ -691,6 +728,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
         vscode.postMessage({ type: 'navigate', href });
       }
     });
+    ${sourceScript}
   <\/script>`;
 
     const withCSP = html.replace(

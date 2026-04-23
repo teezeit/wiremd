@@ -1,3 +1,9 @@
+/* ─── content width ─────────────────────────────────────────────────────────── */
+
+.VPDoc .content-container {
+  max-width: none !important;
+}
+
 /* ─── wiremd demo block ─────────────────────────────────────────────────────── */
 
 .wiremd-demo-block {
