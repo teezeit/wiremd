@@ -178,6 +178,10 @@ export default defineConfig({
       },
     ],
 
+    nav: [
+      { text: 'Playground', link: '/playground/' }
+    ],
+
     socialLinks: [
       { icon: 'github', link: 'https://github.com/teezeit/wiremd' }
     ],
