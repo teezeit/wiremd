@@ -17,21 +17,7 @@ hero:
       link: https://github.com/teezeit/wiremd
 ---
 
-::: demo
-
-## Sign In
-
-Email
-[_____________________________]{type:email required}
-
-Password
-[_____________________________]{type:password required}
-
-- [ ] Remember me
-
-[Sign In]* [Forgot password?]
-
-:::
+<MiniEditor />
 
 ## wiremd vs the alternatives
 

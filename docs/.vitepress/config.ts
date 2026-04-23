@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import { resolve } from 'path';
 import { wiremdDemoPlugin } from './plugins/wiremd-demo';
 
 export default defineConfig({
@@ -194,7 +195,21 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [wiremdDemoPlugin()]
+    plugins: [wiremdDemoPlugin()],
+    resolve: {
+      alias: {
+        // Allow the MiniEditor Vue component to import wiremd source directly for
+        // browser rendering — stubs replace Node-only fs/path used by resolveIncludes.
+        wiremd: resolve(__dirname, '../../src/index.ts'),
+        fs: resolve(__dirname, '../../playground/src/stubs/fs.ts'),
+        path: resolve(__dirname, '../../playground/src/stubs/path.ts'),
+      }
+    },
+    ssr: {
+      // Keep Node.js built-ins external in SSR so the aliases above only
+      // affect the client bundle; stubs are never needed server-side.
+      external: ['fs', 'path']
+    }
   },
 
   markdown: {
