@@ -4,9 +4,8 @@
 >
 > **Key Features:** Text inputs, email validation, textarea, required fields, button groups
 
-::: details View wiremd source
+::: demo
 
-```markdown
 ## Get in Touch
 
 We'd love to hear from you! Fill out the form below and we'll get back to you within 24 hours.
@@ -48,51 +47,6 @@ Preferred Contact Method
 [Submit Message]* [Clear Form]
 
 :::
-```
-
-:::
-
-## Preview
-
-## Get in Touch
-
-We'd love to hear from you! Fill out the form below and we'll get back to you within 24 hours.
-
----
-
-::: card
-
-### Contact Us
-
-Full Name
-[_____________________________] {required:true}
-
-Email Address
-[_____________________________] {type:email required:true}
-
-Phone Number
-[_____________________________] {type:tel}
-
-Subject
-[Select a topic...v]
-- General Inquiry
-- Technical Support
-- Sales Question
-- Partnership Opportunity
-- Other
-
-Message
-[Tell us how we can help...] {rows:6 required:true}
-
-Preferred Contact Method
-- (*) Email
-- ( ) Phone
-- ( ) Either
-
-- [x] I agree to the privacy policy
-- [ ] Send me updates and newsletters
-
-[Submit Message]* [Clear Form]
 
 :::
 

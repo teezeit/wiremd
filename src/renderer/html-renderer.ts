@@ -20,6 +20,7 @@ export interface RenderContext {
  * Render a wiremd AST node to HTML
  */
 export function renderNode(node: WiremdNode, context: RenderContext): string {
+  if (node == null) return '';
   switch (node.type) {
     case 'button':
       return renderButton(node, context);

@@ -4,17 +4,13 @@
 >
 > **Key Features:** Text inputs, selections, checkboxes, radios, buttons, validation states, layouts
 
-## Form Controls Component Showcase
-
-Complete reference for all form control types supported by wiremd.
-
 ---
 
 ## 1. Text Inputs
 
 ### Basic Text Inputs
 
-```markdown
+::: demo
 Username
 [_____________________________]
 
@@ -26,27 +22,11 @@ Password
 
 Confirm Password
 [********] {type:password}
-```
-
-**Rendered:**
-
-Username
-[_____________________________]
-
-Email
-[_____________________________] {type:email}
-
-Password
-[********] {type:password}
-
-Confirm Password
-[********] {type:password}
-
----
+:::
 
 ### Input Width Variations
 
-```markdown
+::: demo
 Zip Code
 [_____]
 
@@ -55,24 +35,11 @@ Phone Number
 
 Full Name
 [_____________________________]
-```
-
-**Rendered:**
-
-Zip Code
-[_____]
-
-Phone Number
-[_______________]
-
-Full Name
-[_____________________________]
-
----
+:::
 
 ### Specialized Input Types
 
-```markdown
+::: demo
 Website URL
 [https://___________] {type:url}
 
@@ -90,33 +57,7 @@ Number
 
 Search
 [Search...___________] {type:search}
-
-Color
-[#______] {type:color}
-```
-
-**Rendered:**
-
-Website URL
-[https://___________] {type:url}
-
-Phone Number
-[_____________________________] {type:tel}
-
-Date of Birth
-[_____________________________] {type:date}
-
-Time
-[_____________________________] {type:time}
-
-Number
-[1___] {type:number min:1 max:100}
-
-Search
-[Search...___________] {type:search}
-
-Color
-[#______] {type:color}
+:::
 
 ---
 
@@ -124,7 +65,7 @@ Color
 
 ### Multi-line Text Areas
 
-```markdown
+::: demo
 Short Comment
 [Enter your comment...] {rows:3}
 
@@ -133,18 +74,7 @@ Long Description
 
 Code Snippet
 [Paste code here...] {rows:8 cols:60}
-```
-
-**Rendered:**
-
-Short Comment
-[Enter your comment...] {rows:3}
-
-Long Description
-[Write detailed description...] {rows:6}
-
-Code Snippet
-[Paste code here...] {rows:8 cols:60}
+:::
 
 ---
 
@@ -152,21 +82,14 @@ Code Snippet
 
 ### Single Checkbox
 
-```markdown
+::: demo
 - [x] I agree to the Terms of Service
 - [ ] Subscribe to newsletter
-```
-
-**Rendered:**
-
-- [x] I agree to the Terms of Service
-- [ ] Subscribe to newsletter
-
----
+:::
 
 ### Checkbox Groups
 
-```markdown
+::: demo
 Select your interests:
 - [x] Web Development
 - [x] Mobile Development
@@ -174,17 +97,7 @@ Select your interests:
 - [ ] Machine Learning
 - [ ] DevOps
 - [ ] UI/UX Design
-```
-
-**Rendered:**
-
-Select your interests:
-- [x] Web Development
-- [x] Mobile Development
-- [ ] Data Science
-- [ ] Machine Learning
-- [ ] DevOps
-- [ ] UI/UX Design
+:::
 
 ---
 
@@ -192,39 +105,22 @@ Select your interests:
 
 ### Basic Radio Group
 
-```markdown
+::: demo
 Account Type:
 - (*) Personal
 - ( ) Business
 - ( ) Enterprise
-```
-
-**Rendered:**
-
-Account Type:
-- (*) Personal
-- ( ) Business
-- ( ) Enterprise
-
----
+:::
 
 ### Radio with Descriptions
 
-```markdown
+::: demo
 Subscription Plan:
 - (*) Free - Basic features for individuals
 - ( ) Pro ($29/mo) - Advanced features for professionals
 - ( ) Team ($99/mo) - Collaboration tools for teams
 - ( ) Enterprise (Custom) - Full-featured for organizations
-```
-
-**Rendered:**
-
-Subscription Plan:
-- (*) Free - Basic features for individuals
-- ( ) Pro ($29/mo) - Advanced features for professionals
-- ( ) Team ($99/mo) - Collaboration tools for teams
-- ( ) Enterprise (Custom) - Full-featured for organizations
+:::
 
 ---
 
@@ -232,7 +128,7 @@ Subscription Plan:
 
 ### Basic Select
 
-```markdown
+::: demo
 Country
 [Select country...v]
 - United States
@@ -240,18 +136,11 @@ Country
 - United Kingdom
 - Australia
 - Other
-```
-
-**Rendered:**
-
-Country
-[Select country...v]
-
----
+:::
 
 ### Multiple Selects
 
-```markdown
+::: demo
 Skills (Select multiple)
 [Choose skills...v]
 - JavaScript
@@ -267,15 +156,7 @@ Time Zone
 - (GMT-5) Eastern Time
 - (GMT) London
 - (GMT+1) Paris
-```
-
-**Rendered:**
-
-Skills (Select multiple)
-[Choose skills...v]
-
-Time Zone
-[Select timezone...v]
+:::
 
 ---
 
@@ -283,97 +164,23 @@ Time Zone
 
 ### Button Types
 
-```markdown
+::: demo
 [Default Button]
 
 [Primary Button]*
 
 [Secondary Button]{.outline}
-```
-
-**Rendered:**
-
-[Default Button]
-
-[Primary Button]*
-
-[Secondary Button]{.outline}
-
----
-
-### Button States
-
-```markdown
-[Normal]
-
-[Disabled]{state:disabled}
-
-[Loading...]{state:loading}
-
-[Active]{state:active}
-
-[Success]{state:success}
-```
-
-**Rendered:**
-
-[Normal]
-
-[Disabled]{state:disabled}
-
-[Loading...]{state:loading}
-
-[Active]{state:active}
-
-[Success]{state:success}
-
----
-
-### Button Variants
-
-```markdown
-[Primary Action]{variant:primary}
-
-[Success]{variant:success}
-
-[Warning]{variant:warning}
-
-[Danger Action]{variant:danger}
-
-[Info]{variant:info}
-```
-
-**Rendered:**
-
-[Primary Action]{variant:primary}
-
-[Success]{variant:success}
-
-[Warning]{variant:warning}
-
-[Danger Action]{variant:danger}
-
-[Info]{variant:info}
-
----
+:::
 
 ### Button Groups
 
-```markdown
+::: demo
 [Save] [Cancel] [Reset]
 
 [Cut] [Copy] [Paste]
 
 [Bold] [Italic] [Underline]
-```
-
-**Rendered:**
-
-[Save] [Cancel] [Reset]
-
-[Cut] [Copy] [Paste]
-
-[Bold] [Italic] [Underline]
+:::
 
 ---
 
@@ -381,65 +188,35 @@ Time Zone
 
 ### Required Fields
 
-```markdown
-Full Name (Required)
+::: demo
+Full Name
 [_____________________________] {required:true}
 
-Email (Required)
+Email
 [_____________________________] {type:email required:true}
-```
-
-**Rendered:**
-
-Full Name (Required)
-[_____________________________] {required:true}
-
-Email (Required)
-[_____________________________] {type:email required:true}
-
----
+:::
 
 ### Disabled Fields
 
-```markdown
+::: demo
 Username (Cannot be changed)
 [johndoe___________] {state:disabled}
 
 Email (Verified)
-[[email protected]___________] {type:email state:disabled}
-```
-
-**Rendered:**
-
-Username (Cannot be changed)
-[johndoe___________] {state:disabled}
-
-Email (Verified)
-[[email protected]___________] {type:email state:disabled}
-
----
+[john@example.com___________] {type:email state:disabled}
+:::
 
 ### Error States
 
-```markdown
+::: demo
 Invalid Email
 [not-an-email___________] {state:error}
-⚠️ Please enter a valid email address
+*Please enter a valid email address*
 
 Password Too Short
 [123___] {type:password state:error}
-⚠️ Password must be at least 8 characters
-```
-
-**Rendered:**
-
-Invalid Email
-[not-an-email___________] {state:error}
-⚠️ Please enter a valid email address
-
-Password Too Short
-[123___] {type:password state:error}
-⚠️ Password must be at least 8 characters
+*Password must be at least 8 characters*
+:::
 
 ---
 
@@ -447,7 +224,7 @@ Password Too Short
 
 ### Vertical Form (Default)
 
-```markdown
+::: demo
 ::: card
 ### Contact Form
 
@@ -465,33 +242,11 @@ Message
 
 [Submit]* [Clear]
 :::
-```
-
-**Rendered:**
-
-::: card
-### Contact Form
-
-Full Name
-[_____________________________] {required:true}
-
-Email
-[_____________________________] {type:email required:true}
-
-Phone
-[_____________________________] {type:tel}
-
-Message
-[Your message...] {rows:5 required:true}
-
-[Submit]* [Clear]
 :::
-
----
 
 ### Two-Column Form Layout
 
-```markdown
+::: demo
 ::: grid-2
 
 ### Left Column
@@ -517,34 +272,6 @@ Country
 [Select country...v]
 
 :::
-```
-
-**Rendered:**
-
-::: grid-2
-
-### Left Column
-
-First Name
-[_____________________________] {required:true}
-
-Email
-[_____________________________] {type:email required:true}
-
-Phone
-[_____________________________] {type:tel}
-
-### Right Column
-
-Last Name
-[_____________________________] {required:true}
-
-Date of Birth
-[_____________________________] {type:date}
-
-Country
-[Select country...v]
-
 :::
 
 ---
@@ -553,7 +280,7 @@ Country
 
 ### Complete Registration Form
 
-```markdown
+::: demo
 ::: card
 ### Create Account
 
@@ -635,90 +362,6 @@ Newsletter Preferences
 [Create Account]* [Cancel]
 
 :::
-```
-
-**Rendered:**
-
-::: card
-### Create Account
-
-::: grid-2
-
-### Login Information
-
-Email Address
-[_____________________________] {type:email required:true}
-
-Username
-[_____________________________] {required:true}
-
-Password
-[********] {type:password required:true}
-*Minimum 8 characters*
-
-Confirm Password
-[********] {type:password required:true}
-
-### Personal Information
-
-First Name
-[_____________________________] {required:true}
-
-Last Name
-[_____________________________] {required:true}
-
-Phone Number
-[_____________________________] {type:tel}
-
-Date of Birth
-[_____________________________] {type:date}
-
-:::
-
----
-
-**Address**
-
-Street Address
-[_____________________________]
-
-City
-[_____________________________]
-
-State/Province
-[Select state...v]
-
-Zip/Postal Code
-[_____]
-
-Country
-[United States...v]
-
----
-
-**Account Preferences**
-
-Account Type
-- (*) Personal
-- ( ) Business
-- ( ) Student
-
-Newsletter Preferences
-- [x] Weekly newsletter
-- [x] Product updates
-- [ ] Special offers
-- [ ] Event notifications
-
----
-
-**Terms & Privacy**
-
-- [x] I agree to the [Terms of Service](https://example.com/terms)
-- [x] I agree to the [Privacy Policy](https://example.com/privacy)
-- [ ] I want to receive marketing emails
-
-[Create Account]* [Cancel]
-
 :::
 
 ---
@@ -727,7 +370,7 @@ Newsletter Preferences
 
 ### Input with Helper Text
 
-```markdown
+::: demo
 Email Address
 [_____________________________] {type:email required:true}
 *We'll never share your email with anyone else*
@@ -735,17 +378,7 @@ Email Address
 Password
 [********] {type:password required:true}
 *Must be at least 8 characters with uppercase, number, and special character*
-```
-
-**Rendered:**
-
-Email Address
-[_____________________________] {type:email required:true}
-*We'll never share your email with anyone else*
-
-Password
-[********] {type:password required:true}
-*Must be at least 8 characters with uppercase, number, and special character*
+:::
 
 ---
 

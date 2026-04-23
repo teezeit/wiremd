@@ -758,6 +758,8 @@ Subject
 
 [Send Message]*
 
+:::
+
 ---
 
 ### Card Grid (with card chrome)
@@ -792,6 +794,8 @@ Enterprise-grade by default.
 ### :gear: Flexible
 Works with any stack.
 
+:::
+
 ---
 
 ### Column Spanning
@@ -819,6 +823,8 @@ $9/month — up to 3 projects.
 
 ### Pro {.col-span-2}
 $29/month — unlimited projects, priority support, spans two columns.
+
+:::
 
 ---
 

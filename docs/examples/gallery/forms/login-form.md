@@ -4,55 +4,7 @@
 >
 > **Key Features:** Password field, remember me checkbox, links, social login buttons, responsive layout
 
-::: details View wiremd source
-
-```markdown
-[[ :logo: MyApp | Home | Features | Pricing ]]
-
----
-
-::: hero
-# Welcome Back
-Sign in to your account to continue
-:::
-
-::: card
-
-### Sign In
-
-Email or Username
-[_____________________________] {type:email required:true}
-
-Password
-[********] {type:password required:true}
-
-- [x] Remember me for 30 days
-
-[Sign In]*
-
-[Forgot password?](https://example.com/reset)
-
----
-
-### Or continue with
-
-[[ :github: GitHub | :google: Google | :apple: Apple ]]
-
----
-
-Don't have an account? [Create one here](https://example.com/signup)
-
-:::
-
-::: footer
-[[ Privacy Policy | Terms of Service | Contact Support ]]
-© 2025 MyApp Inc.
-:::
-```
-
-:::
-
-## Preview
+::: demo
 
 [[ :logo: MyApp | Home | Features | Pricing ]]
 
@@ -94,6 +46,8 @@ Don't have an account? [Create one here](https://example.com/signup)
 ::: footer
 [[ Privacy Policy | Terms of Service | Contact Support ]]
 © 2025 MyApp Inc.
+:::
+
 :::
 
 ---

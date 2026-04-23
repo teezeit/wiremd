@@ -4,128 +4,7 @@
 >
 > **Key Features:** Multi-column layout, input validation, password strength, plan selection, terms agreement
 
-::: details View wiremd source
-
-```markdown
-[[ :logo: Platform | Features | Pricing | About | [Sign In] ]]
-
----
-
-# Create Your Account
-
-Join thousands of users already enjoying our platform
-
----
-
-::: grid-2
-
-### Account Details
-
-Email Address
-[_____________________________] {type:email required:true}
-
-Password
-[********] {type:password required:true}
-*Minimum 8 characters*
-
-Confirm Password
-[********] {type:password required:true}
-
-### Profile Information
-
-First Name
-[_____________________________] {required:true}
-
-Last Name
-[_____________________________] {required:true}
-
-Phone Number
-[_____________________________] {type:tel}
-
-:::
-
----
-
-::: grid-3 card
-
-### Free
-**$0** /month
-
-- 5 Projects
-- 1 GB Storage
-- Basic Support
-- Community Access
-
-- ( ) Select Free
-
-### Pro
-**$19** /month
-
-- Unlimited Projects
-- 50 GB Storage
-- Priority Support
-- Advanced Features
-
-- (*) Select Pro
-
-### Enterprise
-**Custom** pricing
-
-- Unlimited Everything
-- Dedicated Support
-- Custom Integration
-- SLA Guarantee
-
-- ( ) Select Enterprise
-
-:::
-
----
-
-::: card
-
-### Additional Information
-
-Company Name (Optional)
-[_____________________________]
-
-How did you hear about us?
-[Select an option...v]
-- Search Engine
-- Social Media
-- Friend Referral
-- Blog/Article
-- Advertisement
-- Other
-
-Referral Code (Optional)
-[_____]
-
----
-
-### Terms & Conditions
-
-- [x] I agree to the [Terms of Service](https://example.com/terms)
-- [x] I agree to the [Privacy Policy](https://example.com/privacy)
-- [ ] Send me product updates and newsletters
-- [ ] I'm signing up on behalf of a company
-
-[Create Account]* [Cancel]
-
-:::
-
----
-
-Already have an account? [Sign in here](https://example.com/login)
-
-::: footer
-Secure registration • 256-bit SSL encryption
-:::
-```
-
-:::
-
-## Preview
+::: demo
 
 [[ :logo: Platform | Features | Pricing | About | [Sign In] ]]
 
@@ -240,6 +119,8 @@ Already have an account? [Sign in here](https://example.com/login)
 
 ::: footer
 Secure registration • 256-bit SSL encryption
+:::
+
 :::
 
 ---

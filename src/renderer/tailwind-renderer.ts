@@ -17,6 +17,7 @@ export interface TailwindRenderContext {
  * Render a wiremd AST node to HTML with Tailwind classes
  */
 export function renderNode(node: WiremdNode, context: TailwindRenderContext): string {
+  if (node == null) return '';
   switch (node.type) {
     case 'button':
       return renderButton(node, context);

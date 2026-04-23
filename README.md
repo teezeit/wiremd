@@ -95,9 +95,8 @@ This is an open-source MIT-licensed project containing:
 - **`src/`** - Core parser and renderer library
 - **`tests/`** - Comprehensive test suite (48 tests)
 - **`docs/`** - Documentation site ([**Live at teezeit.github.io/wiremd**](https://teezeit.github.io/wiremd))
-- **`examples/`** - Example wireframes
+- **`docs/examples/`** - Example wireframes
 - **`figma-plugin/`** - Figma plugin for importing wiremd designs
-- **`obsidian-plugin/`** - Obsidian plugin for live wireframe previews
 - **`vscode-extension/`** - VS Code extension with live preview and style switching
 
 ## Installation
@@ -294,16 +293,16 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 
 ## Documentation
 
-**Not sure where to start?** → [Documentation Guide](./DOCUMENTATION-GUIDE.md)
+**Not sure where to start?** → [Getting Started](./docs/guide/getting-started.md)
 
 ### 📖 Learning & Reference
 
 | Document | Description | Best For |
 |----------|-------------|----------|
-| **[Syntax Showcase](./examples/showcase.md)** | Comprehensive interactive guide with live examples | Learning by example, copying patterns |
-| **[Quick Reference](./QUICK-REFERENCE.md)** | One-page syntax cheat sheet | Quick lookups, experienced users |
-| **[Syntax Guide](./docs/reference/syntax.md)** | User-friendly tutorial with best practices | Structured learning |
-| **[FAQ](./FAQ.md)** | Common questions and troubleshooting | Solving problems, known issues |
+| **[Syntax Showcase](./docs/examples/showcase.md)** | Comprehensive interactive guide with live examples | Learning by example, copying patterns |
+| **[Quick Reference](./vscode-extension/QUICK-REFERENCE.md)** | One-page syntax cheat sheet | Quick lookups, experienced users |
+| **[Syntax Guide](./docs/guide/overview.md)** | User-friendly tutorial with best practices | Structured learning |
+| **[FAQ](./docs/reference/faq.md)** | Common questions and troubleshooting | Solving problems, known issues |
 
 📖 **[📚 View Full Documentation →](https://teezeit.github.io/wiremd)** - Complete documentation site with interactive examples
 
@@ -325,7 +324,6 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 
 | Document | Description |
 |----------|-------------|
-| **[Syntax Specification](./SYNTAX-SPEC-v0.1.md)** | Formal specification with parser rules |
 | **[API Documentation (Local)](./docs/api/index.md)** | Local API reference |
 | **[Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md)** | Development roadmap |
 | **[CLAUDE.md](./.github/dev-docs/CLAUDE.md)** | Project overview for AI assistants |
@@ -335,7 +333,6 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 | Document | Description |
 |----------|-------------|
 | **[CONTRIBUTING.md](./CONTRIBUTING.md)** | Contribution guidelines |
-| **[TESTING.md](./TESTING.md)** | Testing strategy and guidelines |
 | **[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)** | Community guidelines |
 | **[SECURITY.md](./SECURITY.md)** | Security policy |
 
@@ -350,7 +347,7 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 - [x] AST transformer with 40+ node types
 - [x] HTML renderer with 7 visual styles
 - [x] JSON output
-- [x] 48+ passing tests
+- [x] 641+ passing tests
 - [x] Full-featured CLI tool with watch mode and live-reload
 - [x] Rich example showcase demonstrating all styles
 - [x] React component renderer (JSX/TSX output)
@@ -364,7 +361,7 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 - Framework-specific renderers (Vue, Svelte)
 - Interactive web playground with live editor
 
-See [Project Plan](./markdown-mockup-project-plan.md) for full roadmap.
+See [Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md) for full roadmap.
 
 ## Contributing
 
@@ -375,7 +372,7 @@ Contributions are welcome! Phase 1-2 are complete with a working parser, rendere
 - Add new visual styles or examples
 - Improve documentation
 
-Please check the [Project Plan](./markdown-mockup-project-plan.md) for upcoming features.
+Please check the [Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md) for upcoming features.
 
 ### Quick Start for Contributors
 
@@ -420,6 +417,6 @@ Inspired by:
 
 ---
 
-**Status:** Phase 1-2 Complete (Core + CLI) | **Version:** 0.1.0 | **Node:** ≥18.0.0
+**Status:** Phase 1-2 Complete (Core + CLI) | **Version:** 0.1.5 | **Node:** ≥18.0.0
 
 Made with ❤️ for designers and developers who love plain text

@@ -31,6 +31,7 @@ function repeatString(str: string, count: number): string {
  * Render a wiremd AST node to React/JSX
  */
 export function renderNode(node: WiremdNode, context: ReactRenderContext, indent = 0): string {
+  if (node == null) return '';
   const indentStr = repeatString('  ', indent);
 
   switch (node.type) {
