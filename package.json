@@ -47,7 +47,8 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "editor": "npm run build && cd editor && npm install && npm run dev"
+    "editor": "npm run build && cd editor && npm install && npm run dev",
+    "skill:zip": "bash scripts/package-skill.sh"
   },
   "dependencies": {
     "chalk": "^5.6.2",
