@@ -8,29 +8,40 @@ type WiremdStyle = typeof STYLES[number]
 const EXAMPLES: { label: string; code: string }[] = [
   {
     label: 'This page',
-    code: `[[ wiremd | :search: Search | Docs | Playground | :github: ]]
+    code: `[[ wiremd  | Docs | Playground | :search: Search | :github:  ]]
 
+
+::: hero
 ## wiremd
 
 **Design UI Mockups with Markdown**
 
-The text-first wireframing tool. Create screens as fast as you can type — no clicking, no dragging, no design tool required.
-
 [Get Started]* [Browse Components]
+
+
+
+
+:::
 
 ::: grid-3 card
 
-## Available Everywhere
+## Create in Claude
 
-VS Code extension, CLI, and npm package — works wherever you do.
+|AI-first|{.success}
 
-## Fast
+Describe your UI in plain language — Claude writes the wiremd syntax and renders the mockup instantly.
 
-Renders wireframes instantly. No canvas, no drag-and-drop.
+## Develop in VS Code
 
-## Open Source
+|Extension|
 
-MIT licensed. Free forever.
+Live preview as you type. Syntax highlighting and instant rendering, zero config. Stays out of your way.
+
+## Ship with Copilot
+
+|Export|
+
+Export to HTML, React, or Tailwind. Clean markup ready to hand off to your AI pair programmer.
 
 :::`,
   },
@@ -186,15 +197,16 @@ onMounted(render)
   <div class="mini-editor">
     <div class="mini-editor__bar">
       <div class="mini-editor__bar-left">
-        <span class="mini-editor__label">Example</span>
+        <span class="mini-editor__label">Example ⌃⌄</span>
         <select v-model="selectedIndex" @change="onExampleChange" class="mini-editor__select mini-editor__select--examples">
           <option v-for="(ex, i) in EXAMPLES" :key="i" :value="i">{{ ex.label }}</option>
         </select>
-      </div>
-      <div class="mini-editor__controls">
+        <span class="mini-editor__label">Style ⌃⌄</span>
         <select v-model="style" class="mini-editor__select">
           <option v-for="s in STYLES" :key="s" :value="s">{{ s }}</option>
         </select>
+      </div>
+      <div class="mini-editor__controls">
         <a href="/wiremd/playground/" target="_blank" rel="noopener" class="mini-editor__link">
           Open in playground →
         </a>

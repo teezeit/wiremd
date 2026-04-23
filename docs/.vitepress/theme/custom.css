@@ -109,8 +109,12 @@
 /* Hide built-in appearance toggle — moved to sidebar */
 .VPNavBarAppearance { display: none !important; }
 
-/* Search is first in DOM; move it rightmost so order is: Docs | Playground | GitHub | Search */
-.VPNavBar .search { order: 10 !important; }
+/* Group all nav items on the right: Docs | Playground | GitHub | Search */
+.VPNavBar .content-body { display: flex !important; align-items: center !important; justify-content: flex-end !important; }
+.VPNavBar .content-body .menu        { order: 1 !important; }
+.VPNavBar .content-body .search      { order: 2 !important; flex-grow: 0 !important; padding-left: 16px !important; }
+.VPNavBar .content-body .social-links { order: 3 !important; }
+.VPNavBar .content-body .appearance  { order: 99 !important; }
 
 /* ─── appearance switcher in sidebar ────────────────────────────────────────── */
 
@@ -154,8 +158,8 @@
   padding: 8px 18px;
   font-size: 14px;
   font-weight: bold;
-  text-decoration: none;
-  color: #000;
+  text-decoration: none !important;
+  color: #000 !important;
   background: #fff;
   border: 2px solid #000;
   border-radius: 8px;
@@ -167,7 +171,8 @@
 .home-action:hover {
   transform: rotate(-0.5deg) translateY(-2px);
   box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
-  color: #000;
+  color: #000 !important;
+  text-decoration: none !important;
 }
 
 .home-action--brand {
