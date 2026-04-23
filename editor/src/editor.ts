@@ -1,8 +1,8 @@
-/** wiremd Playground - Monaco Editor Panel */
+/** wiremd Editor - Monaco Editor Panel */
 
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 import { createDebouncedChangeController } from './debouncedChange.js';
-import { ensurePlaygroundMonacoSetup, getSharedMonacoOptions } from './monaco.js';
+import { ensureEditorMonacoSetup, getSharedMonacoOptions } from './monaco.js';
 
 /** Register a custom wiremd language for basic syntax highlighting */
 function registerWiremdLanguage() {
@@ -63,7 +63,7 @@ export function initEditor(opts: {
   onChange: (value: string) => void;
   initialValue?: string;
 }): EditorInstance {
-  ensurePlaygroundMonacoSetup();
+  ensureEditorMonacoSetup();
   registerWiremdLanguage();
 
   const monacoEditor = monaco.editor.create(opts.container, {

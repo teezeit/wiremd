@@ -21,7 +21,7 @@ vi.mock('../src/renderMarkup.js', () => ({
 }));
 
 vi.mock('../src/monaco.js', () => ({
-  ensurePlaygroundMonacoSetup: previewMocks.ensureSetup,
+  ensureEditorMonacoSetup: previewMocks.ensureSetup,
   getSharedMonacoOptions: previewMocks.getOptions,
 }));
 
@@ -33,7 +33,7 @@ vi.mock('monaco-editor/esm/vs/editor/editor.api.js', () => ({
 
 vi.mock('monaco-editor/esm/vs/basic-languages/html/html.contribution.js', () => ({}));
 
-describe('playground preview', () => {
+describe('editor preview', () => {
   beforeEach(() => {
     vi.resetModules();
     previewMocks.renderMarkup.mockReset();
@@ -67,7 +67,7 @@ describe('playground preview', () => {
     expect(elements.iframe.srcdoc).toBe('<!DOCTYPE html><body>ok</body>');
     expect(preview.getHTML()).toBe('<!DOCTYPE html><body>ok</body>');
     expect(preview.state.lastError).toBeNull();
-    expect(elements.errorBar.classList.contains('pg-error--visible')).toBe(false);
+    expect(elements.errorBar.classList.contains('ed-error--visible')).toBe(false);
   });
 
   it('shows errors and clears previous HTML when rendering fails', async () => {
@@ -92,7 +92,7 @@ describe('playground preview', () => {
     expect(preview.state.lastError).toBe('Parse failed');
     expect(elements.iframe.srcdoc).toBe('');
     expect(elements.errorMessage.textContent).toBe('Parse failed');
-    expect(elements.errorBar.classList.contains('pg-error--visible')).toBe(true);
+    expect(elements.errorBar.classList.contains('ed-error--visible')).toBe(true);
   });
 
   it('creates the HTML monaco editor lazily and reuses it', async () => {

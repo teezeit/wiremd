@@ -3,7 +3,7 @@ import { examples } from '../src/examples.js';
 import { initToolbar, showToast } from '../src/toolbar.js';
 import { FakeDocument, FakeElement } from './helpers/fake-dom.js';
 
-describe('playground toolbar', () => {
+describe('editor toolbar', () => {
   let document: FakeDocument;
 
   beforeEach(() => {
@@ -20,9 +20,9 @@ describe('playground toolbar', () => {
     const htmlTab = document.createElement('button');
     const copyBtn = document.createElement('button');
 
-    previewTab.className = 'pg-tab pg-tab--active';
+    previewTab.className = 'ed-tab ed-tab--active';
     previewTab.dataset.tab = 'preview';
-    htmlTab.className = 'pg-tab';
+    htmlTab.className = 'ed-tab';
     htmlTab.dataset.tab = 'html';
     tabs.appendChild(previewTab);
     tabs.appendChild(htmlTab);
@@ -48,11 +48,11 @@ describe('playground toolbar', () => {
     expect(menu.children).toHaveLength(examples.length);
 
     dropdownBtn.click();
-    expect(menu.classList.contains('pg-dropdown__menu--open')).toBe(true);
+    expect(menu.classList.contains('ed-dropdown__menu--open')).toBe(true);
 
     menu.children[0].click();
     expect(onExampleSelect).toHaveBeenCalledWith(examples[0]);
-    expect(menu.classList.contains('pg-dropdown__menu--open')).toBe(false);
+    expect(menu.classList.contains('ed-dropdown__menu--open')).toBe(false);
 
     styleSelect.value = 'clean';
     styleSelect.dispatchEvent('change');
@@ -60,15 +60,15 @@ describe('playground toolbar', () => {
 
     htmlTab.click();
     expect(onTabChange).toHaveBeenCalledWith('html');
-    expect(htmlTab.classList.contains('pg-tab--active')).toBe(true);
-    expect(previewTab.classList.contains('pg-tab--active')).toBe(false);
+    expect(htmlTab.classList.contains('ed-tab--active')).toBe(true);
+    expect(previewTab.classList.contains('ed-tab--active')).toBe(false);
 
     copyBtn.click();
     expect(onCopy).toHaveBeenCalledTimes(1);
 
     dropdownBtn.click();
     document.dispatchEvent('click');
-    expect(menu.classList.contains('pg-dropdown__menu--open')).toBe(false);
+    expect(menu.classList.contains('ed-dropdown__menu--open')).toBe(false);
   });
 
   it('shows and hides toast messages with the latest timer', () => {
@@ -78,12 +78,12 @@ describe('playground toolbar', () => {
     showToast(toast as unknown as HTMLElement, 'Second');
 
     expect(toast.textContent).toBe('Second');
-    expect(toast.classList.contains('pg-toast--visible')).toBe(true);
+    expect(toast.classList.contains('ed-toast--visible')).toBe(true);
 
     vi.advanceTimersByTime(1999);
-    expect(toast.classList.contains('pg-toast--visible')).toBe(true);
+    expect(toast.classList.contains('ed-toast--visible')).toBe(true);
 
     vi.advanceTimersByTime(1);
-    expect(toast.classList.contains('pg-toast--visible')).toBe(false);
+    expect(toast.classList.contains('ed-toast--visible')).toBe(false);
   });
 });

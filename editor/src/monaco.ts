@@ -1,7 +1,7 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 
-export const PLAYGROUND_MONACO_THEME = 'wiremd-dark';
-export const PLAYGROUND_MONACO_FONT_FAMILY =
+export const EDITOR_MONACO_THEME = 'wiremd-dark';
+export const EDITOR_MONACO_FONT_FAMILY =
   "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace";
 
 let hasConfiguredMonaco = false;
@@ -23,8 +23,8 @@ function configureMonacoWorkers() {
   };
 }
 
-function definePlaygroundTheme() {
-  monaco.editor.defineTheme(PLAYGROUND_MONACO_THEME, {
+function defineEditorTheme() {
+  monaco.editor.defineTheme(EDITOR_MONACO_THEME, {
     base: 'vs-dark',
     inherit: true,
     rules: [
@@ -61,20 +61,20 @@ function definePlaygroundTheme() {
   });
 }
 
-export function ensurePlaygroundMonacoSetup() {
+export function ensureEditorMonacoSetup() {
   if (hasConfiguredMonaco) {
     return;
   }
 
   configureMonacoWorkers();
-  definePlaygroundTheme();
+  defineEditorTheme();
   hasConfiguredMonaco = true;
 }
 
 export function getSharedMonacoOptions(): monaco.editor.IStandaloneEditorConstructionOptions {
   return {
-    theme: PLAYGROUND_MONACO_THEME,
-    fontFamily: PLAYGROUND_MONACO_FONT_FAMILY,
+    theme: EDITOR_MONACO_THEME,
+    fontFamily: EDITOR_MONACO_FONT_FAMILY,
     minimap: { enabled: false },
     scrollBeyondLastLine: false,
     padding: { top: 12, bottom: 12 },

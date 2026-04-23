@@ -1,4 +1,4 @@
-/** wiremd Playground - Example snippets */
+/** wiremd Editor - Example snippets */
 
 export interface Example {
   name: string;

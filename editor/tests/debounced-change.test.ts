@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createDebouncedChangeController } from '../src/debouncedChange.js';
 
-describe('playground debounced change controller', () => {
+describe('editor debounced change controller', () => {
   it('emits only the latest scheduled value', () => {
     vi.useFakeTimers();
     const onChange = vi.fn();
