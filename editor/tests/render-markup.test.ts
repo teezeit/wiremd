@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { renderMarkup } from '../src/renderMarkup.js';
 
-describe('playground renderMarkup', () => {
-  it('renders full HTML for valid playground markup', () => {
+describe('editor renderMarkup', () => {
+  it('renders full HTML for valid editor markup', () => {
     const result = renderMarkup('## Login Form\n\n[Sign In]*', 'sketch');
 
     expect(result.error).toBeNull();

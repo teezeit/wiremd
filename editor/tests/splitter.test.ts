@@ -7,7 +7,7 @@ import {
   isVerticalLayout,
 } from '../src/splitter.js';
 
-describe('playground splitter helpers', () => {
+describe('editor splitter helpers', () => {
   it('clamps split percentages to the supported range', () => {
     expect(clampSplit(10)).toBe(20);
     expect(clampSplit(50)).toBe(50);

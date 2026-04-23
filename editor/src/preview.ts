@@ -1,7 +1,7 @@
-/** wiremd Playground - Preview Panel */
+/** wiremd Editor - Preview Panel */
 
 import type * as MonacoEditor from 'monaco-editor/esm/vs/editor/editor.api.js';
-import { ensurePlaygroundMonacoSetup, getSharedMonacoOptions } from './monaco.js';
+import { ensureEditorMonacoSetup, getSharedMonacoOptions } from './monaco.js';
 import { renderMarkup, type StyleName } from './renderMarkup.js';
 
 export interface PreviewState {
@@ -36,7 +36,7 @@ export function createPreview(elements: {
 
       updateIframe(html);
       htmlEditor?.setValue(html);
-      elements.errorBar.classList.remove('pg-error--visible');
+      elements.errorBar.classList.remove('ed-error--visible');
       return;
     }
 
@@ -45,7 +45,7 @@ export function createPreview(elements: {
     updateIframe('');
     htmlEditor?.setValue('');
     elements.errorMessage.textContent = result.error;
-    elements.errorBar.classList.add('pg-error--visible');
+    elements.errorBar.classList.add('ed-error--visible');
   }
 
   function updateIframe(html: string) {
@@ -67,7 +67,7 @@ export function createPreview(elements: {
         import('monaco-editor/esm/vs/basic-languages/html/html.contribution.js'),
       ]);
 
-      ensurePlaygroundMonacoSetup();
+      ensureEditorMonacoSetup();
 
       htmlEditor = monaco.editor.create(elements.htmlOutputContainer, {
         ...getSharedMonacoOptions(),

@@ -8,7 +8,7 @@ type WiremdStyle = typeof STYLES[number]
 const EXAMPLES: { label: string; code: string }[] = [
   {
     label: 'This page',
-    code: `[[ wiremd  | Docs | Playground | :search: Search | :github:  ]]
+    code: `[[ wiremd  | Docs | Editor | :search: Search | :github:  ]]
 
 
 ::: hero
@@ -207,8 +207,8 @@ onMounted(render)
         </select>
       </div>
       <div class="mini-editor__controls">
-        <a href="/wiremd/playground/" target="_blank" rel="noopener" class="mini-editor__link">
-          Open in playground →
+        <a href="/wiremd/editor/" target="_blank" rel="noopener" class="mini-editor__link">
+          Open in editor →
         </a>
       </div>
     </div>

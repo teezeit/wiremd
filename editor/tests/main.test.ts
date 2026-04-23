@@ -21,9 +21,9 @@ vi.mock('../src/toolbar.js', () => ({
   showToast: mainMocks.showToast,
 }));
 
-vi.mock('../src/styles/playground.css', () => ({}));
+vi.mock('../src/styles/editor.css', () => ({}));
 
-describe('playground main bootstrap', () => {
+describe('editor main bootstrap', () => {
   beforeEach(() => {
     vi.resetModules();
     mainMocks.initEditor.mockReset();
@@ -76,7 +76,7 @@ describe('playground main bootstrap', () => {
     return { document, window, elements };
   }
 
-  it('boots the playground and wires toolbar callbacks', async () => {
+  it('boots the editor and wires toolbar callbacks', async () => {
     const { document, window, elements } = setupDom();
     const editor = {
       setValue: vi.fn(),
@@ -132,7 +132,7 @@ describe('playground main bootstrap', () => {
 
     expect(elements['editor-panel'].style.width).toBe('70%');
     expect(editor.layout).toHaveBeenCalledTimes(2);
-    expect(elements['divider'].classList.contains('pg-divider--active')).toBe(false);
+    expect(elements['divider'].classList.contains('ed-divider--active')).toBe(false);
 
     window.innerWidth = 600;
     window.dispatchEvent('resize');

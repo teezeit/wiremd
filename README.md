@@ -313,7 +313,7 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 | **[🌐 Live Documentation Site](https://teezeit.github.io/wiremd)** | Full docs with interactive examples |
 | **[🚀 Getting Started](https://teezeit.github.io/wiremd/guide/getting-started)** | Installation and first steps |
 | **[📝 Syntax Reference](https://teezeit.github.io/wiremd/reference/syntax)** | Complete syntax guide |
-| **[🎮 Interactive Playground](https://teezeit.github.io/wiremd/playground)** | Try wiremd in your browser |
+| **[🎮 Interactive Editor](https://teezeit.github.io/wiremd/editor)** | Try wiremd in your browser |
 | **[⚙️ API Documentation](https://teezeit.github.io/wiremd/api/)** | Programmatic API reference |
 | **[🔌 Framework Integrations](https://teezeit.github.io/wiremd/guide/integrations)** | Next.js, React, Vite, Express |
 | **[🔧 Troubleshooting](https://teezeit.github.io/wiremd/guide/troubleshooting)** | Common issues and solutions |

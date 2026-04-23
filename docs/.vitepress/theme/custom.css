@@ -109,7 +109,7 @@
 /* Hide built-in appearance toggle — moved to sidebar */
 .VPNavBarAppearance { display: none !important; }
 
-/* Group all nav items on the right: Docs | Playground | GitHub | Search */
+/* Group all nav items on the right: Docs | Editor | GitHub | Search */
 .VPNavBar .content-body { display: flex !important; align-items: center !important; justify-content: flex-end !important; }
 .VPNavBar .content-body .menu        { order: 1 !important; }
 .VPNavBar .content-body .search      { order: 2 !important; flex-grow: 0 !important; padding-left: 16px !important; }

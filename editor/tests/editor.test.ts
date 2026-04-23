@@ -40,11 +40,11 @@ vi.mock('monaco-editor/esm/vs/editor/editor.api.js', () => ({
 }));
 
 vi.mock('../src/monaco.js', () => ({
-  ensurePlaygroundMonacoSetup: editorMocks.ensureSetup,
+  ensureEditorMonacoSetup: editorMocks.ensureSetup,
   getSharedMonacoOptions: editorMocks.getOptions,
 }));
 
-describe('playground editor', () => {
+describe('editor editor', () => {
   beforeEach(() => {
     vi.resetModules();
     vi.useFakeTimers();

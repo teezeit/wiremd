@@ -1,6 +1,6 @@
-/** wiremd Playground - Main Entry Point */
+/** wiremd Editor - Main Entry Point */
 
-import './styles/playground.css';
+import './styles/editor.css';
 import { initEditor } from './editor.js';
 import { createPreview } from './preview.js';
 import type { StyleName } from './renderMarkup.js';
@@ -130,7 +130,7 @@ divider.addEventListener('pointerdown', (e) => {
   isDragging = true;
   activePointerId = e.pointerId;
   divider.setPointerCapture(e.pointerId);
-  divider.classList.add('pg-divider--active');
+  divider.classList.add('ed-divider--active');
   document.body.style.cursor = getSplitLayout(window.innerWidth) === 'vertical'
     ? 'row-resize'
     : 'col-resize';
@@ -162,7 +162,7 @@ function stopDragging(e?: PointerEvent) {
   if (e && activePointerId !== null && e.pointerId !== activePointerId) return;
 
   isDragging = false;
-  divider.classList.remove('pg-divider--active');
+  divider.classList.remove('ed-divider--active');
   document.body.style.cursor = '';
   document.body.style.userSelect = '';
   document.body.style.touchAction = '';

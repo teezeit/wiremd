@@ -254,7 +254,7 @@ export default defineConfig({
 
     nav: [
       { text: "Docs", link: "/guide/overview" },
-      { text: "Playground", link: "/playground/" },
+      { text: "Editor", link: "/editor/" },
     ],
 
     socialLinks: [
@@ -275,8 +275,8 @@ export default defineConfig({
         // Allow the MiniEditor Vue component to import wiremd source directly for
         // browser rendering — stubs replace Node-only fs/path used by resolveIncludes.
         wiremd: resolve(__dirname, "../../src/index.ts"),
-        fs: resolve(__dirname, "../../playground/src/stubs/fs.ts"),
-        path: resolve(__dirname, "../../playground/src/stubs/path.ts"),
+        fs: resolve(__dirname, "../../editor/src/stubs/fs.ts"),
+        path: resolve(__dirname, "../../editor/src/stubs/path.ts"),
       },
     },
     ssr: {

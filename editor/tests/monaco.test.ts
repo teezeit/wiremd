@@ -10,7 +10,7 @@ vi.mock('monaco-editor/esm/vs/editor/editor.api.js', () => ({
   },
 }));
 
-describe('playground monaco setup', () => {
+describe('editor monaco setup', () => {
   beforeEach(() => {
     vi.resetModules();
     monacoMocks.defineTheme.mockReset();
@@ -26,12 +26,12 @@ describe('playground monaco setup', () => {
   it('configures workers and theme only once', async () => {
     const monacoModule = await import('../src/monaco.js');
 
-    monacoModule.ensurePlaygroundMonacoSetup();
-    monacoModule.ensurePlaygroundMonacoSetup();
+    monacoModule.ensureEditorMonacoSetup();
+    monacoModule.ensureEditorMonacoSetup();
 
     expect(monacoMocks.defineTheme).toHaveBeenCalledTimes(1);
     expect(monacoMocks.defineTheme).toHaveBeenCalledWith(
-      monacoModule.PLAYGROUND_MONACO_THEME,
+      monacoModule.EDITOR_MONACO_THEME,
       expect.objectContaining({
         base: 'vs-dark',
       }),
@@ -56,8 +56,8 @@ describe('playground monaco setup', () => {
 
     expect(monacoModule.getSharedMonacoOptions()).toEqual(
       expect.objectContaining({
-        theme: monacoModule.PLAYGROUND_MONACO_THEME,
-        fontFamily: monacoModule.PLAYGROUND_MONACO_FONT_FAMILY,
+        theme: monacoModule.EDITOR_MONACO_THEME,
+        fontFamily: monacoModule.EDITOR_MONACO_FONT_FAMILY,
         automaticLayout: true,
         minimap: { enabled: false },
       }),
