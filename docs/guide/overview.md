@@ -16,6 +16,8 @@ Password
 [Sign In]* [Forgot password?]
 ```
 
+![alt text](overview-login.png)
+
 ---
 
 ## Get started
