@@ -11,8 +11,30 @@ each supports a different subset of these routes.
 |---|---|---|
 | Write files **and** run shell | **Files in folder** *(default)* — render `.html` into the user's folder; they open via `file://` or double-click | `wiremd x.md -o x.html --style sketch` (+ `.md`→`.html` sed rewrite if multi-page; see `multi-page.md`) |
 | Write + shell, **and user runs Claude locally** on their own machine | **Dev server** — live reload while iterating. Only works when the user can reach `localhost` on the Claude host. | `wiremd x.md --style sketch --serve 3001 --watch --watch-pattern "*.md"` |
+| Write + shell, **reviewer is non-technical (no VS Code)** | **Browser editor with `?file=` hint** — write the `.md`, generate a hint URL, share it. Reviewer links the file; Claude's edits auto-refresh within ~500ms. Requires Chrome/Edge/Safari 16.4+. | `node -e "const u=new URL('https://tobiashoelzer.com/wiremd/editor/');u.searchParams.set('file',process.argv[1]);console.log(u.toString())" /path/to/file.md` |
 | Shell but no shared folder with user | **Screenshot for self-verification** — can't deliver to user this way, but useful to confirm Claude's own output renders correctly | `npx playwright screenshot --browser chromium --full-page "file://$(pwd)/out.html" /tmp/wf.png` (then read the PNG) |
 | Chat only (no filesystem, no exec) | **Hand off to the web editor** — Claude writes the `.md`; user pastes it into the hosted editor for rendering | Share `https://tobiashoelzer.com/wiremd/editor` + the `.md` content |
+
+## Browser editor with `?file=` hint
+
+The live editor at `https://tobiashoelzer.com/wiremd/editor/` supports bidirectional file sync via the browser's File System Access API. Use this when the reviewer has no VS Code but can open a URL in Chrome, Edge, or Safari 16.4+.
+
+**How it works:**
+
+1. Claude writes the `.md` file to disk as usual
+2. Claude generates a hint URL and hands it to the reviewer:
+   ```bash
+   node -e "const u=new URL('https://tobiashoelzer.com/wiremd/editor/');u.searchParams.set('file',process.argv[1]);console.log(u.toString())" /path/to/wireframe.md
+   ```
+3. Reviewer opens the URL → modal appears with the filename → clicks **Open File** → grants browser access
+4. The browser polls the file every ~500ms; when Claude saves a change, the preview updates automatically
+5. The reviewer can edit in the Monaco editor — changes write back to disk within 500ms
+
+The `?file=` param is a hint only: it encodes the path so the browser can open the picker in the right folder (Desktop, Documents, etc.) and show the filename in the modal. After the file is linked, the param is stripped from the URL.
+
+**Limitations:** Firefox doesn't support File System Access API. The modal shows a notice; the reviewer needs Chrome/Edge/Safari.
+
+---
 
 ## Files-in-folder (the default)
 

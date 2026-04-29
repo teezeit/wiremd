@@ -43,6 +43,32 @@ Claude edits the `.md` file and re-renders. No manual steps needed.
 
 ---
 
+## Cowork with a non-technical reviewer
+
+If a PM, designer, or other stakeholder needs to review or iterate on wireframes — but doesn't have VS Code installed — use the browser editor at **[tobiashoelzer.com/wiremd/editor](https://tobiashoelzer.com/wiremd/editor)** with live file sync.
+
+### How it works
+
+1. Claude writes the `.md` file to disk and generates a URL with the file path encoded:
+   ```
+   https://tobiashoelzer.com/wiremd/editor/?file=/path/to/wireframe.md
+   ```
+2. The reviewer opens the link in Chrome, Edge, or Safari 16.4+
+3. A modal appears showing the filename — the reviewer clicks **Open File** and grants browser access to the file
+4. The browser auto-refreshes whenever Claude saves a change (within ~500ms, no page reload)
+5. The reviewer can also edit directly in the editor — changes write back to disk in real time
+
+### What the reviewer needs
+
+- Chrome, Edge, or Safari 16.4+ *(Firefox doesn't support local file access)*
+- Nothing installed — no CLI, no VS Code, no extensions
+
+### Iterating
+
+Claude edits the `.md` file on disk and saves. The reviewer's browser picks up the change automatically. The reviewer can type feedback in the chat while watching the wireframe update live.
+
+---
+
 ## Claude in a product or chat context
 
 If you're using Claude conversationally — in claude.ai, in a product with Claude embedded, or in any chat interface — Claude can generate wiremd syntax from a description even without a skill installed.
