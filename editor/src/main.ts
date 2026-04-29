@@ -12,10 +12,21 @@ import {
 import { initToolbar, showToast } from './toolbar.js';
 import { examples } from './examples.js';
 import { decodeShareHash, encodeShareHash } from './url-share.js';
+import { createFileSyncIndicator } from './file-sync-indicator.js';
+import {
+  isFileSystemAccessSupported,
+  openLocalFile,
+  saveAsLocalFile,
+  watchFile,
+  writeFile,
+} from './local-file.js';
+import type { LocalFileResult, WireFileHandle } from './local-file.js';
+import { createDebouncedChangeController } from './debouncedChange.js';
 
 // --- DOM Elements ---
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
+const fileSyncContainer = $('file-sync-indicator');
 const monacoContainer = $('monaco-container');
 const previewIframe = $<HTMLIFrameElement>('preview-iframe');
 const htmlOutputContainer = $('html-output');
@@ -32,6 +43,69 @@ const editorPanel = $('editor-panel');
 const showCommentsCheck = $<HTMLInputElement>('show-comments-check');
 const commentCountBadge = $('comment-count-badge');
 const commentToggleLabel = $('comment-toggle-label');
+
+// --- File sync state ---
+let currentHandle: WireFileHandle | null = null;
+let watcher: ReturnType<typeof watchFile> | null = null;
+let isUpdatingFromFile = false;
+
+const writeDebounce = createDebouncedChangeController<string>({
+  delayMs: 500,
+  onChange: async (content) => {
+    if (!currentHandle) return;
+    try {
+      await writeFile(currentHandle, content);
+      const file = await currentHandle.getFile();
+      watcher?.setLastSeen(file.lastModified);
+      fileSyncIndicator.setState('synced', currentHandle.name);
+    } catch {
+      fileSyncIndicator.setState('error', currentHandle.name);
+    }
+  },
+});
+
+async function linkFile(result: LocalFileResult) {
+  watcher?.stop();
+  writeDebounce.cancel();
+  currentHandle = result.handle;
+  isUpdatingFromFile = true;
+  editor.setValue(result.content);
+  isUpdatingFromFile = false;
+  watcher = watchFile(
+    result.handle,
+    (content) => {
+      isUpdatingFromFile = true;
+      editor.setValue(content);
+      isUpdatingFromFile = false;
+    },
+    { initialLastModified: result.lastModified },
+  );
+  fileSyncIndicator.setState('synced', result.handle.name);
+}
+
+function unlinkFile() {
+  watcher?.stop();
+  writeDebounce.cancel();
+  watcher = null;
+  currentHandle = null;
+  fileSyncIndicator.setState('idle');
+}
+
+const fileSyncIndicator = createFileSyncIndicator(fileSyncContainer, {
+  supported: isFileSystemAccessSupported(),
+  onOpen: async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await openLocalFile((window as any).showOpenFilePicker);
+    if (result) linkFile(result);
+  },
+  onSaveAs: async () => {
+    editor.flushPendingChange();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await saveAsLocalFile((window as any).showSaveFilePicker, editor.getValue());
+    if (result) linkFile(result);
+  },
+  onUnlink: unlinkFile,
+});
 
 function updateCopyButtonState() {
   copyBtn.disabled = preview.getHTML() === '';
@@ -105,6 +179,9 @@ const editor = initEditor({
     renderMarkdown(value);
     if (!isInitializing) {
       syncUrlToBuffer(value);
+    }
+    if (currentHandle && !isUpdatingFromFile) {
+      writeDebounce.schedule(value);
     }
   },
 });
