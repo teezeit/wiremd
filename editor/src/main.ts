@@ -99,13 +99,19 @@ const fileSyncIndicator = createFileSyncIndicator(fileSyncContainer, {
   onOpen: async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = await openLocalFile((window as any).showOpenFilePicker);
-    if (result) linkFile(result);
+    if (result) {
+      addToHistory(result.handle, result.handle.name);
+      linkFile(result);
+    }
   },
   onSaveAs: async () => {
     editor.flushPendingChange();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = await saveAsLocalFile((window as any).showSaveFilePicker, editor.getValue());
-    if (result) linkFile(result);
+    if (result) {
+      addToHistory(result.handle, result.handle.name);
+      linkFile(result);
+    }
   },
   onUnlink: unlinkFile,
 });

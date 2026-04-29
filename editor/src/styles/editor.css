@@ -691,6 +691,46 @@ body {
   color: var(--ed-text-secondary);
 }
 
+.ed-modal__recent {
+  width: 100%;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ed-modal__recent-label {
+  font-size: 11px;
+  font-family: var(--ed-font-ui);
+  color: var(--ed-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 2px;
+}
+
+.ed-modal__recent-item {
+  width: 100%;
+  padding: 7px 10px;
+  background: var(--ed-bg-secondary);
+  border: 1px solid var(--ed-border-color);
+  border-radius: var(--ed-radius-sm);
+  font-size: 12px;
+  font-family: var(--ed-font-mono, monospace);
+  color: var(--ed-text-primary);
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.ed-modal__recent-item:hover {
+  background: var(--ed-accent-dim);
+  border-color: var(--ed-text-accent);
+  color: var(--ed-text-accent);
+}
+
 .ed-file-linked {
   display: flex;
   align-items: center;

@@ -5,6 +5,7 @@ import {
   getRecentFiles,
   removeFromHistory,
   _resetDbForTesting,
+  _clearHandleCacheForTesting,
 } from '../src/file-history.js';
 import type { WireFileHandle } from '../src/local-file.js';
 
@@ -68,6 +69,20 @@ describe('addToHistory', () => {
     expect(entries).toHaveLength(5);
     expect(entries.map((e) => e.name)).not.toContain('file1.md');
     expect(entries[0].name).toBe('file6.md');
+  });
+});
+
+describe('cross-session behaviour', () => {
+  it('handle is null when cache is cleared but metadata remains in IDB', async () => {
+    const handle = makeHandle('a.md');
+    await addToHistory(handle, '/path/a.md');
+
+    _clearHandleCacheForTesting(); // simulate page reload (cache gone, IDB intact)
+
+    const entries = await getRecentFiles();
+    expect(entries).toHaveLength(1);
+    expect(entries[0].name).toBe('a.md');
+    expect(entries[0].handle).toBeNull(); // handle not serializable in test env
   });
 });
 

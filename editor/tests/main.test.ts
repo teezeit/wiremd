@@ -55,6 +55,7 @@ vi.mock('../src/file-history.js', () => ({
   addToHistory: mainMocks.addToHistory,
   removeFromHistory: mainMocks.removeFromHistory,
   _resetDbForTesting: mainMocks._resetDbForTesting,
+  _clearHandleCacheForTesting: vi.fn(),
 }));
 
 vi.mock('../src/styles/editor.css', () => ({}));

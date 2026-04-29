@@ -33,6 +33,10 @@ export function _resetDbForTesting(): void {
   tick = 0;
 }
 
+export function _clearHandleCacheForTesting(): void {
+  handleCache.clear();
+}
+
 function getDb(): Promise<IDBDatabase> {
   if (!dbPromise) {
     dbPromise = new Promise((resolve, reject) => {
@@ -61,14 +65,29 @@ export async function getRecentFiles(): Promise<FileHistoryEntry[]> {
   const all = await idbRequest<StoredEntry[]>(t.objectStore(STORE).index('openedAt').getAll());
   return all
     .sort((a, b) => b.openedAt - a.openedAt)
-    .map((e) => ({ ...e, handle: handleCache.get(e.path) ?? null }));
+    // Prefer IDB-stored handle (real browser cross-session) then in-memory cache (same session)
+    .map((e: StoredEntry & { handle?: WireFileHandle }) => ({
+      path: e.path,
+      name: e.name,
+      openedAt: e.openedAt,
+      handle: e.handle ?? handleCache.get(e.path) ?? null,
+    }));
 }
 
 export async function addToHistory(handle: WireFileHandle, path: string): Promise<void> {
   handleCache.set(path, handle);
 
   const db = await getDb();
-  const entry: StoredEntry = { path, name: handle.name, openedAt: Date.now() + tick++ };
+  // In real browsers FileSystemFileHandle is structured-cloneable → persists cross-session.
+  // Falls back to metadata-only when serialization fails (test environments).
+  let storedHandle: WireFileHandle | undefined;
+  try {
+    structuredClone(handle);
+    storedHandle = handle;
+  } catch {
+    // not serializable — rely on in-memory cache within this session only
+  }
+  const entry = { path, name: handle.name, openedAt: Date.now() + tick++, ...(storedHandle ? { handle: storedHandle } : {}) };
 
   await new Promise<void>((resolve, reject) => {
     const t = db.transaction(STORE, 'readwrite');
