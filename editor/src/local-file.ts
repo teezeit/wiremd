@@ -14,6 +14,8 @@ export interface WireFileHandle {
   name: string;
   getFile(): Promise<WireFileInfo>;
   createWritable(): Promise<WireFileWritable>;
+  queryPermission?: (descriptor: { mode: 'read' | 'readwrite' }) => Promise<'granted' | 'denied' | 'prompt'>;
+  requestPermission?: (descriptor: { mode: 'read' | 'readwrite' }) => Promise<'granted' | 'denied' | 'prompt'>;
 }
 
 export type ShowOpenPicker = (opts?: {

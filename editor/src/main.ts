@@ -24,6 +24,7 @@ import {
 } from './local-file.js';
 import type { LocalFileResult, WireFileHandle } from './local-file.js';
 import { createDebouncedChangeController } from './debouncedChange.js';
+import { addToHistory, getRecentFiles } from './file-history.js';
 
 // --- DOM Elements ---
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -98,13 +99,19 @@ const fileSyncIndicator = createFileSyncIndicator(fileSyncContainer, {
   onOpen: async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = await openLocalFile((window as any).showOpenFilePicker);
-    if (result) linkFile(result);
+    if (result) {
+      addToHistory(result.handle, result.handle.name);
+      linkFile(result);
+    }
   },
   onSaveAs: async () => {
     editor.flushPendingChange();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = await saveAsLocalFile((window as any).showSaveFilePicker, editor.getValue());
-    if (result) linkFile(result);
+    if (result) {
+      addToHistory(result.handle, result.handle.name);
+      linkFile(result);
+    }
   },
   onUnlink: unlinkFile,
 });
@@ -298,35 +305,108 @@ window.addEventListener('resize', applySplit);
 applySplit();
 updateCopyButtonState();
 
-// --- Load initial content: from URL hash if present, else first example ---
+// --- Load initial content ---
 const rawHash = window.location.hash ?? '';
 const sharedContent = decodeShareHash(rawHash);
 const fileHintPath = parseFileHint(window.location.search);
 
+function stripHintFromUrl() {
+  window.history.replaceState(null, '', window.location.pathname + stripFileHint(window.location.search) + window.location.hash);
+}
+
+async function openViaPickerAndLink(hintPath: string | null) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const result = await openLocalFile((window as any).showOpenFilePicker, {
+    startIn: hintPath ? startInFromPath(hintPath) : undefined,
+  });
+  if (result) {
+    if (hintPath) addToHistory(result.handle, hintPath);
+    linkFile(result);
+  }
+}
+
+async function openRecentHandle(handle: WireFileHandle, path: string) {
+  if (handle.requestPermission) {
+    const perm = await handle.requestPermission({ mode: 'readwrite' });
+    if (perm !== 'granted') {
+      await openViaPickerAndLink(path);
+      return;
+    }
+  }
+  const file = await handle.getFile();
+  linkFile({ handle, content: await file.text(), lastModified: file.lastModified });
+}
+
+async function onRecentOpen(handle: WireFileHandle | null, path: string) {
+  if (handle) {
+    await openRecentHandle(handle, path);
+  } else {
+    showToast(toast, `Please reselect ${basenameFromPath(path)} to reconnect`);
+    await openViaPickerAndLink(path);
+  }
+}
+
 if (sharedContent !== null) {
   editor.setValue(sharedContent);
 } else if (fileHintPath) {
-  // Leave editor empty — modal will prompt the user to open the file
-  showFileHintModal({
-    fullPath: fileHintPath,
-    supported: isFileSystemAccessSupported(),
-    onOpen: async () => {
-      window.history.replaceState(null, '', window.location.pathname + stripFileHint(window.location.search) + window.location.hash);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result = await openLocalFile((window as any).showOpenFilePicker, { startIn: startInFromPath(fileHintPath) });
-      if (result) linkFile(result);
-    },
-    onDismiss: () => {
-      window.history.replaceState(null, '', window.location.pathname + stripFileHint(window.location.search) + window.location.hash);
-      if (examples.length > 0) editor.setValue(examples[0].code);
-    },
-  });
-} else {
-  if (rawHash.length > 1) {
-    showToast(toast, 'Could not load shared link — opening default');
+  const recentFiles = await getRecentFiles();
+  const match = recentFiles.find((e) => e.path === fileHintPath && e.handle !== null);
+
+  if (match) {
+    const perm = await match.handle!.queryPermission?.({ mode: 'readwrite' });
+    if (perm === undefined || perm === 'granted') {
+      // Silent reopen — permission already granted (or handle has no queryPermission)
+      stripHintFromUrl();
+      try {
+        const file = await match.handle!.getFile();
+        linkFile({ handle: match.handle!, content: await file.text(), lastModified: file.lastModified });
+        showToast(toast, `Reopened ${match.name}`);
+      } catch {
+        showFileHintModal({
+          fullPath: fileHintPath,
+          supported: isFileSystemAccessSupported(),
+          recentFiles,
+          onOpen: async () => { stripHintFromUrl(); await openViaPickerAndLink(fileHintPath); },
+          onRecentOpen: async (handle, path) => { stripHintFromUrl(); await onRecentOpen(handle, path); },
+          onDismiss: () => { stripHintFromUrl(); if (examples.length > 0) editor.setValue(examples[0].code); },
+        });
+      }
+    } else {
+      showFileHintModal({
+        fullPath: fileHintPath,
+        supported: isFileSystemAccessSupported(),
+        recentFiles,
+        onOpen: async () => { stripHintFromUrl(); await openViaPickerAndLink(fileHintPath); },
+        onRecentOpen: async (handle, path) => { stripHintFromUrl(); await onRecentOpen(handle, path); },
+        onDismiss: () => { stripHintFromUrl(); if (examples.length > 0) editor.setValue(examples[0].code); },
+      });
+    }
+  } else {
+    showFileHintModal({
+      fullPath: fileHintPath,
+      supported: isFileSystemAccessSupported(),
+      recentFiles,
+      onOpen: async () => { stripHintFromUrl(); await openViaPickerAndLink(fileHintPath); },
+      onRecentOpen: async (handle, path) => { stripHintFromUrl(); await onRecentOpen(handle, path); },
+      onDismiss: () => { stripHintFromUrl(); if (examples.length > 0) editor.setValue(examples[0].code); },
+    });
   }
-  if (examples.length > 0) {
-    editor.setValue(examples[0].code);
+} else {
+  const recentFiles = await getRecentFiles();
+  if (recentFiles.length > 0) {
+    showFileHintModal({
+      supported: isFileSystemAccessSupported(),
+      recentFiles,
+      onRecentOpen,
+      onDismiss: () => { if (examples.length > 0) editor.setValue(examples[0].code); },
+    });
+  } else {
+    if (rawHash.length > 1) {
+      showToast(toast, 'Could not load shared link — opening default');
+    }
+    if (examples.length > 0) {
+      editor.setValue(examples[0].code);
+    }
   }
 }
 
