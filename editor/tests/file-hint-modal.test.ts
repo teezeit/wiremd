@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { showFileHintModal } from '../src/file-hint-modal.js';
 import { FakeDocument, FakeElement } from './helpers/fake-dom.js';
+import type { WireFileHandle } from '../src/local-file.js';
 
 let document: FakeDocument;
 
@@ -114,6 +115,79 @@ describe('showFileHintModal — unsupported browser', () => {
   it('Skip still calls onDismiss and removes modal', () => {
     const onDismiss = vi.fn();
     showFileHintModal({ ...BASE_OPTS, supported: false, onDismiss });
+
+    findByClass(document.body, 'ed-modal__dismiss')!.click();
+
+    expect(onDismiss).toHaveBeenCalledOnce();
+    expect(findByClass(document.body, 'ed-modal-backdrop')).toBeUndefined();
+  });
+});
+
+// --- recent files ---
+
+function makeHandle(name: string): WireFileHandle {
+  return {
+    name,
+    getFile: async () => ({ text: async () => '', lastModified: 0 }),
+    createWritable: async () => ({ write: async () => {}, close: async () => {} }),
+  };
+}
+
+const RECENT = [
+  { name: 'wireframe.md', path: '/Users/tobias/Desktop/wireframe.md', handle: makeHandle('wireframe.md') },
+  { name: 'login.md', path: '/Users/tobias/Documents/login.md', handle: makeHandle('login.md') },
+];
+
+describe('showFileHintModal — with recent files', () => {
+  it('renders a recent-files section', () => {
+    showFileHintModal({ ...BASE_OPTS, supported: true, recentFiles: RECENT });
+    expect(findByClass(document.body, 'ed-modal__recent')).toBeDefined();
+  });
+
+  it('renders one button per recent file', () => {
+    showFileHintModal({ ...BASE_OPTS, supported: true, recentFiles: RECENT });
+    const buttons = document.body.querySelectorAll<FakeElement>('.ed-modal__recent-item');
+    expect(buttons).toHaveLength(2);
+    expect(buttons[0].textContent).toBe('wireframe.md');
+    expect(buttons[1].textContent).toBe('login.md');
+  });
+
+  it('calls onRecentOpen with the handle and path when a recent item is clicked', () => {
+    const onRecentOpen = vi.fn();
+    showFileHintModal({ ...BASE_OPTS, supported: true, recentFiles: RECENT, onRecentOpen });
+
+    document.body.querySelectorAll<FakeElement>('.ed-modal__recent-item')[0].click();
+
+    expect(onRecentOpen).toHaveBeenCalledOnce();
+    expect(onRecentOpen).toHaveBeenCalledWith(RECENT[0].handle, RECENT[0].path);
+    expect(findByClass(document.body, 'ed-modal-backdrop')).toBeUndefined();
+  });
+
+  it('does not render the recent section when recentFiles is empty', () => {
+    showFileHintModal({ ...BASE_OPTS, supported: true, recentFiles: [] });
+    expect(findByClass(document.body, 'ed-modal__recent')).toBeUndefined();
+  });
+});
+
+describe('showFileHintModal — reopen-prompt mode (no fullPath)', () => {
+  it('renders without a path block when fullPath is omitted', () => {
+    showFileHintModal({ supported: true, recentFiles: RECENT, onRecentOpen: vi.fn(), onDismiss: vi.fn() });
+    expect(findByClass(document.body, 'ed-modal__path')).toBeUndefined();
+  });
+
+  it('does not show the Open File button when fullPath is omitted', () => {
+    showFileHintModal({ supported: true, recentFiles: RECENT, onRecentOpen: vi.fn(), onDismiss: vi.fn() });
+    expect(findByClass(document.body, 'ed-modal__open')).toBeUndefined();
+  });
+
+  it('still shows recent files', () => {
+    showFileHintModal({ supported: true, recentFiles: RECENT, onRecentOpen: vi.fn(), onDismiss: vi.fn() });
+    expect(findByClass(document.body, 'ed-modal__recent')).toBeDefined();
+  });
+
+  it('Skip calls onDismiss and removes the modal', () => {
+    const onDismiss = vi.fn();
+    showFileHintModal({ supported: true, recentFiles: RECENT, onRecentOpen: vi.fn(), onDismiss });
 
     findByClass(document.body, 'ed-modal__dismiss')!.click();
 

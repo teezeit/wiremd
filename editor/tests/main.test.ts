@@ -1,6 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { IDBFactory } from 'fake-indexeddb';
 import { encodeShareHash } from '../src/url-share.js';
 import { FakeDocument, FakeElement, FakeWindow } from './helpers/fake-dom.js';
+import type { WireFileHandle } from '../src/local-file.js';
+
+function makeHandle(name: string): WireFileHandle {
+  return {
+    name,
+    getFile: vi.fn(async () => ({ text: async () => '# content', lastModified: Date.now() })),
+    createWritable: async () => ({ write: async () => {}, close: async () => {} }),
+  };
+}
 
 const mainMocks = vi.hoisted(() => ({
   initEditor: vi.fn(),
@@ -9,6 +19,10 @@ const mainMocks = vi.hoisted(() => ({
   showToast: vi.fn(),
   showFileHintModal: vi.fn(),
   openLocalFile: vi.fn(() => Promise.resolve(null)),
+  getRecentFiles: vi.fn(() => Promise.resolve([])),
+  addToHistory: vi.fn(() => Promise.resolve()),
+  removeFromHistory: vi.fn(() => Promise.resolve()),
+  _resetDbForTesting: vi.fn(),
 }));
 
 vi.mock('../src/editor.js', () => ({
@@ -36,6 +50,13 @@ vi.mock('../src/local-file.js', () => ({
   writeFile: vi.fn(() => Promise.resolve()),
 }));
 
+vi.mock('../src/file-history.js', () => ({
+  getRecentFiles: mainMocks.getRecentFiles,
+  addToHistory: mainMocks.addToHistory,
+  removeFromHistory: mainMocks.removeFromHistory,
+  _resetDbForTesting: mainMocks._resetDbForTesting,
+}));
+
 vi.mock('../src/styles/editor.css', () => ({}));
 
 describe('editor main bootstrap', () => {
@@ -47,6 +68,9 @@ describe('editor main bootstrap', () => {
     mainMocks.showToast.mockReset();
     mainMocks.showFileHintModal.mockReset();
     mainMocks.openLocalFile.mockReset().mockResolvedValue(null);
+    mainMocks.getRecentFiles.mockReset().mockResolvedValue([]);
+    mainMocks.addToHistory.mockReset().mockResolvedValue(undefined);
+    mainMocks.removeFromHistory.mockReset().mockResolvedValue(undefined);
   });
 
   function setupDom() {
@@ -337,6 +361,85 @@ describe('editor main bootstrap', () => {
     capturedOnDismiss!();
 
     expect(window.location.search).toBe('?style=clean');
+  });
+
+  it('silently reopens when ?file= path matches a recent handle', async () => {
+    const { window } = setupDom();
+    window.location.search = '?file=%2FUsers%2Ftobias%2FDesktop%2Fwireframe.md';
+
+    const handle = makeHandle('wireframe.md');
+    mainMocks.getRecentFiles.mockResolvedValue([
+      { name: 'wireframe.md', path: '/Users/tobias/Desktop/wireframe.md', handle },
+    ]);
+    makeEditorPreview();
+
+    await import('../src/main.js');
+
+    expect(mainMocks.showFileHintModal).not.toHaveBeenCalled();
+    expect(mainMocks.showToast).toHaveBeenCalledWith(expect.anything(), 'Reopened wireframe.md');
+    expect(window.location.search).toBe('');
+  });
+
+  it('passes recent files to the modal when ?file= has no match in history', async () => {
+    const { window } = setupDom();
+    window.location.search = '?file=%2FUsers%2Ftobias%2FDesktop%2Fwireframe.md';
+
+    const recentFiles = [
+      { name: 'login.md', path: '/path/login.md', handle: makeHandle('login.md') },
+    ];
+    mainMocks.getRecentFiles.mockResolvedValue(recentFiles);
+    makeEditorPreview();
+    mainMocks.showFileHintModal.mockImplementation(() => ({ close: vi.fn() }));
+
+    await import('../src/main.js');
+
+    expect(mainMocks.showFileHintModal).toHaveBeenCalledTimes(1);
+    const opts = mainMocks.showFileHintModal.mock.calls[0][0];
+    expect(opts.recentFiles).toEqual(recentFiles);
+  });
+
+  it('shows reopen-prompt modal when no ?file= but recent files exist', async () => {
+    const { window } = setupDom();
+
+    const recentFiles = [
+      { name: 'wireframe.md', path: '/path/wireframe.md', handle: makeHandle('wireframe.md') },
+    ];
+    mainMocks.getRecentFiles.mockResolvedValue(recentFiles);
+    const { editor } = makeEditorPreview();
+    mainMocks.showFileHintModal.mockImplementation(() => ({ close: vi.fn() }));
+
+    await import('../src/main.js');
+
+    expect(mainMocks.showFileHintModal).toHaveBeenCalledTimes(1);
+    const opts = mainMocks.showFileHintModal.mock.calls[0][0];
+    expect(opts.fullPath).toBeUndefined();
+    expect(opts.recentFiles).toEqual(recentFiles);
+    expect(editor.setValue).not.toHaveBeenCalled();
+  });
+
+  it('adds the opened file to history after a successful open', async () => {
+    const { window } = setupDom();
+    window.location.search = '?file=%2FUsers%2Ftobias%2FDesktop%2Fwireframe.md';
+
+    const handle = makeHandle('wireframe.md');
+    mainMocks.getRecentFiles.mockResolvedValue([]);
+    makeEditorPreview();
+
+    let capturedOnOpen: (() => Promise<void>) | undefined;
+    mainMocks.showFileHintModal.mockImplementation((opts: { onOpen: () => Promise<void> }) => {
+      capturedOnOpen = opts.onOpen;
+      return { close: vi.fn() };
+    });
+    mainMocks.openLocalFile.mockResolvedValue({
+      handle,
+      content: '# Hello',
+      lastModified: 123,
+    });
+
+    await import('../src/main.js');
+    await capturedOnOpen!();
+
+    expect(mainMocks.addToHistory).toHaveBeenCalledWith(handle, '/Users/tobias/Desktop/wireframe.md');
   });
 
   it('onCopyLink flushes pending changes, syncs URL and copies location.href', async () => {
