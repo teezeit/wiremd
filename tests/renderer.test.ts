@@ -417,8 +417,8 @@ Centered
       const ast = parse('[[Get Started](./about.md)]* [[See Features](./about.md)]');
       const html = renderToHTML(ast, { style: 'sketch' });
       // Must render as <a class="wmd-button..."> — not as a <p> wrapping raw links
-      expect(html).toMatch(/<a href="\.\/about\.md" class="[^"]*wmd-button-primary[^"]*">Get Started<\/a>/);
-      expect(html).toMatch(/<a href="\.\/about\.md" class="[^"]*wmd-button[^"]*">See Features<\/a>/);
+      expect(html).toMatch(/<a href="\.\/about\.md" class="[^"]*wmd-button-primary[^"]*"[^>]*>Get Started<\/a>/);
+      expect(html).toMatch(/<a href="\.\/about\.md" class="[^"]*wmd-button[^"]*"[^>]*>See Features<\/a>/);
       // Must not wrap in a <p> paragraph element with literal brackets
       expect(html).not.toMatch(/<p[^>]*wmd-paragraph/);
     });
@@ -428,8 +428,8 @@ Centered
       const html = renderToHTML(ast, { style: 'sketch' });
       // No literal ][ in the output (would appear between two paragraph-rendered links)
       expect(html).not.toMatch(/\].*\[/);
-      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*">Docs<\/a>/);
-      expect(html).toMatch(/<a href="\.\/api\.md" class="[^"]*wmd-button[^"]*">API<\/a>/);
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*"[^>]*>Docs<\/a>/);
+      expect(html).toMatch(/<a href="\.\/api\.md" class="[^"]*wmd-button[^"]*"[^>]*>API<\/a>/);
     });
   });
 
@@ -437,7 +437,7 @@ Centered
     it('should render button with href as <a> tag', () => {
       const ast = parse('[Go to Docs]{href:./docs.md}');
       const html = renderToHTML(ast, { style: 'sketch' });
-      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*">/);
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*"[^>]*>/);
       expect(html).not.toContain('<button');
     });
 
@@ -451,7 +451,7 @@ Centered
     it('should render [[Button](url)] as a clickable <a> button', () => {
       const ast = parse('[[Go to Docs](./docs.md)]');
       const html = renderToHTML(ast, { style: 'sketch' });
-      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*">/);
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*"[^>]*>/);
       expect(html).not.toContain('<button');
     });
 
@@ -1173,6 +1173,82 @@ content
       const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
       expect(html.indexOf('class="wmd-annotated"')).toBeLessThan(html.indexOf('class="wmd-tabs"'));
       expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
+    });
+
+    it('comment inside a tab panel adds annotation dot class to that tab header', () => {
+      const md = '::: tabs\n\n::: tab One\n\n<!-- check this -->\n[Action]*\n\n:::\n\n::: tab Two\n\n### Clean\n\n:::\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html).toContain('wmd-tab-header-annotated');
+      // only the first tab header gets the dot, not the second
+      const firstHeaderPos = html.indexOf('data-wmd-tab="0"');
+      const secondHeaderPos = html.indexOf('data-wmd-tab="1"');
+      const dotPos = html.indexOf('wmd-tab-header-annotated');
+      expect(dotPos).toBeLessThan(secondHeaderPos);
+      expect(dotPos).toBeGreaterThan(0);
+      expect(html.indexOf('data-wmd-tab="1"')).toBeGreaterThan(firstHeaderPos);
+      // tab with no comment must not have the dot class
+      const secondHeader = html.slice(secondHeaderPos, secondHeaderPos + 120);
+      expect(secondHeader).not.toContain('wmd-tab-header-annotated');
+    });
+
+    it('tab without comment does not get annotation dot class on the button', () => {
+      const md = '::: tabs\n\n::: tab One\n\n### No comment\n\n:::\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      // The class must not appear on any tab-header button element
+      expect(html).not.toMatch(/<button[^>]*wmd-tab-header-annotated/);
+    });
+
+    it('annotation dot CSS uses ::after pseudo-element, not outline', () => {
+      const html = renderToHTML(parse('<!-- x -->\n[Btn]*'), { style: 'sketch', inlineStyles: true });
+      expect(html).toContain('tab-header-annotated::after');
+      expect(html).not.toMatch(/tab-header-annotated[^{]*\{[^}]*outline/);
+    });
+  });
+
+  describe('Cursor Sync', () => {
+    it('cursorSync: false emits no cursor script or CSS', () => {
+      const html = renderToHTML(parse('# Hello'), { style: 'sketch', cursorSync: false });
+      expect(html).not.toContain('wiremd-cursor');
+      expect(html).not.toContain('data-cursor-active');
+    });
+
+    it('cursorSync: true emits cursor script and CSS', () => {
+      const html = renderToHTML(parse('# Hello'), { style: 'sketch', cursorSync: true });
+      expect(html).toContain('wiremd-cursor');
+      expect(html).toContain('data-cursor-active');
+    });
+
+    it('cursorSync script handles wiremd-cursor-blur message', () => {
+      const html = renderToHTML(parse('# Hello'), { style: 'sketch', cursorSync: true });
+      expect(html).toContain('wiremd-cursor-blur');
+      expect(html).toContain('removeAttribute(\'data-cursor-active\')');
+    });
+
+    it('cursorSync script does not set data-cursor-active on tab button', () => {
+      const html = renderToHTML(parse('# Hello'), { style: 'sketch', cursorSync: true });
+      // activateTab must NOT call setAttribute('data-cursor-active') on tab buttons
+      const scriptMatch = html.match(/<script>[\s\S]*?<\/script>/g)?.find(s => s.includes('wiremd-cursor'));
+      expect(scriptMatch).toBeTruthy();
+      const activateTabBody = scriptMatch!.match(/function activateTab[\s\S]*?\}/)?.[0] ?? '';
+      expect(activateTabBody).not.toContain('data-cursor-active');
+    });
+
+    it('data-source-line is present on heading, paragraph, table, blockquote, list', () => {
+      const md = '## Title\n\nSome text.\n\n| A | B |\n|---|---|\n| 1 | 2 |\n\n> note\n\n- item';
+      const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
+      expect(html).toContain('data-source-line');
+    });
+
+    it('data-source-line is present on container, grid, row, nav', () => {
+      const md = '::: card\n[Btn]*\n\n:::\n\n::: grid-2\n### A\n### B\n:::\n\n[[ Home | About ]]\n';
+      const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
+      expect(html).toContain('data-source-line');
+    });
+
+    it('data-source-line is present on tabs container', () => {
+      const md = '::: tabs\n\n::: tab A\n### Content\n:::\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
+      expect(html).toMatch(/data-wmd-tabs[^>]*data-source-line|data-source-line[^>]*data-wmd-tabs/);
     });
   });
 });

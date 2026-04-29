@@ -62,6 +62,7 @@ export function renderToHTML(
     pretty = true,
     classPrefix = 'wmd-',
     showComments = true,
+    cursorSync = false,
   } = options;
 
   const collectedComments: Array<{ id: number; texts: string[] }> = [];
@@ -89,17 +90,53 @@ export function renderToHTML(
   // Build complete HTML document
   const css = inlineStyles ? getStyleCSS(style, classPrefix) : '';
 
+  const p = classPrefix;
+  const cursorCSS = cursorSync
+    ? `[data-cursor-active]{background:rgba(99,102,241,.08)!important;border-radius:4px;}`
+    : '';
+  const cursorScript = cursorSync
+    ? `<script>(function(){` +
+      `function activateTab(panel){` +
+        `var root=panel.closest('[data-wmd-tabs]');if(!root)return;` +
+        `var idx=panel.getAttribute('data-wmd-tab-panel');` +
+        `root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(x){x.getAttribute('data-wmd-tab-panel')===idx?x.removeAttribute('hidden'):x.setAttribute('hidden','');});` +
+        `root.querySelectorAll('[data-wmd-tab]').forEach(function(b){if(b.getAttribute('data-wmd-tab')===idx){b.classList.add('${p}active');}else{b.classList.remove('${p}active');b.removeAttribute('data-cursor-active');}});` +
+      `}` +
+      `window.addEventListener('message',function(e){` +
+        `if(!e.data)return;` +
+        `if(e.data.type==='wiremd-cursor-blur'){document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});return;}` +
+        `if(e.data.type!=='wiremd-cursor')return;` +
+        `var line=e.data.line;` +
+        `document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});` +
+        `var els=document.querySelectorAll('[data-source-line]');` +
+        `var best=null,bestLine=0;` +
+        `for(var i=0;i<els.length;i++){var l=parseInt(els[i].getAttribute('data-source-line'),10);if(l<=line&&l>bestLine){bestLine=l;best=els[i];}}` +
+        `if(best){` +
+          `best.setAttribute('data-cursor-active','');` +
+          `var panel=best.closest('[data-wmd-tab-panel]');` +
+          `if(panel)activateTab(panel);` +
+          `best.scrollIntoView({behavior:'smooth',block:'nearest'});` +
+        `}` +
+      `});` +
+      `})();<\/script>`
+    : '';
+
+  const styleBlock = css || cursorCSS
+    ? `<style>\n${css}${cursorCSS ? '\n' + cursorCSS : ''}\n  </style>`
+    : '';
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>wiremd Mockup</title>
-  ${css ? `<style>\n${css}\n  </style>` : ''}
+  ${styleBlock}
 </head>
 <body class="${bodyClass}">
   ${childrenHTML}
   ${panelHTML}
+  ${cursorScript}
 </body>
 </html>`;
 

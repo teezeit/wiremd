@@ -38,6 +38,13 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       this.disposables
     );
 
+    // Cursor sync
+    vscode.window.onDidChangeTextEditorSelection(
+      (e) => this.onSelectionChanged(e),
+      null,
+      this.disposables
+    );
+
     // Watch for configuration changes
     vscode.workspace.onDidChangeConfiguration(
       (e) => {
@@ -124,6 +131,10 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
         null,
         this.disposables
       );
+
+      this.panel.onDidChangeViewState((e) => {
+        if (e.webviewPanel.visible) this.syncCursor();
+      }, null, this.disposables);
     }
 
     // Update content
@@ -235,11 +246,24 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
    */
   private onActiveEditorChanged(editor: vscode.TextEditor | undefined): void {
     if (!editor || editor.document.languageId !== 'markdown') {
+      this.panel?.webview.postMessage({ type: 'wiremd-cursor-blur' });
       return;
     }
 
     this.currentEditor = editor;
     this.refresh();
+  }
+
+  private onSelectionChanged(e: vscode.TextEditorSelectionChangeEvent): void {
+    if (!this.panel || e.textEditor !== this.currentEditor) return;
+    const line = e.selections[0].active.line + 1;
+    this.panel.webview.postMessage({ type: 'wiremd-cursor', line });
+  }
+
+  private syncCursor(): void {
+    if (!this.panel || !this.currentEditor) return;
+    const line = this.currentEditor.selection.active.line + 1;
+    this.panel.webview.postMessage({ type: 'wiremd-cursor', line });
   }
 
   /**
@@ -248,8 +272,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   private handleMessage(message: any): void {
     switch (message.type) {
       case 'ready':
-        // Webview is ready
-        this.refresh();
+        this.syncCursor();
         break;
 
       case 'changeStyle':
@@ -347,7 +370,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     try {
       const ast = parse(markdown);
       const commentCount = countCommentThreads(ast);
-      const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true, showComments: this.showComments });
+      const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true, showComments: this.showComments, cursorSync: true });
       return this.injectToolbar(html, commentCount);
     } catch (error: any) {
       return this.getErrorHTML(error.message);

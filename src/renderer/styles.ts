@@ -82,6 +82,12 @@ export function getStyleCSS(style: string, prefix: string): string {
   }
   const commentPanelStructural = `
 .${prefix}annotated { position: relative; outline: 2px solid #f9a825; outline-offset: 3px; border-radius: 3px; }
+.${prefix}tab-header-annotated { position: relative; }
+.${prefix}tab-header-annotated::after {
+  content: ''; position: absolute; top: 4px; right: 4px;
+  width: 7px; height: 7px; background: #f9a825; border-radius: 50%;
+  pointer-events: none;
+}
 .${prefix}comment-badge {
   position: absolute; top: -10px; right: -10px;
   width: 20px; height: 20px; background: #f9a825; color: #fff;

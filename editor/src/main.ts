@@ -130,7 +130,14 @@ function updateCommentBadge() {
   }
 }
 
+let lastCursorLine = 1;
+
+function syncCursorToPreview(line: number) {
+  previewIframe.contentWindow?.postMessage({ type: 'wiremd-cursor', line }, '*');
+}
+
 function renderMarkdown(markdown: string) {
+  previewIframe.addEventListener('load', () => syncCursorToPreview(lastCursorLine), { once: true });
   preview.render(markdown);
   updateCopyButtonState();
   updateCommentBadge();
@@ -184,6 +191,12 @@ const preview = createPreview({
 // --- Editor ---
 const editor = initEditor({
   container: monacoContainer,
+  onCursorChange: (line) => {
+    lastCursorLine = line;
+    syncCursorToPreview(line);
+  },
+  onFocus: () => syncCursorToPreview(lastCursorLine),
+  onBlur: () => previewIframe.contentWindow?.postMessage({ type: 'wiremd-cursor-blur' }, '*'),
   onChange: (value) => {
     renderMarkdown(value);
     if (!isInitializing) {

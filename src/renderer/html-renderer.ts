@@ -224,10 +224,10 @@ function renderButton(node: any, context: RenderContext): string {
 
   const href = node.href || node.props?.href;
   if (href) {
-    return `<a href="${escapeHtml(href)}" class="${classes}${loading}">${contentHTML}</a>`;
+    return `<a href="${escapeHtml(href)}" class="${classes}${loading}"${sourceLine(node)}>${contentHTML}</a>`;
   }
 
-  return `<button class="${classes}${loading}"${disabled}>${contentHTML}</button>`;
+  return `<button class="${classes}${loading}"${disabled}${sourceLine(node)}>${contentHTML}</button>`;
 }
 
 function renderBadge(node: any, context: RenderContext): string {
@@ -485,7 +485,7 @@ function renderContainer(node: any, context: RenderContext): string {
 
   const childrenHTML = renderChildrenList(node.children || [], context);
 
-  return `<div class="${classes}">
+  return `<div class="${classes}"${sourceLine(node)}>
   ${childrenHTML}
 </div>`;
 }
@@ -531,7 +531,7 @@ function renderNav(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'nav', node.props);
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n    ');
 
-  return `<nav class="${classes}">
+  return `<nav class="${classes}"${sourceLine(node)}>
   <div class="${prefix}nav-content">
     ${childrenHTML}
   </div>
@@ -565,7 +565,7 @@ function renderBreadcrumbs(node: any, context: RenderContext): string {
       ? `<span class="${prefix}breadcrumb-item ${prefix}breadcrumb-current" aria-current="page">${label}</span>`
       : `<span class="${prefix}breadcrumb-item"><a href="#">${label}</a></span><span class="${prefix}breadcrumb-sep" aria-hidden="true">›</span>`;
   }).join('');
-  return `<nav class="${prefix}breadcrumbs" aria-label="breadcrumb">${crumbsHTML}</nav>`;
+  return `<nav class="${prefix}breadcrumbs"${sourceLine(node)} aria-label="breadcrumb">${crumbsHTML}</nav>`;
 }
 
 function renderBrand(node: any, context: RenderContext): string {
@@ -585,7 +585,7 @@ function renderGrid(node: any, context: RenderContext): string {
   // as a whole (wmd-annotated wraps the full grid-item div, not a child inside).
   const childrenHTML = renderChildrenList(node.children || [], context);
 
-  return `<div class="${gridClass}" style="--grid-columns: ${columns}">
+  return `<div class="${gridClass}"${sourceLine(node)} style="--grid-columns: ${columns}">
   ${childrenHTML}
 </div>`;
 }
@@ -610,7 +610,7 @@ function renderRow(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'row', node.props);
   const childrenHTML = renderChildrenList(node.children || [], context);
 
-  return `<div class="${classes}">
+  return `<div class="${classes}"${sourceLine(node)}>
   ${childrenHTML}
 </div>`;
 }
@@ -627,7 +627,7 @@ function renderHeading(node: any, context: RenderContext): string {
     ? node.children.map((child: any) => renderNode(child, context)).join('')
     : escapeHtml(content);
 
-  return `<h${level} class="${classes}">${childrenHTML}</h${level}>`;
+  return `<h${level} class="${classes}"${sourceLine(node)}>${childrenHTML}</h${level}>`;
 }
 
 function renderParagraph(node: any, context: RenderContext): string {
@@ -645,7 +645,7 @@ function renderParagraph(node: any, context: RenderContext): string {
     childrenHTML = '';
   }
 
-  return `<p class="${classes}">${childrenHTML}</p>`;
+  return `<p class="${classes}"${sourceLine(node)}>${childrenHTML}</p>`;
 }
 
 function renderText(node: any, _context: RenderContext): string {
@@ -685,7 +685,7 @@ function renderList(node: any, context: RenderContext): string {
   const tag = node.ordered ? 'ol' : 'ul';
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
 
-  return `<${tag} class="${classes}">
+  return `<${tag} class="${classes}"${sourceLine(node)}>
   ${childrenHTML}
 </${tag}>`;
 }
@@ -723,7 +723,7 @@ function renderTable(node: any, context: RenderContext): string {
   const rowsHTML = rowNodes.map((child: any) => renderNode(child, context)).join('\n    ');
   const bodyHTML = rowsHTML ? `\n  <tbody>\n    ${rowsHTML}\n  </tbody>` : '';
 
-  return `<table class="${classes}">
+  return `<table class="${classes}"${sourceLine(node)}>
   ${headerHTML}${bodyHTML}
 </table>`;
 }
@@ -763,7 +763,7 @@ function renderBlockquote(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'blockquote', node.props);
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
 
-  return `<blockquote class="${classes}">
+  return `<blockquote class="${classes}"${sourceLine(node)}>
   ${childrenHTML}
 </blockquote>`;
 }
@@ -794,20 +794,29 @@ function renderTabs(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'tabs', node.props);
   const tabs: any[] = node.children || [];
 
+  // Render panels first so we know which ones contain comment annotations
+  const renderedPanels = tabs.map((tab: any, i: number) => {
+    const commentsBefore = context._comments?.length ?? 0;
+    const panelChildren = renderChildrenList(tab.children || [], context);
+    const hasAnnotations = context.showComments && ((context._comments?.length ?? 0) > commentsBefore);
+    const hidden = tab.active ? '' : ' hidden';
+    return {
+      html: `<div class="${prefix}tab-panel" role="tabpanel" data-wmd-tab-panel="${i}"${hidden}>
+    ${panelChildren}
+  </div>`,
+      hasAnnotations,
+    };
+  });
+
   const headers = tabs.map((tab: any, i: number) => {
     const activeClass = tab.active ? ` ${prefix}active` : '';
-    return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}" data-wmd-tab="${i}">${escapeHtml(tab.label || '')}</button>`;
+    const annotatedClass = renderedPanels[i].hasAnnotations ? ` ${prefix}tab-header-annotated` : '';
+    return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}${annotatedClass}" data-wmd-tab="${i}">${escapeHtml(tab.label || '')}</button>`;
   }).join('');
 
-  const panels = tabs.map((tab: any, i: number) => {
-    const panelChildren = renderChildrenList(tab.children || [], context);
-    const hidden = tab.active ? '' : ' hidden';
-    return `<div class="${prefix}tab-panel" role="tabpanel" data-wmd-tab-panel="${i}"${hidden}>
-    ${panelChildren}
-  </div>`;
-  }).join('\n  ');
+  const panels = renderedPanels.map(r => r.html).join('\n  ');
 
-  return `<div class="${classes}" data-wmd-tabs>
+  return `<div class="${classes}"${sourceLine(node)} data-wmd-tabs>
   <div class="${prefix}tab-headers" role="tablist">${headers}</div>
   <div class="${prefix}tab-panels">
   ${panels}
@@ -824,6 +833,11 @@ function renderTab(node: any, context: RenderContext): string {
 
 function getTabsScript(prefix: string): string {
   return `<script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.${prefix}tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.${prefix}tab-header').forEach(function(b){b.classList.toggle('${prefix}active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>`;
+}
+
+function sourceLine(node: any): string {
+  const line = node?.position?.start?.line;
+  return line != null ? ` data-source-line="${line}"` : '';
 }
 
 /**

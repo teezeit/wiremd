@@ -61,6 +61,9 @@ export interface EditorInstance {
 export function initEditor(opts: {
   container: HTMLElement;
   onChange: (value: string) => void;
+  onCursorChange?: (line: number, column: number) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   initialValue?: string;
 }): EditorInstance {
   ensureEditorMonacoSetup();
@@ -95,6 +98,16 @@ export function initEditor(opts: {
     }
     debouncedChange.schedule(monacoEditor.getValue());
   });
+
+  if (opts.onCursorChange) {
+    const notify = opts.onCursorChange;
+    monacoEditor.onDidChangeCursorPosition((e) => {
+      notify(e.position.lineNumber, e.position.column);
+    });
+  }
+
+  if (opts.onFocus) monacoEditor.onDidFocusEditorText(opts.onFocus);
+  if (opts.onBlur) monacoEditor.onDidBlurEditorText(opts.onBlur);
 
   return {
     getValue: () => monacoEditor.getValue(),
