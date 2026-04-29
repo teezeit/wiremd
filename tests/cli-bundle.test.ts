@@ -9,8 +9,9 @@ import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'fs';
 import { execSync } from 'child_process';
 import { resolve } from 'path';
 
-const RELEASE = resolve(__dirname, '../releases/wiremd.js');
-const BUNDLE  = resolve(__dirname, '../skills/wireframe/bin/wiremd.js');
+const RELEASE  = resolve(__dirname, '../releases/wiremd.js');
+const VSIX     = resolve(__dirname, '../releases/wiremd.vsix');
+const BUNDLE   = resolve(__dirname, '../skills/wireframe/bin/wiremd.js');
 const TMP_INPUT = resolve(__dirname, '../tmp-bundle-test-input.md');
 const TMP_OUTPUT = resolve(__dirname, '../tmp-bundle-test-output.html');
 
@@ -31,6 +32,10 @@ describe('cli-bundle', () => {
 
   it('plugin copy exists at skills/wireframe/bin/wiremd.js', () => {
     expect(existsSync(BUNDLE)).toBe(true);
+  });
+
+  it('VS Code extension exists at releases/wiremd.vsix', () => {
+    expect(existsSync(VSIX)).toBe(true);
   });
 
   it('release and plugin copy are identical', () => {

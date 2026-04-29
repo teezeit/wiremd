@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/**'
+      - 'vscode-extension/src/**'
       - 'scripts/build-bundle.mjs'
 
 jobs:
@@ -22,6 +23,7 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - run: npm ci --prefix vscode-extension
 
       - run: npm run bundle
 
@@ -29,6 +31,6 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add releases/wiremd.js skills/wireframe/bin/wiremd.js
+          git add releases/wiremd.js releases/wiremd.vsix skills/wireframe/bin/wiremd.js
           git diff --cached --quiet || git commit -m "chore(bundle): rebuild CLI bundle [skip ci]"
           git push

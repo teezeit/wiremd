@@ -1,21 +1,28 @@
 #!/usr/bin/env node
 /**
- * Builds the self-contained CLI bundle.
- * Canonical output: releases/wiremd.js  (for manual download/install)
- * Plugin copy:      skills/wireframe/bin/wiremd.js  (picked up by the plugin)
+ * Builds all release artifacts into releases/:
+ *   releases/wiremd.js        — self-contained CLI (download & run with node)
+ *   releases/wiremd.vsix      — VS Code extension (install via Extensions > ... > Install from VSIX)
+ *
+ * Also copies the CLI to the plugin:
+ *   skills/wireframe/bin/wiremd.js
  */
-import { mkdirSync, copyFileSync } from 'fs';
+import { mkdirSync, copyFileSync, readdirSync } from 'fs';
 import { build } from 'esbuild';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const release = resolve(root, 'releases/wiremd.js');
-const pluginBin = resolve(root, 'skills/wireframe/bin/wiremd.js');
+const releasesDir = resolve(root, 'releases');
+const release    = resolve(releasesDir, 'wiremd.js');
+const pluginBin  = resolve(root, 'skills/wireframe/bin/wiremd.js');
+const extDir     = resolve(root, 'vscode-extension');
 
-mkdirSync(resolve(root, 'releases'), { recursive: true });
+mkdirSync(releasesDir, { recursive: true });
 mkdirSync(resolve(root, 'skills/wireframe/bin'), { recursive: true });
 
+// ── CLI bundle ─────────────────────────────────────────────────────────────
 console.log('Building CLI bundle...');
 await build({
   entryPoints: [resolve(root, 'src/cli/index.ts')],
@@ -23,18 +30,27 @@ await build({
   platform: 'node',
   format: 'cjs',
   outfile: release,
-  // Only keep node built-ins external — inline everything else
   external: ['fs', 'path', 'http', 'https', 'crypto', 'os', 'stream',
              'util', 'events', 'buffer', 'process', 'url', 'querystring',
              'fs/promises', 'child_process', 'net', 'tty', 'assert',
              'readline', 'module', 'worker_threads'],
-  // The source guards main() with import.meta.url which is empty in CJS.
-  // Since this bundle is only ever run directly, call main() unconditionally.
+  // import.meta.url is empty in CJS — call main() via footer instead
   footer: { js: '\nmain();' },
   minify: false,
   sourcemap: false,
 });
 
 copyFileSync(release, pluginBin);
-console.log(`Bundle written → ${release}`);
+console.log(`CLI bundle    → ${release}`);
 console.log(`Plugin copy   → ${pluginBin}`);
+
+// ── VS Code extension ──────────────────────────────────────────────────────
+console.log('Building VS Code extension...');
+execSync('npm run bundle', { cwd: extDir, stdio: 'inherit' });
+execSync('npm run package', { cwd: extDir, stdio: 'inherit' });
+
+const vsix = readdirSync(extDir).find(f => f.endsWith('.vsix'));
+if (!vsix) throw new Error('vsce package produced no .vsix file');
+
+copyFileSync(resolve(extDir, vsix), resolve(releasesDir, 'wiremd.vsix'));
+console.log(`VS Code ext   → releases/wiremd.vsix`);
