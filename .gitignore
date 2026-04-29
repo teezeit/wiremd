@@ -60,3 +60,7 @@ docs/.vitepress/cache/
 
 # Generated skill zip (built on release, not checked in)
 wireframe-skill.zip
+
+# Release artifacts — uploaded to GitHub Releases, not committed
+# (skills/wireframe/bin/wiremd.js stays committed for the plugin)
+releases/

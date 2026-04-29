@@ -1,4 +1,4 @@
-name: Build CLI bundle
+name: Build & release artifacts
 
 on:
   push:
@@ -27,10 +27,24 @@ jobs:
 
       - run: npm run bundle
 
-      - name: Commit bundle if changed
+      # Commit the plugin copy — must stay in git for the git-subdir plugin pull
+      - name: Commit plugin bin if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add releases/wiremd.js releases/wiremd.vsix skills/wireframe/bin/wiremd.js
-          git diff --cached --quiet || git commit -m "chore(bundle): rebuild CLI bundle [skip ci]"
+          git add skills/wireframe/bin/wiremd.js
+          git diff --cached --quiet || git commit -m "chore(bundle): rebuild plugin CLI bundle [skip ci]"
           git push
+
+      # Upload CLI + vsix to a rolling 'latest' GitHub Release
+      - name: Upload to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --yes 2>/dev/null || true
+          gh release create latest \
+            --title "Latest build" \
+            --notes "Auto-built from \`$(git rev-parse --short HEAD)\` on \`$(date -u +%Y-%m-%d)\`." \
+            --prerelease \
+            releases/wiremd.js \
+            releases/wiremd.vsix
