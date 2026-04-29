@@ -50,6 +50,25 @@ export function getStyleCSS(style: string, prefix: string): string {
 .${prefix}demo-code code { display: block; color: #444; }
 `;
 
+  const commentStructural = `
+.${prefix}comment {
+  display: block;
+  background: #fffde7;
+  border: 1px solid #f9a825;
+  border-left: 4px solid #f9a825;
+  border-radius: 3px;
+  padding: 6px 10px;
+  font-size: 0.82em;
+  color: #5d4037;
+  font-style: italic;
+  margin-bottom: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+.${prefix}comment::before { content: '💬 '; font-style: normal; }
+`;
+
   let themeCSS: string;
   switch (style) {
     case 'sketch':    themeCSS = getSketchStyle(prefix); break;
@@ -61,7 +80,7 @@ export function getStyleCSS(style: string, prefix: string): string {
     case 'brutal':    themeCSS = getBrutalStyle(prefix); break;
     default:          themeCSS = getSketchStyle(prefix);
   }
-  return linkButtonReset + tabsStructural + rowStructural + demoStructural + themeCSS;
+  return linkButtonReset + tabsStructural + rowStructural + demoStructural + commentStructural + themeCSS;
 }
 
 /**

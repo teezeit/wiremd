@@ -9,6 +9,7 @@ export interface PreviewState {
   activeTab: 'preview' | 'html';
   lastHTML: string;
   lastError: string | null;
+  showComments: boolean;
 }
 
 export function createPreview(elements: {
@@ -22,12 +23,13 @@ export function createPreview(elements: {
     activeTab: 'preview',
     lastHTML: '',
     lastError: null,
+    showComments: true,
   };
   let htmlEditor: MonacoEditor.editor.IStandaloneCodeEditor | null = null;
   let htmlEditorPromise: Promise<MonacoEditor.editor.IStandaloneCodeEditor> | null = null;
 
   function render(markdown: string) {
-    const result = renderMarkup(markdown, state.style);
+    const result = renderMarkup(markdown, state.style, state.showComments);
 
     if (result.error === null) {
       const { html } = result;
@@ -94,6 +96,10 @@ export function createPreview(elements: {
     state.style = style;
   }
 
+  function setShowComments(show: boolean) {
+    state.showComments = show;
+  }
+
   function setTab(tab: 'preview' | 'html') {
     state.activeTab = tab;
     if (tab === 'preview') {
@@ -114,5 +120,5 @@ export function createPreview(elements: {
     return state.lastHTML;
   }
 
-  return { render, setStyle, setTab, getHTML, state };
+  return { render, setStyle, setShowComments, setTab, getHTML, state };
 }

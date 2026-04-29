@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-No unreleased changes yet.
+### Added
+- **Inline comments** — standard HTML comment syntax (`<!-- text -->`) renders as yellow sticky-note callouts in all HTML output. Comments attach to the element that follows them in source; work at any nesting depth inside `:::` containers.
+- `showComments` option in `RenderOptions` (default `true`) — pass `false` to strip all comment callouts from output
+- `--show-comments` / `--hide-comments` CLI flags (comments hidden by default in CLI output — opt-in with `--show-comments`)
+- Comments toggle in the web editor preview toolbar (pill toggle)
+- Comments On/Off button in the VS Code extension preview toolbar
 
 ## [0.1.4] - 2025-11-24
 

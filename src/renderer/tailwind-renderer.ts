@@ -109,6 +109,9 @@ export function renderNode(node: WiremdNode, context: TailwindRenderContext): st
     case 'separator':
       return renderSeparator();
 
+    case 'comment':
+      return '';
+
     default:
       return `<!-- Unknown node type: ${(node as any).type} -->`;
   }

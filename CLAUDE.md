@@ -67,8 +67,12 @@ After edits rebuild: `Cmd+Shift+P` → "Developer: Reload Window".
 
 ## Testing
 
-Tests live in `tests/`. 515 tests across 14 files. Key files: `parser.test.ts` (29 tests), `renderer.test.ts`, `react-renderer.test.ts`, `tailwind-renderer.test.ts`, `integration.test.ts`, `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `api-examples.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
+Tests live in `tests/`. Key files: `parser.test.ts`, `renderer.test.ts`, `react-renderer.test.ts`, `tailwind-renderer.test.ts`, `integration.test.ts`, `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `api-examples.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
 
 ## Build output
 
 `vite.config.ts` emits both ESM (`dist/index.mjs`) and CJS (`dist/index.cjs`) with TypeScript declarations. The CLI entry is excluded from the library bundle and built separately.
+
+## New features
+
+Before marking a feature done, run through the **Feature Development Checklist** in `CONTRIBUTING.md`. It covers: types → parser → renderers (HTML/React/Tailwind) → renderer index → public exports → CLI → editor → VS Code extension → tests → CHANGELOG → docs → skill → landing page → URL share smoke test.

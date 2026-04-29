@@ -20,6 +20,8 @@ wiremd <input> [options]
 | `--watch-pattern <glob>` | — | string | — | Override the glob pattern of files to watch |
 | `--ignore <glob>` | — | string | — | Additional glob pattern to exclude from watching |
 | `--pretty` | `-p` | boolean | `true` | Pretty-print output |
+| `--show-comments` | — | boolean | `false` | Render inline `<!-- comments -->` as sticky-note callouts |
+| `--hide-comments` | — | boolean | — | Strip all inline comments from output (default) |
 | `--help` | `-h` | — | — | Print help and exit |
 | `--version` | `-v` | — | — | Print version and exit |
 

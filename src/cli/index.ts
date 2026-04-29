@@ -28,6 +28,7 @@ export interface CLIOptions {
   pretty?: boolean;
   watchPattern?: string;
   ignorePattern?: string;
+  showComments?: boolean;
 }
 
 export function showHelp(): void {
@@ -49,6 +50,8 @@ OPTIONS:
   --watch-pattern <pattern>  Glob pattern for files to watch (e.g., "**/*.md")
   --ignore <pattern>         Glob pattern for files to ignore (e.g., "**/node_modules/**")
   -p, --pretty               Pretty print output (default: true)
+  --show-comments            Show inline comments as sticky-note callouts
+  --hide-comments            Strip inline comments from output (default)
   -h, --help                 Show this help message
   -v, --version              Show version number
 
@@ -167,6 +170,14 @@ export function parseArgs(args: string[]): CLIOptions | null {
         options.ignorePattern = args[++i];
         break;
 
+      case '--show-comments':
+        options.showComments = true;
+        break;
+
+      case '--hide-comments':
+        options.showComments = false;
+        break;
+
       case '-p':
       case '--pretty':
         options.pretty = true;
@@ -224,7 +235,7 @@ export function checkFileSize(filePath: string): void {
 }
 
 export function generateOutput(options: CLIOptions): string {
-  const { input, format, style, pretty } = options;
+  const { input, format, style, pretty, showComments } = options;
 
   // Check if input file exists
   if (!existsSync(input)) {
@@ -245,7 +256,7 @@ export function generateOutput(options: CLIOptions): string {
   if (format === 'json') {
     return renderToJSON(ast, { pretty });
   } else {
-    return renderToHTML(ast, { style, pretty, inlineStyles: true });
+    return renderToHTML(ast, { style, pretty, inlineStyles: true, showComments: showComments ?? false });
   }
 }
 

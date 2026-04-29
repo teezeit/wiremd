@@ -48,6 +48,17 @@ You can also set a default in your VS Code settings:
 
 Click the **Viewport** button in the preview toolbar to pick a size: Desktop, Laptop, Tablet, Mobile, or Full Width.
 
+## Toggle inline comments
+
+Click the **💬 Comments On/Off** button in the preview toolbar to show or hide inline comment callouts. Comments are written as standard HTML comments in your markdown:
+
+```markdown
+<!-- Is this the right CTA? @sara -->
+[Sign Up]*
+```
+
+When visible, they render as yellow sticky-note callouts. Toggle them off for a clean view without changing the source file.
+
 ## Browse the component reference
 
 Click the **?** button in the preview toolbar to open the component docs — a rendered, interactive reference of every wiremd component, served directly from the extension.

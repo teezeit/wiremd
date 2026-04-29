@@ -142,7 +142,8 @@ export function validate(ast: DocumentNode): ValidationError[] {
       'table', 'table-header', 'table-row', 'table-cell', 'blockquote', 'code',
       'tabs', 'tab', 'accordion', 'accordion-item', 'breadcrumbs', 'breadcrumb-item',
       'alert', 'badge', 'separator',
-      'loading-state', 'empty-state', 'error-state'
+      'loading-state', 'empty-state', 'error-state',
+      'comment',
     ];
 
     if (!validTypes.includes(nodeType)) {

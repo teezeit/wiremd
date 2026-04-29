@@ -226,6 +226,15 @@ Content here
 Changes saved.
 :::
 
+# Inline comments — render as yellow sticky-note callouts
+<!-- Is this the right CTA? @tobias -->
+[Sign Up]*
+
+::: card
+<!-- Why a button here instead of a link? -->
+[Learn more]
+:::
+
 # Annotations for states and design notes
 > **Loading state:** spinner + "Loading..."
 > **Empty state:** "No items yet" + [Add Item]*

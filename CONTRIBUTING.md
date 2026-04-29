@@ -185,6 +185,42 @@ describe('Feature Name', () => {
 });
 ```
 
+## Feature Development Checklist
+
+Run through this before opening a PR for any new syntax, render option, or user-visible behaviour.
+
+### Core implementation
+- [ ] **Types** — add node type to `WiremdNode` union in `src/types.ts`; add any new option to `RenderOptions`
+- [ ] **Parser** — handle new MDAST node type in `src/parser/transformer.ts`; add to `validTypes` in `src/parser/index.ts`
+- [ ] **HTML renderer** — add `case` in `src/renderer/html-renderer.ts`; extend `RenderContext` if needed
+- [ ] **CSS** — add shared structural CSS in `src/renderer/styles.ts` (`getStyleCSS`)
+- [ ] **React renderer** — add `case` in `src/renderer/react-renderer.ts` (full or silent no-op)
+- [ ] **Tailwind renderer** — add `case` in `src/renderer/tailwind-renderer.ts` (full or silent no-op)
+- [ ] **Renderer index** — plumb any new `RenderOptions` field through all four render functions in `src/renderer/index.ts`
+- [ ] **Public exports** — export new types/options from `src/index.ts` so library consumers can use them
+
+### Entry points
+- [ ] **CLI** — add flag(s) to `CLIOptions` and `parseArgs` in `src/cli/index.ts`; pass through `generateOutput`
+- [ ] **Web editor** — update `renderMarkup.ts`, `preview.ts` (state + setter), `main.ts` (event wiring), `index.html` (UI control)
+- [ ] **VS Code extension** — update `preview-provider.ts` (state, `handleMessage` case, toolbar button); register command in `extension.ts` if needed
+
+### Quality
+- [ ] **Tests (TDD)** — write failing tests first in `tests/parser.test.ts`, `tests/renderer.test.ts`, `tests/cli-unit.test.ts`; confirm green after implementation
+- [ ] **Full suite** — `npm test` passes with no regressions (currently 659 tests)
+- [ ] **Typecheck** — `npm run typecheck` clean
+
+### Documentation & distribution
+- [ ] **CHANGELOG.md** — add entry under `[Unreleased]`
+- [ ] **`docs/components/`** — create a component page with live `::: demo` blocks; add to `_sidebar.md`
+- [ ] **`docs/reference/cli.md`** — add any new flags to the flags table
+- [ ] **Claude skill** — update `.claude/skills/wireframe/references/syntax.md` and add example to `SKILL.md` quick reference
+- [ ] **Landing page** (`index.html`) — update feature list if the change is a meaningful selling point
+- [ ] **README.md** — update if the change affects installation, usage, or the headline feature list
+
+### Smoke test
+- [ ] **URL share** — paste a wireframe using the new feature into the editor, copy link, open in a new tab — confirm it round-trips correctly
+- [ ] **Notion embed** — if applicable, embed the share URL in a Notion page and confirm it renders
+
 ## Release Process
 
 Releases are managed by project maintainers following semantic versioning (semver):

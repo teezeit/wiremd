@@ -14,6 +14,7 @@ export interface RenderContext {
   classPrefix: string;
   inlineStyles: boolean;
   pretty: boolean;
+  showComments: boolean;
 }
 
 /**
@@ -124,6 +125,9 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
 
     case 'demo':
       return renderDemo(node, context);
+
+    case 'comment':
+      return renderComment(node, context);
 
     default:
       return `<!-- Unknown node type: ${(node as any).type} -->`;
@@ -780,6 +784,11 @@ function renderDemo(node: any, context: RenderContext): string {
     <pre><code>${codeHTML}</code></pre>
   </div>
 </div>`;
+}
+
+function renderComment(node: any, context: RenderContext): string {
+  if (!context.showComments) return '';
+  return `<span class="${context.classPrefix}comment">${escapeHtml(node.text)}</span>`;
 }
 
 /**

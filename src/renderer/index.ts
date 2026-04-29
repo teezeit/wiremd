@@ -38,6 +38,7 @@ export function renderToHTML(
     inlineStyles = true,
     pretty = true,
     classPrefix = 'wmd-',
+    showComments = true,
   } = options;
 
   const context = {
@@ -45,6 +46,7 @@ export function renderToHTML(
     classPrefix,
     inlineStyles,
     pretty,
+    showComments,
   };
 
   // Render all children
@@ -109,6 +111,7 @@ export function renderToReact(
     classPrefix = 'wmd-',
     typescript = true,
     componentName = 'WiremdComponent',
+    showComments: _showComments = true, // accepted for API consistency; comment nodes are silent no-ops in JSX
   } = options;
 
   const context: ReactRenderer.ReactRenderContext = {
@@ -158,7 +161,10 @@ export function renderToTailwind(
   ast: DocumentNode,
   options: RenderOptions = {}
 ): string {
-  const { pretty = true } = options;
+  const {
+    pretty = true,
+    showComments: _showComments = true, // accepted for API consistency; comment nodes are silent no-ops in Tailwind output
+  } = options;
 
   const context: TailwindRenderer.TailwindRenderContext = {
     pretty,

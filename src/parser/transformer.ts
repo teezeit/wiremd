@@ -114,6 +114,12 @@ function transformNode(
         props: {},
       };
 
+    case 'html': {
+      const m = (node.value as string).match(/^<!--([\s\S]*?)-->$/);
+      if (m) return { type: 'comment', text: m[1].trim() };
+      return null;
+    }
+
     default:
       // Warn about unsupported nodes in development
       if (process.env.NODE_ENV !== 'production') {
