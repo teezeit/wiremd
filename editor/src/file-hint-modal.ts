@@ -20,7 +20,7 @@ export function showFileHintModal(opts: FileHintModalOpts): { close: () => void 
 
   const title = document.createElement('h2');
   title.className = 'ed-modal__title';
-  title.textContent = 'Claude prepared a wireframe for you';
+  title.textContent = 'A wireframe file is ready to open';
 
   const filename = document.createElement('div');
   filename.className = 'ed-modal__filename';
