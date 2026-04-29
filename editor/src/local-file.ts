@@ -19,6 +19,7 @@ export interface WireFileHandle {
 export type ShowOpenPicker = (opts?: {
   types?: Array<{ description?: string; accept: Record<string, string[]> }>;
   mode?: string;
+  startIn?: string;
 }) => Promise<WireFileHandle[]>;
 
 export type ShowSavePicker = (opts?: {
@@ -45,9 +46,10 @@ function isAbort(e: unknown): boolean {
 
 export async function openLocalFile(
   showOpenPicker: ShowOpenPicker,
+  opts: { startIn?: string } = {},
 ): Promise<LocalFileResult | null> {
   try {
-    const [handle] = await showOpenPicker({ ...MD_TYPE, mode: 'readwrite' });
+    const [handle] = await showOpenPicker({ ...MD_TYPE, mode: 'readwrite', ...opts });
     const file = await handle.getFile();
     return { handle, content: await file.text(), lastModified: file.lastModified };
   } catch (e) {

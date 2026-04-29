@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseFileHint, basenameFromPath, buildFileHintUrl } from '../src/file-hint.js';
+import { parseFileHint, basenameFromPath, buildFileHintUrl, startInFromPath } from '../src/file-hint.js';
 
 describe('basenameFromPath', () => {
   it('extracts filename from a Unix path', () => {
@@ -118,5 +118,53 @@ describe('buildFileHintUrl', () => {
     const params = new URL(url).searchParams;
     expect(params.get('style')).toBe('clean');
     expect(params.get('file')).toBe('/path/file.md');
+  });
+});
+
+// --- startInFromPath ---
+
+describe('startInFromPath', () => {
+  it('returns "desktop" for a file on the Desktop', () => {
+    expect(startInFromPath('/Users/tobias/Desktop/wireframe.md')).toBe('desktop');
+  });
+
+  it('returns "desktop" case-insensitively', () => {
+    expect(startInFromPath('/Users/tobias/desktop/wireframe.md')).toBe('desktop');
+  });
+
+  it('returns "documents" for a file in Documents', () => {
+    expect(startInFromPath('/Users/tobias/Documents/spec.md')).toBe('documents');
+  });
+
+  it('returns "downloads" for a file in Downloads', () => {
+    expect(startInFromPath('/Users/tobias/Downloads/draft.md')).toBe('downloads');
+  });
+
+  it('returns "pictures" for a file in Pictures', () => {
+    expect(startInFromPath('/Users/tobias/Pictures/image.md')).toBe('pictures');
+  });
+
+  it('returns "music" for a file in Music', () => {
+    expect(startInFromPath('/Users/tobias/Music/track.md')).toBe('music');
+  });
+
+  it('returns "videos" for a file in Videos', () => {
+    expect(startInFromPath('/Users/tobias/Videos/clip.md')).toBe('videos');
+  });
+
+  it('returns undefined for an arbitrary project path', () => {
+    expect(startInFromPath('/Users/tobias/projects/wiremd/wireframe.md')).toBeUndefined();
+  });
+
+  it('returns undefined for a bare filename', () => {
+    expect(startInFromPath('wireframe.md')).toBeUndefined();
+  });
+
+  it('handles Windows Desktop paths', () => {
+    expect(startInFromPath('C:\\Users\\tobias\\Desktop\\wireframe.md')).toBe('desktop');
+  });
+
+  it('handles Windows Documents paths', () => {
+    expect(startInFromPath('C:\\Users\\tobias\\Documents\\spec.md')).toBe('documents');
   });
 });

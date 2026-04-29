@@ -13,7 +13,7 @@ import { initToolbar, showToast } from './toolbar.js';
 import { examples } from './examples.js';
 import { decodeShareHash, encodeShareHash } from './url-share.js';
 import { createFileSyncIndicator } from './file-sync-indicator.js';
-import { basenameFromPath, parseFileHint } from './file-hint.js';
+import { basenameFromPath, parseFileHint, startInFromPath } from './file-hint.js';
 import { showFileHintModal } from './file-hint-modal.js';
 import {
   isFileSystemAccessSupported,
@@ -312,7 +312,7 @@ if (sharedContent !== null) {
     supported: isFileSystemAccessSupported(),
     onOpen: async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result = await openLocalFile((window as any).showOpenFilePicker);
+      const result = await openLocalFile((window as any).showOpenFilePicker, { startIn: startInFromPath(fileHintPath) });
       if (result) linkFile(result);
     },
     onDismiss: () => {

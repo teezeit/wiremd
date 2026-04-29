@@ -1,5 +1,18 @@
 /** wiremd Editor - ?file= URL hint parsing and construction */
 
+type WellKnownDir = 'desktop' | 'documents' | 'downloads' | 'pictures' | 'music' | 'videos';
+
+const WELL_KNOWN: WellKnownDir[] = ['desktop', 'documents', 'downloads', 'pictures', 'music', 'videos'];
+
+export function startInFromPath(filePath: string): WellKnownDir | undefined {
+  const parts = filePath.split(/[/\\]/);
+  for (const part of parts) {
+    const lower = part.toLowerCase() as WellKnownDir;
+    if (WELL_KNOWN.includes(lower)) return lower;
+  }
+  return undefined;
+}
+
 export function basenameFromPath(filePath: string): string {
   const parts = filePath.split(/[/\\]/);
   return parts.filter(Boolean).pop() ?? filePath;
