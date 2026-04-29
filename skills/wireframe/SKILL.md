@@ -1,5 +1,5 @@
 ---
-name: wiremd:wireframe
+name: wireframe
 description: >-
   Create and render wireframes using wiremd — a text-first tool that converts Markdown into visual
   HTML mockups. Use this skill whenever the user wants to wireframe, mockup, prototype, or sketch
