@@ -325,6 +325,27 @@ async function openViaPickerAndLink(hintPath: string | null) {
   }
 }
 
+async function openRecentHandle(handle: WireFileHandle, path: string) {
+  if (handle.requestPermission) {
+    const perm = await handle.requestPermission({ mode: 'readwrite' });
+    if (perm !== 'granted') {
+      await openViaPickerAndLink(path);
+      return;
+    }
+  }
+  const file = await handle.getFile();
+  linkFile({ handle, content: await file.text(), lastModified: file.lastModified });
+}
+
+async function onRecentOpen(handle: WireFileHandle | null, path: string) {
+  if (handle) {
+    await openRecentHandle(handle, path);
+  } else {
+    showToast(toast, `Please reselect ${basenameFromPath(path)} to reconnect`);
+    await openViaPickerAndLink(path);
+  }
+}
+
 if (sharedContent !== null) {
   editor.setValue(sharedContent);
 } else if (fileHintPath) {
@@ -332,19 +353,31 @@ if (sharedContent !== null) {
   const match = recentFiles.find((e) => e.path === fileHintPath && e.handle !== null);
 
   if (match) {
-    // Silent reopen — handle is in memory from this session
-    stripHintFromUrl();
-    try {
-      const file = await match.handle!.getFile();
-      linkFile({ handle: match.handle!, content: await file.text(), lastModified: file.lastModified });
-      showToast(toast, `Reopened ${match.name}`);
-    } catch {
+    const perm = await match.handle!.queryPermission?.({ mode: 'readwrite' });
+    if (perm === undefined || perm === 'granted') {
+      // Silent reopen — permission already granted (or handle has no queryPermission)
+      stripHintFromUrl();
+      try {
+        const file = await match.handle!.getFile();
+        linkFile({ handle: match.handle!, content: await file.text(), lastModified: file.lastModified });
+        showToast(toast, `Reopened ${match.name}`);
+      } catch {
+        showFileHintModal({
+          fullPath: fileHintPath,
+          supported: isFileSystemAccessSupported(),
+          recentFiles,
+          onOpen: async () => { stripHintFromUrl(); await openViaPickerAndLink(fileHintPath); },
+          onRecentOpen: async (handle, path) => { stripHintFromUrl(); await onRecentOpen(handle, path); },
+          onDismiss: () => { stripHintFromUrl(); if (examples.length > 0) editor.setValue(examples[0].code); },
+        });
+      }
+    } else {
       showFileHintModal({
         fullPath: fileHintPath,
         supported: isFileSystemAccessSupported(),
         recentFiles,
         onOpen: async () => { stripHintFromUrl(); await openViaPickerAndLink(fileHintPath); },
-        onRecentOpen: async (handle, path) => { stripHintFromUrl(); if (handle) { const file = await handle.getFile(); linkFile({ handle, content: await file.text(), lastModified: file.lastModified }); } else { await openViaPickerAndLink(path); } },
+        onRecentOpen: async (handle, path) => { stripHintFromUrl(); await onRecentOpen(handle, path); },
         onDismiss: () => { stripHintFromUrl(); if (examples.length > 0) editor.setValue(examples[0].code); },
       });
     }
@@ -354,7 +387,7 @@ if (sharedContent !== null) {
       supported: isFileSystemAccessSupported(),
       recentFiles,
       onOpen: async () => { stripHintFromUrl(); await openViaPickerAndLink(fileHintPath); },
-      onRecentOpen: async (handle, path) => { stripHintFromUrl(); if (handle) { const file = await handle.getFile(); linkFile({ handle, content: await file.text(), lastModified: file.lastModified }); } else { await openViaPickerAndLink(path); } },
+      onRecentOpen: async (handle, path) => { stripHintFromUrl(); await onRecentOpen(handle, path); },
       onDismiss: () => { stripHintFromUrl(); if (examples.length > 0) editor.setValue(examples[0].code); },
     });
   }
@@ -364,7 +397,7 @@ if (sharedContent !== null) {
     showFileHintModal({
       supported: isFileSystemAccessSupported(),
       recentFiles,
-      onRecentOpen: async (handle, path) => { if (handle) { const file = await handle.getFile(); linkFile({ handle, content: await file.text(), lastModified: file.lastModified }); } else { await openViaPickerAndLink(path); } },
+      onRecentOpen,
       onDismiss: () => { if (examples.length > 0) editor.setValue(examples[0].code); },
     });
   } else {

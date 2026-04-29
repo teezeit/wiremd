@@ -691,6 +691,13 @@ body {
   color: var(--ed-text-secondary);
 }
 
+.ed-modal__divider {
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--ed-border);
+  margin: 12px 0 4px;
+}
+
 .ed-modal__recent {
   width: 100%;
   margin-top: 4px;

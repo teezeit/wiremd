@@ -443,6 +443,109 @@ describe('editor main bootstrap', () => {
     expect(mainMocks.addToHistory).toHaveBeenCalledWith(handle, '/Users/tobias/Desktop/wireframe.md');
   });
 
+  it('onRecentOpen calls requestPermission before opening a cross-session handle', async () => {
+    const { window } = setupDom();
+
+    const requestPermission = vi.fn().mockResolvedValue('granted');
+    const handle = { ...makeHandle('doc.md'), requestPermission };
+
+    mainMocks.getRecentFiles.mockResolvedValue([
+      { name: 'doc.md', path: '/path/doc.md', handle },
+    ]);
+    makeEditorPreview();
+    mainMocks.showFileHintModal.mockImplementation(() => ({ close: vi.fn() }));
+
+    await import('../src/main.js');
+
+    const opts = mainMocks.showFileHintModal.mock.calls[0][0];
+    await opts.onRecentOpen(handle, '/path/doc.md');
+
+    expect(requestPermission).toHaveBeenCalledWith({ mode: 'readwrite' });
+    expect(handle.getFile).toHaveBeenCalled();
+  });
+
+  it('onRecentOpen falls back to picker when requestPermission returns denied', async () => {
+    const { window } = setupDom();
+
+    const requestPermission = vi.fn().mockResolvedValue('denied');
+    const handle = { ...makeHandle('doc.md'), requestPermission };
+
+    mainMocks.getRecentFiles.mockResolvedValue([
+      { name: 'doc.md', path: '/path/doc.md', handle },
+    ]);
+    makeEditorPreview();
+    mainMocks.showFileHintModal.mockImplementation(() => ({ close: vi.fn() }));
+
+    await import('../src/main.js');
+
+    const opts = mainMocks.showFileHintModal.mock.calls[0][0];
+    await opts.onRecentOpen(handle, '/path/doc.md');
+
+    expect(requestPermission).toHaveBeenCalledWith({ mode: 'readwrite' });
+    expect(mainMocks.openLocalFile).toHaveBeenCalled();
+    expect(handle.getFile).not.toHaveBeenCalled();
+  });
+
+  it('onRecentOpen shows reconnect toast and opens picker when handle is null', async () => {
+    const { window, elements } = setupDom();
+
+    mainMocks.getRecentFiles.mockResolvedValue([
+      { name: 'lost.md', path: '/path/lost.md', handle: null },
+    ]);
+    makeEditorPreview();
+    mainMocks.showFileHintModal.mockImplementation(() => ({ close: vi.fn() }));
+
+    await import('../src/main.js');
+
+    const opts = mainMocks.showFileHintModal.mock.calls[0][0];
+    await opts.onRecentOpen(null, '/path/lost.md');
+
+    expect(mainMocks.showToast).toHaveBeenCalledWith(
+      elements['toast'],
+      'Please reselect lost.md to reconnect',
+    );
+    expect(mainMocks.openLocalFile).toHaveBeenCalled();
+  });
+
+  it('shows modal instead of silent reopen when queryPermission is not granted', async () => {
+    const { window } = setupDom();
+    window.location.search = '?file=%2FUsers%2Ftobias%2FDesktop%2Fwireframe.md';
+
+    const queryPermission = vi.fn().mockResolvedValue('prompt');
+    const handle = { ...makeHandle('wireframe.md'), queryPermission };
+    mainMocks.getRecentFiles.mockResolvedValue([
+      { name: 'wireframe.md', path: '/Users/tobias/Desktop/wireframe.md', handle },
+    ]);
+    makeEditorPreview();
+    mainMocks.showFileHintModal.mockImplementation(() => ({ close: vi.fn() }));
+
+    await import('../src/main.js');
+
+    expect(mainMocks.showFileHintModal).toHaveBeenCalledTimes(1);
+    expect(mainMocks.showToast).not.toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringContaining('Reopened'),
+    );
+  });
+
+  it('still silently reopens when queryPermission returns granted', async () => {
+    const { window } = setupDom();
+    window.location.search = '?file=%2FUsers%2Ftobias%2FDesktop%2Fwireframe.md';
+
+    const queryPermission = vi.fn().mockResolvedValue('granted');
+    const handle = { ...makeHandle('wireframe.md'), queryPermission };
+    mainMocks.getRecentFiles.mockResolvedValue([
+      { name: 'wireframe.md', path: '/Users/tobias/Desktop/wireframe.md', handle },
+    ]);
+    makeEditorPreview();
+
+    await import('../src/main.js');
+
+    expect(mainMocks.showFileHintModal).not.toHaveBeenCalled();
+    expect(mainMocks.showToast).toHaveBeenCalledWith(expect.anything(), 'Reopened wireframe.md');
+    expect(window.location.search).toBe('');
+  });
+
   it('onCopyLink flushes pending changes, syncs URL and copies location.href', async () => {
     const { window, elements } = setupDom();
 

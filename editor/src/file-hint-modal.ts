@@ -52,6 +52,12 @@ export function showFileHintModal(opts: FileHintModalOpts): { close: () => void 
 
   const recent = opts.recentFiles ?? [];
   if (recent.length > 0) {
+    if (opts.fullPath) {
+      const hr = document.createElement('hr');
+      hr.className = 'ed-modal__divider';
+      modal.appendChild(hr);
+    }
+
     const section = document.createElement('div');
     section.className = 'ed-modal__recent';
 
