@@ -171,6 +171,7 @@ export interface RenderOptions {
   typescript?: boolean; // For React renderer
   componentName?: string; // For React renderer
   showComments?: boolean;
+  cursorSync?: boolean; // Inject postMessage cursor-highlight script (editor use)
 }
 
 // ============================================================================

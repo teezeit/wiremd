@@ -55,12 +55,14 @@ function makeContainerNode(
   containerType: string,
   attrs: string,
   children: any[],
+  position?: any,
 ): any {
   return {
     type: 'wiremdContainer',
     containerType,
     attributes: attrs,
     children,
+    position,
     data: {
       hName: 'div',
       hProperties: {
@@ -74,8 +76,8 @@ function makeContainerNode(
  * Collect and build a container starting at nodes[startIdx] (the opener paragraph).
  * Returns the container node and the index of the first node after the container.
  */
-function finishContainer(containerType: string, attrs: string, inline: string, children: any[], nextIndex: number): { node: any; nextIndex: number } {
-  const node = makeContainerNode(containerType, attrs, children);
+function finishContainer(containerType: string, attrs: string, inline: string, children: any[], nextIndex: number, position?: any): { node: any; nextIndex: number } {
+  const node = makeContainerNode(containerType, attrs, children, position);
   if (inline) node.inline = inline;
   if (containerType === 'demo') {
     node.rawContent = mdastNodesToText(children);
@@ -120,7 +122,7 @@ function collectContainer(
           children: [{ type: 'text', value: contentText }],
         });
       }
-      return finishContainer(opener.containerType, opener.attrs, opener.inline, children, startIdx + 1);
+      return finishContainer(opener.containerType, opener.attrs, opener.inline, children, startIdx + 1, openerNode.position);
     }
   }
 
@@ -163,7 +165,7 @@ function collectContainer(
         children: [{ type: 'text', value: opener.inline }],
       });
     }
-    return finishContainer(opener.containerType, opener.attrs, opener.inline, contentChildren, startIdx + 1);
+    return finishContainer(opener.containerType, opener.attrs, opener.inline, contentChildren, startIdx + 1, openerNode.position);
   }
 
   // === CASE 3: Multi-block container — collect until matching closer ::: ===
@@ -265,7 +267,7 @@ function collectContainer(
     i++;
   }
 
-  return finishContainer(opener.containerType, opener.attrs, opener.inline, containerChildren, i);
+  return finishContainer(opener.containerType, opener.attrs, opener.inline, containerChildren, i, openerNode.position);
 }
 
 /** Reconstruct wiremd source text from MDAST inline children. */

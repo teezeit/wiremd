@@ -52,6 +52,7 @@ export const remarkWiremdInlineContainers: Plugin = () => {
             content,
             items,
             attributes: attrs.trim(),
+            position: node.position,
             children: node.children,
             data: {
               hName: 'nav',

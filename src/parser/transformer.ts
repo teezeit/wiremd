@@ -144,6 +144,9 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
 
     const transformed = transformNode(node, options, nextNode);
     if (transformed) {
+      if (node.position && !(transformed as any).position) {
+        (transformed as any).position = node.position;
+      }
       result.push(transformed);
       if (transformed.type === 'select' && nextNode && nextNode.type === 'list') i++;
       if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {

@@ -29,6 +29,7 @@ export function renderMarkup(markdown: string, style: StyleName, showComments = 
       inlineStyles: true,
       pretty: true,
       showComments,
+      cursorSync: true,
     });
 
     return {
