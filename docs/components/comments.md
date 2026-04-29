@@ -6,37 +6,93 @@
 
 # Inline Comments
 
-Use standard HTML comment syntax to annotate any component. Comments render as yellow sticky-note callouts in the preview.
+Use standard HTML comment syntax to annotate components. Comments appear in a fixed side panel with numbered badges on annotated elements — keeping your wireframe clean while surfacing reviewer notes.
 
 ## Basic usage
 
-Place a comment on the line directly above the component you want to annotate.
+Place a comment on the line directly above the component you want to annotate. The annotated element gets a yellow outline and a numbered badge; the comment text appears in the side panel.
 
 ::: demo
 <!-- Is this the right CTA? -->
 [Sign Up]*
 :::
 
-## Multiple comments on one component
+## Threads — multiple comments on one element
 
-Stack comments above the same component to create a thread. Each `<!-- -->` becomes a separate callout.
+Stack consecutive comments above the same component to create a thread. All messages group into a single panel card with dividers.
 
 ::: demo
 <!-- Should this be "Sign In" instead? @tobias -->
-<!-- Agreed — let's align with the marketing copy @sara -->
+<!-- Agreed — let's align with the marketing copy. @sara -->
 [Login]*
 :::
 
-## Inside a container
+## Annotating a whole card
 
-Inside a `:::` block, the comment pins to the specific child that follows it — not the container.
+Place the comment **above** the `:::card` block to outline the entire card. A comment **inside** the block annotates only the specific child that follows it.
+
+::: demo
+<!-- Does this card need a footer action? -->
+::: card
+### Free Plan
+1 user · 5 projects
+
+[Get Started]
+
+:::
+:::
 
 ::: demo
 ::: card
-### Login
+### Pro Plan
+<!-- Is $12/mo the right price point? @tobias -->
+**$12/mo** · unlimited
 
-<!-- Is "Login" or "Sign In" the right label? -->
-[Login]*
+[Start Trial]*
+
+:::
+:::
+
+## Annotating a whole grid column
+
+Place the comment above the column heading to outline that column.
+
+::: demo
+::: grid-2
+
+### Current design
+
+The existing layout. Works but feels dated.
+
+<!-- Needs a full rethink — too much whitespace. @sara -->
+### Proposed design
+
+Tighter spacing, stronger hierarchy.
+
+:::
+:::
+
+## Comments between tabs
+
+A comment placed between `:::tab` blocks annotates the tab that follows it.
+
+::: demo
+::: tabs
+
+::: tab Overview
+## Product Overview
+
+[Get Started]*
+
+:::
+
+<!-- Do we need this tab at all? @tobias -->
+::: tab Details
+- Feature A
+- Feature B
+
+:::
+
 :::
 :::
 
@@ -52,13 +108,11 @@ multiple lines.
 
 ## Toggling visibility
 
-Comment text is freeform — any text is valid.
-
-| Context | Default | Override |
-|---------|---------|----------|
+| Context | Default | How to toggle |
+|---------|---------|---------------|
 | Web editor | visible | "Show comments" toggle in preview toolbar |
-| VS Code | visible | 💬 Comments On/Off button in preview toolbar |
-| CLI | **hidden** | `--show-comments` flag |
+| CLI serve (`--serve`) | visible | 💬 Comments button in toolbar |
+| CLI static output | **hidden** | `--show-comments` flag |
 
 ```bash
 wiremd my-screen.md -o output.html                    # comments hidden

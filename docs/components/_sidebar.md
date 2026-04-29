@@ -1,3 +1,4 @@
+
 ::: sidebar
 
 [[wiremd](./index.md)]*
@@ -12,7 +13,6 @@
 [[Navigation](./navigation.md)]
 [[Cards](./cards.md)]
 [[Tabs](./tabs.md)]
-<!-- hi there -->
 [[Alerts](./alerts.md)]
 [[Tables](./tables.md)]
 

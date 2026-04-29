@@ -8,7 +8,7 @@
  */
 
 import type { DocumentNode, RenderOptions } from '../types.js';
-import { renderNode } from './html-renderer.js';
+import { renderChildrenList, renderCommentsPanel } from './html-renderer.js';
 import { getStyleCSS } from './styles.js';
 import * as ReactRenderer from './react-renderer.js';
 import * as TailwindRenderer from './tailwind-renderer.js';
@@ -41,16 +41,27 @@ export function renderToHTML(
     showComments = true,
   } = options;
 
+  const collectedComments: Array<{ id: number; texts: string[] }> = [];
   const context = {
     style,
     classPrefix,
     inlineStyles,
     pretty,
     showComments,
+    _comments: showComments ? collectedComments : undefined,
+    _nextCommentId: null as number | null,
   };
 
-  // Render all children
-  const childrenHTML = ast.children.map((child) => renderNode(child, context)).join('\n');
+  // Render all children (comment nodes are intercepted and collected)
+  const childrenHTML = renderChildrenList(ast.children, context);
+
+  // Append fixed side panel when there are comments
+  const panelHTML = showComments && collectedComments.length > 0
+    ? renderCommentsPanel(collectedComments, classPrefix)
+    : '';
+  const bodyClass = showComments && collectedComments.length > 0
+    ? `${classPrefix}root ${classPrefix}${style} ${classPrefix}has-comments`
+    : `${classPrefix}root ${classPrefix}${style}`;
 
   // Build complete HTML document
   const css = inlineStyles ? getStyleCSS(style, classPrefix) : '';
@@ -63,8 +74,9 @@ export function renderToHTML(
   <title>wiremd Mockup</title>
   ${css ? `<style>\n${css}\n  </style>` : ''}
 </head>
-<body class="${classPrefix}root ${classPrefix}${style}">
+<body class="${bodyClass}">
   ${childrenHTML}
+  ${panelHTML}
 </body>
 </html>`;
 

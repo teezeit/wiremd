@@ -80,7 +80,52 @@ export function getStyleCSS(style: string, prefix: string): string {
     case 'brutal':    themeCSS = getBrutalStyle(prefix); break;
     default:          themeCSS = getSketchStyle(prefix);
   }
-  return linkButtonReset + tabsStructural + rowStructural + demoStructural + commentStructural + themeCSS;
+  const commentPanelStructural = `
+.${prefix}annotated { position: relative; outline: 2px solid #f9a825; outline-offset: 3px; border-radius: 3px; }
+.${prefix}comment-badge {
+  position: absolute; top: -10px; right: -10px;
+  width: 20px; height: 20px; background: #f9a825; color: #fff;
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1; box-shadow: 0 1px 4px rgba(0,0,0,0.25); cursor: default;
+}
+.${prefix}has-comments { padding-right: 276px; }
+.${prefix}comments-panel {
+  position: fixed; top: 0; right: 0; width: 260px; height: 100vh;
+  overflow-y: auto; background: #fff; border-left: 1px solid #e0e0e0;
+  box-shadow: -2px 0 12px rgba(0,0,0,0.08); padding: 16px 14px;
+  z-index: 200; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+}
+.${prefix}comments-panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; font-weight: 600; font-size: 0.82em; color: #333;
+  border-bottom: 1px solid #f0f0f0; padding-bottom: 10px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.${prefix}comments-panel-count {
+  background: #f9a825; color: #fff; border-radius: 10px;
+  padding: 1px 7px; font-size: 11px; font-weight: 700;
+  letter-spacing: 0; text-transform: none;
+}
+.${prefix}comment-card {
+  display: flex; gap: 10px; margin-bottom: 10px; padding: 10px;
+  background: #fffde7; border: 1px solid #f9a825; border-radius: 6px;
+}
+.${prefix}comment-card-badge {
+  flex-shrink: 0; width: 20px; height: 20px; background: #f9a825; color: #fff;
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1; margin-top: 2px;
+}
+.${prefix}comment-card-body { display: flex; flex-direction: column; min-width: 0; }
+.${prefix}comment-msg { font-size: 0.82em; color: #5d4037; line-height: 1.45; font-style: italic; }
+.${prefix}comment-msg-divider { height: 1px; background: #f0c040; margin: 6px 0; opacity: 0.6; }
+`;
+
+  return linkButtonReset + tabsStructural + rowStructural + demoStructural + commentStructural + commentPanelStructural + themeCSS;
 }
 
 /**

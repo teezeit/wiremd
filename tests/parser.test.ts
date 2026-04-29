@@ -1904,5 +1904,45 @@ Some **bold** content
       const comments = result.children.filter((n) => n.type === 'comment');
       expect(comments).toHaveLength(1);
     });
+
+    describe('Comment routing in grid cells', () => {
+      it('comment before a grid cell heading goes into that cell, not the previous one', () => {
+        const md = '::: grid-2\n\n### Col A\ncontent\n\n<!-- check this -->\n### Col B\ncontent\n\n:::';
+        const ast = parse(md);
+        const grid = ast.children[0] as any;
+        const colA = grid.children[0];
+        const colB = grid.children[1];
+        expect(colA.children.every((n: any) => n.type !== 'comment')).toBe(true);
+        expect(colB.children[0]).toMatchObject({ type: 'comment', text: 'check this' });
+      });
+
+      it('multiple comments before a grid cell all go into that cell', () => {
+        const md = '::: grid-3\n\n### A\n\n<!-- first -->\n<!-- second -->\n### B\n\n### C\n\n:::';
+        const ast = parse(md);
+        const grid = ast.children[0] as any;
+        const colB = grid.children[1];
+        const comments = colB.children.filter((n: any) => n.type === 'comment');
+        expect(comments).toHaveLength(2);
+        expect(colB.children[0]).toMatchObject({ type: 'comment', text: 'first' });
+      });
+
+      it('comment after the last grid cell stays in that cell (no next cell)', () => {
+        const md = '::: grid-2\n\n### Col A\ncontent\n\n### Col B\ncontent\n<!-- trailing -->\n\n:::';
+        const ast = parse(md);
+        const grid = ast.children[0] as any;
+        const colB = grid.children[1];
+        expect(colB.children.some((n: any) => n.type === 'comment')).toBe(true);
+      });
+
+      it('comment before a row item goes into that item, not the previous one', () => {
+        const md = '::: row\n\n### {.left}\n[Search___]{type:search}\n\n<!-- fix label -->\n### {.right}\n[Filter v]\n\n:::';
+        const ast = parse(md);
+        const row = ast.children[0] as any;
+        const itemA = row.children[0];
+        const itemB = row.children[1];
+        expect(itemA.children.every((n: any) => n.type !== 'comment')).toBe(true);
+        expect(itemB.children[0]).toMatchObject({ type: 'comment', text: 'fix label' });
+      });
+    });
   });
 });

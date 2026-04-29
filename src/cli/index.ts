@@ -287,7 +287,7 @@ export function main(): void {
         port: options.serve,
         rootDir,
         inputFile: indexFile,
-        renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath }),
+        renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath, showComments: true }),
       });
       console.log('');
     }
@@ -352,7 +352,7 @@ export function main(): void {
       startServer({
         port,
         outputPath: options.output,
-        renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath }),
+        renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath, showComments: true }),
         rootDir: dirname(options.input),
         inputFile: basename(options.input),
       });

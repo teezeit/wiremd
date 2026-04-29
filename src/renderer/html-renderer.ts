@@ -15,6 +15,9 @@ export interface RenderContext {
   inlineStyles: boolean;
   pretty: boolean;
   showComments: boolean;
+  // Mutable state for side-panel comment collection (set by renderToHTML)
+  _comments?: Array<{ id: number; texts: string[] }>; // one entry per thread
+  _nextCommentId?: number | null;
 }
 
 /**
@@ -132,6 +135,80 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     default:
       return `<!-- Unknown node type: ${(node as any).type} -->`;
   }
+}
+
+/**
+ * Renders a list of children, intercepting comment nodes to build the side panel.
+ * When _comments is present on context, comment nodes are collected and the
+ * immediately following sibling is wrapped with a yellow outline + numbered badge.
+ */
+export function renderChildrenList(children: WiremdNode[], context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  let result = '';
+
+  // Isolate this scope: save any pending annotation from a parent scope and
+  // start fresh. After this call returns the parent's state is restored so it
+  // can still wrap its own element (e.g. the card that contains these children).
+  const parentNextCommentId = context._nextCommentId ?? null;
+  context._nextCommentId = null;
+
+  for (const node of children) {
+    if (node.type === 'comment') {
+      if (context.showComments && context._comments != null) {
+        const text = (node as any).text as string;
+        if (context._nextCommentId != null) {
+          // Consecutive comment — append to current thread
+          const thread = context._comments.find(c => c.id === context._nextCommentId);
+          if (thread) thread.texts.push(text);
+        } else {
+          // First comment in a new thread
+          const id = context._comments.length + 1;
+          context._comments.push({ id, texts: [text] });
+          context._nextCommentId = id;
+        }
+      }
+      continue;
+    }
+
+    const html = renderNode(node, context);
+
+    if (context.showComments && context._comments != null && context._nextCommentId != null) {
+      const id = context._nextCommentId;
+      context._nextCommentId = null;
+      result += `<div class="${prefix}annotated" id="wmd-ann-${id}"><span class="${prefix}comment-badge">${id}</span>${html}</div>\n`;
+    } else {
+      result += html + '\n';
+    }
+  }
+
+  // Restore parent scope so the caller can wrap its own element if needed
+  context._nextCommentId = parentNextCommentId;
+
+  return result.trim();
+}
+
+export function renderCommentsPanel(comments: Array<{ id: number; texts: string[] }>, prefix: string): string {
+  const items = comments.map(c => {
+    const messages = c.texts.map((text, i) => {
+      const divider = i < c.texts.length - 1
+        ? `<div class="${prefix}comment-msg-divider"></div>`
+        : '';
+      return `<div class="${prefix}comment-msg">${escapeHtml(text)}</div>${divider}`;
+    }).join('');
+
+    return `<div class="${prefix}comment-card">` +
+      `<div class="${prefix}comment-card-badge">${c.id}</div>` +
+      `<div class="${prefix}comment-card-body">${messages}</div>` +
+      `</div>`;
+  }).join('\n  ');
+
+  return `<aside class="${prefix}comments-panel">
+  <div class="${prefix}comments-panel-header">
+    <span>💬 Comments</span>
+    <span class="${prefix}comments-panel-count">${comments.length}</span>
+  </div>
+  ${items}
+</aside>`;
 }
 
 function renderButton(node: any, context: RenderContext): string {
@@ -406,7 +483,7 @@ function renderContainer(node: any, context: RenderContext): string {
     return renderSidebarMainLayout(node, context, classes);
   }
 
-  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+  const childrenHTML = renderChildrenList(node.children || [], context);
 
   return `<div class="${classes}">
   ${childrenHTML}
@@ -438,7 +515,7 @@ function renderSidebarMainLayout(node: any, context: RenderContext, classes: str
   if (current) sections.push(current);
 
   const sectionsHTML = sections.map((s) => {
-    const contentHTML = s.nodes.map((child: any) => renderNode(child, context)).join('\n    ');
+    const contentHTML = renderChildrenList(s.nodes, context);
     return `  <div class="${prefix}layout-${s.name}">
     ${contentHTML}
   </div>`;
@@ -517,7 +594,7 @@ function renderGridItem(node: any, context: RenderContext, isCard = false): stri
   const extraClasses = isCard ? [...(node.props?.classes || []), 'grid-item-card'] : (node.props?.classes || []);
   const itemProps = { ...node.props, classes: extraClasses };
   const classes = buildClasses(prefix, 'grid-item', itemProps);
-  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n    ');
+  const childrenHTML = renderChildrenList(node.children || [], context);
 
   return `<div class="${classes}">
     ${childrenHTML}
@@ -719,7 +796,7 @@ function renderTabs(node: any, context: RenderContext): string {
   }).join('');
 
   const panels = tabs.map((tab: any, i: number) => {
-    const panelChildren = (tab.children || []).map((c: any) => renderNode(c, context)).join('\n    ');
+    const panelChildren = renderChildrenList(tab.children || [], context);
     const hidden = tab.active ? '' : ' hidden';
     return `<div class="${prefix}tab-panel" role="tabpanel" data-wmd-tab-panel="${i}"${hidden}>
     ${panelChildren}
@@ -788,6 +865,7 @@ function renderDemo(node: any, context: RenderContext): string {
 
 function renderComment(node: any, context: RenderContext): string {
   if (!context.showComments) return '';
+  if (context._comments != null) return ''; // handled upstream by renderChildrenList
   return `<span class="${context.classPrefix}comment">${escapeHtml(node.text)}</span>`;
 }
 

@@ -102,6 +102,33 @@ const liveReloadScript = `
     border-color: rgba(255,255,255,0.5);
   }
 
+  #wiremd-toolbar .comments-btn {
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.2s;
+    opacity: 0.5;
+  }
+
+  #wiremd-toolbar .comments-btn.active {
+    background: rgba(249,168,37,0.35);
+    border-color: rgba(249,168,37,0.7);
+    opacity: 1;
+  }
+
+  #wiremd-toolbar .comments-btn:hover {
+    opacity: 1;
+  }
+
+  /* Body-level class hides panel + annotations when comments toggled off */
+  body.wmd-comments-hidden .wmd-comments-panel { display: none !important; }
+  body.wmd-comments-hidden .wmd-annotated { outline: none !important; }
+  body.wmd-comments-hidden .wmd-comment-badge { display: none !important; }
+
   #wiremd-error-overlay {
     display: none;
     position: fixed;
@@ -241,6 +268,7 @@ const liveReloadScript = `
     <span>Connecting...</span>
   </div>
   <div class="spacer"></div>
+  <button class="comments-btn" id="wiremd-comments-btn">💬 Comments</button>
   <div class="viewport-selector">
     <button class="viewport-btn active" data-viewport="full">Full</button>
     <button class="viewport-btn" data-viewport="laptop">💻 Laptop</button>
@@ -283,6 +311,21 @@ const liveReloadScript = `
     const errorMessage = document.getElementById('wiremd-error-message');
     const reloadIndicator = document.getElementById('wiremd-reload-indicator');
 
+
+    // Comments toggle — show/hide panel + annotations via body class
+    const commentsBtn = document.getElementById('wiremd-comments-btn');
+    const hasComments = !!document.querySelector('.wmd-comments-panel');
+    const PANEL_WIDTH = '276px';
+    document.body.style.transition = 'padding-right 0.2s ease';
+    if (hasComments) {
+      commentsBtn.classList.add('active');
+      document.body.style.paddingRight = PANEL_WIDTH;
+    }
+    commentsBtn.addEventListener('click', () => {
+      const nowHidden = document.body.classList.toggle('wmd-comments-hidden');
+      document.body.style.paddingRight = nowHidden ? '0' : PANEL_WIDTH;
+      commentsBtn.classList.toggle('active', !nowHidden);
+    });
 
     // Viewport switcher
     document.querySelectorAll('.viewport-btn').forEach(btn => {

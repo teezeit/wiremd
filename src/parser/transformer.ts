@@ -159,6 +159,11 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
   return result;
 }
 
+/** Returns true if an MDAST node is an HTML comment (<!-- ... -->). */
+function isHtmlCommentNode(node: any): boolean {
+  return node.type === 'html' && typeof node.value === 'string' && /^<!--[\s\S]*-->$/.test(node.value.trim());
+}
+
 /**
  * Collect ### headings inside a ::: grid-N container as grid-item nodes.
  * The first heading depth encountered defines the item boundary level.
@@ -173,17 +178,26 @@ function collectGridItemsFromContainer(
   if (!firstHeading) return gridItems;
   const itemDepth = firstHeading.depth;
 
+  let pending: any[] = []; // HTML comment nodes to carry forward to the next cell
+
   let i = 0;
   while (i < children.length) {
     const child = children[i];
     if (child.type === 'heading' && child.depth === itemDepth) {
-      const rawItemNodes: any[] = [child];
+      const rawItemNodes: any[] = [...pending, child];
+      pending = [];
       i++;
       while (i < children.length) {
         const next = children[i];
         if (next.type === 'heading' && next.depth <= itemDepth) break;
         rawItemNodes.push(next);
         i++;
+      }
+      // Peel trailing HTML comments off to carry them into the next cell
+      if (i < children.length) {
+        let split = rawItemNodes.length;
+        while (split > 0 && isHtmlCommentNode(rawItemNodes[split - 1])) split--;
+        if (split < rawItemNodes.length) pending = rawItemNodes.splice(split);
       }
       const headingContent = extractTextContent(child);
       const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
@@ -220,6 +234,7 @@ function collectRowItemsFromContainer(
   if (hasHeadings) {
     const firstHeading = children.find((n: any) => n.type === 'heading');
     const itemDepth = firstHeading.depth;
+    let pending: any[] = [];
     let i = 0;
     while (i < children.length) {
       const child = children[i];
@@ -229,7 +244,8 @@ function collectRowItemsFromContainer(
         const itemProps: any = { classes: [] };
         if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
         i++;
-        const rawItemNodes: any[] = [];
+        const rawItemNodes: any[] = [...pending];
+        pending = [];
         while (i < children.length) {
           const next = children[i];
           if (next.type === 'heading' && next.depth <= itemDepth) break;
@@ -246,6 +262,12 @@ function collectRowItemsFromContainer(
             rawItemNodes.push(next);
             i++;
           }
+        }
+        // Peel trailing HTML comments off to carry them into the next item
+        if (i < children.length) {
+          let split = rawItemNodes.length;
+          while (split > 0 && isHtmlCommentNode(rawItemNodes[split - 1])) split--;
+          if (split < rawItemNodes.length) pending = rawItemNodes.splice(split);
         }
         items.push({
           type: 'grid-item',
@@ -318,9 +340,21 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
 
   // ::: tabs  (children are ::: tab containers)
   if (containerType === 'tabs') {
-    const tabs = (processNodeList(node.children || [], options) as any[]).filter(
-      (n: any) => n.type === 'tab',
-    );
+    const processed = processNodeList(node.children || [], options) as any[];
+    // Prepend comments that appear between :::tab blocks to the next tab's children
+    const pending: any[] = [];
+    const tabs: any[] = [];
+    for (const n of processed) {
+      if (n.type === 'comment') {
+        pending.push(n);
+      } else if (n.type === 'tab') {
+        if (pending.length > 0) {
+          n.children = [...pending, ...(n.children || [])];
+          pending.length = 0;
+        }
+        tabs.push(n);
+      }
+    }
     if (tabs.length > 0 && !tabs.some((t: any) => t.active)) {
       tabs[0].active = true;
     }

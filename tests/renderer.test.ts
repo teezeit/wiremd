@@ -1015,15 +1015,16 @@ content
   });
 
   describe('Comment Nodes', () => {
-    it('renders comment callout by default (showComments not set)', () => {
+    it('routes comment to side panel, not inline span', () => {
       const html = renderToHTML(parse('<!-- Is this right? @tobias -->'), { style: 'sketch' });
-      expect(html).toContain('wmd-comment');
+      expect(html).not.toContain('<span class="wmd-comment">');
+      expect(html).toContain('wmd-comments-panel');
       expect(html).toContain('Is this right? @tobias');
     });
 
-    it('renders comment when showComments: true', () => {
+    it('renders side panel when showComments: true', () => {
       const html = renderToHTML(parse('<!-- hello -->'), { style: 'sketch', showComments: true });
-      expect(html).toContain('wmd-comment');
+      expect(html).toContain('wmd-comments-panel');
       expect(html).toContain('hello');
     });
 
@@ -1031,36 +1032,136 @@ content
       const html = renderToHTML(parse('<!-- hello -->'), { style: 'sketch', showComments: false });
       expect(html).not.toContain('<span class="wmd-comment">');
       expect(html).not.toContain('>hello<');
+      expect(html).not.toContain('<aside class="wmd-comments-panel">');
     });
 
     it('retains sibling nodes when showComments: false', () => {
       const html = renderToHTML(parse('<!-- hidden -->\n[Sign Up]*'), { style: 'sketch', showComments: false });
-      expect(html).not.toContain('<span class="wmd-comment">');
+      expect(html).not.toContain('<aside class="wmd-comments-panel">');
       expect(html).toContain('Sign Up');
     });
 
-    it('comment appears before adjacent component in output', () => {
-      const html = renderToHTML(parse('<!-- First -->\n[Sign Up]*'), { style: 'sketch', showComments: true });
-      expect(html.indexOf('wmd-comment')).toBeLessThan(html.indexOf('Sign Up'));
+    it('annotates following element with wmd-annotated and badge', () => {
+      const html = renderToHTML(parse('<!-- note -->\n[Sign Up]*'), { style: 'sketch', showComments: true });
+      expect(html).toContain('wmd-annotated');
+      expect(html).toContain('wmd-comment-badge');
+      expect(html.indexOf('wmd-comment-badge')).toBeLessThan(html.indexOf('Sign Up'));
     });
 
     it('comment CSS is present in inline-styles output', () => {
       const html = renderToHTML(parse('<!-- x -->'), { style: 'sketch', inlineStyles: true });
       expect(html).toContain('.wmd-comment');
+      expect(html).toContain('.wmd-comments-panel');
     });
 
     it('escapes HTML special chars in comment text', () => {
       const html = renderToHTML(parse('<!-- <script>alert(1)</script> -->'), { style: 'sketch', showComments: true });
       expect(html).not.toContain('<script>');
-      expect(html).toContain('wmd-comment');
+      expect(html).toContain('wmd-comments-panel');
     });
 
     it('works with all styles', () => {
       const styles = ['sketch', 'clean', 'wireframe', 'material', 'brutal'] as const;
       for (const style of styles) {
-        const html = renderToHTML(parse('<!-- test -->'), { style, showComments: true });
-        expect(html).toContain('wmd-comment');
+        const html = renderToHTML(parse('<!-- test -->\n[Btn]*'), { style, showComments: true });
+        expect(html).toContain('wmd-comments-panel');
+        expect(html).toContain('wmd-annotated');
       }
+    });
+
+    it('comment inside a grid cell routes to side panel, not inline', () => {
+      const md = '::: grid-2\n\n### Left\n\n### {.right}\n\n<!-- check this -->\n[Action]*\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html).not.toContain('<span class="wmd-comment">');
+      expect(html).toContain('wmd-comments-panel');
+      expect(html).toContain('check this');
+    });
+
+    it('comment inside a card routes to side panel, not inline', () => {
+      const md = '::: card\n\n<!-- card note -->\n[Action]*\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html).not.toContain('<span class="wmd-comment">');
+      expect(html).toContain('wmd-comments-panel');
+      expect(html).toContain('card note');
+    });
+
+    it('comment inside a tab panel routes to side panel, not inline', () => {
+      const md = '::: tabs\n\n::: tab One\n\n<!-- tab note -->\n[Action]*\n\n:::\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html).not.toContain('<span class="wmd-comment">');
+      expect(html).toContain('wmd-comments-panel');
+      expect(html).toContain('tab note');
+    });
+
+    it('consecutive comments form a single thread', () => {
+      const md = '<!-- msg 1 -->\n<!-- msg 2 -->\n[Submit]*';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html).toContain('msg 1');
+      expect(html).toContain('msg 2');
+      expect(html).toContain('wmd-comment-msg-divider');
+      // Only one annotated element → one element badge
+      expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
+    });
+
+    it('panel count reflects thread count not individual comment count', () => {
+      const md = '<!-- a -->\n<!-- b -->\n[Btn1]*\n\n<!-- c -->\n[Btn2]*';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      // 2 threads: {a,b} and {c}
+      expect(html).toContain('wmd-comments-panel-count">2<');
+    });
+
+    it('comment above a card annotates the card, not its first child', () => {
+      const md = '<!-- verify card -->\n::: card\n## Inner Heading\ncontent\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      // wmd-annotated wrapper must open before the card container div
+      expect(html.indexOf('wmd-annotated')).toBeLessThan(html.indexOf('wmd-container-card'));
+      // only one badge — not one on card and another on the heading inside
+      expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
+    });
+
+    it('comment above a card does not leak into children of the card', () => {
+      const md = '<!-- outer -->\n::: card\n## Title\n[Action]*\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      // exactly one annotated wrapper — not one on the card and one inside it
+      expect((html.match(/class="wmd-annotated"/g) || []).length).toBe(1);
+    });
+
+    it('comment above a grid annotates the whole grid, not the first cell', () => {
+      const md = '<!-- grid note -->\n::: grid-2\n\n### Col A\n\n### Col B\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html.indexOf('class="wmd-annotated"')).toBeLessThan(html.indexOf('class="wmd-grid '));
+      expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
+    });
+
+    it('comment before a grid cell heading annotates that cell, not the previous one', () => {
+      const md = '::: grid-2\n\n### Col A\ncontent A\n\n<!-- check Col B -->\n### Col B\ncontent B\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html).toContain('check Col B');
+      expect(html).toContain('wmd-comments-panel');
+      // Only one badge — Col A must not be annotated
+      expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
+    });
+
+    it('comment before a row item annotates that item, not the previous one', () => {
+      const md = '::: row\n\n### {.left}\n[Search___]{type:search}\n\n<!-- fix label -->\n### {.right}\n[Filter v]\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html).toContain('fix label');
+      expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
+    });
+
+    it('comment inside a sidebar section routes to side panel, not inline', () => {
+      const md = '::: layout {.sidebar-main}\n\n::: sidebar\n\n<!-- sidebar note -->\n[[Nav Item](#)]\n\n:::\n\n::: main\n\n### Content\n\n:::\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html).not.toContain('<span class="wmd-comment">');
+      expect(html).toContain('<aside class="wmd-comments-panel">');
+      expect(html).toContain('sidebar note');
+    });
+
+    it('comment above a tabs block annotates the whole tabs container', () => {
+      const md = '<!-- tabs note -->\n::: tabs\n\n::: tab A\n\n### Content A\n\n:::\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      expect(html.indexOf('class="wmd-annotated"')).toBeLessThan(html.indexOf('class="wmd-tabs"'));
+      expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
     });
   });
 });
