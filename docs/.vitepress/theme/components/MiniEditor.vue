@@ -36,6 +36,9 @@ Write wireframes in your PRD. Your PM writes it, your LLM reads it, Claude Desig
 
 Lo-fi spec → Claude Design → hi-fi output. No translation layer. No lost intent.
 
+<!-- Should this say "For Developers" instead? @sara -->
+<!-- "Engineering" is more precise — it's the team that owns the pipeline. @tobias -->
+<!-- +1, keeping it. @mike -->
 ## For Engineering
 |The Pipeline|{.warning}
 
