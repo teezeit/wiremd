@@ -20,6 +20,8 @@ Password
 
 - [ ] Remember me
 
+<!-- Should the primary action say "Sign In" or "Log In"? @sara -->
+<!-- "Sign In" is the standard — matches Google, GitHub, etc. @tobias -->
 [Sign In]*
 [Forgot Password?]
 `,
@@ -192,22 +194,19 @@ Bio
 
 ---
 
-::: grid-3
+::: grid-3 card
 
-::: card
 ### ⚡ Lightning Fast
 Write your UI in markdown and see it rendered instantly. No drag and drop needed.
-:::
 
-::: card
 ### 🎨 Multiple Styles
 Choose from Sketch, Clean, Material, Tailwind, Brutal, and more visual styles.
-:::
 
-::: card
+<!-- Should this say "For Engineering Teams" with more specifics? @sara -->
+<!-- Agreed — mention CLI + VS Code explicitly. @tobias -->
+<!-- +1, updated copy sounds way stronger. @mike -->
 ### 🔧 Developer First
 CLI tool, VS Code extension, and npm package. Fits your existing workflow.
-:::
 
 :::
 
@@ -216,7 +215,7 @@ CLI tool, VS Code extension, and npm package. Fits your existing workflow.
 ## What developers are saying
 
 > "wiremd changed how our team communicates about UI. We sketch ideas in markdown during standup and everyone gets it."
-> 
+>
 > — **Sarah Chen**, Staff Engineer at Acme Corp
 `,
   },
