@@ -1,4 +1,4 @@
-/** wiremd Editor - ?file= URL hint parsing */
+/** wiremd Editor - ?file= URL hint parsing and construction */
 
 export function basenameFromPath(filePath: string): string {
   const parts = filePath.split(/[/\\]/);
@@ -14,4 +14,15 @@ export function parseFileHint(search: string): string | null {
   } catch {
     return null;
   }
+}
+
+/**
+ * Builds a wiremd editor URL with the local file path safely encoded.
+ * Uses URLSearchParams.set() which calls encodeURIComponent internally,
+ * correctly handling spaces, +, #, &, Unicode, and all other special chars.
+ */
+export function buildFileHintUrl(baseUrl: string, filePath: string): string {
+  const url = new URL(baseUrl);
+  url.searchParams.set('file', filePath);
+  return url.toString();
 }
