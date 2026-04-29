@@ -63,21 +63,36 @@ Claude writes the `.md` file to disk. The user opens the wiremd web editor, whic
 
 The plugin ships a pre-built self-contained CLI at `bin/wiremd.js` (inside the plugin folder). Node.js can run it directly — no npm install needed.
 
-```bash
-# Render to a static HTML file (replace PLUGIN_DIR with the installed plugin path)
-node $PLUGIN_DIR/bin/wiremd.js input.md -o output.html -s clean
+To find `PLUGIN_DIR`: look for the `wireframe` plugin folder in Claude's local agent sessions or plugin cache. It contains `bin/wiremd.js`.
 
-# Live preview with hot reload
-node $PLUGIN_DIR/bin/wiremd.js input.md --serve 3001 --watch
+**Do NOT use `--serve` in Cowork/remote agents.** The server binds to Claude's sandbox host — the user's browser can't reach it. Use the static HTML workflow below instead.
+
+### Single-page
+```bash
+node $PLUGIN_DIR/bin/wiremd.js screen.md -o screen.html -s clean
+```
+Share the HTML path. After each iteration, re-render and ask the user to refresh.
+
+### Multi-page (Cowork) — navigable without a server
+Write all pages as `.md` files in one folder, then render and rewrite links in one step:
+
+```bash
+# Render every .md to .html
+for f in wireframes/*.md; do
+  node $PLUGIN_DIR/bin/wiremd.js "$f" -o "${f%.md}.html" -s clean
+done
+
+# Rewrite .md hrefs → .html so page-to-page links work via file://
+sed -i 's|href="\./\([^"]*\)\.md"|href="./\1.html"|g' wireframes/*.html
 ```
 
-To find `PLUGIN_DIR`: look for the `wireframe` plugin folder in Claude's local agent sessions or plugin cache. It contains `bin/wiremd.js`.
+The user opens `wireframes/index.html` — nav links between pages work natively in the browser. After each edit cycle, re-run both commands and the user refreshes.
 
 ### Create from a description or spec
 1. Understand the screen's purpose — what does the user accomplish here?
 2. Sketch structure top-to-bottom: nav → layout → content sections → forms/data → off-screen elements (modals)
-3. Write the wiremd `.md` file using the quick reference below
-4. Render with the bundled CLI and share the HTML path with the user
+3. Write the wiremd `.md` file(s) using the quick reference below
+4. Render with the bundled CLI and share the HTML path(s) with the user
 
 ### Document an existing component or screen
 1. Read the JSX/TSX component tree — focus on structure, not logic
@@ -100,29 +115,30 @@ To find `PLUGIN_DIR`: look for the `wireframe` plugin folder in Claude's local a
 
 See `references/multi-page.md` for folder layout, cross-page link syntax, and the rebuild recipe.
 
-**3. Which render route does this environment support?** See `references/rendering-modes.md` for the full table.
+**3. Which render route does this environment support?**
 
-- **User picked Mode 1 (browser editor)** → write `.md`, share `?file=` URL, browser editor live-refreshes.
-- **User picked Mode 2 (CLI/local)** → `--serve PORT --watch` for live iteration.
-- **User picked Mode 3 (chat only)** → hand off the `.md` for the user to paste into the editor.
-- **Never hand out a sandbox `localhost:PORT` URL** — it binds to Claude's host, not the user's.
+- **Cowork / remote agent** → static HTML workflow above. No `--serve`. Re-render + user refreshes each iteration.
+- **User on local terminal** → `--serve PORT --watch` for live iteration. Never share `localhost` URLs from Claude's host.
+- **User picked Mode 1** → write `.md`, share `?file=` URL, browser editor live-refreshes.
+- **User picked Mode 3** → hand off the `.md` for the user to paste into the editor.
 
 ---
 
 ## Rendering
 
 ```bash
-# Live preview in browser with hot reload (Mode 2 — bundled CLI)
-node $PLUGIN_DIR/bin/wiremd.js my-screen.md --style clean --serve 3001 --watch
-
-# Build to a static HTML file (Mode 2)
+# Cowork / remote agent — static file, no server (user opens HTML and refreshes each iteration)
 node $PLUGIN_DIR/bin/wiremd.js my-screen.md -o output.html -s clean
+
+# Local terminal — live preview with hot reload (only when Claude runs on the user's own machine)
+node $PLUGIN_DIR/bin/wiremd.js my-screen.md --style clean --serve 3001 --watch
 
 # VS Code: Cmd+Shift+P → "wiremd: Open Preview" (live preview while editing)
 # See references/vscode.md for extension install steps
 ```
 
-Tell the user: open `http://localhost:3001` for live preview, or the HTML path for a static file.
+In Cowork: share the HTML file path — the user opens it directly. Re-render after each edit and ask them to refresh.
+On local: tell the user to open `http://localhost:3001`.
 
 To screenshot and verify from the CLI:
 ```bash
