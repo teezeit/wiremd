@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { FakeElement } from './helpers/fake-dom.js';
 
@@ -145,5 +147,14 @@ describe('editor preview', () => {
     preview.setTab('preview');
     expect(elements.iframe.style.display).toBe('block');
     expect(elements.htmlOutputContainer.style.display).toBe('none');
+  });
+});
+
+describe('editor iframe sandbox', () => {
+  it('allows scripts so tab-switching JS can run', () => {
+    const html = readFileSync(resolve(__dirname, '../../index.html'), 'utf8');
+    // A bare `sandbox` attribute blocks all capabilities including scripts,
+    // which silently prevents interactive widgets (tabs, buttons) from working.
+    expect(html).toContain('sandbox="allow-scripts"');
   });
 });
