@@ -15,20 +15,30 @@ description: >-
 Write a wiremd `.md` file, render it, and iterate. wiremd converts plain Markdown with extended
 syntax into visual wireframes — 7 styles, no design tools needed.
 
-## Step 0 — Gather details (form)
+## Step 0 — Choose mode (ask this first, alone, before anything else)
 
-Show the user a form with these fields, then proceed once they submit:
+**STOP. Ask only this question before proceeding. Do not show the rest of the form yet. Do not install anything. Do not write any files.**
 
-- **Which mode?** *(required)*
-  - **1. Local (default)** — no install needed. I write the `.md` file; you open `https://tobiashoelzer.com/wiremd/editor/` which connects to that file and live-refreshes as I edit.
-  - **2. CLI** — wiremd installed locally. I render to HTML or start a dev server.
-  - **3. Chat only** — no filesystem access. I hand you the `.md` to paste into the editor.
+Ask the user:
+
+> **How would you like to view the wireframe?**
+> 1. **Browser editor** — I write the `.md` file to disk; you open it in the wiremd web editor at `tobiashoelzer.com/wiremd/editor` (Chrome/Edge/Safari 16.4+). Live-refreshes as I edit. No install needed.
+> 2. **CLI / local dev** — wiremd is (or will be) installed on your machine. I render to HTML or start a watch server.
+> 3. **Chat only** — no filesystem access. I hand you the `.md` to paste into the editor yourself.
+
+Wait for the user to pick a mode. **Do not proceed until they answer.**
+
+Once the user picks a mode, show the rest of the form:
+
 - **Single page or multi-page prototype?**
 - **Which visual style fits best?** (sketch / clean / wireframe / material / tailwind / brutal)
 - **Which key components should it include?**
 - **Got a spec, ticket, or component to base it on?** *(optional)*
 
-**Default mode is 1 (Local) — NEVER install wiremd or run CLI commands unless the user explicitly selects Mode 2.**
+**Hard rules — never break these:**
+- NEVER install wiremd or run any CLI commands unless the user explicitly picks Mode 2.
+- NEVER suggest the `tobiashoelzer.com` editor URL unless the user picks Mode 1.
+- NEVER default to any mode — always wait for explicit user selection.
 
 ---
 
@@ -49,13 +59,25 @@ Claude writes the `.md` file to disk. The user opens the wiremd web editor, whic
 
 ---
 
-## Mode 2 — CLI (wiremd installed)
+## Mode 2 — CLI (bundled, no install)
+
+The plugin ships a pre-built self-contained CLI at `bin/wiremd.js` (inside the plugin folder). Node.js can run it directly — no npm install needed.
+
+```bash
+# Render to a static HTML file (replace PLUGIN_DIR with the installed plugin path)
+node $PLUGIN_DIR/bin/wiremd.js input.md -o output.html -s clean
+
+# Live preview with hot reload
+node $PLUGIN_DIR/bin/wiremd.js input.md --serve 3001 --watch
+```
+
+To find `PLUGIN_DIR`: look for the `wireframe` plugin folder in Claude's local agent sessions or plugin cache. It contains `bin/wiremd.js`.
 
 ### Create from a description or spec
 1. Understand the screen's purpose — what does the user accomplish here?
 2. Sketch structure top-to-bottom: nav → layout → content sections → forms/data → off-screen elements (modals)
-3. Write the wiremd file using the quick reference below
-4. Render and tell the user where to open it
+3. Write the wiremd `.md` file using the quick reference below
+4. Render with the bundled CLI and share the HTML path with the user
 
 ### Document an existing component or screen
 1. Read the JSX/TSX component tree — focus on structure, not logic
@@ -66,17 +88,9 @@ Claude writes the `.md` file to disk. The user opens the wiremd web editor, whic
 
 ---
 
-## Before you render (Mode 2 only)
+## Before you render (Mode 2)
 
-Answer these questions up front — they determine what you build and how you hand it back.
-
-**1. What wiremd version is available?** Run `wiremd --version`. Require **≥ 0.1.7** for:
-
-- `::: layout {.sidebar-main}` — proper sidebar CSS (stock 0.1.5 stacks vertically)
-- `[[ [Label](./page.md) | ... ]]` — cross-page hrefs in nav (stock 0.1.5 drops them silently)
-- `![[file.md]]` — shared partial includes
-
-If older, build from source: `git clone https://github.com/teezeit/wiremd && cd wiremd && npm install && npm run build`, then invoke via `node path/to/wiremd-fork/bin/wiremd.js`.
+**1. Locate the bundle.** Run `node $PLUGIN_DIR/bin/wiremd.js --version` to confirm it responds. The bundled version is always current — no version check needed.
 
 **2. Single page or multi-page?** Ask the user up front. For multi-page, scaffold from the start — don't bolt on later:
 
@@ -88,9 +102,9 @@ See `references/multi-page.md` for folder layout, cross-page link syntax, and th
 
 **3. Which render route does this environment support?** See `references/rendering-modes.md` for the full table.
 
-- **Default (no install)** → use **Mode 1** above — write `.md`, share `?file=` URL, browser editor live-refreshes.
-- **wiremd installed + user on local terminal** → `--serve PORT --watch` for live iteration.
-- **Chat only (no filesystem, no exec)** → hand off the `.md` and direct the user to `https://tobiashoelzer.com/wiremd/editor` to paste and render.
+- **User picked Mode 1 (browser editor)** → write `.md`, share `?file=` URL, browser editor live-refreshes.
+- **User picked Mode 2 (CLI/local)** → `--serve PORT --watch` for live iteration.
+- **User picked Mode 3 (chat only)** → hand off the `.md` for the user to paste into the editor.
 - **Never hand out a sandbox `localhost:PORT` URL** — it binds to Claude's host, not the user's.
 
 ---
@@ -98,11 +112,11 @@ See `references/multi-page.md` for folder layout, cross-page link syntax, and th
 ## Rendering
 
 ```bash
-# Live preview in browser with hot reload
-wiremd my-screen.md --style clean --serve 3001 --watch
+# Live preview in browser with hot reload (Mode 2 — bundled CLI)
+node $PLUGIN_DIR/bin/wiremd.js my-screen.md --style clean --serve 3001 --watch
 
-# Build to a static HTML file
-wiremd my-screen.md -o output.html -s clean
+# Build to a static HTML file (Mode 2)
+node $PLUGIN_DIR/bin/wiremd.js my-screen.md -o output.html -s clean
 
 # VS Code: Cmd+Shift+P → "wiremd: Open Preview" (live preview while editing)
 # See references/vscode.md for extension install steps
