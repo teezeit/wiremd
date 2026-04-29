@@ -15,16 +15,20 @@ description: >-
 Write a wiremd `.md` file, render it, and iterate. wiremd converts plain Markdown with extended
 syntax into visual wireframes — 7 styles, no design tools needed.
 
-## Step 0 — Ask which mode
+## Step 0 — Gather details (form)
 
-Before doing anything else, ask the user:
+Show the user a form with these fields, then proceed once they submit:
 
-> "Which mode would you like?
-> **1. Local (default)** — no install needed. I write the `.md` file; you open the web editor at `https://tobiashoelzer.com/wiremd/editor/` which connects directly to that file on your disk and live-refreshes as I edit.
-> **2. CLI** — wiremd installed locally (`wiremd --version`). I render to HTML or start a dev server.
-> **3. Chat only** — no filesystem access. I hand you the `.md` and you paste it into the editor."
+- **Which mode?** *(required)*
+  - **1. Local (default)** — no install needed. I write the `.md` file; you open `https://tobiashoelzer.com/wiremd/editor/` which connects to that file and live-refreshes as I edit.
+  - **2. CLI** — wiremd installed locally. I render to HTML or start a dev server.
+  - **3. Chat only** — no filesystem access. I hand you the `.md` to paste into the editor.
+- **Single page or multi-page prototype?**
+- **Which visual style fits best?** (sketch / clean / wireframe / material / tailwind / brutal)
+- **Which key components should it include?**
+- **Got a spec, ticket, or component to base it on?** *(optional)*
 
-If the user doesn't answer or says "default", use **Mode 1 (Local)**.
+**Default mode is 1 (Local) — NEVER install wiremd or run CLI commands unless the user explicitly selects Mode 2.**
 
 ---
 
