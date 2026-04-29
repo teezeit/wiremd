@@ -30,6 +30,21 @@ syntax into visual wireframes — 7 styles, no design tools needed.
 4. **Capture:** layout, navigation, form fields/labels, button labels, table columns, states
 5. **Skip:** exact colors, event handlers, API calls, business logic
 
+### 3. Cowork / PM review via browser editor
+
+For non-technical reviewers (PMs, designers, stakeholders) who don't have VS Code — use the live browser editor with file sync:
+
+1. Write the `.md` file to disk as usual
+2. Generate a `?file=` hint URL and share it with the reviewer:
+   ```bash
+   node -e "const u=new URL('https://tobiashoelzer.com/wiremd/editor/');u.searchParams.set('file',process.argv[1]);console.log(u.toString())" /full/path/to/wireframe.md
+   ```
+3. The reviewer clicks the link → a modal prompts them to click **Open File** and grant browser access to the file
+4. Claude edits the `.md` file — the browser auto-refreshes within ~500ms, no page reload needed
+5. The reviewer can also edit directly in the browser and changes write back to disk immediately
+
+**Browser requirements:** Chrome, Edge, or Safari 16.4+. Firefox shows an explanatory notice — the reviewer will need one of the supported browsers.
+
 ---
 
 ## Before you render
@@ -56,6 +71,7 @@ See `references/multi-page.md` for folder layout, cross-page link syntax, and th
 
 - **Write files + run shell** (Claude Code, VS Code+terminal, Cowork/Desktop with filesystem + code-execution tools) → **files in folder** is the default. Render `.html` into the user's folder; they open via `file://` or double-click.
 - **User is on their own local terminal** → `--serve PORT --watch` for live iteration.
+- **Write files + reviewer is non-technical (no VS Code)** → **browser editor with `?file=` hint**. Write the `.md`, generate a `https://tobiashoelzer.com/wiremd/editor/?file=<encoded-path>` URL, share it. The reviewer links the file in their browser; Claude's edits auto-refresh live. See Workflow 3 above.
 - **Chat only (no filesystem, no exec)** → hand off the `.md` and direct the user to `https://tobiashoelzer.com/wiremd/editor` to paste and render.
 - **Never hand out a sandbox `localhost:PORT` URL** — it binds to Claude's host, not the user's. When in doubt, write HTML to the folder.
 
