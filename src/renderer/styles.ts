@@ -90,7 +90,8 @@ export function getStyleCSS(style: string, prefix: string): string {
   z-index: 10; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1; box-shadow: 0 1px 4px rgba(0,0,0,0.25); cursor: default;
 }
-.${prefix}has-comments { padding-right: 276px; }
+/* body.wmd-root is (0,1,1); use two classes + element (0,2,1) to win regardless of order */
+body.${prefix}root.${prefix}has-comments { padding-right: 276px; }
 .${prefix}comments-panel {
   position: fixed; top: 0; right: 0; width: 260px; height: 100vh;
   overflow-y: auto; background: #fff; border-left: 1px solid #e0e0e0;
