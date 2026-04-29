@@ -13,6 +13,7 @@ import { initToolbar, showToast } from './toolbar.js';
 import { examples } from './examples.js';
 import { decodeShareHash, encodeShareHash } from './url-share.js';
 import { createFileSyncIndicator } from './file-sync-indicator.js';
+import { basenameFromPath, parseFileHint } from './file-hint.js';
 import {
   isFileSystemAccessSupported,
   openLocalFile,
@@ -295,6 +296,12 @@ window.addEventListener('resize', applySplit);
 
 applySplit();
 updateCopyButtonState();
+
+// --- File hint from ?file= query param ---
+const fileHintPath = parseFileHint(window.location.search);
+if (fileHintPath) {
+  fileSyncIndicator.setState('suggested', basenameFromPath(fileHintPath));
+}
 
 // --- Load initial content: from URL hash if present, else first example ---
 const rawHash = window.location.hash ?? '';

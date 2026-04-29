@@ -1,6 +1,6 @@
 /** wiremd Editor - File sync indicator: "File ▾" button ↔ "⟳ file.md ×" pill */
 
-export type FileSyncState = 'idle' | 'synced' | 'error';
+export type FileSyncState = 'idle' | 'suggested' | 'synced' | 'error';
 
 export interface FileSyncIndicator {
   setState(state: FileSyncState, filename?: string): void;
@@ -20,6 +20,8 @@ export function createFileSyncIndicator(
 
     if (state === 'idle') {
       renderIdle();
+    } else if (state === 'suggested') {
+      renderSuggested(filename ?? '');
     } else {
       renderLinked(state, filename ?? '');
     }
@@ -94,6 +96,29 @@ export function createFileSyncIndicator(
       </svg>
       File
     `;
+    container.appendChild(btn);
+  }
+
+  function renderSuggested(filename: string) {
+    const btn = document.createElement('button');
+    btn.className = 'ed-btn ed-file-suggested';
+    btn.title = `Click to open ${filename} and start syncing`;
+    btn.addEventListener('click', opts.onOpen);
+
+    const icon = document.createElement('span');
+    icon.textContent = '📄';
+
+    const name = document.createElement('span');
+    name.className = 'ed-file-suggested__name';
+    name.textContent = filename;
+
+    const cta = document.createElement('span');
+    cta.className = 'ed-file-suggested__cta';
+    cta.textContent = 'Open →';
+
+    btn.appendChild(icon);
+    btn.appendChild(name);
+    btn.appendChild(cta);
     container.appendChild(btn);
   }
 

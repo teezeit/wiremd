@@ -210,6 +210,71 @@ describe('error state', () => {
   });
 });
 
+// --- suggested state ---
+
+describe('suggested state', () => {
+  it('renders an open-prompt button with the filename', () => {
+    const container = makeContainer() as unknown as FakeElement;
+    const indicator = createFileSyncIndicator(container as unknown as HTMLElement, {
+      onOpen: vi.fn(),
+      onSaveAs: vi.fn(),
+      onUnlink: vi.fn(),
+    });
+
+    indicator.setState('suggested', 'wireframe.md');
+
+    const btn = findByClass(container, 'ed-file-suggested');
+    expect(btn).toBeDefined();
+    const name = findByClass(container, 'ed-file-suggested__name');
+    expect(name?.textContent).toBe('wireframe.md');
+  });
+
+  it('calls onOpen when the suggested prompt is clicked', () => {
+    const container = makeContainer() as unknown as FakeElement;
+    const onOpen = vi.fn();
+    const indicator = createFileSyncIndicator(container as unknown as HTMLElement, {
+      onOpen,
+      onSaveAs: vi.fn(),
+      onUnlink: vi.fn(),
+    });
+
+    indicator.setState('suggested', 'wireframe.md');
+
+    const btn = findByClass(container, 'ed-file-suggested');
+    btn!.click();
+
+    expect(onOpen).toHaveBeenCalledOnce();
+  });
+
+  it('does not render the File dropdown while in suggested state', () => {
+    const container = makeContainer() as unknown as FakeElement;
+    const indicator = createFileSyncIndicator(container as unknown as HTMLElement, {
+      onOpen: vi.fn(),
+      onSaveAs: vi.fn(),
+      onUnlink: vi.fn(),
+    });
+
+    indicator.setState('suggested', 'wireframe.md');
+
+    expect(findByClass(container, 'ed-file-btn')).toBeUndefined();
+  });
+
+  it('transitions from suggested to synced after file is opened', () => {
+    const container = makeContainer() as unknown as FakeElement;
+    const indicator = createFileSyncIndicator(container as unknown as HTMLElement, {
+      onOpen: vi.fn(),
+      onSaveAs: vi.fn(),
+      onUnlink: vi.fn(),
+    });
+
+    indicator.setState('suggested', 'wireframe.md');
+    indicator.setState('synced', 'wireframe.md');
+
+    expect(findByClass(container, 'ed-file-suggested')).toBeUndefined();
+    expect(findByClass(container, 'ed-file-linked')).toBeDefined();
+  });
+});
+
 // --- transitions ---
 
 describe('state transitions', () => {
