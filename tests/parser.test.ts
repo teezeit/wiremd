@@ -1906,24 +1906,30 @@ Some **bold** content
     });
 
     describe('Comment routing in grid cells', () => {
-      it('comment before a grid cell heading goes into that cell, not the previous one', () => {
+      it('comment before a grid cell is a sibling before the grid-item, not inside its children', () => {
         const md = '::: grid-2\n\n### Col A\ncontent\n\n<!-- check this -->\n### Col B\ncontent\n\n:::';
         const ast = parse(md);
         const grid = ast.children[0] as any;
-        const colA = grid.children[0];
-        const colB = grid.children[1];
-        expect(colA.children.every((n: any) => n.type !== 'comment')).toBe(true);
-        expect(colB.children[0]).toMatchObject({ type: 'comment', text: 'check this' });
+        // grid.children = [grid-item-A, comment, grid-item-B]
+        expect(grid.children[0].type).toBe('grid-item');
+        expect(grid.children[1]).toMatchObject({ type: 'comment', text: 'check this' });
+        expect(grid.children[2].type).toBe('grid-item');
+        // Col A has no comment inside it
+        expect(grid.children[0].children.every((n: any) => n.type !== 'comment')).toBe(true);
+        // Col B has no comment inside it (annotation wraps the whole item)
+        expect(grid.children[2].children.every((n: any) => n.type !== 'comment')).toBe(true);
       });
 
-      it('multiple comments before a grid cell all go into that cell', () => {
+      it('multiple comments before a grid cell are siblings before that grid-item', () => {
         const md = '::: grid-3\n\n### A\n\n<!-- first -->\n<!-- second -->\n### B\n\n### C\n\n:::';
         const ast = parse(md);
         const grid = ast.children[0] as any;
-        const colB = grid.children[1];
-        const comments = colB.children.filter((n: any) => n.type === 'comment');
-        expect(comments).toHaveLength(2);
-        expect(colB.children[0]).toMatchObject({ type: 'comment', text: 'first' });
+        // grid.children = [grid-item-A, comment('first'), comment('second'), grid-item-B, grid-item-C]
+        expect(grid.children[0].type).toBe('grid-item');
+        expect(grid.children[1]).toMatchObject({ type: 'comment', text: 'first' });
+        expect(grid.children[2]).toMatchObject({ type: 'comment', text: 'second' });
+        expect(grid.children[3].type).toBe('grid-item');
+        expect(grid.children[4].type).toBe('grid-item');
       });
 
       it('comment after the last grid cell stays in that cell (no next cell)', () => {
@@ -1934,14 +1940,16 @@ Some **bold** content
         expect(colB.children.some((n: any) => n.type === 'comment')).toBe(true);
       });
 
-      it('comment before a row item goes into that item, not the previous one', () => {
+      it('comment before a row item is a sibling before that item, not inside its children', () => {
         const md = '::: row\n\n### {.left}\n[Search___]{type:search}\n\n<!-- fix label -->\n### {.right}\n[Filter v]\n\n:::';
         const ast = parse(md);
         const row = ast.children[0] as any;
-        const itemA = row.children[0];
-        const itemB = row.children[1];
-        expect(itemA.children.every((n: any) => n.type !== 'comment')).toBe(true);
-        expect(itemB.children[0]).toMatchObject({ type: 'comment', text: 'fix label' });
+        // row.children = [grid-item-A, comment, grid-item-B]
+        expect(row.children[0].type).toBe('grid-item');
+        expect(row.children[1]).toMatchObject({ type: 'comment', text: 'fix label' });
+        expect(row.children[2].type).toBe('grid-item');
+        expect(row.children[0].children.every((n: any) => n.type !== 'comment')).toBe(true);
+        expect(row.children[2].children.every((n: any) => n.type !== 'comment')).toBe(true);
       });
     });
   });

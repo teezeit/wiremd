@@ -184,8 +184,14 @@ function collectGridItemsFromContainer(
   while (i < children.length) {
     const child = children[i];
     if (child.type === 'heading' && child.depth === itemDepth) {
-      const rawItemNodes: any[] = [...pending, child];
+      // Flush pending comment nodes as siblings BEFORE this grid-item so the
+      // annotation wraps the whole grid-item div rather than the heading inside.
+      for (const c of pending) {
+        const m = (c.value as string).match(/^<!--([\s\S]*?)-->$/);
+        if (m) gridItems.push({ type: 'comment', text: m[1].trim() } as any);
+      }
       pending = [];
+      const rawItemNodes: any[] = [child];
       i++;
       while (i < children.length) {
         const next = children[i];
@@ -243,9 +249,14 @@ function collectRowItemsFromContainer(
         const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
         const itemProps: any = { classes: [] };
         if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
-        i++;
-        const rawItemNodes: any[] = [...pending];
+        // Flush pending comment nodes as siblings BEFORE this row-item
+        for (const c of pending) {
+          const m = (c.value as string).match(/^<!--([\s\S]*?)-->$/);
+          if (m) items.push({ type: 'comment', text: m[1].trim() } as any);
+        }
         pending = [];
+        i++;
+        const rawItemNodes: any[] = [];
         while (i < children.length) {
           const next = children[i];
           if (next.type === 'heading' && next.depth <= itemDepth) break;

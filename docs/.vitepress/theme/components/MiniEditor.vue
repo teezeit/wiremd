@@ -221,6 +221,11 @@ function render() {
       '.wmd-grid-4{grid-template-columns:repeat(4,1fr)!important}',
       '.wmd-nav-content{flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important}',
       '.wmd-brand{margin-right:auto!important}',
+      // Scale the comments panel to fit the narrow zoomed iframe viewport.
+      // The zoom:0.65 on html scales content but fixed positioning stays in
+      // viewport space, so we need a proportionally smaller panel + matching padding.
+      '.wmd-comments-panel{width:160px!important;padding:10px 8px!important;font-size:0.75em!important}',
+      '.wmd-has-comments{padding-right:175px!important}',
       '</style></head>',
     ].join(''))
     html = html.replace('</body>',

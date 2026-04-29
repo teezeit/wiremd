@@ -581,8 +581,9 @@ function renderGrid(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'grid', node.props);
   const columns = node.columns || 3;
   const gridClass = `${classes} ${prefix}grid-${columns}`;
-  const isCard = !!node.props?.card;
-  const childrenHTML = (node.children || []).map((child: any) => renderGridItem(child, context, isCard)).join('\n  ');
+  // renderChildrenList intercepts comment nodes so they wrap the next grid-item
+  // as a whole (wmd-annotated wraps the full grid-item div, not a child inside).
+  const childrenHTML = renderChildrenList(node.children || [], context);
 
   return `<div class="${gridClass}" style="--grid-columns: ${columns}">
   ${childrenHTML}
@@ -591,7 +592,10 @@ function renderGrid(node: any, context: RenderContext): string {
 
 function renderGridItem(node: any, context: RenderContext, isCard = false): string {
   const { classPrefix: prefix } = context;
-  const extraClasses = isCard ? [...(node.props?.classes || []), 'grid-item-card'] : (node.props?.classes || []);
+  // When called via renderNode (from renderChildrenList), isCard defaults to false.
+  // The transformer stores 'card' in node.props.classes for card grids, so detect it there.
+  const hasCard = isCard || (node.props?.classes || []).includes('card');
+  const extraClasses = hasCard ? [...(node.props?.classes || []), 'grid-item-card'] : (node.props?.classes || []);
   const itemProps = { ...node.props, classes: extraClasses };
   const classes = buildClasses(prefix, 'grid-item', itemProps);
   const childrenHTML = renderChildrenList(node.children || [], context);
@@ -604,7 +608,7 @@ function renderGridItem(node: any, context: RenderContext, isCard = false): stri
 function renderRow(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'row', node.props);
-  const childrenHTML = (node.children || []).map((child: any) => renderGridItem(child, context)).join('\n  ');
+  const childrenHTML = renderChildrenList(node.children || [], context);
 
   return `<div class="${classes}">
   ${childrenHTML}

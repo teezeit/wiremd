@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { parse } from '../src/parser/index.js';
-import { renderToHTML, renderToJSON } from '../src/renderer/index.js';
+import { renderToHTML, renderToJSON, countCommentThreads } from '../src/renderer/index.js';
 
 describe('HTML Renderer', () => {
   describe('Basic Components', () => {
@@ -1140,6 +1140,17 @@ content
       expect(html).toContain('wmd-comments-panel');
       // Only one badge — Col A must not be annotated
       expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
+    });
+
+    it('comment before a grid cell annotates the whole grid-item div, not a child inside', () => {
+      const md = '::: grid-2\n\n### Col A\ncontent A\n\n<!-- whole card -->\n### Col B\ncontent B\n\n:::';
+      const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+      // wmd-annotated wrapper must open before the annotated grid-item's class attribute
+      // Use the HTML attribute form to avoid matching CSS selectors in <style>
+      const annotatedPos = html.indexOf('class="wmd-annotated"');
+      const secondGridItemPos = html.indexOf('class="wmd-grid-item"', html.indexOf('class="wmd-grid-item"') + 1);
+      expect(annotatedPos).toBeGreaterThan(0);
+      expect(annotatedPos).toBeLessThan(secondGridItemPos);
     });
 
     it('comment before a row item annotates that item, not the previous one', () => {
