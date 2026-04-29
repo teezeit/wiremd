@@ -308,8 +308,8 @@ if (sharedContent !== null) {
 } else if (fileHintPath) {
   // Leave editor empty — modal will prompt the user to open the file
   showFileHintModal({
-    filename: basenameFromPath(fileHintPath),
     fullPath: fileHintPath,
+    supported: isFileSystemAccessSupported(),
     onOpen: async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const result = await openLocalFile((window as any).showOpenFilePicker);

@@ -636,34 +636,26 @@ body {
   text-align: center;
 }
 
-.ed-modal__icon {
-  font-size: 32px;
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
 .ed-modal__title {
   font-size: 15px;
   font-weight: 700;
   font-family: var(--ed-font-ui);
   color: var(--ed-text-primary);
-  margin: 0;
-}
-
-.ed-modal__filename {
-  font-size: 14px;
-  font-weight: 700;
-  font-family: var(--ed-font-mono, monospace);
-  color: var(--ed-text-accent);
-  margin-top: 4px;
+  margin: 0 0 8px;
 }
 
 .ed-modal__path {
-  font-size: 11px;
+  font-size: 12px;
   font-family: var(--ed-font-mono, monospace);
-  color: var(--ed-text-muted);
+  color: var(--ed-text-accent);
+  background: var(--ed-accent-dim);
+  border-radius: var(--ed-radius-sm);
+  padding: 6px 10px;
   word-break: break-all;
+  width: 100%;
+  box-sizing: border-box;
   margin-bottom: 8px;
+  text-align: left;
 }
 
 .ed-modal__open {
@@ -671,6 +663,14 @@ body {
   justify-content: center;
   padding: 10px 16px;
   font-size: 13px;
+}
+
+.ed-modal__unsupported {
+  font-size: 12px;
+  font-family: var(--ed-font-ui);
+  color: var(--ed-text-muted);
+  text-align: center;
+  margin: 4px 0 8px;
 }
 
 .ed-modal__dismiss {
@@ -681,8 +681,10 @@ body {
   color: var(--ed-text-muted);
   cursor: pointer;
   padding: 4px 8px;
-  margin-top: 2px;
+  margin-top: 4px;
   transition: color 0.15s;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .ed-modal__dismiss:hover {
