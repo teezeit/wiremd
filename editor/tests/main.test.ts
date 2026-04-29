@@ -7,6 +7,8 @@ const mainMocks = vi.hoisted(() => ({
   createPreview: vi.fn(),
   initToolbar: vi.fn(),
   showToast: vi.fn(),
+  showFileHintModal: vi.fn(),
+  openLocalFile: vi.fn(() => Promise.resolve(null)),
 }));
 
 vi.mock('../src/editor.js', () => ({
@@ -22,6 +24,18 @@ vi.mock('../src/toolbar.js', () => ({
   showToast: mainMocks.showToast,
 }));
 
+vi.mock('../src/file-hint-modal.js', () => ({
+  showFileHintModal: mainMocks.showFileHintModal,
+}));
+
+vi.mock('../src/local-file.js', () => ({
+  isFileSystemAccessSupported: vi.fn(() => false),
+  openLocalFile: mainMocks.openLocalFile,
+  saveAsLocalFile: vi.fn(() => Promise.resolve(null)),
+  watchFile: vi.fn(() => ({ stop: vi.fn(), setLastSeen: vi.fn() })),
+  writeFile: vi.fn(() => Promise.resolve()),
+}));
+
 vi.mock('../src/styles/editor.css', () => ({}));
 
 describe('editor main bootstrap', () => {
@@ -31,6 +45,8 @@ describe('editor main bootstrap', () => {
     mainMocks.createPreview.mockReset();
     mainMocks.initToolbar.mockReset();
     mainMocks.showToast.mockReset();
+    mainMocks.showFileHintModal.mockReset();
+    mainMocks.openLocalFile.mockReset().mockResolvedValue(null);
   });
 
   function setupDom() {
@@ -247,6 +263,80 @@ describe('editor main bootstrap', () => {
     onChange('');
     expect(window.history.calls.length).toBe(2);
     expect(window.history.calls[1].url).not.toContain('#');
+  });
+
+  function makeEditorPreview() {
+    const editor = {
+      setValue: vi.fn(),
+      getValue: vi.fn(() => ''),
+      layout: vi.fn(),
+      flushPendingChange: vi.fn(),
+    };
+    const preview = {
+      render: vi.fn(),
+      setStyle: vi.fn(),
+      setTab: vi.fn(),
+      getHTML: vi.fn(() => ''),
+      state: {},
+    };
+    mainMocks.initEditor.mockReturnValue(editor);
+    mainMocks.createPreview.mockReturnValue(preview);
+    return { editor, preview };
+  }
+
+  it('strips ?file= from URL when Skip is clicked in the modal', async () => {
+    const { window } = setupDom();
+    window.location.search = '?file=%2FUsers%2Ftobias%2FDesktop%2Fwireframe.md';
+    makeEditorPreview();
+
+    let capturedOnDismiss: (() => void) | undefined;
+    mainMocks.showFileHintModal.mockImplementation((opts: { onDismiss: () => void }) => {
+      capturedOnDismiss = opts.onDismiss;
+      return { close: vi.fn() };
+    });
+
+    await import('../src/main.js');
+
+    expect(mainMocks.showFileHintModal).toHaveBeenCalledTimes(1);
+    expect(window.location.search).toBe('?file=%2FUsers%2Ftobias%2FDesktop%2Fwireframe.md');
+
+    capturedOnDismiss!();
+
+    expect(window.location.search).toBe('');
+  });
+
+  it('strips ?file= from URL when Open File is clicked in the modal', async () => {
+    const { window } = setupDom();
+    window.location.search = '?file=%2FUsers%2Ftobias%2FDesktop%2Fwireframe.md';
+    makeEditorPreview();
+
+    let capturedOnOpen: (() => Promise<void>) | undefined;
+    mainMocks.showFileHintModal.mockImplementation((opts: { onOpen: () => Promise<void> }) => {
+      capturedOnOpen = opts.onOpen;
+      return { close: vi.fn() };
+    });
+
+    await import('../src/main.js');
+    await capturedOnOpen!();
+
+    expect(window.location.search).toBe('');
+  });
+
+  it('preserves other query params when stripping ?file=', async () => {
+    const { window } = setupDom();
+    window.location.search = '?style=clean&file=%2FUsers%2Ftobias%2FDesktop%2Fwireframe.md';
+    makeEditorPreview();
+
+    let capturedOnDismiss: (() => void) | undefined;
+    mainMocks.showFileHintModal.mockImplementation((opts: { onDismiss: () => void }) => {
+      capturedOnDismiss = opts.onDismiss;
+      return { close: vi.fn() };
+    });
+
+    await import('../src/main.js');
+    capturedOnDismiss!();
+
+    expect(window.location.search).toBe('?style=clean');
   });
 
   it('onCopyLink flushes pending changes, syncs URL and copies location.href', async () => {

@@ -29,6 +29,14 @@ export function parseFileHint(search: string): string | null {
   }
 }
 
+export function stripFileHint(search: string): string {
+  if (!search) return '';
+  const params = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
+  params.delete('file');
+  const result = params.toString();
+  return result ? `?${result}` : '';
+}
+
 /**
  * Builds a wiremd editor URL with the local file path safely encoded.
  * Uses URLSearchParams.set() which calls encodeURIComponent internally,

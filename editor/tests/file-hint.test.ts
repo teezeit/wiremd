@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseFileHint, basenameFromPath, buildFileHintUrl, startInFromPath } from '../src/file-hint.js';
+import { parseFileHint, basenameFromPath, buildFileHintUrl, startInFromPath, stripFileHint } from '../src/file-hint.js';
 
 describe('basenameFromPath', () => {
   it('extracts filename from a Unix path', () => {
@@ -166,5 +166,33 @@ describe('startInFromPath', () => {
 
   it('handles Windows Documents paths', () => {
     expect(startInFromPath('C:\\Users\\tobias\\Documents\\spec.md')).toBe('documents');
+  });
+});
+
+// --- stripFileHint ---
+
+describe('stripFileHint', () => {
+  it('removes ?file= when it is the only param', () => {
+    expect(stripFileHint('?file=%2FUsers%2Ftobias%2Fwireframe.md')).toBe('');
+  });
+
+  it('removes file= when other params precede it', () => {
+    expect(stripFileHint('?style=clean&file=%2Fpath%2Ffile.md')).toBe('?style=clean');
+  });
+
+  it('removes file= when other params follow it', () => {
+    expect(stripFileHint('?file=%2Fpath%2Ffile.md&style=clean')).toBe('?style=clean');
+  });
+
+  it('leaves search unchanged when no file= param is present', () => {
+    expect(stripFileHint('?style=clean')).toBe('?style=clean');
+  });
+
+  it('returns empty string for empty input', () => {
+    expect(stripFileHint('')).toBe('');
+  });
+
+  it('handles search string without leading ?', () => {
+    expect(stripFileHint('file=%2Fpath%2Ffile.md')).toBe('');
   });
 });
