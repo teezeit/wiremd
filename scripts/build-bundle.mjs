@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 /**
- * Builds the self-contained CLI bundle shipped inside the plugin.
- * Uses esbuild to inline ALL dependencies (npm + internal) into one CJS file
- * so node can run it anywhere without an install step.
+ * Builds the self-contained CLI bundle.
+ * Canonical output: releases/wiremd.js  (for manual download/install)
+ * Plugin copy:      skills/wireframe/bin/wiremd.js  (picked up by the plugin)
  */
-import { mkdirSync } from 'fs';
+import { mkdirSync, copyFileSync } from 'fs';
 import { build } from 'esbuild';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const dest = resolve(root, 'skills/wireframe/bin/wiremd.js');
+const release = resolve(root, 'releases/wiremd.js');
+const pluginBin = resolve(root, 'skills/wireframe/bin/wiremd.js');
 
+mkdirSync(resolve(root, 'releases'), { recursive: true });
 mkdirSync(resolve(root, 'skills/wireframe/bin'), { recursive: true });
 
 console.log('Building CLI bundle...');
@@ -20,7 +22,7 @@ await build({
   bundle: true,
   platform: 'node',
   format: 'cjs',
-  outfile: dest,
+  outfile: release,
   // Only keep node built-ins external — inline everything else
   external: ['fs', 'path', 'http', 'https', 'crypto', 'os', 'stream',
              'util', 'events', 'buffer', 'process', 'url', 'querystring',
@@ -33,4 +35,6 @@ await build({
   sourcemap: false,
 });
 
-console.log(`Bundle written → ${dest}`);
+copyFileSync(release, pluginBin);
+console.log(`Bundle written → ${release}`);
+console.log(`Plugin copy   → ${pluginBin}`);

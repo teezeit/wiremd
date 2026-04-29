@@ -9,7 +9,8 @@ import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'fs';
 import { execSync } from 'child_process';
 import { resolve } from 'path';
 
-const BUNDLE = resolve(__dirname, '../skills/wireframe/bin/wiremd.js');
+const RELEASE = resolve(__dirname, '../releases/wiremd.js');
+const BUNDLE  = resolve(__dirname, '../skills/wireframe/bin/wiremd.js');
 const TMP_INPUT = resolve(__dirname, '../tmp-bundle-test-input.md');
 const TMP_OUTPUT = resolve(__dirname, '../tmp-bundle-test-output.html');
 
@@ -24,8 +25,18 @@ describe('cli-bundle', () => {
     [TMP_INPUT, TMP_OUTPUT].forEach(f => { try { unlinkSync(f); } catch {} });
   });
 
-  it('bundle file exists at skills/wireframe/bin/wiremd.js', () => {
+  it('release file exists at releases/wiremd.js', () => {
+    expect(existsSync(RELEASE)).toBe(true);
+  });
+
+  it('plugin copy exists at skills/wireframe/bin/wiremd.js', () => {
     expect(existsSync(BUNDLE)).toBe(true);
+  });
+
+  it('release and plugin copy are identical', () => {
+    const r = readFileSync(RELEASE);
+    const b = readFileSync(BUNDLE);
+    expect(r.equals(b)).toBe(true);
   });
 
   it('bundle is executable by node without any install step', () => {
