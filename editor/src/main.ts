@@ -14,6 +14,7 @@ import { examples } from './examples.js';
 import { decodeShareHash, encodeShareHash } from './url-share.js';
 import { createFileSyncIndicator } from './file-sync-indicator.js';
 import { basenameFromPath, parseFileHint } from './file-hint.js';
+import { showFileHintModal } from './file-hint-modal.js';
 import {
   isFileSystemAccessSupported,
   openLocalFile,
@@ -297,17 +298,27 @@ window.addEventListener('resize', applySplit);
 applySplit();
 updateCopyButtonState();
 
-// --- File hint from ?file= query param ---
-const fileHintPath = parseFileHint(window.location.search);
-if (fileHintPath) {
-  fileSyncIndicator.setState('suggested', basenameFromPath(fileHintPath));
-}
-
 // --- Load initial content: from URL hash if present, else first example ---
 const rawHash = window.location.hash ?? '';
 const sharedContent = decodeShareHash(rawHash);
+const fileHintPath = parseFileHint(window.location.search);
+
 if (sharedContent !== null) {
   editor.setValue(sharedContent);
+} else if (fileHintPath) {
+  // Leave editor empty — modal will prompt the user to open the file
+  showFileHintModal({
+    filename: basenameFromPath(fileHintPath),
+    fullPath: fileHintPath,
+    onOpen: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await openLocalFile((window as any).showOpenFilePicker);
+      if (result) linkFile(result);
+    },
+    onDismiss: () => {
+      if (examples.length > 0) editor.setValue(examples[0].code);
+    },
+  });
 } else {
   if (rawHash.length > 1) {
     showToast(toast, 'Could not load shared link — opening default');
