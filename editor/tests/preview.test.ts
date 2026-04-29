@@ -55,10 +55,40 @@ describe('editor preview', () => {
     };
   }
 
+  it('stores lastCommentCount in state after successful render', async () => {
+    const { createPreview } = await import('../src/preview.js');
+    previewMocks.renderMarkup.mockReturnValue({
+      html: '<!DOCTYPE html><body>ok</body>',
+      commentCount: 3,
+      error: null,
+    });
+
+    const elements = createElements();
+    const preview = createPreview(elements);
+    preview.render('some markdown');
+
+    expect(preview.state.lastCommentCount).toBe(3);
+  });
+
+  it('resets lastCommentCount to 0 when render fails', async () => {
+    const { createPreview } = await import('../src/preview.js');
+    previewMocks.renderMarkup
+      .mockReturnValueOnce({ html: '<!DOCTYPE html><body>ok</body>', commentCount: 2, error: null })
+      .mockReturnValueOnce({ html: '', error: 'Parse failed' });
+
+    const elements = createElements();
+    const preview = createPreview(elements);
+    preview.render('ok');
+    preview.render('bad');
+
+    expect(preview.state.lastCommentCount).toBe(0);
+  });
+
   it('renders successful HTML into the iframe and state', async () => {
     const { createPreview } = await import('../src/preview.js');
     previewMocks.renderMarkup.mockReturnValue({
       html: '<!DOCTYPE html><body>ok</body>',
+      commentCount: 0,
       error: null,
     });
 
@@ -152,7 +182,7 @@ describe('editor preview', () => {
 
 describe('editor iframe sandbox', () => {
   it('allows scripts so tab-switching JS can run', () => {
-    const html = readFileSync(resolve(__dirname, '../../index.html'), 'utf8');
+    const html = readFileSync(resolve(__dirname, '../index.html'), 'utf8');
     // A bare `sandbox` attribute blocks all capabilities including scripts,
     // which silently prevents interactive widgets (tabs, buttons) from working.
     expect(html).toContain('sandbox="allow-scripts"');

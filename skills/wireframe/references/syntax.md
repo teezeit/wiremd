@@ -549,24 +549,36 @@ All standard markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 
 ## Inline comments
 
-Use standard HTML comments to annotate any component. They render as yellow sticky-note callouts in the preview.
+Use standard HTML comments to annotate any component. Comments appear in a **fixed side panel**; the annotated element gets a yellow outline and a numbered badge.
 
 ```markdown
 <!-- Is this the right CTA? @tobias -->
 [Sign Up]*
 
+<!-- Stack consecutive comments → single thread card with divider in the panel -->
+<!-- Agreed — align with marketing copy. @sara -->
+[Login]*
+
+<!-- Comment ABOVE a container annotates the whole thing (yellow border on entire card) -->
 ::: card
-<!-- Why is this a button and not a link? -->
+### Free Plan
+[Get Started]
+:::
+
+::: card
+<!-- Comment INSIDE a container annotates the specific child that follows it -->
 [Learn more]
 :::
 ```
 
-- Place the comment **above** what you want to annotate — it attaches to the next element
-- Inside a `:::` container, the comment pins to the specific child that follows it (not the card)
+- Place the comment **above** what you want to annotate — it attaches to the next sibling element
+- Comment **above** a `:::card`, `:::grid-2`, `:::tabs`, etc. outlines the whole block; comment **inside** annotates the specific child that follows
+- Consecutive comments above the same element group into one thread card with dividers
+- Comments between `:::tab` blocks annotate the tab that follows
+- Comments before a grid/row column heading (e.g. `<!-- note -->\n### Col B`) annotate that column
 - Multiline comments are supported: `<!--\nLine 1\nLine 2\n-->`
-- Comment text is freeform — any plain text is valid
-- The **Comments** toggle in the editor toolbar / VS Code toolbar hides/shows all callouts
-- CLI: comments hidden by default; pass `--show-comments` to include them
+- The **💬 Comments** button in the CLI toolbar / editor / VS Code toggles visibility
+- CLI static output: hidden by default; pass `--show-comments` to include them
 
 ---
 

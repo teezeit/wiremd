@@ -30,14 +30,27 @@ const toast = $('toast');
 const divider = $('divider');
 const editorPanel = $('editor-panel');
 const showCommentsCheck = $<HTMLInputElement>('show-comments-check');
+const commentCountBadge = $('comment-count-badge');
+const commentToggleLabel = $('comment-toggle-label');
 
 function updateCopyButtonState() {
   copyBtn.disabled = preview.getHTML() === '';
 }
 
+function updateCommentBadge() {
+  const count = preview.state.lastCommentCount;
+  if (count > 0) {
+    commentCountBadge.textContent = String(count);
+    commentCountBadge.removeAttribute('hidden');
+  } else {
+    commentCountBadge.setAttribute('hidden', '');
+  }
+}
+
 function renderMarkdown(markdown: string) {
   preview.render(markdown);
   updateCopyButtonState();
+  updateCommentBadge();
 }
 
 async function copyText(text: string): Promise<boolean> {
@@ -135,6 +148,7 @@ initToolbar({
 
 showCommentsCheck.addEventListener('change', () => {
   preview.setShowComments(showCommentsCheck.checked);
+  commentToggleLabel.textContent = showCommentsCheck.checked ? 'Hide comments' : 'Show comments';
   renderMarkdown(editor.getValue());
 });
 

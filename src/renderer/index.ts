@@ -7,11 +7,34 @@
  * https://github.com/akonan/wiremd/blob/main/LICENSE
  */
 
-import type { DocumentNode, RenderOptions } from '../types.js';
+import type { DocumentNode, WiremdNode, RenderOptions } from '../types.js';
 import { renderChildrenList, renderCommentsPanel } from './html-renderer.js';
 import { getStyleCSS } from './styles.js';
 import * as ReactRenderer from './react-renderer.js';
 import * as TailwindRenderer from './tailwind-renderer.js';
+
+function countThreadsInChildren(children: WiremdNode[]): number {
+  let count = 0;
+  let inThread = false;
+  for (const node of children) {
+    if (node.type === 'comment') {
+      if (!inThread) { count++; inThread = true; }
+    } else {
+      inThread = false;
+      const kids = (node as any).children;
+      if (Array.isArray(kids)) count += countThreadsInChildren(kids);
+    }
+  }
+  return count;
+}
+
+/**
+ * Count the number of comment threads in a wiremd AST.
+ * Consecutive comments at the same level form a single thread.
+ */
+export function countCommentThreads(ast: DocumentNode): number {
+  return countThreadsInChildren(ast.children);
+}
 
 /**
  * Render wiremd AST to HTML

@@ -51,6 +51,9 @@ describe('editor main bootstrap', () => {
       'toast',
       'divider',
       'editor-panel',
+      'show-comments-check',
+      'comment-count-badge',
+      'comment-toggle-label',
     ] as const;
 
     const elements = Object.fromEntries(

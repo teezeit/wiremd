@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { parse, resolveIncludes, renderToHTML } from 'wiremd';
+import { parse, resolveIncludes, renderToHTML, countCommentThreads } from 'wiremd';
 
 export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   public static readonly viewType = 'wiremd.preview';
@@ -346,8 +346,9 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
 
     try {
       const ast = parse(markdown);
+      const commentCount = countCommentThreads(ast);
       const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true, showComments: this.showComments });
-      return this.injectToolbar(html);
+      return this.injectToolbar(html, commentCount);
     } catch (error: any) {
       return this.getErrorHTML(error.message);
     }
@@ -356,7 +357,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   /**
    * Inject toolbar and VS Code bridge into the full wiremd HTML output
    */
-  private injectToolbar(html: string): string {
+  private injectToolbar(html: string, commentCount: number = 0): string {
     const viewportWidths: Record<string, string> = {
       desktop: '1440px',
       laptop: '1024px',
@@ -397,6 +398,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       #wmd-toolbar span { font-size: 13px; color: #333; }
       #wmd-toolbar-spacer { margin-left: auto; font-size: 12px; color: #666; }
       #wmd-help, #wmd-skill { width: 28px; height: 28px; padding: 0; font-weight: bold; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+      #wmd-comments .wmd-comment-badge-count { display: inline-flex; align-items: center; justify-content: center; background: #f9a825; color: #fff; border-radius: 10px; font-size: 11px; font-weight: 700; min-width: 18px; height: 18px; padding: 0 5px; margin: 0 4px; }
       #wmd-error-overlay {
         display: none;
         position: fixed;
@@ -426,7 +428,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     <span>Viewport:</span>
     <button id="wmd-viewport">${this.getViewportLabel(this.currentViewport)} &#x25BE;</button>
     <div class="wmd-sep"></div>
-    <button id="wmd-comments" title="Toggle inline comments">${this.showComments ? '&#x1F4AC; Comments On' : '&#x1F4AC; Comments Off'}</button>
+    <button id="wmd-comments" title="Toggle inline comments">${commentCount > 0 ? `<span class="wmd-comment-badge-count">${commentCount}</span>` : ''} &#x1F4AC; ${this.showComments ? 'Hide comments' : 'Show comments'}</button>
     <span id="wmd-toolbar-spacer">${viewportWidth}</span>
     <button id="wmd-skill" title="Install Claude Skill">&#x2728;</button>
     <button id="wmd-help" title="Quick Reference">?</button>

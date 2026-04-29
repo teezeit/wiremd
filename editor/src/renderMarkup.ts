@@ -1,4 +1,4 @@
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML, countCommentThreads } from 'wiremd';
 
 export type StyleName =
   | 'sketch'
@@ -12,6 +12,7 @@ export type StyleName =
 export type RenderMarkupResult =
   | {
       html: string;
+      commentCount: number;
       error: null;
     }
   | {
@@ -22,6 +23,7 @@ export type RenderMarkupResult =
 export function renderMarkup(markdown: string, style: StyleName, showComments = true): RenderMarkupResult {
   try {
     const ast = parse(markdown);
+    const commentCount = countCommentThreads(ast);
     const html = renderToHTML(ast, {
       style,
       inlineStyles: true,
@@ -31,6 +33,7 @@ export function renderMarkup(markdown: string, style: StyleName, showComments = 
 
     return {
       html,
+      commentCount,
       error: null,
     };
   } catch (err) {

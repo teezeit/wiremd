@@ -9,6 +9,7 @@ export interface PreviewState {
   activeTab: 'preview' | 'html';
   lastHTML: string;
   lastError: string | null;
+  lastCommentCount: number;
   showComments: boolean;
 }
 
@@ -23,6 +24,7 @@ export function createPreview(elements: {
     activeTab: 'preview',
     lastHTML: '',
     lastError: null,
+    lastCommentCount: 0,
     showComments: true,
   };
   let htmlEditor: MonacoEditor.editor.IStandaloneCodeEditor | null = null;
@@ -32,9 +34,10 @@ export function createPreview(elements: {
     const result = renderMarkup(markdown, state.style, state.showComments);
 
     if (result.error === null) {
-      const { html } = result;
+      const { html, commentCount } = result;
       state.lastHTML = html;
       state.lastError = null;
+      state.lastCommentCount = commentCount;
 
       updateIframe(html);
       htmlEditor?.setValue(html);
@@ -44,6 +47,7 @@ export function createPreview(elements: {
 
     state.lastHTML = '';
     state.lastError = result.error;
+    state.lastCommentCount = 0;
     updateIframe('');
     htmlEditor?.setValue('');
     elements.errorMessage.textContent = result.error;

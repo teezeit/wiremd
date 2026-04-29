@@ -226,13 +226,27 @@ Content here
 Changes saved.
 :::
 
-# Inline comments — render as yellow sticky-note callouts
+# Inline comments — appear in a fixed side panel; annotated element gets yellow outline + numbered badge
 <!-- Is this the right CTA? @tobias -->
 [Sign Up]*
 
+# Stack consecutive comments → one thread card with a divider in the panel
+<!-- Should this be "Sign In"? @tobias -->
+<!-- Agreed — align with marketing copy. @sara -->
+[Login]*
+
+# Comment ABOVE a container annotates the whole thing (card, grid column, tabs block)
+<!-- Does this card need a footer action? -->
 ::: card
-<!-- Why a button here instead of a link? -->
-[Learn more]
+### Free Plan
+[Get Started]
+:::
+
+# Comment INSIDE a container annotates the specific child that follows it
+::: card
+<!-- Is $12/mo the right price? -->
+**$12/mo** · unlimited
+[Start Trial]*
 :::
 
 # Annotations for states and design notes

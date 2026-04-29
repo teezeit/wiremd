@@ -1176,3 +1176,41 @@ content
     });
   });
 });
+
+describe('countCommentThreads', () => {
+  it('returns 0 with no comments', () => {
+    expect(countCommentThreads(parse('[Btn]*'))).toBe(0);
+  });
+
+  it('returns 1 for a single comment', () => {
+    expect(countCommentThreads(parse('<!-- a -->\n[Btn]*'))).toBe(1);
+  });
+
+  it('consecutive comments count as one thread', () => {
+    expect(countCommentThreads(parse('<!-- a -->\n<!-- b -->\n[Btn]*'))).toBe(1);
+  });
+
+  it('non-consecutive comments count as separate threads', () => {
+    expect(countCommentThreads(parse('<!-- a -->\n[Btn1]*\n\n<!-- b -->\n[Btn2]*'))).toBe(2);
+  });
+
+  it('three threads', () => {
+    expect(countCommentThreads(parse('<!-- a -->\n<!-- b -->\n[Btn1]*\n\n<!-- c -->\n[Btn2]*'))).toBe(2);
+  });
+
+  it('matches the panel count from renderToHTML', () => {
+    const md = '<!-- a -->\n<!-- b -->\n[Btn1]*\n\n<!-- c -->\n[Btn2]*';
+    const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
+    const match = html.match(/wmd-comments-panel-count">(\d+)</);
+    expect(countCommentThreads(parse(md))).toBe(Number(match?.[1]));
+  });
+
+  it('counts comments inside nested containers', () => {
+    expect(countCommentThreads(parse('::: card\n<!-- inner -->\n[Btn]*\n\n:::\n'))).toBe(1);
+  });
+
+  it('counts threads across top-level and nested containers', () => {
+    const md = '<!-- top -->\n[Btn1]*\n\n::: card\n<!-- inner -->\n[Btn2]*\n\n:::\n';
+    expect(countCommentThreads(parse(md))).toBe(2);
+  });
+});
