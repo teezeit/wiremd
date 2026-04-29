@@ -566,7 +566,7 @@ Use standard HTML comments to annotate any component. They render as yellow stic
 - Multiline comments are supported: `<!--\nLine 1\nLine 2\n-->`
 - Comment text is freeform — any plain text is valid
 - The **Comments** toggle in the editor toolbar / VS Code toolbar hides/shows all callouts
-- CLI: comments hidden by default; use `--show-comments` to include them in output
+- CLI: comments hidden by default; pass `--show-comments` to include them
 
 ---
 

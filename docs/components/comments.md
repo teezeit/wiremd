@@ -61,11 +61,8 @@ Comment text is freeform — any text is valid.
 | CLI | **hidden** | `--show-comments` flag |
 
 ```bash
-# Comments are stripped from CLI output by default
-wiremd my-screen.md -o output.html
-
-# Pass --show-comments to include them
-wiremd my-screen.md --show-comments -o annotated-output.html
+wiremd my-screen.md -o output.html                    # comments hidden
+wiremd my-screen.md --show-comments -o output.html    # comments visible
 ```
 
 :::

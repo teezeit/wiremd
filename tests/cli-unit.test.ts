@@ -477,12 +477,7 @@ describe('CLI Unit Tests', () => {
       expect(result?.showComments).toBe(true);
     });
 
-    it('parses --hide-comments flag', () => {
-      const result = parseArgs(['test.md', '--hide-comments']);
-      expect(result?.showComments).toBe(false);
-    });
-
-    it('leaves showComments undefined when neither flag is set', () => {
+    it('leaves showComments undefined when flag is not set', () => {
       const result = parseArgs(['test.md']);
       expect(result?.showComments).toBeUndefined();
     });

@@ -50,8 +50,7 @@ OPTIONS:
   --watch-pattern <pattern>  Glob pattern for files to watch (e.g., "**/*.md")
   --ignore <pattern>         Glob pattern for files to ignore (e.g., "**/node_modules/**")
   -p, --pretty               Pretty print output (default: true)
-  --show-comments            Show inline comments as sticky-note callouts
-  --hide-comments            Strip inline comments from output (default)
+  --show-comments            Show inline comments as sticky-note callouts (default: hidden)
   -h, --help                 Show this help message
   -v, --version              Show version number
 
@@ -172,10 +171,6 @@ export function parseArgs(args: string[]): CLIOptions | null {
 
       case '--show-comments':
         options.showComments = true;
-        break;
-
-      case '--hide-comments':
-        options.showComments = false;
         break;
 
       case '-p':
