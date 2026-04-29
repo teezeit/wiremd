@@ -125,6 +125,9 @@ export function renderNode(node: WiremdNode, context: ReactRenderContext, indent
     case 'separator':
       return renderSeparator(node, context, indent);
 
+    case 'comment':
+      return '';
+
     default:
       return `${indentStr}{/* Unknown node type: ${(node as any).type} */}`;
   }

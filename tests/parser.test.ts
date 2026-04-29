@@ -1860,4 +1860,49 @@ Some **bold** content
     });
 
   });
+
+  describe('Comment Syntax', () => {
+    it('parses HTML comment into comment node', () => {
+      const result = parse('<!-- Is this the right CTA? -->');
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0]).toMatchObject({ type: 'comment', text: 'Is this the right CTA?' });
+    });
+
+    it('preserves @mention in comment text', () => {
+      const result = parse('<!-- Should we validate inline? @tobias -->');
+      expect(result.children[0]).toMatchObject({ type: 'comment', text: 'Should we validate inline? @tobias' });
+    });
+
+    it('parses comment adjacent to button', () => {
+      const result = parse('<!-- Is this the right CTA? -->\n[Sign Up]*');
+      expect(result.children).toHaveLength(2);
+      expect(result.children[0].type).toBe('comment');
+      expect(result.children[1].type).toBe('button');
+    });
+
+    it('trims whitespace from comment text', () => {
+      const result = parse('<!--   lots of space   -->');
+      expect(result.children[0]).toMatchObject({ type: 'comment', text: 'lots of space' });
+    });
+
+    it('handles multiline comment as single node', () => {
+      const result = parse('<!--\nLine one\nLine two\n-->');
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0].type).toBe('comment');
+      expect((result.children[0] as any).text).toContain('Line one');
+      expect((result.children[0] as any).text).toContain('Line two');
+    });
+
+    it('parses multiple consecutive comments as separate nodes', () => {
+      const result = parse('<!-- First -->\n<!-- Second -->');
+      const comments = result.children.filter((n) => n.type === 'comment');
+      expect(comments).toHaveLength(2);
+    });
+
+    it('does not parse non-comment raw HTML as comment', () => {
+      const result = parse('<!-- comment -->\n<div>raw</div>');
+      const comments = result.children.filter((n) => n.type === 'comment');
+      expect(comments).toHaveLength(1);
+    });
+  });
 });

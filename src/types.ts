@@ -106,7 +106,10 @@ export type WiremdNode =
   | { type: 'error-state'; icon?: string; title?: string; props: ComponentProps; children: WiremdNode[]; position?: Location }
 
   // Demo / showcase
-  | { type: 'demo'; raw: string; props: ComponentProps; children: WiremdNode[]; position?: Location };
+  | { type: 'demo'; raw: string; props: ComponentProps; children: WiremdNode[]; position?: Location }
+
+  // Comments
+  | { type: 'comment'; text: string; position?: Location };
 
 // ============================================================================
 // Type Guards
@@ -167,6 +170,7 @@ export interface RenderOptions {
   classPrefix?: string;
   typescript?: boolean; // For React renderer
   componentName?: string; // For React renderer
+  showComments?: boolean;
 }
 
 // ============================================================================

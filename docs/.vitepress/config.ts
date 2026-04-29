@@ -74,6 +74,7 @@ export default defineConfig({
               { text: "Reuse Components", link: "/components/includes" },
               { text: "Attributes & Classes", link: "/components/attributes" },
               { text: "Demo Blocks", link: "/components/demo" },
+              { text: "Inline Comments", link: "/components/comments" },
             ],
           },
           {

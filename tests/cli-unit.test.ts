@@ -470,4 +470,21 @@ describe('CLI Unit Tests', () => {
       expect(() => generateOutput(options)).not.toThrow();
     });
   });
+
+  describe('showComments flag', () => {
+    it('parses --show-comments flag', () => {
+      const result = parseArgs(['test.md', '--show-comments']);
+      expect(result?.showComments).toBe(true);
+    });
+
+    it('parses --hide-comments flag', () => {
+      const result = parseArgs(['test.md', '--hide-comments']);
+      expect(result?.showComments).toBe(false);
+    });
+
+    it('leaves showComments undefined when neither flag is set', () => {
+      const result = parseArgs(['test.md']);
+      expect(result?.showComments).toBeUndefined();
+    });
+  });
 });

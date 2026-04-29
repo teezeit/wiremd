@@ -12,6 +12,7 @@
 [[Navigation](./navigation.md)]
 [[Cards](./cards.md)]
 [[Tabs](./tabs.md)]
+<!-- hi there -->
 [[Alerts](./alerts.md)]
 [[Tables](./tables.md)]
 
@@ -25,6 +26,7 @@
 [[Reuse Components](./includes.md)]
 [[Attributes & Classes](./attributes.md)]
 [[Demo Blocks](./demo.md)]
+[[Inline Comments](./comments.md)]
 [[Visual Styles](./styles.md)]
 
 #### Reference

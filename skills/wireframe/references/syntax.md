@@ -547,6 +547,29 @@ All standard markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 
 ---
 
+## Inline comments
+
+Use standard HTML comments to annotate any component. They render as yellow sticky-note callouts in the preview.
+
+```markdown
+<!-- Is this the right CTA? @tobias -->
+[Sign Up]*
+
+::: card
+<!-- Why is this a button and not a link? -->
+[Learn more]
+:::
+```
+
+- Place the comment **above** what you want to annotate — it attaches to the next element
+- Inside a `:::` container, the comment pins to the specific child that follows it (not the card)
+- Multiline comments are supported: `<!--\nLine 1\nLine 2\n-->`
+- Comment text is freeform — any plain text is valid
+- The **Comments** toggle in the editor toolbar / VS Code toolbar hides/shows all callouts
+- CLI: comments hidden by default; use `--show-comments` to include them in output
+
+---
+
 ## Visual styles (--style flag)
 
 | Style | Description | Best for |

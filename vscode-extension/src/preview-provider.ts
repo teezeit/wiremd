@@ -16,6 +16,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   private updateTimeout: NodeJS.Timeout | undefined;
   private currentStyle: string = 'sketch';
   private currentViewport: string = 'full';
+  private showComments: boolean = true;
   private disposables: vscode.Disposable[] = [];
 
   private docsPanel: vscode.WebviewPanel | undefined;
@@ -161,6 +162,11 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     this.refresh();
   }
 
+  public toggleComments(): void {
+    this.showComments = !this.showComments;
+    this.refresh();
+  }
+
   /**
    * Get viewport label for display
    */
@@ -254,6 +260,10 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
         this.changeViewport(message.viewport);
         break;
 
+      case 'toggleComments':
+        this.toggleComments();
+        break;
+
       case 'requestStyleChange':
         // Trigger the VS Code command to show style picker
         vscode.commands.executeCommand('wiremd.changeStyle');
@@ -336,7 +346,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
 
     try {
       const ast = parse(markdown);
-      const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true });
+      const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true, showComments: this.showComments });
       return this.injectToolbar(html);
     } catch (error: any) {
       return this.getErrorHTML(error.message);
@@ -415,6 +425,8 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     <div class="wmd-sep"></div>
     <span>Viewport:</span>
     <button id="wmd-viewport">${this.getViewportLabel(this.currentViewport)} &#x25BE;</button>
+    <div class="wmd-sep"></div>
+    <button id="wmd-comments" title="Toggle inline comments">${this.showComments ? '&#x1F4AC; Comments On' : '&#x1F4AC; Comments Off'}</button>
     <span id="wmd-toolbar-spacer">${viewportWidth}</span>
     <button id="wmd-skill" title="Install Claude Skill">&#x2728;</button>
     <button id="wmd-help" title="Quick Reference">?</button>
@@ -435,6 +447,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     document.getElementById('wmd-refresh').addEventListener('click', () => vscode.postMessage({ type: 'ready' }));
     document.getElementById('wmd-style').addEventListener('click', () => vscode.postMessage({ type: 'requestStyleChange' }));
     document.getElementById('wmd-viewport').addEventListener('click', () => vscode.postMessage({ type: 'requestViewportChange' }));
+    document.getElementById('wmd-comments').addEventListener('click', () => vscode.postMessage({ type: 'toggleComments' }));
     document.getElementById('wmd-skill').addEventListener('click', () => vscode.postMessage({ type: 'requestInstallSkill' }));
     document.getElementById('wmd-help').addEventListener('click', () => vscode.postMessage({ type: 'requestQuickReference' }));
     window.addEventListener('message', (event) => {

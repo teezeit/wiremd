@@ -19,13 +19,14 @@ export type RenderMarkupResult =
       error: string;
     };
 
-export function renderMarkup(markdown: string, style: StyleName): RenderMarkupResult {
+export function renderMarkup(markdown: string, style: StyleName, showComments = true): RenderMarkupResult {
   try {
     const ast = parse(markdown);
     const html = renderToHTML(ast, {
       style,
       inlineStyles: true,
       pretty: true,
+      showComments,
     });
 
     return {

@@ -29,6 +29,7 @@ const examplesDropdown = $('examples-dropdown');
 const toast = $('toast');
 const divider = $('divider');
 const editorPanel = $('editor-panel');
+const showCommentsCheck = $<HTMLInputElement>('show-comments-check');
 
 function updateCopyButtonState() {
   copyBtn.disabled = preview.getHTML() === '';
@@ -130,6 +131,11 @@ initToolbar({
     const copied = await copyText(window.location.href);
     showToast(toast, copied ? 'Link copied!' : 'Copy failed');
   },
+});
+
+showCommentsCheck.addEventListener('change', () => {
+  preview.setShowComments(showCommentsCheck.checked);
+  renderMarkdown(editor.getValue());
 });
 
 // --- Resizable Divider ---

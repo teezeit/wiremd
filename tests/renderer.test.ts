@@ -1013,4 +1013,54 @@ content
       expect(html).toContain('::: grid-3 card');
     });
   });
+
+  describe('Comment Nodes', () => {
+    it('renders comment callout by default (showComments not set)', () => {
+      const html = renderToHTML(parse('<!-- Is this right? @tobias -->'), { style: 'sketch' });
+      expect(html).toContain('wmd-comment');
+      expect(html).toContain('Is this right? @tobias');
+    });
+
+    it('renders comment when showComments: true', () => {
+      const html = renderToHTML(parse('<!-- hello -->'), { style: 'sketch', showComments: true });
+      expect(html).toContain('wmd-comment');
+      expect(html).toContain('hello');
+    });
+
+    it('hides comment when showComments: false', () => {
+      const html = renderToHTML(parse('<!-- hello -->'), { style: 'sketch', showComments: false });
+      expect(html).not.toContain('<span class="wmd-comment">');
+      expect(html).not.toContain('>hello<');
+    });
+
+    it('retains sibling nodes when showComments: false', () => {
+      const html = renderToHTML(parse('<!-- hidden -->\n[Sign Up]*'), { style: 'sketch', showComments: false });
+      expect(html).not.toContain('<span class="wmd-comment">');
+      expect(html).toContain('Sign Up');
+    });
+
+    it('comment appears before adjacent component in output', () => {
+      const html = renderToHTML(parse('<!-- First -->\n[Sign Up]*'), { style: 'sketch', showComments: true });
+      expect(html.indexOf('wmd-comment')).toBeLessThan(html.indexOf('Sign Up'));
+    });
+
+    it('comment CSS is present in inline-styles output', () => {
+      const html = renderToHTML(parse('<!-- x -->'), { style: 'sketch', inlineStyles: true });
+      expect(html).toContain('.wmd-comment');
+    });
+
+    it('escapes HTML special chars in comment text', () => {
+      const html = renderToHTML(parse('<!-- <script>alert(1)</script> -->'), { style: 'sketch', showComments: true });
+      expect(html).not.toContain('<script>');
+      expect(html).toContain('wmd-comment');
+    });
+
+    it('works with all styles', () => {
+      const styles = ['sketch', 'clean', 'wireframe', 'material', 'brutal'] as const;
+      for (const style of styles) {
+        const html = renderToHTML(parse('<!-- test -->'), { style, showComments: true });
+        expect(html).toContain('wmd-comment');
+      }
+    });
+  });
 });
