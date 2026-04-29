@@ -1,5 +1,5 @@
 ---
-name: wireframe
+name: wiremd:wireframe
 description: >-
   Create and render wireframes using wiremd — a text-first tool that converts Markdown into visual
   HTML mockups. Use this skill whenever the user wants to wireframe, mockup, prototype, or sketch
@@ -15,41 +15,56 @@ description: >-
 Write a wiremd `.md` file, render it, and iterate. wiremd converts plain Markdown with extended
 syntax into visual wireframes — 7 styles, no design tools needed.
 
-## Workflows
+## Step 0 — Ask which mode
 
-### 1. Create from a description or spec
+Before doing anything else, ask the user:
+
+> "Which mode would you like?
+> **1. Local (default)** — no install needed. I write the `.md` file; you open the web editor at `https://tobiashoelzer.com/wiremd/editor/` which connects directly to that file on your disk and live-refreshes as I edit.
+> **2. CLI** — wiremd installed locally (`wiremd --version`). I render to HTML or start a dev server.
+> **3. Chat only** — no filesystem access. I hand you the `.md` and you paste it into the editor."
+
+If the user doesn't answer or says "default", use **Mode 1 (Local)**.
+
+---
+
+## Mode 1 — Local (default, no install)
+
+Claude writes the `.md` file to disk. The user opens the wiremd web editor, which uses the File System Access API to open that exact file and auto-refresh on every save (≤500ms, no page reload). The user can also edit directly in the browser — changes write back to disk immediately.
+
+**Steps:**
+1. Write the `.md` file to a sensible path (e.g. `./wireframes/screen-name.md`)
+2. Generate and share the `?file=` hint URL:
+   ```bash
+   node -e "const u=new URL('https://tobiashoelzer.com/wiremd/editor/');u.searchParams.set('file',process.argv[1]);console.log(u.toString())" /full/path/to/wireframe.md
+   ```
+3. Tell the user: "Open that URL in Chrome, Edge, or Safari 16.4+ → click **Open File** in the modal → grant access. The wireframe will appear and update live as I edit."
+4. Iterate — edit the `.md` file, the browser refreshes automatically.
+
+**Browser requirements:** Chrome, Edge, or Safari 16.4+. Firefox shows an explanatory notice.
+
+---
+
+## Mode 2 — CLI (wiremd installed)
+
+### Create from a description or spec
 1. Understand the screen's purpose — what does the user accomplish here?
 2. Sketch structure top-to-bottom: nav → layout → content sections → forms/data → off-screen elements (modals)
 3. Write the wiremd file using the quick reference below
 4. Render and tell the user where to open it
 
-### 2. Document an existing component or screen
+### Document an existing component or screen
 1. Read the JSX/TSX component tree — focus on structure, not logic
 2. Map components to wiremd equivalents (see `references/syntax.md` → Component mapping table)
 3. Write top-to-bottom following visual flow
 4. **Capture:** layout, navigation, form fields/labels, button labels, table columns, states
 5. **Skip:** exact colors, event handlers, API calls, business logic
 
-### 3. Cowork / PM review via browser editor
-
-For non-technical reviewers (PMs, designers, stakeholders) who don't have VS Code — use the live browser editor with file sync:
-
-1. Write the `.md` file to disk as usual
-2. Generate a `?file=` hint URL and share it with the reviewer:
-   ```bash
-   node -e "const u=new URL('https://tobiashoelzer.com/wiremd/editor/');u.searchParams.set('file',process.argv[1]);console.log(u.toString())" /full/path/to/wireframe.md
-   ```
-3. The reviewer clicks the link → a modal prompts them to click **Open File** and grant browser access to the file
-4. Claude edits the `.md` file — the browser auto-refreshes within ~500ms, no page reload needed
-5. The reviewer can also edit directly in the browser and changes write back to disk immediately
-
-**Browser requirements:** Chrome, Edge, or Safari 16.4+. Firefox shows an explanatory notice — the reviewer will need one of the supported browsers.
-
 ---
 
-## Before you render
+## Before you render (Mode 2 only)
 
-Answer three questions up front — they determine what you build and how you hand it back.
+Answer these questions up front — they determine what you build and how you hand it back.
 
 **1. What wiremd version is available?** Run `wiremd --version`. Require **≥ 0.1.7** for:
 
@@ -67,13 +82,12 @@ If older, build from source: `git clone https://github.com/teezeit/wiremd && cd 
 
 See `references/multi-page.md` for folder layout, cross-page link syntax, and the rebuild recipe.
 
-**3. Which render route does this environment support?** Triage by the tools Claude actually has — not by product name. See `references/rendering-modes.md` for the full table.
+**3. Which render route does this environment support?** See `references/rendering-modes.md` for the full table.
 
-- **Write files + run shell** (Claude Code, VS Code+terminal, Cowork/Desktop with filesystem + code-execution tools) → **files in folder** is the default. Render `.html` into the user's folder; they open via `file://` or double-click.
-- **User is on their own local terminal** → `--serve PORT --watch` for live iteration.
-- **Write files + reviewer is non-technical (no VS Code)** → **browser editor with `?file=` hint**. Write the `.md`, generate a `https://tobiashoelzer.com/wiremd/editor/?file=<encoded-path>` URL, share it. The reviewer links the file in their browser; Claude's edits auto-refresh live. See Workflow 3 above.
+- **Default (no install)** → use **Mode 1** above — write `.md`, share `?file=` URL, browser editor live-refreshes.
+- **wiremd installed + user on local terminal** → `--serve PORT --watch` for live iteration.
 - **Chat only (no filesystem, no exec)** → hand off the `.md` and direct the user to `https://tobiashoelzer.com/wiremd/editor` to paste and render.
-- **Never hand out a sandbox `localhost:PORT` URL** — it binds to Claude's host, not the user's. When in doubt, write HTML to the folder.
+- **Never hand out a sandbox `localhost:PORT` URL** — it binds to Claude's host, not the user's.
 
 ---
 
