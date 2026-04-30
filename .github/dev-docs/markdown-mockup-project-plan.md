@@ -257,29 +257,29 @@ Output (JSON/HTML/Framework)
 ```css
 /* Core mockup styles */
 :root {
-  --mdmock-font: "Comic Neue", "Marker Felt", cursive;
-  --mdmock-border: 2px solid #333;
-  --mdmock-shadow: 2px 2px 0 rgba(0,0,0,0.1);
-  --mdmock-bg: #ffffff;
-  --mdmock-fg: #333333;
+  --wiremd-font: "Comic Neue", "Marker Felt", cursive;
+  --wiremd-border: 2px solid #333;
+  --wiremd-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+  --wiremd-bg: #ffffff;
+  --wiremd-fg: #333333;
 }
 
-.mdmock-container {
-  font-family: var(--mdmock-font);
-  background: var(--mdmock-bg);
-  border: var(--mdmock-border);
+.wiremd-container {
+  font-family: var(--wiremd-font);
+  background: var(--wiremd-bg);
+  border: var(--wiremd-border);
   position: relative;
   /* Intentionally imperfect */
   transform: rotate(0.2deg);
 }
 
 /* Sketchy border effect using SVG filters */
-.mdmock-sketch {
+.wiremd-sketch {
   filter: url(#roughPaper);
 }
 
 /* Component styles */
-.mdmock-button {
+.wiremd-button {
   background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
   border: 2px solid #333;
   padding: 8px 16px;
@@ -290,12 +290,12 @@ Output (JSON/HTML/Framework)
   transition: all 0.2s;
 }
 
-.mdmock-button:hover {
+.wiremd-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-.mdmock-input {
+.wiremd-input {
   border: none;
   border-bottom: 2px solid #333;
   padding: 8px 4px;
@@ -305,20 +305,20 @@ Output (JSON/HTML/Framework)
 }
 
 /* Grid system */
-.mdmock-grid {
+.wiremd-grid {
   display: grid;
   gap: 1rem;
 }
 
-.mdmock-grid-2 { grid-template-columns: repeat(2, 1fr); }
-.mdmock-grid-3 { grid-template-columns: repeat(3, 1fr); }
-.mdmock-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.wiremd-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.wiremd-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.wiremd-grid-4 { grid-template-columns: repeat(4, 1fr); }
 
 /* Responsive utilities */
 @media (max-width: 768px) {
-  .mdmock-grid-2,
-  .mdmock-grid-3,
-  .mdmock-grid-4 {
+  .wiremd-grid-2,
+  .wiremd-grid-3,
+  .wiremd-grid-4 {
     grid-template-columns: 1fr;
   }
 }
@@ -355,16 +355,16 @@ class HTMLRenderer {
   <style>/* Inline mockup styles */</style>
 </head>
 <body>
-  <main class="mdmock-root" data-style="sketch">
-    <header class="mdmock-navbar">
-      <div class="mdmock-brand">Logo</div>
-      <nav class="mdmock-nav">
-        <a href="#" class="mdmock-nav-item">Home</a>
-        <a href="#" class="mdmock-nav-item">Products</a>
-        <button class="mdmock-button">Sign In</button>
+  <main class="wiremd-root" data-style="sketch">
+    <header class="wiremd-navbar">
+      <div class="wiremd-brand">Logo</div>
+      <nav class="wiremd-nav">
+        <a href="#" class="wiremd-nav-item">Home</a>
+        <a href="#" class="wiremd-nav-item">Products</a>
+        <button class="wiremd-button">Sign In</button>
       </nav>
     </header>
-    <section class="mdmock-content">
+    <section class="wiremd-content">
       <!-- Generated content -->
     </section>
   </main>
@@ -389,11 +389,11 @@ wiremd watch *.md --out-dir ./dist     # Build directory
 
 # Component library
 wiremd init                            # Initialize project
-wiremd component add button.mdmock     # Add to library
+wiremd component add button.wiremd     # Add to library
 wiremd build --components ./components # Use library
 
 # Config file support
-wiremd --config .mdmockrc.json
+wiremd --config .wiremdrc.json
 ```
 
 #### 4.2 Configuration Schema
