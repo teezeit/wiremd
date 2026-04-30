@@ -49,6 +49,11 @@ Thumbs.db
 # Built VS Code extension package
 extensions/vscode/*.vsix
 
+# Bundle artifacts — copied from apps/docs/ and extensions/skills/ by the bundle script
+# (regenerated on every `pnpm --filter wiremd-preview run bundle`; source of truth is apps/docs/)
+extensions/vscode/docs/
+extensions/vscode/skills/
+
 # VitePress cache
 apps/docs/.vitepress/cache/
 

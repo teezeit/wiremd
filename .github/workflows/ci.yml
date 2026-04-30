@@ -128,10 +128,10 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Typecheck editor
-      run: npm run typecheck --prefix editor
+      run: pnpm turbo run typecheck --filter=wiremd-editor
 
     - name: Build editor
-      run: npm run build --prefix editor
+      run: pnpm turbo run build --filter=wiremd-editor
 
     - name: Run editor tests
       run: pnpm turbo run test --filter=wiremd-editor
