@@ -54,6 +54,10 @@ wiremd extends this with UI components — nothing above is broken or overridden
 5. **Group related items with containers** — `:::card`, `:::grid-N`, `:::row` to organise content
 6. **One `:::` container can nest inside another** — track depth; the inner `:::` closes its own block only
 
+## Full syntax reference
+
+Need all components, attributes, and patterns on one page? See the [Syntax Reference](/reference/syntax).
+
 :::
 
 :::
