@@ -92,14 +92,42 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 
 ## Project Structure
 
-This is an open-source MIT-licensed project containing:
+```
+wiremd/
+├── src/               # core library (parser, renderers, 7 styles)
+├── bin/               # CLI entry point
+├── tests/             # test suite
+├── landing/           # marketing site        Vite + Vue     :5175
+├── docs/              # documentation         VitePress      :5173
+├── editor/            # web editor            Vite + Monaco  :5174
+├── vscode-extension/  # VS Code live preview
+├── figma-plugin/      # import wiremd → Figma
+└── skills/            # Claude skill (zip)
+```
 
-- **`src/`** - Core parser and renderer library
-- **`tests/`** - Comprehensive test suite (48 tests)
-- **`docs/`** - Documentation site ([**Live at teezeit.github.io/wiremd**](https://teezeit.github.io/wiremd))
-- **`docs/examples/`** - Example wireframes
-- **`figma-plugin/`** - Figma plugin for importing wiremd designs
-- **`vscode-extension/`** - VS Code extension with live preview and style switching
+```mermaid
+graph LR
+  core["<b>core</b><br/>src/ · bin/<br/>library + CLI"]
+
+  subgraph apps["frontend apps"]
+    landing["landing/<br/>:5175"]
+    docs["docs/<br/>:5173"]
+    editor["editor/<br/>:5174"]
+  end
+
+  subgraph consumers["consumers"]
+    vscode["vscode-extension/"]
+    figma["figma-plugin/"]
+    skill["skills/wireframe/"]
+  end
+
+  core --> apps
+  core --> consumers
+```
+
+```bash
+npm run dev   # starts all three frontend apps concurrently
+```
 
 ## Installation
 

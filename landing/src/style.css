@@ -1,0 +1,37 @@
+/* Map VitePress CSS variables so landing components work unchanged */
+
+:root {
+  --vp-c-text-1: rgba(60, 60, 67, 1);
+  --vp-c-text-2: rgba(60, 60, 67, 0.75);
+  --vp-c-text-3: rgba(60, 60, 67, 0.33);
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-soft: #f6f6f7;
+  --vp-c-divider: rgba(60, 60, 67, 0.12);
+  --vp-c-brand-1: #3451b2;
+  --vp-font-family-base: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --vp-font-family-mono: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+  --vp-code-block-bg: #f6f6f7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vp-c-text-1: rgba(255, 255, 245, 0.86);
+    --vp-c-text-2: rgba(235, 235, 245, 0.60);
+    --vp-c-text-3: rgba(235, 235, 245, 0.38);
+    --vp-c-bg: #1b1b1f;
+    --vp-c-bg-soft: #252529;
+    --vp-c-divider: rgba(82, 82, 89, 0.32);
+    --vp-c-brand-1: #5c73e7;
+    --vp-code-block-bg: #161618;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--vp-font-family-base);
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  -webkit-font-smoothing: antialiased;
+}
