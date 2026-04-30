@@ -1,5 +1,5 @@
 /**
- * Tests for the plugin CLI bundle at skills/wireframe/bin/wiremd.js.
+ * Tests for the plugin CLI bundle at extensions/skills/wireframe/bin/wiremd.js.
  * This file is committed to git (required for the git-subdir plugin pull).
  * The standalone CLI and .vsix are uploaded to GitHub Releases, not tested here.
  */
@@ -25,7 +25,7 @@ describe('cli-bundle', () => {
     [TMP_INPUT, TMP_OUTPUT].forEach(f => { try { unlinkSync(f); } catch {} });
   });
 
-  it('plugin bundle exists at skills/wireframe/bin/wiremd.js', () => {
+  it('plugin bundle exists at extensions/skills/wireframe/bin/wiremd.js', () => {
     expect(existsSync(BUNDLE)).toBe(true);
   });
 

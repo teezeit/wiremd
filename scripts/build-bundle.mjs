@@ -5,7 +5,7 @@
  *   releases/wiremd.vsix      — VS Code extension (install via Extensions > ... > Install from VSIX)
  *
  * Also copies the CLI to the plugin:
- *   skills/wireframe/bin/wiremd.js
+ *   extensions/skills/wireframe/bin/wiremd.js
  */
 import { mkdirSync, copyFileSync, readdirSync } from 'fs';
 import { build } from 'esbuild';

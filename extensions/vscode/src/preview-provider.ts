@@ -493,7 +493,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       }
     });
     vscode.postMessage({ type: 'ready' });
-  <\/script>`;
+  ${'</'}script>`;
 
     // Inject CSP into <head>, toolbar styles just before </head> (after wiremd styles so they win),
     // and toolbar HTML at start of <body>
@@ -767,7 +767,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       }
     });
     ${sourceScript}
-  <\/script>`;
+  ${'</'}script>`;
 
     const withCSP = html.replace(
       '<head>',

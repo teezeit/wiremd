@@ -326,7 +326,7 @@ pnpm turbo run test
 cd packages/core
 npm version patch
 # ↑ updates packages/core/package.json, runs sync-versions.mjs,
-#   stages extensions/vscode/package.json + skills/wireframe/.claude-plugin/plugin.json,
+#   stages extensions/vscode/package.json + extensions/skills/wireframe/.claude-plugin/plugin.json,
 #   commits and tags the release
 
 # 4. Push branch + tag
