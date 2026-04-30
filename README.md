@@ -92,26 +92,37 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 
 ## Project Structure
 
-wiremd is a monorepo with three layers:
+```
+wiremd/
+├── src/               # core library (parser, renderers, 7 styles)
+├── bin/               # CLI entry point
+├── tests/             # test suite
+├── landing/           # marketing site        Vite + Vue     :5175
+├── docs/              # documentation         VitePress      :5173
+├── editor/            # web editor            Vite + Monaco  :5174
+├── vscode-extension/  # VS Code live preview
+├── figma-plugin/      # import wiremd → Figma
+└── skills/            # Claude skill (zip)
+```
 
 ```mermaid
-graph TD
-  core["<b>core</b><br/>src/ · bin/<br/>npm library + CLI"]
+graph LR
+  core["<b>core</b><br/>src/ · bin/<br/>library + CLI"]
 
-  landing["<b>landing/</b><br/>marketing site<br/>Vite + Vue · :5175"]
-  docs["<b>docs/</b><br/>documentation<br/>VitePress · :5173"]
-  editor["<b>editor/</b><br/>web editor<br/>Vite + Monaco · :5174"]
+  subgraph apps["frontend apps"]
+    landing["landing/<br/>:5175"]
+    docs["docs/<br/>:5173"]
+    editor["editor/<br/>:5174"]
+  end
 
-  vscode["<b>vscode-extension/</b><br/>live preview"]
-  figma["<b>figma-plugin/</b><br/>import to Figma"]
-  skill["<b>skills/wireframe/</b><br/>Claude skill"]
+  subgraph consumers["consumers"]
+    vscode["vscode-extension/"]
+    figma["figma-plugin/"]
+    skill["skills/wireframe/"]
+  end
 
-  core -->|"aliases src/ at dev time"| landing
-  core -->|"aliases src/ at dev time"| docs
-  core -->|"aliases src/ at dev time"| editor
-  core -->|"wiremd: file:.."| vscode
-  core -->|"wiremd: file:.."| figma
-  core -.->|"zip upload"| skill
+  core --> apps
+  core --> consumers
 ```
 
 ```bash
