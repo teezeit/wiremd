@@ -46,10 +46,11 @@ Import wiremd markdown mockups as fully editable Figma designs with native compo
 4. Click "Install"
 
 ### Option 2: Development Installation
-1. Clone this repository
-2. In Figma: Menu → Plugins → Development → Import plugin from manifest
-3. Select the `manifest.json` file from `figma-plugin/` directory
-4. Plugin will appear in Plugins → Development → wiremd Importer
+1. Clone the wiremd monorepo: `git clone https://github.com/teezeit/wiremd.git`
+2. Install + build: `pnpm install && pnpm --filter wiremd-figma-plugin run build`
+3. In Figma: **Menu → Plugins → Development → Import plugin from manifest**
+4. Select `extensions/figma/manifest.json`
+5. The plugin appears in **Plugins → Development → wiremd Importer**
 
 ## Usage
 
@@ -58,7 +59,7 @@ Import wiremd markdown mockups as fully editable Figma designs with native compo
 Use the wiremd CLI to convert your markdown mockup to JSON:
 
 ```bash
-mdmock your-mockup.md --format json -o mockup.json
+wiremd your-mockup.md --format json -o mockup.json
 ```
 
 Example markdown:
@@ -162,7 +163,7 @@ Imported grids use horizontal frames with columns:
 ## Troubleshooting
 
 ### "Invalid wiremd JSON" error
-- Ensure you're using `--format json` flag with mdmock CLI
+- Ensure you're using `--format json` flag with wiremd CLI
 - Validate JSON syntax (use jsonlint.com)
 - Check that root object has `"type": "document"`
 
@@ -186,57 +187,63 @@ For very large mockups (100+ components):
 
 ## Development
 
-### Building from Source
+The Figma plugin is a workspace inside the wiremd monorepo. All commands run from the repo root.
+
+### Building from source
 
 ```bash
-cd figma-plugin
-npm install
-npm run build
+pnpm install
+pnpm --filter wiremd-figma-plugin run build
+# Output → extensions/figma/dist/
 ```
 
-### Development Mode
+### Development mode
 
 ```bash
-npm run watch
+pnpm --filter wiremd-figma-plugin run dev   # tsc --watch + ui.html copy
 ```
 
 Then in Figma:
-1. Plugins → Development → Import plugin from manifest
-2. Select `manifest.json`
-3. Plugin updates automatically on file changes
+1. **Plugins → Development → Import plugin from manifest**
+2. Select `extensions/figma/manifest.json`
+3. The plugin reloads automatically on file changes (run **Plugins → Development → wiremd Importer** again to pick up new builds)
 
-### Project Structure
+### Project structure
 
 ```
-figma-plugin/
+extensions/figma/
 ├── src/
-│   ├── code.ts              # Main plugin logic
-│   ├── ui.html              # Plugin UI
+│   ├── code.ts                  # Main plugin logic
+│   ├── ui.html                  # Plugin UI
 │   └── lib/
-│       ├── ast-to-figma.ts  # Core converter
-│       ├── types.ts         # TypeScript types
-│       ├── style-mapper.ts  # Theme styling
-│       ├── form-components.ts    # Form converters
+│       ├── ast-to-figma.ts      # Core converter
+│       ├── types.ts             # TypeScript types
+│       ├── style-mapper.ts      # Theme styling
+│       ├── form-components.ts   # Form converters
 │       └── content-components.ts # Content converters
-├── dist/                    # Compiled output
-├── manifest.json            # Figma plugin manifest
-├── package.json
-└── tsconfig.json
+├── tests/                       # vitest test suite
+├── dist/                        # Compiled output (gitignored)
+├── manifest.json                # Figma plugin manifest
+├── package.json                 # workspace name: wiremd-figma-plugin
+├── tsconfig.json
+└── vitest.config.ts
 ```
 
 ### Testing
 
-Test with example wiremd files:
+Generate JSON from any wireframe and import it through the plugin:
 
 ```bash
-# In wiremd root directory
-cd examples
-mdmock navigation.md --format json -o nav.json
-mdmock form.md --format json -o form.json
-mdmock landing-page.md --format json -o landing.json
-```
+# Build the core CLI first
+pnpm --filter wiremd run build
 
-Then import each JSON file through the plugin.
+# From any folder containing wireframe markdown:
+pnpm --filter wiremd exec wiremd navigation.md --format json -o nav.json
+pnpm --filter wiremd exec wiremd form.md       --format json -o form.json
+
+# Run the plugin's vitest suite
+pnpm --filter wiremd-figma-plugin run test
+```
 
 ## Contributing
 
@@ -247,7 +254,7 @@ Contributions welcome! Please:
 3. Add tests for new functionality
 4. Submit a pull request
 
-See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
+See [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
 
 ## License
 
@@ -255,10 +262,10 @@ MIT License - see [LICENSE](../LICENSE) for details.
 
 ## Support
 
-- 📖 [Documentation](https://wiremd.dev/docs)
-- 💬 [GitHub Discussions](https://github.com/your-org/wiremd/discussions)
-- 🐛 [Issue Tracker](https://github.com/your-org/wiremd/issues)
-- 💡 [Feature Requests](https://github.com/your-org/wiremd/issues/new?template=feature_request.md)
+- 📖 [Documentation](https://teezeit.github.io/wiremd/)
+- 💬 [GitHub Discussions](https://github.com/teezeit/wiremd/discussions)
+- 🐛 [Issue Tracker](https://github.com/teezeit/wiremd/issues)
+- 💡 [Feature Requests](https://github.com/teezeit/wiremd/issues/new?template=feature_request.md)
 
 ## Roadmap
 

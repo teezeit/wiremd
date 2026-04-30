@@ -82,11 +82,12 @@ If you don't use Claude Code, skip this.
 If you want to modify the extension or use an unreleased build:
 
 ```bash
-cd vscode-extension
-npm install
-npm run compile
+git clone https://github.com/teezeit/wiremd.git
+cd wiremd
+pnpm install
+pnpm turbo run build
+pnpm --filter wiremd-preview run bundle
+code --extensionDevelopmentPath=$(pwd)/extensions/vscode .
 ```
 
-Press `F5` in VS Code to launch an Extension Development Host with the local build loaded.
-
-See [`vscode-extension/DEVELOPMENT.md`](../../vscode-extension/DEVELOPMENT.md) for the full contributor workflow, including how to rebuild after changes to the wiremd library.
+See [`extensions/vscode/DEVELOPMENT.md`](https://github.com/teezeit/wiremd/blob/main/extensions/vscode/DEVELOPMENT.md) for the full contributor workflow, including how to rebuild after changes to the wiremd library.

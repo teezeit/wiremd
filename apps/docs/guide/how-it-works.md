@@ -50,6 +50,6 @@ The `none` style emits no CSS at all, useful when you are injecting wiremd outpu
 
 ## The VS Code Extension
 
-The VS Code extension (`vscode-extension/`) is a thin WebView wrapper around the same `parse()` + `renderToHTML()` pipeline. When you open a `.md` file and trigger the preview command, the extension reads the file contents, calls the wiremd library, and renders the result into a VS Code WebView panel. The panel refreshes on every file save.
+The VS Code extension (`extensions/vscode/`) is a thin WebView wrapper around the same `parse()` + `renderToHTML()` pipeline. When you open a `.md` file and trigger the preview command, the extension reads the file contents, calls the wiremd library, and renders the result into a VS Code WebView panel. The panel refreshes on every file save.
 
 There is no separate rendering engine in the extension — it imports wiremd as a local file dependency. This means any behaviour you observe in the CLI or the library should be identical in the preview panel.

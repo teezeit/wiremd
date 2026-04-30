@@ -1,178 +1,180 @@
-# Publishing Guide
+# Publishing & Releases
 
-This document describes the process for publishing new versions of wiremd to npm.
+How wiremd ships. Four artifacts ship together under a single version: the npm package, the VS Code extension, the Claude skill, and a standalone CLI bundle. The repo is a pnpm + Turborepo monorepo; releases are coordinated from `packages/core/`.
 
-## Prerequisites
+## Artifacts
 
-Before publishing, ensure you have:
+| Artifact | Source workspace | Distributed via |
+|---|---|---|
+| `wiremd` npm package | `packages/core/` | npm registry |
+| VS Code extension | `extensions/vscode/` | VS Code Marketplace + GitHub Release `.vsix` |
+| Claude skill (wireframe) | `extensions/skills/wireframe/` | `/plugin marketplace add teezeit/wiremd` + GitHub Release zip |
+| Standalone CLI bundle | built from `packages/core/src/cli/` | GitHub Release (`releases/wiremd.js`, also bundled into the Claude skill) |
 
-1. **npm Account**: You need an npm account with publish rights for the `wiremd` package
-2. **NPM_TOKEN**: A valid npm access token stored as a GitHub secret
-   - Create token at: https://www.npmjs.com/settings/YOUR_USERNAME/tokens
-   - Token type: "Automation" (for CI/CD) or "Publish"
-   - Add as GitHub secret: Settings → Secrets and variables → Actions → New repository secret
-   - Secret name: `NPM_TOKEN`
+## CI/CD pipelines
 
-## Pre-Publication Checklist
+| Workflow | Trigger | What it does |
+|---|---|---|
+| `ci.yml` | push to `main`, PRs | Build / typecheck / lint / test on Node 20 + 22 across Linux/macOS/Windows; coverage upload; package shape check |
+| `build-bundle.yml` | push to `main` (touching core/skills/extension src or `scripts/build-bundle.mjs`), manual | Rebuild the standalone CLI bundle + `.vsix`; commit the refreshed plugin bin back to `main`; refresh the rolling `latest` GitHub prerelease |
+| `docs.yml` | push to `main` (touching `apps/**` or `packages/core/src/**`), manual | Build VitePress docs + landing + editor; deploy the merged tree to GitHub Pages |
+| `release.yml` | tag push (`v*`) | Create the GitHub Release with auto-generated notes |
+| `publish.yml` | release `published` | Build everything, publish the VS Code extension to the Marketplace via `VSCE_PAT`, attach `wireframe-skill.zip` to the release |
 
-Before creating a release, verify:
+The npm package is **not** published automatically today. See [npm publishing](#npm-publishing) below.
 
-- [ ] All tests pass: `npm test`
-- [ ] Build succeeds: `npm run build`
-- [ ] Type checking passes: `npm run typecheck`
-- [ ] Linting passes: `npm run lint`
-- [ ] Documentation is up to date
-- [ ] CHANGELOG.md is updated with release notes
-- [ ] Version number follows [Semantic Versioning](https://semver.org/)
+## Pre-release checklist
 
-## Release Process
+- [ ] `pnpm turbo run test` is green
+- [ ] `pnpm turbo run typecheck` is clean
+- [ ] `pnpm turbo run lint` is clean
+- [ ] `CHANGELOG.md` has an entry under `[Unreleased]`
+- [ ] Documentation reflects the changes (see the Feature Development Checklist in `CONTRIBUTING.md`)
+- [ ] The version bump follows [semver](https://semver.org/) — pre-1.0, minor bumps may include breaking changes
 
-### 1. Update Version
+## Cutting a release
 
-Update the version in `package.json`:
+The version in `packages/core/package.json` is the source of truth. The repo-root `package.json`'s `version` lifecycle hook runs `scripts/sync-versions.mjs` to propagate it to:
+
+- `extensions/vscode/package.json`
+- `extensions/skills/wireframe/.claude-plugin/plugin.json`
+
+…and stages those files automatically. Do not bump those by hand.
 
 ```bash
-# For patch releases (bug fixes)
+# 1. Sanity check
+pnpm turbo run test
+
+# 2. Bump version (must run inside packages/core/)
+cd packages/core
+npm version patch       # or minor / major
+# ↑ edits packages/core/package.json,
+#   runs sync-versions.mjs (stages vscode + skill plugin.json),
+#   commits, and tags.
+
+# 3. Push branch + tag
+git push && git push --tags
+```
+
+Pushing the tag fires:
+
+1. **`release.yml`** — creates the GitHub release with auto-generated notes.
+2. **`publish.yml`** — builds the VS Code extension, publishes it to the Marketplace, and attaches `wireframe-skill.zip` to the release.
+
+No manual steps are needed in GitHub or the VS Code Marketplace.
+
+## Extension-only release
+
+If only the VS Code extension changes and you don't want to bump the npm package, bump the extension independently:
+
+```bash
+cd extensions/vscode
 npm version patch
-
-# For minor releases (new features, backward compatible)
-npm version minor
-
-# For major releases (breaking changes)
-npm version major
+git push && git push --tags
 ```
 
-This will:
-- Update version in `package.json`
-- Create a git commit with the version change
-- Create a git tag (e.g., `v0.1.1`)
+Then create the GitHub release for that tag manually. `publish.yml` fires on the `release: published` event and pushes the new `.vsix` to the Marketplace.
 
-### 2. Push Changes and Tag
+## npm publishing
+
+Today, `publish.yml` does **not** publish the `wiremd` npm package — only the VS Code extension and the Claude skill zip. Push a new npm version manually after the version bump:
 
 ```bash
-git push origin main
-git push origin --tags
+pnpm --filter wiremd run build
+cd packages/core
+npm publish --access public
 ```
 
-### 3. Create GitHub Release
+To automate it later, add a step to `publish.yml` (gated on an `NPM_TOKEN` secret with publish rights):
 
-1. Go to https://github.com/teezeit/wiremd/releases/new
-2. Select the tag you just pushed (e.g., `v0.1.1`)
-3. Set release title (e.g., `v0.1.1`)
-4. Add release notes describing:
-   - New features
-   - Bug fixes
-   - Breaking changes (if any)
-   - Upgrade instructions (if needed)
-5. Click "Publish release"
+```yaml
+- name: Publish wiremd to npm
+  run: pnpm --filter wiremd publish --access public --no-git-checks
+  env:
+    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
 
-### 4. Automated Publishing
+### NPM token setup
 
-Once you publish the GitHub release:
-- The `.github/workflows/publish.yml` workflow automatically triggers
-- It will:
-  1. Checkout the code
-  2. Install dependencies
-  3. Run tests
-  4. Build the project
-  5. Publish to npm with provenance
+If/when you wire that step up, you will need:
 
-You can monitor the progress at: https://github.com/teezeit/wiremd/actions
+1. An npm token with publish rights for `wiremd` ([npm settings → Tokens](https://www.npmjs.com/settings/~/tokens)). Use an **Automation** token for CI.
+2. The token added to GitHub: **Settings → Secrets and variables → Actions → New repository secret**, name `NPM_TOKEN`.
+3. `publishConfig.access: "public"` is already set in `packages/core/package.json`.
 
-### 5. Verify Publication
+## Frontend deploys (docs / editor / landing)
 
-After the workflow completes:
+`docs.yml` deploys all three frontend apps to GitHub Pages on every push to `main` that touches `apps/docs/**`, `apps/editor/**`, `apps/landing/**`, `packages/core/src/**`, or the workflow itself. The job:
 
-1. Check npm: https://www.npmjs.com/package/wiremd
-2. Verify the new version is listed
-3. Test installation: `npm install wiremd@latest`
+1. Builds `packages/core/` (the editor and docs depend on its types and runtime).
+2. Builds `apps/docs/` (`vitepress build`) into `apps/docs/.vitepress/dist/`.
+3. Builds `apps/landing/` and overlays its `dist/` onto the VitePress dist root.
+4. Builds `apps/editor/` with `VITE_BASE=/wiremd/editor/` and copies it into `apps/docs/.vitepress/dist/editor/`.
+5. Uploads the merged tree to the GitHub Pages environment.
 
-## Manual Publishing (Not Recommended)
+The result: `teezeit.github.io/wiremd/` serves the landing page at the root, the docs from VitePress, and the live editor at `/editor/` — all from a single Pages deployment.
 
-If you need to publish manually (use only in emergencies):
+## Standalone CLI bundle
+
+`scripts/build-bundle.mjs` produces a single-file CommonJS CLI from `packages/core/src/cli/index.ts` using esbuild and writes it to:
+
+- `releases/wiremd.js` — uploaded to the rolling `latest` GitHub prerelease and to tagged releases
+- `extensions/skills/wireframe/bin/wiremd.js` — committed back to the repo so the Claude plugin ships with a self-contained CLI (no `npm install` required for plugin users)
+
+The same script also runs `pnpm package` inside `extensions/vscode/` and copies the resulting `.vsix` to `releases/wiremd.vsix`. `build-bundle.yml` runs this on every relevant push to `main`.
+
+## Verifying a release
+
+After tag push:
+
+1. Watch the [Actions tab](https://github.com/teezeit/wiremd/actions) for `release.yml` and `publish.yml`.
+2. Check the release page: https://github.com/teezeit/wiremd/releases — the new tag should have auto-generated notes, `wireframe-skill.zip`, and (for non-extension-only releases) `wiremd.vsix` + `wiremd.js`.
+3. Confirm the new VS Code extension version on the [Marketplace](https://marketplace.visualstudio.com/items?itemName=eclectic-ai.wiremd-preview).
+4. If you also published to npm: `npm view wiremd version`.
+
+## Manual emergency publish
+
+If CI is broken and a release must ship:
 
 ```bash
-# Login to npm
-npm login
+# Tests + build
+pnpm install
+pnpm turbo run test
+pnpm turbo run build
 
-# Verify you're logged in as the correct user
-npm whoami
+# npm
+pnpm --filter wiremd run build
+cd packages/core && npm publish --access public
 
-# Ensure you're on the correct git tag
-git checkout v0.1.1
+# VS Code Marketplace (requires VSCE_PAT exported in your shell)
+pnpm --filter wiremd-preview run bundle
+pnpm --filter wiremd-preview run publish
 
-# Build the project
-npm run build
-
-# Publish with provenance
-npm publish --provenance --access public
+# Skill zip + CLI bundle
+pnpm run skill:zip       # → wireframe-skill.zip
+pnpm run bundle          # → releases/wiremd.{js,vsix}
+gh release upload v<X.Y.Z> wireframe-skill.zip releases/wiremd.js releases/wiremd.vsix
 ```
 
 ## Troubleshooting
 
-### Publishing Fails
+### Publish workflow fails
 
-If the GitHub Action fails:
+1. Check the action logs.
+2. Common causes: tests failing, `VSCE_PAT` expired (rotate at the [Marketplace publishers page](https://marketplace.visualstudio.com/manage)), version already published.
 
-1. Check the action logs: https://github.com/teezeit/wiremd/actions
-2. Common issues:
-   - Tests failing: Fix tests and create a new release
-   - Build errors: Fix build issues and create a new release
-   - NPM_TOKEN expired: Generate new token and update GitHub secret
-   - Version already exists: Update version number
+### Wrong version published
 
-### Version Conflicts
+You cannot unpublish npm versions younger than 72 hours. Publish a new patch with the fix instead.
 
-If you accidentally published the wrong version:
+### `sync-versions.mjs` didn't update files
 
-1. You cannot unpublish versions less than 72 hours old
-2. Instead, publish a new patch version with fixes
-3. If absolutely necessary, contact npm support
-
-### Permission Issues
-
-If you get permission errors:
-
-1. Verify you're a maintainer: https://www.npmjs.com/package/wiremd
-2. Check your npm token has publish rights
-3. Ensure `publishConfig.access` is set to `"public"` in package.json
-
-## Package Information
-
-- **Package name**: `wiremd`
-- **npm page**: https://www.npmjs.com/package/wiremd
-- **Repository**: https://github.com/teezeit/wiremd
-- **Registry**: npm (public)
-- **Author**: Antti Akonniemi <antti@kiskolabs.com>
-- **License**: MIT
-
-## Post-Publication
-
-After successful publication:
-
-1. Announce the release (if significant):
-   - Update documentation site
-   - Post on social media/blog (optional)
-   - Notify users of breaking changes
-2. Monitor for issues:
-   - Watch GitHub issues
-   - Check npm download stats
-3. Update dependent projects if needed
-
-## Version Strategy
-
-Follow [Semantic Versioning](https://semver.org/):
-
-- **MAJOR** (x.0.0): Breaking changes
-- **MINOR** (0.x.0): New features, backward compatible
-- **PATCH** (0.0.x): Bug fixes, backward compatible
-
-For pre-1.0.0 releases, minor version bumps may include breaking changes.
+The hook only fires when you run `npm version` inside `packages/core/`. If you bumped manually, run it explicitly: `pnpm run sync-versions` (from the repo root).
 
 ## Security
 
-- Never commit npm tokens to the repository
-- Use GitHub secrets for CI/CD tokens
-- Use automation tokens for GitHub Actions
-- Rotate tokens periodically
-- Enable 2FA on your npm account
+- Never commit `VSCE_PAT`, `NPM_TOKEN`, or any other credentials to the repository.
+- Use GitHub repository secrets for all CI tokens.
+- Use **Automation** tokens (npm) and **Personal Access Tokens** (vsce) — both can be revoked independently of human accounts.
+- Rotate tokens at least annually, and immediately if a contributor with access leaves the project.
+- Enable 2FA on the npm and Microsoft (Marketplace publisher) accounts.

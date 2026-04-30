@@ -1,348 +1,208 @@
-# Testing Guide
+# Testing
 
-Wiremd includes comprehensive test coverage for all features, including the live preview functionality.
+The wiremd test suite runs through Turborepo across the monorepo. The bulk of the tests live in `packages/core/`; smaller suites cover the web editor (`apps/editor/`) and the Figma plugin (`extensions/figma/`). All tests use [Vitest](https://vitest.dev/).
 
-## Test Overview
+## Running tests
 
-**Total Tests: 152**
+All commands run from the repo root.
 
-### Test Files
-
-1. **parser.test.ts** (29 tests)
-   - Markdown parsing
-   - AST transformation
-   - Custom syntax handling
-
-2. **renderer.test.ts** (19 tests)
-   - HTML rendering
-   - Style application
-   - Component rendering
-
-3. **server.test.ts** (31 tests)
-   - Dev server functionality
-   - WebSocket communication
-   - Live-reload injection
-   - Error overlay
-   - Viewport switcher
-   - Connection status
-
-4. **cli.test.ts** (38 tests)
-   - CLI command parsing
-   - File generation
-   - Style and format options
-   - Watch mode
-   - Error handling
-   - Server integration
-
-5. **integration.test.ts** (35 tests)
-   - End-to-end live preview flow
-   - CLI and server integration
-   - WebSocket message handling
-   - UI component integration
-   - Feature coverage verification
-
-## Running Tests
-
-### Run all tests
 ```bash
-npm test
+# All tests across the monorepo (cached by turbo, runs in parallel where possible)
+pnpm turbo run test
+
+# Only the core library
+pnpm --filter wiremd run test
+
+# Watch mode (core)
+pnpm --filter wiremd run test:watch
+
+# Coverage (core)
+pnpm --filter wiremd run test:coverage
+
+# Single test file (run from packages/core/)
+pnpm --filter wiremd run test -- tests/parser.test.ts
+
+# Single test by name
+pnpm --filter wiremd run test -- tests/parser.test.ts -t "Button"
+
+# Editor tests only
+pnpm --filter wiremd-editor run test
+
+# Figma plugin tests only
+pnpm --filter wiremd-figma-plugin run test
 ```
 
-### Run tests in watch mode
-```bash
-npm run test:watch
-```
+`pnpm turbo run test` depends on `build` (see `turbo.json`), so the core library is built first, then test runs are fanned out to every workspace that defines a `test` script.
 
-### Run tests with coverage
-```bash
-npm run test:coverage
-```
+## Test layout
 
-### Run specific test file
-```bash
-npm test -- tests/server.test.ts
-```
+### `packages/core/tests/`
 
-## Test Coverage
+The main suite. Notable files:
 
-### Dev Server Tests (server.test.ts)
+- `parser.test.ts` — Markdown + wiremd-syntax parsing
+- `renderer.test.ts` — HTML rendering
+- `react-renderer.test.ts` — React/JSX renderer
+- `tailwind-renderer.test.ts` — Tailwind-classed HTML
+- `integration.test.ts` — end-to-end parse → render
+- `cli.test.ts`, `cli-unit.test.ts` — CLI behaviour, watch mode, dev server
+- `cli-bundle.test.ts` — the standalone CLI bundle
+- `server.test.ts` — live-reload dev server, WebSocket injection, viewport switcher
+- `error-handling.test.ts`, `validation.test.ts` — error and validation paths
+- `api-examples.test.ts` — the public API examples in the docs
+- `package-shape.test.ts` — published package shape (entry points, exports, files)
 
-Tests the enhanced dev server with live preview features:
+### `apps/editor/tests/`
 
-- ✅ Server startup and configuration
-- ✅ HTML file serving with script injection
-- ✅ Live-reload script injection
-- ✅ WebSocket connection handling
-- ✅ Error notification system
-- ✅ Reload notification system
-- ✅ Viewport switcher UI
-- ✅ Error overlay styling and behavior
-- ✅ Connection status indicator
-- ✅ Reconnection logic
-- ✅ Toolbar UI components
-- ✅ Preview wrapper functionality
+Browser editor: storage adapters, file-system access shim, render-markup glue.
 
-### CLI Tests (cli.test.ts)
+### `extensions/figma/tests/`
 
-Tests the command-line interface:
+Figma plugin: AST → Figma frame conversion, theme styling, fixture-based regression tests. Mocks the Figma global API in `tests/setup.ts`.
 
-- ✅ Help command display
-- ✅ Version command
-- ✅ File generation (HTML/JSON)
-- ✅ All style options (sketch, clean, wireframe, material, tailwind, brutal, none)
-- ✅ Format options validation
-- ✅ Error handling and messages
-- ✅ Output path handling
-- ✅ Server integration
-- ✅ Watch mode functionality
-- ✅ Error notification integration
-- ✅ Live reload integration
-- ✅ Signal handling (SIGINT)
-- ✅ Console output formatting
+## Writing tests
 
-### Integration Tests (integration.test.ts)
+### Where new tests go
 
-Tests the complete live preview flow:
+| Change | Test home |
+|---|---|
+| Parser / renderer / CLI / library API | `packages/core/tests/` |
+| Editor UI behaviour | `apps/editor/tests/` |
+| Figma converter | `extensions/figma/tests/` |
+| Cross-package integration | `packages/core/tests/integration.test.ts` |
 
-- ✅ CLI and server function imports
-- ✅ Complete reload flow (file change → regenerate → notify)
-- ✅ Complete error flow (file change → error → notify error)
-- ✅ WebSocket message formatting
-- ✅ Client-side message handling
-- ✅ UI component injection order
-- ✅ Content wrapping logic
-- ✅ Viewport switcher integration
-- ✅ Connection status updates
-- ✅ Error overlay behavior
-- ✅ TypeScript configuration
-- ✅ Documentation completeness
-- ✅ Package dependencies
-- ✅ Feature coverage verification
-
-## Test Structure
-
-### Unit Tests
-
-Each component is tested in isolation:
+### Style
 
 ```typescript
-describe('Component', () => {
-  it('should do something', () => {
-    // Test implementation
+// packages/core/tests/feature.test.ts
+import { describe, it, expect } from 'vitest';
+import { parse } from '../src/parser';
+import { renderToHTML } from '../src/renderer';
+
+describe('Feature name', () => {
+  it('renders the basic case', () => {
+    const html = renderToHTML(parse('## Heading'), { style: 'sketch' });
+    expect(html).toContain('<h2');
+  });
+
+  it('handles the edge case', () => {
+    // Arrange / Act / Assert
+  });
+
+  it('throws for invalid input', () => {
+    expect(() => parse('')).toThrow();
   });
 });
 ```
 
-### Integration Tests
+Use descriptive names (`it('renders viewport switcher buttons', …)`), not opaque ones (`it('test viewport', …)`). Async tests use `async/await`.
 
-Tests verify that components work together:
+## Continuous integration
 
-```typescript
-describe('Feature Integration', () => {
-  it('should complete full workflow', () => {
-    // Test end-to-end flow
-  });
-});
-```
+The `ci.yml` workflow runs on every push to `main` and every pull request. Jobs:
 
-## Writing Tests
+| Job | Matrix | Runs |
+|---|---|---|
+| `test` | Node 20 + 22, Linux + macOS + Windows | `pnpm turbo run build`, `typecheck`, `lint`, `test` |
+| `coverage` | Node 20 / Linux | `pnpm --filter wiremd run test:coverage`, uploads to Codecov |
+| `lint-package` | Node 20 / Linux | Builds the core, runs `npm pack` to verify the published package shape |
+| `test-editor` | Node 20 / Linux | `pnpm turbo run test --filter=wiremd-editor` |
+| `test-figma-plugin` | Node 20 / Linux | `pnpm turbo run test --filter=wiremd-figma-plugin` |
 
-### Test Naming
+A green PR means: every workspace's tests pass, the core compiles + lints cleanly on three OSes, and the published shape is intact.
 
-Use descriptive test names:
+## Coverage
 
-```typescript
-// ✅ Good
-it('should inject viewport switcher buttons', () => {});
-
-// ❌ Bad
-it('test viewport', () => {});
-```
-
-### Test Structure
-
-Follow Arrange-Act-Assert pattern:
-
-```typescript
-it('should handle error messages', () => {
-  // Arrange
-  const errorMessage = 'Parse failed';
-
-  // Act
-  notifyError(errorMessage);
-
-  // Assert
-  expect(/* result */).toBe(/* expected */);
-});
-```
-
-### Async Tests
-
-For async operations, use async/await:
-
-```typescript
-it('should start server', async () => {
-  const result = await startServer({ port: 3000 });
-  expect(result).toBeDefined();
-});
-```
-
-## Continuous Integration
-
-Tests run automatically on:
-- Every commit
-- Pull requests
-- Before publishing
-
-### CI Configuration
-
-```yaml
-# Example GitHub Actions workflow
-- name: Run tests
-  run: npm test
-
-- name: Upload coverage
-  run: npm run test:coverage
-```
-
-## Coverage Goals
-
-Current coverage targets:
-
-- **Overall**: 80%+
-- **Critical paths**: 100%
-- **UI components**: 90%+
-- **Error handling**: 100%
-
-View coverage report:
 ```bash
-npm run test:coverage
+pnpm --filter wiremd run test:coverage
 ```
 
-## Common Test Patterns
+Coverage targets (current goals, not enforced):
 
-### Testing File Operations
+- Overall: 80%+
+- Critical paths (parser, html-renderer, CLI argv): 90%+
+- Error handling: 100%
+
+Reports land in `packages/core/coverage/` and are uploaded to Codecov from the `coverage` CI job.
+
+## Common patterns
+
+### Temporary files
 
 ```typescript
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+let dir: string;
+
 beforeEach(() => {
-  writeFileSync('test.md', '# Test');
+  dir = mkdtempSync(join(tmpdir(), 'wiremd-'));
+  writeFileSync(join(dir, 'test.md'), '# Test');
 });
 
 afterEach(() => {
-  unlinkSync('test.md');
+  rmSync(dir, { recursive: true, force: true });
 });
 ```
 
-### Testing CLI Commands
+Always use `os.tmpdir()` instead of `/tmp` so tests work on Windows runners (this was a real CI fix — see commit `f0e4164`).
+
+### Testing the CLI
 
 ```typescript
-it('should generate output', () => {
-  const result = execSync('node dist/cli/index.js input.md', {
-    encoding: 'utf-8'
-  });
-  expect(result).toContain('Generated');
+import { execSync } from 'node:child_process';
+
+it('generates output', () => {
+  const out = execSync(
+    'node packages/core/dist/cli/index.js input.md',
+    { encoding: 'utf-8' },
+  );
+  expect(out).toContain('Generated');
 });
 ```
 
-### Testing Source Code
-
-For features that inject code, test the source:
+### Mocking the dev server
 
 ```typescript
-it('should include feature code', () => {
-  const source = readFileSync('./src/file.ts', 'utf-8');
-  expect(source).toContain('featureCode');
-});
+import { vi } from 'vitest';
+
+vi.mock('http', () => ({ createServer: vi.fn() }));
 ```
 
-## Debugging Tests
+## Debugging
 
-### Run single test
+### Run a single test by name
 
 ```bash
-npm test -- -t "test name"
+pnpm --filter wiremd run test -- -t "should render sketch style"
 ```
 
-### Run with verbose output
+### Verbose reporter
 
 ```bash
-npm test -- --reporter=verbose
+pnpm --filter wiremd run test -- --reporter=verbose
 ```
 
-### Debug in VS Code
+### Debug under VS Code
 
-Add to `.vscode/launch.json`:
+`.vscode/launch.json`:
 
 ```json
 {
   "type": "node",
   "request": "launch",
-  "name": "Debug Tests",
-  "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
-  "args": ["run"],
+  "name": "Debug wiremd tests",
+  "runtimeExecutable": "pnpm",
+  "runtimeArgs": ["--filter", "wiremd", "run", "test", "--", "--no-coverage"],
   "console": "integratedTerminal"
 }
 ```
 
-## Test Utilities
+## When tests are slow
 
-### Mock Server
-
-For testing server functionality without actual network:
-
-```typescript
-import { vi } from 'vitest';
-
-vi.mock('http', () => ({
-  createServer: vi.fn()
-}));
-```
-
-### Temporary Files
-
-Always clean up test files:
-
-```typescript
-afterEach(() => {
-  try {
-    unlinkSync(testFile);
-  } catch (e) {
-    // File may not exist
-  }
-});
-```
-
-## Performance Tests
-
-Monitor test performance:
+Vitest reports per-test timings. Tests over a second or two should either be optimized or moved to `integration.test.ts` so they can be filtered out with `--exclude`.
 
 ```bash
-npm test -- --reporter=verbose
+pnpm --filter wiremd run test -- --reporter=verbose
 ```
-
-Slow tests (>1s) should be optimized or moved to integration suite.
-
-## Future Test Plans
-
-- [ ] E2E browser tests for live preview UI
-- [ ] Performance benchmarks
-- [ ] Stress tests for WebSocket connections
-- [ ] Visual regression tests for rendered output
-- [ ] Accessibility tests
-- [ ] Cross-browser testing
-
-## Contributing
-
-When adding features:
-
-1. Write tests first (TDD)
-2. Ensure all tests pass
-3. Add integration tests for new flows
-4. Update this document
-5. Maintain >80% coverage
-
-## Resources
-
-- [Vitest Documentation](https://vitest.dev/)
-- [Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices)
-- [Test Coverage Guide](https://istanbul.js.org/)

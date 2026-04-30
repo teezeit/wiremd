@@ -1,90 +1,92 @@
-# Wiremd VS Code Extension - Development Guide
+# Wiremd VS Code Extension — Development Guide
+
+The extension lives at `extensions/vscode/` inside the wiremd monorepo. It is a thin WebView wrapper around the `wiremd` core library; the preview pipeline is the same `parse() → renderToHTML()` flow used by the CLI.
 
 ## Architecture
 
-The Wiremd VS Code extension is built using the VS Code Extension API and provides a live preview of markdown mockups.
+### Key components
 
-### Key Components
+1. **Extension entry point** — `src/extension.ts`
+   - Activates the extension on any markdown file
+   - Registers commands (open preview, change style, change viewport, install Claude skill, …)
+   - Wires up the status-bar item
 
-1. **Extension Entry Point** (`src/extension.ts`)
-   - Activates the extension
-   - Registers commands
-   - Sets up status bar
-   - Manages extension lifecycle
+2. **Preview provider** — `src/preview-provider.ts`
+   - Owns the WebView panel
+   - Handles file-change debouncing, style/viewport state, comment-toggle state
+   - Renders wiremd content and posts errors back to the WebView
 
-2. **Preview Provider** (`src/preview-provider.ts`)
-   - Manages webview panels
-   - Handles document changes
-   - Renders wiremd content
-   - Manages viewport and style switching
+3. **WebView content**
+   - HTML/CSS/JS injected into the panel
+   - Communicates with the extension via `postMessage`
+   - Handles user interactions (style/viewport switching, comments toggle, component-docs panel)
 
-3. **WebView Content**
-   - HTML/CSS/JavaScript injected into the preview panel
-   - Communicates with extension via message passing
-   - Handles user interactions (style/viewport switching)
-
-## Development Setup
+## Development setup
 
 ### Prerequisites
 
 - Node.js 18+
+- pnpm 9+ (`npm install -g pnpm` or `corepack enable`)
 - VS Code 1.75+
-- TypeScript 5.0+
 
-### Installation
+### Install (from monorepo root)
 
 ```bash
-cd vscode-extension
-npm install
+pnpm install
 ```
 
-### Development Workflow
+This wires `wiremd: workspace:*` in `extensions/vscode/package.json` to `packages/core/` automatically — no manual symlink needed.
 
-1. **Uninstall any installed Wiremd extension** from the Extensions sidebar (to avoid conflicts with the dev build)
+### Development workflow
 
-2. **Launch VS Code with the dev extension loaded** (run from repo root):
+1. **Uninstall any released Wiremd extension** from your VS Code Extensions sidebar to avoid conflicts with the dev build.
+
+2. **Launch VS Code with the dev extension loaded** (run from the monorepo root):
+
    ```bash
-   code --extensionDevelopmentPath=$(pwd)/vscode-extension .
+   code --extensionDevelopmentPath=$(pwd)/extensions/vscode .
    ```
+
    This loads the dev build into your current window — no second window needed.
 
-3. **Start both watchers** in two terminals:
+3. **Start both watchers in two terminals**:
+
    ```bash
-   # Terminal 1 (repo root) — rebuilds wiremd dist/ on src/ changes
-   npm run dev
+   # Terminal 1 — core: rebuilds packages/core/dist/ on src/ changes
+   pnpm --filter wiremd run dev
 
-   # Terminal 2 (vscode-extension/) — rebundles extension whenever wiremd dist/ changes
-   cd vscode-extension && npm run dev
+   # Terminal 2 — extension: rebundles whenever core/dist changes
+   cd extensions/vscode && pnpm run dev
    ```
-   The extension watcher (`scripts/watch.mjs`) watches `../dist/index.cjs` and triggers `npm run bundle` only after vite finishes — no race condition.
 
-4. **Reload the window**: `Cmd+Shift+P` → "Developer: Reload Window"
+   The extension watcher (`extensions/vscode/scripts/watch.mjs`) tails `../../packages/core/dist/index.cjs` and triggers `pnpm bundle` only after vite finishes — no race condition.
+
+4. **Reload the window**: `Cmd+Shift+P` → **Developer: Reload Window**.
 
 ### Building
 
 ```bash
-# Bundle extension (one-shot, minified)
-npm run bundle
+# Bundle once (the same script vsce uses)
+pnpm --filter wiremd-preview run bundle
 
-# Package extension as .vsix
-npm run package
+# Package as a .vsix in extensions/vscode/
+pnpm --filter wiremd-preview run package
 ```
 
-This creates a `.vsix` file in the project root.
+The `bundle` script copies `apps/docs/components`, `apps/docs/examples`, `apps/docs/reference`, and `extensions/skills/` into `extensions/vscode/docs/` and `extensions/vscode/skills/` so the WebView can serve them, then esbuilds `src/extension.ts` and `src/preview-provider.ts` to `dist/`.
 
-### Installing Locally
+### Install the local build
 
 ```bash
-code --install-extension wiremd-preview-0.1.0.vsix
+code --install-extension extensions/vscode/wiremd-preview-<version>.vsix
 ```
 
-## Architecture Details
+## Architecture details
 
-### Message Passing
+### Message passing
 
-The extension communicates with the webview using message passing:
+Extension → WebView:
 
-**Extension → Webview:**
 ```typescript
 panel.webview.postMessage({
   type: 'error',
@@ -92,7 +94,8 @@ panel.webview.postMessage({
 });
 ```
 
-**Webview → Extension:**
+WebView → Extension:
+
 ```typescript
 vscode.postMessage({
   type: 'changeStyle',
@@ -100,74 +103,57 @@ vscode.postMessage({
 });
 ```
 
-### State Management
+### State management
 
-The webview can persist state across reloads:
+The WebView persists state across reloads:
 
 ```typescript
-// Save state
 vscode.setState({ style: 'clean', viewport: 'mobile' });
-
-// Restore state
 const state = vscode.getState();
 ```
 
-### Rendering Pipeline
+### Rendering pipeline
 
-1. User edits markdown file
-2. `onDidChangeTextDocument` event fires
+1. User edits a markdown file
+2. `onDidChangeTextDocument` fires
 3. Debounce timer waits for more changes
-4. `refresh()` method is called
-5. Markdown is parsed using wiremd
-6. HTML is generated and injected into webview
-7. WebView updates preview
+4. `refresh()` runs
+5. Markdown is parsed via the `wiremd` library import
+6. HTML is generated and injected into the WebView
+7. WebView updates the preview
 
-## Testing
-
-### Manual Testing
-
-1. Create test markdown files in `examples/`
-2. Open in Extension Development Host
-3. Test all commands and features
-4. Verify error handling
-
-### Test Cases
-
-- [ ] Open preview for markdown file
-- [ ] Close and reopen preview
-- [ ] Switch between markdown files
-- [ ] Change styles in toolbar
-- [ ] Change viewport sizes
-- [ ] Test with invalid markdown
-- [ ] Test with wiremd not installed
-- [ ] Test auto-refresh on/off
-- [ ] Test configuration changes
-
-## Code Structure
+## Code structure
 
 ```
-vscode-extension/
+extensions/vscode/
 ├── src/
 │   ├── extension.ts          # Main entry point
-│   └── preview-provider.ts   # Preview logic
-├── dist/                      # Compiled JavaScript
+│   └── preview-provider.ts   # Preview logic + WebView
+├── scripts/
+│   └── watch.mjs             # Watches packages/core/dist for rebuilds
+├── dist/                     # Bundled output (gitignored)
+├── docs/                     # Copied from apps/docs at bundle time (gitignored)
+├── skills/                   # Copied from extensions/skills at bundle time (gitignored)
 ├── package.json              # Extension manifest
-├── tsconfig.json             # TypeScript config
-└── README.md                 # User documentation
+├── tsconfig.json
+├── vite.config.ts
+└── turbo.json                # Package-scoped turbo config
 ```
 
-## Extension Manifest
+## Extension manifest
 
-Key parts of `package.json`:
+Key fields in `package.json`:
 
-- **activationEvents**: When to activate the extension
-- **contributes**: Commands, menus, configuration
-- **main**: Entry point file
-- **engines**: VS Code version requirement
+- **`name`**: `wiremd-preview` (workspace name)
+- **`publisher`**: `eclectic-ai` (Marketplace publisher)
+- **`activationEvents`**: `onLanguage:markdown`
+- **`contributes`**: commands, menus, keybindings, configuration
+- **`main`**: `./dist/extension.js` (built by `bundle`)
+- **`engines.vscode`**: `^1.75.0`
 
-## WebView Security
+## WebView security
 
-The webview uses Content Security Policy (CSP) to prevent XSS:
+The WebView uses Content Security Policy to prevent XSS:
 
 ```typescript
 webview.options = {
@@ -176,67 +162,53 @@ webview.options = {
 };
 ```
 
-## Performance Considerations
+## Performance considerations
 
-1. **Debouncing**: Updates are debounced to avoid excessive rendering
-2. **Lazy Loading**: Only render when webview is visible
-3. **Resource Disposal**: Clean up resources when panel closes
+1. **Debouncing** — updates are debounced (default 300 ms, configurable via `wiremd.refreshDelay`)
+2. **Lazy rendering** — only re-render when the WebView is visible
+3. **Resource disposal** — clean up listeners and timers when the panel closes
 
-## Common Issues
+## Common issues
 
-### Webview Not Updating
+### WebView not updating
+- Check `wiremd.autoRefresh` (default `true`)
+- Check `wiremd.refreshDelay` (default 300 ms)
+- Open WebView DevTools (`Cmd+Shift+P` → **Developer: Open Webview Developer Tools**) and look for JS errors
 
-- Check if auto-refresh is enabled
-- Verify debounce delay setting
-- Check for JavaScript errors in DevTools
+### Styles not loading
+- Confirm `pnpm install` succeeded at the repo root (`extensions/vscode/node_modules/wiremd` should be a symlink to `packages/core`)
+- Confirm the core was built: `pnpm --filter wiremd run build`
+- Re-run the bundler: `pnpm --filter wiremd-preview run bundle`
 
-### Styles Not Loading
-
-- Ensure wiremd is installed in workspace
-- Check inline styles are enabled
-- Verify HTML injection is correct
-
-### Extension Not Activating
-
-- Check activation events in package.json
-- Verify file is actually markdown
-- Check extension host logs
+### Extension not activating
+- Check the activation events in `package.json`
+- Verify the file is markdown (`editorLangId === 'markdown'`)
+- Check the Extension Host log: **View → Output → Extension Host**
 
 ## Publishing
 
-### Prepare for Publishing
+The `release.yml` workflow runs on tag push and creates the GitHub release; `publish.yml` runs on `release: published` and:
 
-1. Update version in `package.json`
-2. Update CHANGELOG.md
-3. Test thoroughly
-4. Create icon.png (128x128)
+1. Runs `pnpm install --frozen-lockfile`
+2. Runs `pnpm turbo run build`
+3. Runs `pnpm --filter wiremd-preview run bundle`
+4. Runs `pnpm --filter wiremd-preview run publish` (uses `VSCE_PAT` secret)
+5. Attaches `wireframe-skill.zip` to the release
 
-### Publish to Marketplace
+To cut an extension-only release without bumping the npm package:
 
 ```bash
-# Install vsce
-npm install -g @vscode/vsce
-
-# Create publisher account at https://marketplace.visualstudio.com/
-
-# Login
-vsce login <publisher>
-
-# Publish
-vsce publish
+cd extensions/vscode && npm version patch
+git push && git push --tags
 ```
 
-## Contributing
+Then create a GitHub release for that tag manually — `publish.yml` fires and publishes the new `.vsix` to the Marketplace.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+For a coordinated multi-artifact release (npm + extension + skill + CLI bundle), follow the full Release Process in [`CONTRIBUTING.md`](../../CONTRIBUTING.md#release-process).
 
 ## Resources
 
 - [VS Code Extension API](https://code.visualstudio.com/api)
-- [WebView API Guide](https://code.visualstudio.com/api/extension-guides/webview)
-- [Publishing Extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension)
-- [Extension Samples](https://github.com/microsoft/vscode-extension-samples)
+- [WebView API guide](https://code.visualstudio.com/api/extension-guides/webview)
+- [Publishing extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension)
+- [Extension samples](https://github.com/microsoft/vscode-extension-samples)

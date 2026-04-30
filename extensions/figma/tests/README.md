@@ -4,18 +4,20 @@ Comprehensive test suite for the wiremd Figma plugin.
 
 ## Running Tests
 
+All commands run from the wiremd monorepo root.
+
 ```bash
 # Run all tests once
-npm test
+pnpm --filter wiremd-figma-plugin run test
 
-# Run tests in watch mode
-npm run test:watch
+# Watch mode
+pnpm --filter wiremd-figma-plugin run test:watch
 
-# Run tests with coverage report
-npm run test:coverage
+# Coverage report
+pnpm --filter wiremd-figma-plugin run test:coverage
 
-# Type check without running tests
-npm run typecheck
+# Type check only
+pnpm --filter wiremd-figma-plugin run typecheck
 ```
 
 ## Test Structure
@@ -186,19 +188,19 @@ Tests run automatically on:
 ### Run Single Test File
 
 ```bash
-npm test -- ast-to-figma.test.ts
+pnpm --filter wiremd-figma-plugin run test -- ast-to-figma.test.ts
 ```
 
 ### Run Single Test
 
 ```bash
-npm test -- -t "should create button"
+pnpm --filter wiremd-figma-plugin run test -- -t "should create button"
 ```
 
 ### Verbose Output
 
 ```bash
-npm test -- --reporter=verbose
+pnpm --filter wiremd-figma-plugin run test -- --reporter=verbose
 ```
 
 ### Debug Mode
@@ -251,7 +253,7 @@ node --inspect-brk node_modules/.bin/vitest run
 ### Type Errors
 
 ```bash
-npm run typecheck
+pnpm run typecheck
 ```
 
 ### Mock Not Working

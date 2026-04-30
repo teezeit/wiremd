@@ -23,7 +23,7 @@ Then open your browser to `http://localhost:3000` to see the live preview!
 
 ### VS Code Extension
 
-1. Install the extension (from `vscode-extension/` directory)
+1. Install the extension (from `extensions/vscode/` directory)
 2. Open any markdown file
 3. Press `Ctrl+K V` (or `Cmd+K V` on Mac) to open preview to the side
 
@@ -309,7 +309,7 @@ For very large files, disable auto-refresh:
 ## 📚 Additional Resources
 
 - [Wiremd Documentation](https://github.com/akonan/wiremd)
-- [VS Code Extension Guide](./vscode-extension/README.md)
+- [VS Code Extension Guide](../../extensions/vscode/README.md)
 - [CLI Reference](./README.md)
 - [Examples](./examples/)
 

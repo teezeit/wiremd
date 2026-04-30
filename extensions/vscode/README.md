@@ -13,17 +13,29 @@ Live preview for Wiremd markdown mockups directly in VS Code.
 
 ## Installation
 
-### From Marketplace (Coming Soon)
+### From the Marketplace
 
-Search for "Wiremd Live Preview" in VS Code Extensions marketplace.
+Search for **Wiremd Live Preview** in the VS Code Extensions sidebar, or install directly from the [marketplace page](https://marketplace.visualstudio.com/items?itemName=eclectic-ai.wiremd-preview).
 
-### Manual Installation
+### From source (development build)
 
-1. Clone the repository
-2. Navigate to `vscode-extension` directory
-3. Run `npm install`
-4. Run `npm run compile`
-5. Press F5 to launch Extension Development Host
+```bash
+# Clone the wiremd monorepo
+git clone https://github.com/teezeit/wiremd.git
+cd wiremd
+
+# Install all workspaces
+pnpm install
+
+# Build core + bundle the extension
+pnpm turbo run build
+pnpm --filter wiremd-preview run bundle
+
+# Launch VS Code with the dev extension loaded
+code --extensionDevelopmentPath=$(pwd)/extensions/vscode .
+```
+
+See [`DEVELOPMENT.md`](./DEVELOPMENT.md) for the full contributor workflow.
 
 ## Usage
 
@@ -83,13 +95,7 @@ Configure the extension through VS Code settings:
 
 ## Requirements
 
-This extension requires the `wiremd` package to be installed in your project:
-
-```bash
-npm install wiremd
-```
-
-If wiremd is not installed, the extension will show a fallback view with installation instructions.
+The published extension bundles its own copy of the wiremd core library — no `npm install` or workspace setup is needed in the project you are previewing. Just open any `.md` file and the preview works.
 
 ## Commands
 
@@ -103,26 +109,23 @@ If wiremd is not installed, the extension will show a fallback view with install
 
 ## Extension Development
 
-### Building
+All development happens inside the wiremd monorepo. From the repo root:
 
 ```bash
-npm install
-npm run compile
+# Install everything
+pnpm install
+
+# One-shot bundle (esbuild → dist/extension.js + dist/preview-provider.js)
+pnpm --filter wiremd-preview run bundle
+
+# Watch mode — rebuilds on changes to packages/core/dist/
+cd extensions/vscode && pnpm run dev
+
+# Package as .vsix (lands in extensions/vscode/)
+pnpm --filter wiremd-preview run package
 ```
 
-### Watch Mode
-
-```bash
-npm run watch
-```
-
-### Packaging
-
-```bash
-npm run package
-```
-
-This creates a `.vsix` file that can be installed in VS Code.
+See [`DEVELOPMENT.md`](./DEVELOPMENT.md) for the full workflow.
 
 ## Known Issues
 
@@ -143,7 +146,7 @@ Initial release:
 
 ## Contributing
 
-Contributions are welcome! Please see the main [Wiremd repository](https://github.com/akonan/wiremd) for contribution guidelines.
+Contributions are welcome! Please see the main [Wiremd repository](https://github.com/teezeit/wiremd) for contribution guidelines.
 
 ## License
 
@@ -151,8 +154,8 @@ MIT License - see LICENSE file for details
 
 ## Links
 
-- [Wiremd Documentation](https://github.com/akonan/wiremd)
-- [Report Issues](https://github.com/akonan/wiremd/issues)
+- [Wiremd Documentation](https://github.com/teezeit/wiremd)
+- [Report Issues](https://github.com/teezeit/wiremd/issues)
 - [VS Code Extension API](https://code.visualstudio.com/api)
 
 ---

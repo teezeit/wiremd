@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "turborepo": {
+      "source": "vercel/turborepo",
+      "sourceType": "github",
+      "skillPath": "skills/turborepo/SKILL.md",
+      "computedHash": "243df386da21418c9ed2906bd0863152286e08db5a2e5629399962daf88a4051"
+    },
+    "turborepo-monorepo": {
+      "source": "giuseppe-trisciuoglio/developer-kit",
+      "sourceType": "github",
+      "skillPath": "plugins/developer-kit-typescript/skills/turborepo-monorepo/SKILL.md",
+      "computedHash": "dd24a9f0e1ba7586ca6ce85732b6f3388d2c2760307d4316596ab0cb155f8173"
+    }
+  }
+}

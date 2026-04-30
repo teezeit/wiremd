@@ -1,62 +1,40 @@
-# VS Code Extension - Testing Guide
+# VS Code Extension — Testing Guide
 
-## Quick Test Setup
+Manual testing playbook for the wiremd VS Code extension (`extensions/vscode/`).
 
-### Prerequisites
+## Setup
 
-The extension uses wiremd from the parent directory, so **you must build wiremd first**:
-
-```bash
-# From the root wiremd directory
-cd /home/user/wiremd
-npm install
-npm run build  # This creates dist/ files
-```
-
-### 1. Install Extension Dependencies
+All commands run from the wiremd monorepo root.
 
 ```bash
-cd vscode-extension
-npm install  # This links wiremd from parent directory
+# 1. Install all workspaces
+pnpm install
+
+# 2. Build the core library + bundle the extension
+pnpm turbo run build
+pnpm --filter wiremd-preview run bundle
+
+# 3. Launch VS Code with the dev extension loaded
+code --extensionDevelopmentPath=$(pwd)/extensions/vscode .
 ```
 
-This creates a symlink: `node_modules/wiremd -> ../..`
+The `bundle` script copies `apps/docs/components`, `apps/docs/examples`, and `apps/docs/reference` into `extensions/vscode/docs/`, and `extensions/skills/` into `extensions/vscode/skills/`. If the component-docs panel or skill installer behave unexpectedly, re-run `pnpm --filter wiremd-preview run bundle`.
 
-### 2. Compile the Extension
+## Test fixture
 
-```bash
-npm run compile
-```
+Create a markdown file in any folder open in the dev VS Code window:
 
-### 3. Launch Extension Development Host
-
-**Option A: From VS Code**
-1. Open the `vscode-extension` folder in VS Code
-2. Press `F5` or go to Run → Start Debugging
-3. This opens a new "Extension Development Host" window
-
-**Option B: From Command Line**
-```bash
-code --extensionDevelopmentPath=/home/user/wiremd/vscode-extension
-```
-
-### 4. Test the Extension
-
-In the Extension Development Host window:
-
-1. Create a test markdown file (`test.md`):
-```markdown
+````markdown
 # My Wireframe
 
-## Navigation Bar
 [[ Logo | Home | About | Contact | [Sign In] ]]
 
-## Hero Section
+::: hero
 > # Welcome to Our App
 > The best way to manage your projects
 > [Get Started] [Learn More]{.outline}
+:::
 
-## Features Grid
 ::: grid-3
 ### Fast
 ⚡ Lightning quick performance
@@ -69,109 +47,71 @@ In the Extension Development Host window:
 :::
 
 ## Contact Form
-[Name___________]
-[Email__________] {type:email}
-[Your message...] {rows:5}
-[Submit]
-```
 
-2. **Open Preview**: Press `Ctrl+K V` (or `Cmd+K V` on Mac)
-   - Or: Right-click editor → "Open Wiremd Preview to the Side"
-   - Or: Command Palette (`Ctrl+Shift+P`) → "Wiremd: Open Preview to the Side"
+Name
+[_____________________________]
 
-3. **Test Live Updates**: Edit the markdown and watch the preview update in real-time
+Email
+[_____________________________]{type:email}
 
-4. **Test Style Switching**: Use the style dropdown in the preview toolbar
+Message
+[_____________________________]{rows:5}
 
-5. **Test Viewport Switching**: Click the viewport buttons (Desktop/Laptop/Tablet/Mobile)
+[Submit]*
+````
 
-## Features to Test
+## Open the preview
 
-### ✅ Basic Preview
-- [ ] Preview opens successfully
-- [ ] Content renders correctly
-- [ ] Styles are applied (default: sketch)
+- `Cmd+K V` (Mac) / `Ctrl+K V` (Win/Linux), or
+- Right-click editor → **Open Wiremd Preview to the Side**, or
+- `Cmd+Shift+P` → **Wiremd: Open Preview to the Side**
 
-### ✅ Live Refresh
-- [ ] Edit markdown → preview updates automatically
-- [ ] Debouncing works (doesn't update on every keystroke)
-- [ ] No lag or freezing
+## Test matrix
 
-### ✅ Style Switching
-- [ ] Dropdown shows all 7 styles
-- [ ] Switching styles updates preview
-- [ ] Each style looks different
+### Basic preview
+- [ ] Preview opens
+- [ ] Content renders in the default `sketch` style
+- [ ] Layout looks correct (grid, hero, form)
 
-### ✅ Viewport Testing
-- [ ] Full width works
-- [ ] Desktop (1440px) width
-- [ ] Laptop (1024px) width
-- [ ] Tablet (768px) width
-- [ ] Mobile (375px) width
+### Live refresh
+- [ ] Editing the markdown updates the preview within `wiremd.refreshDelay` ms
+- [ ] Debouncing works — no per-keystroke flicker
+- [ ] No lag on a 1000-line file
 
-### ✅ Error Handling
-- [ ] Invalid markdown shows error
-- [ ] Error overlay appears
-- [ ] Error can be dismissed
+### Style switching
+- [ ] Style dropdown shows all 7 styles (sketch, clean, wireframe, material, tailwind, brutal, none)
+- [ ] Each style visibly differs
 
-### ✅ Multi-file Support
-- [ ] Switch between markdown files
-- [ ] Preview updates for active file
-- [ ] Multiple previews work
+### Viewport switching
+- [ ] Full / Desktop (1440) / Laptop (1024) / Tablet (768) / Mobile (375) all work
 
-## Debugging the Extension
+### Comments toggle
+- [ ] `<!-- comment text -->` renders as a yellow callout when comments are on
+- [ ] Toggling off hides callouts but does not modify the source file
+- [ ] Comment count badge in the toolbar updates correctly
 
-### Enable Debug Logging
+### Component docs panel
+- [ ] **?** button opens the component reference inside the WebView
+- [ ] All component pages from `apps/docs/components/` are present
 
-1. In Extension Development Host, open Debug Console
-2. You'll see logs like:
-```
-[Extension Host] Wiremd extension activated
-[Extension Host] Preview panel created
-```
+### Claude skill installer
+- [ ] First-launch prompt offers to install the Claude skill
+- [ ] **Install Skill** copies `extensions/skills/wireframe/` into the workspace at `.claude/skills/wireframe/`
+- [ ] **Not Now** dismisses without copying
+- [ ] Command palette → **Wiremd: Install Wiremd Claude Skill** still works after dismissal
 
-### Common Issues
+### Error handling
+- [ ] Invalid wiremd shows the error overlay
+- [ ] Error message is dismissable
+- [ ] Preview recovers when the markdown is fixed
 
-**Issue: Preview shows "Wiremd not installed"**
-- Solution: Run `npm install` in the main wiremd directory
-- The extension needs wiremd to be available in workspace
+### Multi-file
+- [ ] Switching between two open `.md` files updates the preview to the active document
+- [ ] Closing the source document closes/keeps the preview consistently
 
-**Issue: Preview doesn't update**
-- Check: Is `wiremd.autoRefresh` enabled? (default: true)
-- Check: Extension Development Host console for errors
+## Configuration test
 
-**Issue: Styles not changing**
-- Check: Browser DevTools in preview (Help → Toggle Developer Tools)
-- Check: HTML is being regenerated
-
-## Advanced Testing
-
-### Test with Different Projects
-
-Create test projects in different directories:
-
-```bash
-# Project 1: Simple wireframe
-mkdir ~/test-wiremd-1
-cd ~/test-wiremd-1
-npm init -y
-npm install wiremd
-
-# Create test file
-cat > app.md << 'EOF'
-# Simple App
-[[ Home | About ]]
-## Welcome
-[Get Started]
-EOF
-
-# Open in VS Code
-code .
-```
-
-### Test Configuration Options
-
-Create `.vscode/settings.json`:
+`.vscode/settings.json`:
 
 ```json
 {
@@ -182,111 +122,42 @@ Create `.vscode/settings.json`:
 }
 ```
 
-Test each configuration option changes behavior.
+Verify each setting takes effect after `Developer: Reload Window`.
 
-### Test Performance
+## Debugging
 
-Create a large markdown file (1000+ lines) and test:
-- [ ] Initial render time
-- [ ] Update speed when editing
-- [ ] Memory usage (Task Manager)
-- [ ] No crashes or freezes
+### Extension Host log
+**View → Output**, then pick **Extension Host** in the dropdown. Look for activation, command registration, and bundling errors.
 
-## Automated Testing
+### WebView DevTools
+`Cmd+Shift+P` → **Developer: Open Webview Developer Tools** while the preview panel is focused. Inspect the rendered HTML and check the JS console for errors.
 
-### Unit Tests (Future)
+### Reload after a change
+After editing extension source, run `pnpm --filter wiremd-preview run bundle` (or have `cd extensions/vscode && pnpm run dev` watching), then `Cmd+Shift+P` → **Developer: Reload Window**.
 
-```bash
-cd vscode-extension
-npm test
-```
-
-Note: Extension testing framework not yet set up. Would need:
-- `@vscode/test-electron`
-- Test fixtures
-- Integration test setup
-
-## Packaging for Distribution
-
-### Create VSIX Package
+## Packaging an installable .vsix
 
 ```bash
-cd vscode-extension
-npm install -g @vscode/vsce
-vsce package
+pnpm --filter wiremd-preview run package
+# → extensions/vscode/wiremd-preview-<version>.vsix
 ```
 
-This creates `wiremd-preview-0.1.0.vsix`
-
-### Install Locally
+Install locally:
 
 ```bash
-code --install-extension wiremd-preview-0.1.0.vsix
+code --install-extension extensions/vscode/wiremd-preview-<version>.vsix
 ```
 
-### Test Installed Extension
+## Automated testing
 
-1. Restart VS Code
-2. Open a markdown file
-3. Test all features as production extension
+There is no `@vscode/test-electron` harness today. Adding one would require:
 
-## Recording Demo
+- A test workspace fixture
+- VSCode test runner setup
+- Mocked file-system fixtures for the preview-provider tests
 
-### Create GIF Demo
+For now, run `pnpm --filter wiremd run test` for the core library (which the extension imports) and rely on this manual checklist for the extension-host-specific behaviour.
 
-1. Install screen recorder (e.g., Peek on Linux, LICEcap on Mac/Windows)
-2. Record:
-   - Opening preview
-   - Live editing
-   - Style switching
-   - Viewport testing
+## CI
 
-### Create Screenshots
-
-For README/documentation:
-- Full preview with toolbar
-- Different styles comparison
-- Viewport sizes
-- Error overlay
-
-## CI/CD Testing (Future)
-
-Would need:
-- GitHub Actions workflow for extension
-- Automated VSIX building
-- Extension marketplace publishing
-
-## Troubleshooting
-
-### Extension Won't Load
-
-1. Check `package.json` syntax
-2. Verify `main` points to correct file
-3. Check TypeScript compilation: `npm run compile`
-4. Look for errors in Extension Development Host
-
-### Preview Blank
-
-1. Open Browser DevTools (Help → Toggle Developer Tools)
-2. Check Console for errors
-3. Verify wiremd is installed in workspace
-4. Check `preview-provider.ts` logs
-
-### Performance Issues
-
-1. Disable auto-refresh
-2. Increase refresh delay
-3. Use simpler styles (wireframe is fastest)
-4. Check for memory leaks in DevTools
-
-## Next Steps
-
-Once testing is complete:
-- [ ] Fix any bugs found
-- [ ] Optimize performance
-- [ ] Add more features
-- [ ] Publish to VS Code marketplace
-
----
-
-Happy testing! 🚀
+The `ci.yml` workflow only builds and lints the extension; there is no extension-host test run. Marketplace publishing happens in `publish.yml` on the `release: published` event — see [`CONTRIBUTING.md`](../../CONTRIBUTING.md#release-process) for the full pipeline.
