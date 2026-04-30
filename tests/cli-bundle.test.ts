@@ -8,6 +8,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'fs';
 import { execSync } from 'child_process';
 import { resolve } from 'path';
+import { tmpdir } from 'os';
 
 const BUNDLE     = resolve(__dirname, '../skills/wireframe/bin/wiremd.js');
 const TMP_INPUT  = resolve(__dirname, '../tmp-bundle-test-input.md');
@@ -53,7 +54,7 @@ describe('cli-bundle', () => {
   it('bundle does not require node_modules next to it', () => {
     const result = execSync(`node "${BUNDLE}" --version`, {
       encoding: 'utf-8',
-      cwd: '/tmp',
+      cwd: tmpdir(),
     });
     expect(result.trim()).toMatch(/\d+\.\d+\.\d+/);
   });

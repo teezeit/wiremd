@@ -79,6 +79,7 @@ describe('editor main bootstrap', () => {
     const window = new FakeWindow();
 
     const requiredIds = [
+      'brand-link',
       'file-sync-indicator',
       'monaco-container',
       'preview-iframe',
