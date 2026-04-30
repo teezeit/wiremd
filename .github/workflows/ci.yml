@@ -136,7 +136,7 @@ jobs:
         cache: 'npm'
 
     - name: Install figma plugin dependencies
-      run: npm install --prefix figma-plugin
+      run: npm ci --prefix figma-plugin
 
     - name: Run figma plugin tests
       run: npm test --prefix figma-plugin
