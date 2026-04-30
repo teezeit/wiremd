@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/**'
+      - 'skills/**'
       - 'vscode-extension/src/**'
       - 'scripts/build-bundle.mjs'
   workflow_dispatch:
