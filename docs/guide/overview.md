@@ -4,52 +4,61 @@
 
 Write a screen as Markdown, see it render as a visual mockup — no design tool, no drag-and-drop.
 
-```markdown
-## Login
+<WmdPipeline />
 
-Email
-[_____________________________]{type:email}
+---
 
-Password
-[_____________________________]{type:password}
+## What you can do with it
 
-[Sign In]* [Forgot password?]
-```
-
-![alt text](overview-login.png)
+| | |
+|---|---|
+| **Create** | Describe a screen — Claude writes the Markdown and renders it instantly |
+| **Share** | Copy a link, embed in Notion, paste in Jira or Obsidian — the wireframe travels with the spec |
+| **Stay portable** | Everything is a `.md` file — version-controlled, diff-able, readable by any LLM |
+| **Hand off** | Open in VS Code or pass to Claude Code — plain text, no screenshots, no translation layer |
 
 ---
 
 ## Get started
 
-**No terminal?**
-[Install the VS Code extension](./vscode.md) — open any `.md` file, click the preview icon. Done.
+### Web editor — no install
 
-**Want to describe it?**
-[Use Claude](./claude.md) — tell Claude what screen you want, it writes and renders the wireframe for you.
+Open **[teezeit.github.io/wiremd/editor](https://teezeit.github.io/wiremd/editor/)** in Chrome, Edge, or Safari. Paste or write wiremd Markdown, pick a style — renders instantly. No account, no setup.
 
-**CLI:**
+### With Claude
 
-Install:
+Describe the screen you want — Claude writes and renders the wireframe for you.
+
+Install the plugin once (works for Claude Desktop, claude.ai, and Claude Code):
+
+```
+/plugin marketplace add teezeit/wiremd
+/plugin install wireframe@wiremd
+```
+
+Three modes — see the [full guide](./claude.md) to pick yours:
+
+- **Only Claude** (`/wireframe:display`) — HTML artifact in Claude's panel, no browser tab
+- **Claude + Editor** (`/wireframe:editor`) — live browser tab, both sides read/write the `.md`
+- **Only Editor** — paste Claude's output into the web editor, no install
+
+### VS Code extension
+
+Install the [VS Code extension](./vscode.md) — open any `.md` file, click the preview icon. Live preview as you type, no terminal needed.
+
+### Local dev server
 
 ```bash
 npm install -g wiremd
+wiremd my-wireframe.md --serve 3001 --watch
 ```
 
-Create `my-wireframe.md`, then render with live reload:
-
-```bash
-wiremd my-wireframe.md --style clean --serve 3001 --watch
-```
-
-Open `http://localhost:3001`. The preview reloads as you save.
+Open `http://localhost:3001` — reloads on every save. Works with any browser, including Firefox. [Install guide →](./installation.md)
 
 ---
 
 ## Next steps
 
-- [VS Code extension](./vscode.md) — live preview while editing
-- [Using with Claude](./claude.md) — generate wireframes from descriptions
+- [Using with Claude](./claude.md) — full guide for all Claude surfaces
 - [Components](../components/) — all components and attributes
-- [Inline Comments](../components/comments.md) — annotate wireframes for review; toggle visibility per context
 - [Examples](../examples/) — full-page wireframe templates

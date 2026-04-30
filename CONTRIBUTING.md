@@ -221,6 +221,65 @@ Run through this before opening a PR for any new syntax, render option, or user-
 - [ ] **URL share** — paste a wireframe using the new feature into the editor, copy link, open in a new tab — confirm it round-trips correctly
 - [ ] **Notion embed** — if applicable, embed the share URL in a Notion page and confirm it renders
 
+## Plugin Maintenance
+
+The wiremd Claude Code plugin lives in `skills/wireframe/`. This is what gets installed when someone runs `/plugin install wireframe@wiremd` from the [teezeit/wiremd marketplace](https://github.com/teezeit/wiremd).
+
+### Structure
+
+```
+skills/wireframe/
+├── .claude-plugin/
+│   └── plugin.json          # Plugin metadata (name, description, keywords — no version pin)
+├── bin/
+│   └── wiremd               # Executable copy of the CLI, auto-added to Bash PATH
+└── skills/                  # One sub-skill per workflow mode
+    ├── editor/SKILL.md      # /wireframe:editor — live browser editor (default)
+    ├── display/SKILL.md     # /wireframe:display — render to static HTML files
+    ├── serve/SKILL.md       # /wireframe:serve — local dev server with hot-reload
+    └── chat/SKILL.md        # /wireframe:chat — write markup for user to paste
+
+.claude-plugin/
+└── marketplace.json         # Marketplace index — points source to ./skills/wireframe
+```
+
+The `bin/wiremd` executable is on PATH inside Bash tool calls, so skills can invoke `wiremd` as a bare command rather than `node ${CLAUDE_PLUGIN_ROOT}/bin/wiremd.js`.
+
+### Validating skills
+
+The skill-creator tool includes a validator. Run it per sub-skill:
+
+```bash
+python3 .claude/skills/skill-creator/scripts/quick_validate.py skills/wireframe/skills/editor
+python3 .claude/skills/skill-creator/scripts/quick_validate.py skills/wireframe/skills/display
+python3 .claude/skills/skill-creator/scripts/quick_validate.py skills/wireframe/skills/chat
+python3 .claude/skills/skill-creator/scripts/quick_validate.py skills/wireframe/skills/serve
+```
+
+Requires `pyyaml` (`pip install pyyaml` or use a venv).
+
+### Updating the bin
+
+When the CLI changes, rebuild and copy to `skills/wireframe/bin/wiremd`:
+
+```bash
+npm run build
+cp skills/wireframe/bin/wiremd.js skills/wireframe/bin/wiremd
+chmod +x skills/wireframe/bin/wiremd
+```
+
+### Marketplace
+
+The repo root `.claude-plugin/marketplace.json` registers wiremd as a public marketplace. Users add it once with:
+
+```
+/plugin marketplace add teezeit/wiremd
+```
+
+No version is pinned in `plugin.json` — the plugin tracks by git commit SHA so users always get the latest on reinstall.
+
+---
+
 ## Release Process
 
 Releases are managed by project maintainers following semantic versioning (semver):

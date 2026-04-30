@@ -1,26 +1,96 @@
 # Using wiremd with Claude
 
-Claude understands wiremd syntax natively. You can describe a screen in plain English and Claude will generate the wiremd Markdown for it — then render it in VS Code or the CLI.
+Three modes — pick based on what you want to see:
 
-There are two modes depending on which Claude tool you're using.
+| Mode | What you see | Skill |
+|------|--------------|-------|
+| **Only Claude** | HTML wireframe as an artifact in Claude's panel | `/wireframe:display` |
+| **Claude + Editor** | Live browser tab — Claude and the editor both read/write | `/wireframe:editor` |
+| **Only Editor** | Web editor in browser, no install, no Claude skill needed | — |
+
+Install once to unlock the Claude modes:
+
+```
+/plugin marketplace add teezeit/wiremd
+/plugin install wireframe@wiremd
+```
 
 ---
 
-## Claude Code (CLI)
+## Mode 1 — Only Claude {#only-claude}
 
-Claude Code uses a **skill** to generate and render wireframes automatically. Once the skill is installed, you just ask — Claude handles writing the `.md` file, running the renderer, and telling you where to open the preview.
+Uses `/wireframe:display`. Claude writes the `.md` file, runs the bundled wiremd CLI to render HTML, and shows the result as an artifact in its panel. No browser tab, no manual refresh.
 
-### Install the skill
+Works on Claude Desktop, claude.ai, and Claude Code.
 
-**Via the VS Code extension (recommended):**
-Install the [VS Code extension](./vscode.md), then accept the prompt on first launch: "Want Claude Code to generate wireframes for you? Install the Claude skill." The skill is copied into `.claude/skills/wireframe/` in your workspace.
+### How it works
 
-**Manually:**
-Copy `skills/wireframe/` from the wiremd repo into `.claude/skills/wireframe/` in your project root. Claude Code picks it up automatically.
+1. Describe the screen you want
+2. Claude writes `wireframe.md` and renders it:
+   ```bash
+   wiremd wireframe.md -o wireframe.html -s sketch
+   ```
+3. The rendered wireframe appears in Claude's panel
+4. Give feedback — Claude edits the `.md`, re-renders, panel updates
 
 ### What you can ask
 
-The skill triggers automatically on wireframing requests — you don't need to invoke it by name:
+- "Wireframe a settings page — profile, notifications, billing tabs"
+- "Add a sidebar with navigation and show the active state on Overview"
+- "Show the empty state for the table — no data yet, with an Add button"
+
+---
+
+## Mode 2 — Claude + Editor {#claude-and-editor}
+
+Uses `/wireframe:editor` by default. Claude writes a `.md` file, the browser editor opens it — and from that point both sides can edit. Claude edits the file and the browser updates live; you edit in the browser and Claude can read your changes too.
+
+Works with Claude Code or Claude Desktop (Cowork) running on the same machine as your browser.
+
+<div class="doc-shots-2">
+  <img src="../assets/guides/guide-screenshot-claude-desktop.png" alt="Claude Desktop showing chat and rendered wireframe artifact" class="doc-shot" />
+  <img src="../assets/guides/guide-screenshot-webeditor.png" alt="wiremd browser editor with markdown and live preview" class="doc-shot" />
+</div>
+
+<div class="flow-diagram">
+  <div class="flow-node">
+    <img src="/wiremd/assets/logos/logo-claude.png" class="flow-node__logo" alt="" />
+    <span class="flow-node__label">Claude Desktop<br/>· Claude Code</span>
+  </div>
+  <div class="flow-edge">
+    <span class="flow-edge__arrow">⇄</span>
+  </div>
+  <div class="flow-file">
+    <svg class="flow-file__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <code class="flow-file__name">wireframe.md</code>
+    <span class="flow-file__sync">live sync</span>
+  </div>
+  <div class="flow-edge">
+    <span class="flow-edge__arrow">⇄</span>
+  </div>
+  <div class="flow-node">
+    <img src="/wiremd/assets/logos/logo-chrome.jpg" class="flow-node__logo" alt="" />
+    <span class="flow-node__label">Browser<br/>editor</span>
+  </div>
+</div>
+
+### How it works
+
+1. Ask Claude to wireframe something
+2. Claude writes the `.md` file and gives you a browser link
+3. Open the link in Chrome, Edge, or Safari 16.4+ → click **Open File** → grant access once
+4. The wireframe appears and updates live as Claude edits
+5. You can also type directly in the browser editor — changes save back to the file
+
+### Modes
+
+| Command | Use when |
+|---------|----------|
+| `/wireframe:editor` | Default — File System Access API, Chrome/Edge/Safari |
+| `/wireframe:serve` | Firefox or any browser — starts `localhost:3001` with hot-reload |
+| `/wireframe:display` | You want a rendered HTML artifact instead of a live browser tab |
+
+### What you can ask
 
 - "Wireframe a login screen with email, password, and a forgot password link"
 - "Sketch the settings page for this app"
@@ -28,66 +98,22 @@ The skill triggers automatically on wireframing requests — you don't need to i
 - "Mockup a confirmation modal for deleting an account"
 - "Document this component as a wireframe" *(with a React/JSX file open)*
 
-Claude will generate a `.md` file, render it with `wiremd <file>.md --style clean --serve 3001 --watch`, and give you the URL (`http://localhost:3001`) to open in your browser. The VS Code preview also updates live if you have it open.
-
 ### Iterating
 
-Just keep talking:
+Keep talking — Claude edits the `.md` file and the preview updates live:
 
 - "Add a sidebar with navigation links on the left"
 - "Replace the table with a card grid"
 - "Show the empty state — no items yet, with an Add button"
 - "What does the mobile layout look like?"
 
-Claude edits the `.md` file and re-renders. No manual steps needed.
-
 ---
 
-## Cowork with a non-technical reviewer
+## Mode 3 — Only Editor {#only-editor}
 
-If a PM, designer, or other stakeholder needs to review or iterate on wireframes — but doesn't have VS Code installed — use the browser editor at **[tobiashoelzer.com/wiremd/editor](https://tobiashoelzer.com/wiremd/editor)** with live file sync.
+No install, no Claude skill needed. Ask Claude (in any chat) to write wiremd Markdown, copy the output, and paste it into the editor. Pick a style — renders instantly.
 
-### How it works
-
-1. Claude writes the `.md` file to disk and generates a URL with the file path encoded:
-   ```
-   https://tobiashoelzer.com/wiremd/editor/?file=/path/to/wireframe.md
-   ```
-2. The reviewer opens the link in Chrome, Edge, or Safari 16.4+
-3. A modal appears showing the filename — the reviewer clicks **Open File** and grants browser access to the file
-4. The browser auto-refreshes whenever Claude saves a change (within ~500ms, no page reload)
-5. The reviewer can also edit directly in the editor — changes write back to disk in real time
-
-### What the reviewer needs
-
-- Chrome, Edge, or Safari 16.4+ *(Firefox doesn't support local file access)*
-- Nothing installed — no CLI, no VS Code, no extensions
-
-### Iterating
-
-Claude edits the `.md` file on disk and saves. The reviewer's browser picks up the change automatically. The reviewer can type feedback in the chat while watching the wireframe update live.
-
----
-
-## Claude in a product or chat context
-
-If you're using Claude conversationally — in claude.ai, in a product with Claude embedded, or in any chat interface — Claude can generate wiremd syntax from a description even without a skill installed.
-
-Ask Claude to write wiremd Markdown for the screen you want, then:
-
-1. Copy the Markdown Claude generates into a `.md` file
-2. Open it in VS Code to preview with the extension, or run `wiremd file.md --serve 3001` in the terminal
-
-**Example prompt:**
-> "Write wiremd Markdown for a product registration form — company name, contact email, plan selection (Free/Pro/Enterprise radio buttons), and a Submit button. Use wiremd syntax."
-
-Claude will return a complete `.md` file ready to paste and render.
-
-### Iterating
-
-Paste the current `.md` content back into the chat and ask for changes:
-
-> "Here's the current wireframe. Add a step indicator at the top showing 3 steps, and move the submit button to the right."
+[Web Editor guide →](./web-editor.md)
 
 ---
 
