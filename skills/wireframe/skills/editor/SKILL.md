@@ -1,13 +1,13 @@
 ---
-name: wireframe
+name: editor
 description: >-
-  Create and render wireframes using wiremd — a text-first tool that converts Markdown into visual
-  HTML mockups. Use this skill whenever the user wants to wireframe, mockup, prototype, or sketch
-  a UI screen — from a description, Jira ticket, PRD, existing React/JSX, or rough idea. Also
-  trigger on: "draw a login page", "show what this would look like", "create a mockup", "design
-  a screen for X", "sketch the UI", "prototype this flow", "document this component as a
-  wireframe", or any request to render or preview a .md wireframe file. When in doubt, use this
-  skill — it's better to invoke it unnecessarily than to miss it.
+  Create and render wireframes using wiremd — live browser editor, auto-refreshes on every save.
+  Use this skill whenever the user wants to wireframe, mockup, prototype, or sketch a UI screen —
+  from a description, Jira ticket, PRD, existing React/JSX, or rough idea. Also trigger on:
+  "draw a login page", "show what this would look like", "create a mockup", "design a screen for X",
+  "sketch the UI", "prototype this flow", "document this component as a wireframe", or any request
+  to render or preview a .md wireframe file. When in doubt, use this skill — it's better to invoke
+  it unnecessarily than to miss it.
 ---
 
 # Wireframe Skill
@@ -15,56 +15,25 @@ description: >-
 Write a wiremd `.md` file, render it, and iterate. wiremd converts plain Markdown with extended
 syntax into visual wireframes — 7 styles, no design tools needed.
 
-## Step 0 — Choose mode (ask this first, alone, before anything else)
+## Step 0 — Gather requirements
 
-**STOP. Ask only this question before proceeding. Do not show the rest of the form yet. Do not install anything. Do not write any files.**
-
-Ask the user (use plain, friendly language — explain the workflow, not the tech):
-
-> **How would you like to view the wireframe?**
->
-> **1. Live browser** *(recommended)*
-> - I create the wireframe file on your computer
-> - You open a link in Chrome or Safari — the wireframe appears instantly
-> - Every time I make a change, your browser updates automatically — no refreshing
-> - You can also tweak things directly in the browser and see changes live
->
-> **2. File handoff**
-> - I build the wireframe and save it as an HTML file on your computer
-> - You open it in any browser
-> - When I make edits, I'll let you know to refresh
-> - If there are multiple screens, you can click between them like a real website
->
-> **3. No files — just show me the code**
-> - I paste the wireframe markup here in the chat
-> - You copy it and paste it into [wiremd.com/editor](https://tobiashoelzer.com/wiremd/editor/) to preview it
-> - Nothing gets saved anywhere
-
-Wait for the user to pick a mode. **Do not proceed until they answer.**
-
-Once the user picks a mode, show the rest of the form:
+Ask (all at once, before writing anything):
 
 - **Single page or multi-page prototype?**
-- **Which visual style fits best?** (sketch / clean / wireframe / material / tailwind / brutal)
+- **Which visual style?** (sketch / clean / wireframe / material / tailwind / brutal — default: `wireframe`)
 - **Which key components should it include?**
 - **Got a spec, ticket, or component to base it on?** *(optional)*
 
-**Hard rules — never break these:**
-- NEVER install wiremd or run any CLI commands unless the user explicitly picks Mode 2.
-- NEVER suggest the `tobiashoelzer.com` editor URL unless the user picks Mode 1.
-- NEVER default to any mode — always wait for explicit user selection.
+> **Wrong mode?** Only want an artifact in Claude's panel (no browser tab)? Use `/wireframe:display`. Prefer a `localhost` dev server (any browser, including Firefox)? Use `/wireframe:serve`. No file access at all? Write markup in a fenced code block — user pastes it into the web editor.
 
 ---
 
-## Mode 1 — Local (default, no install)
+## Workflow
 
-Claude writes the `.md` file to disk. The user opens the wiremd web editor, which uses the File System Access API to open that exact file and auto-refresh on every save (≤500ms, no page reload). The user can also edit directly in the browser — changes write back to disk immediately.
-
-**Steps:**
 1. Write the `.md` file to a sensible path (e.g. `./wireframes/screen-name.md`)
 2. Generate and share the `?file=` hint URL:
    ```bash
-   node -e "const u=new URL('https://tobiashoelzer.com/wiremd/editor/');u.searchParams.set('file',process.argv[1]);console.log(u.toString())" /full/path/to/wireframe.md
+   node -e "const u=new URL('https://teezeit.github.io/wiremd/editor/');u.searchParams.set('file',process.argv[1]);console.log(u.toString())" /full/path/to/wireframe.md
    ```
 3. Tell the user: "Open that URL in Chrome, Edge, or Safari 16.4+ → click **Open File** in the modal → grant access. The wireframe will appear and update live as I edit."
 4. Iterate — edit the `.md` file, the browser refreshes automatically.
@@ -73,104 +42,15 @@ Claude writes the `.md` file to disk. The user opens the wiremd web editor, whic
 
 ---
 
-## Mode 2 — CLI (bundled, no install)
-
-The plugin ships a pre-built self-contained CLI at `bin/wiremd.js` (inside the plugin folder). Node.js can run it directly — no npm install needed.
-
-To find `PLUGIN_DIR`: look for the `wireframe` plugin folder in Claude's local agent sessions or plugin cache. It contains `bin/wiremd.js`.
-
-**Do NOT use `--serve` in Cowork/remote agents.** The server binds to Claude's sandbox host — the user's browser can't reach it. Use the static HTML workflow below instead.
-
-### Single-page
-```bash
-node $PLUGIN_DIR/bin/wiremd.js screen.md -o screen.html -s clean
-```
-Share the HTML path. After each iteration, re-render and ask the user to refresh.
-
-### Multi-page (Cowork) — navigable without a server
-Write all pages as `.md` files in one folder, then render and rewrite links in one step:
-
-```bash
-# Render every .md to .html
-for f in wireframes/*.md; do
-  node $PLUGIN_DIR/bin/wiremd.js "$f" -o "${f%.md}.html" -s clean
-done
-
-# Rewrite .md hrefs → .html so page-to-page links work via file://
-sed -i 's|href="\./\([^"]*\)\.md"|href="./\1.html"|g' wireframes/*.html
-```
-
-The user opens `wireframes/index.html` — nav links between pages work natively in the browser. After each edit cycle, re-run both commands and the user refreshes.
-
-### Create from a description or spec
-1. Understand the screen's purpose — what does the user accomplish here?
-2. Sketch structure top-to-bottom: nav → layout → content sections → forms/data → off-screen elements (modals)
-3. Write the wiremd `.md` file(s) using the quick reference below
-4. Render with the bundled CLI and share the HTML path(s) with the user
-
-### Document an existing component or screen
-1. Read the JSX/TSX component tree — focus on structure, not logic
-2. Map components to wiremd equivalents (see `references/syntax.md` → Component mapping table)
-3. Write top-to-bottom following visual flow
-4. **Capture:** layout, navigation, form fields/labels, button labels, table columns, states
-5. **Skip:** exact colors, event handlers, API calls, business logic
-
----
-
-## Before you render (Mode 2)
-
-**1. Locate the bundle.** Run `node $PLUGIN_DIR/bin/wiremd.js --version` to confirm it responds. The bundled version is always current — no version check needed.
-
-**2. Single page or multi-page?** Ask the user up front. For multi-page, scaffold from the start — don't bolt on later:
-
-- `_nav.md` shared across all pages via `![[_nav.md]]`
-- `_sidebar.md` if using sidebar layout
-- one `.md` per page at top level
-
-See `references/multi-page.md` for folder layout, cross-page link syntax, and the rebuild recipe.
-
-**3. Which render route does this environment support?**
-
-- **Cowork / remote agent** → static HTML workflow above. No `--serve`. Re-render + user refreshes each iteration.
-- **User on local terminal** → `--serve PORT --watch` for live iteration. Never share `localhost` URLs from Claude's host.
-- **User picked Mode 1** → write `.md`, share `?file=` URL, browser editor live-refreshes.
-- **User picked Mode 3** → hand off the `.md` for the user to paste into the editor.
-
----
-
-## Rendering
-
-```bash
-# Cowork / remote agent — static file, no server (user opens HTML and refreshes each iteration)
-node $PLUGIN_DIR/bin/wiremd.js my-screen.md -o output.html -s clean
-
-# Local terminal — live preview with hot reload (only when Claude runs on the user's own machine)
-node $PLUGIN_DIR/bin/wiremd.js my-screen.md --style clean --serve 3001 --watch
-
-# VS Code: Cmd+Shift+P → "wiremd: Open Preview" (live preview while editing)
-# See references/vscode.md for extension install steps
-```
-
-In Cowork: share the HTML file path — the user opens it directly. Re-render after each edit and ask them to refresh.
-On local: tell the user to open `http://localhost:3001`.
-
-To screenshot and verify from the CLI:
-```bash
-npx playwright screenshot --browser chromium --full-page "file://$(pwd)/output.html" /tmp/wf-check.png
-```
-Then read the PNG with the Read tool.
-
----
-
 ## Style picker
 
-Default to `clean` unless the user specifies otherwise. See `references/styles.md` for full descriptions.
+Default to `wireframe` unless the user specifies otherwise. See `references/styles.md` for full descriptions.
 
 | Style | Best for |
 |-------|----------|
 | `sketch` | Early ideation, lo-fi client presentations |
-| `clean` | Stakeholder review, internal handoff (default) |
-| `wireframe` | Low-fidelity explorations, documentation |
+| `clean` | Stakeholder review, internal handoff |
+| `wireframe` | Low-fidelity explorations, documentation (default) |
 | `material` | Material Design apps |
 | `tailwind` | Tailwind-based products, indigo/purple palette |
 | `brutal` | Bold, high-contrast concepts |

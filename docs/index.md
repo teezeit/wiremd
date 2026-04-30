@@ -2,4 +2,5 @@
 layout: home
 ---
 
-<MiniEditor />
+<LandingHero />
+<LandingFeatures />

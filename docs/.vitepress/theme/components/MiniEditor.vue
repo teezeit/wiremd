@@ -164,6 +164,25 @@ Password
 [Sign In]* [Forgot password?]`,
   },
   {
+    label: 'Sign In + Comments',
+    code: `## Sign In
+
+<!-- Should this be "Log In" to match the marketing page? @sara -->
+<!-- +1, updating — keeping "Sign In" for the app itself. @tobias -->
+
+Email
+[_____________________________]{type:email}
+
+Password
+[_____________________________]{type:password}
+
+<!-- Hide "Remember me" on mobile? @lee -->
+<!-- Yes — only show on screens > 375px. @tobias -->
+- [ ] Remember me
+
+[Sign In]* [Forgot password?]`,
+  },
+  {
     label: 'Product',
     code: `::: card
 ## Wireless Headphones
@@ -192,13 +211,18 @@ Premium noise-cancelling · 30h battery
   },
 ]
 
+const props = defineProps<{ initialIndex?: number; variant?: 'docs' }>()
+
 const style = ref<WiremdStyle>('sketch')
-const selectedIndex = ref(0)
-const source = ref(EXAMPLES[0].code)
+const selectedIndex = ref(props.initialIndex ?? 0)
+const source = ref(EXAMPLES[props.initialIndex ?? 0].code)
 const activePanel = ref<'preview' | 'editor'>('preview')
 const srcdoc = ref('')
 const iframeEl = ref<HTMLIFrameElement | null>(null)
+const textareaEl = ref<HTMLTextAreaElement | null>(null)
+const rootEl = ref<HTMLDivElement | null>(null)
 let timer: ReturnType<typeof setTimeout> | null = null
+let intersectionObs: IntersectionObserver | null = null
 
 function resizeIframe() {
   const frame = iframeEl.value
@@ -268,8 +292,24 @@ function onExampleChange() {
 }
 
 watch(style, render)
-onMounted(() => { render(); window.addEventListener('message', onMessage) })
-onUnmounted(() => { window.removeEventListener('message', onMessage) })
+onMounted(() => {
+  render()
+  window.addEventListener('message', onMessage)
+  if (props.variant === 'docs' && rootEl.value) {
+    intersectionObs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        textareaEl.value?.focus({ preventScroll: true })
+        intersectionObs?.disconnect()
+        intersectionObs = null
+      }
+    }, { threshold: 0.3 })
+    intersectionObs.observe(rootEl.value)
+  }
+})
+onUnmounted(() => {
+  window.removeEventListener('message', onMessage)
+  intersectionObs?.disconnect()
+})
 
 let touchStartX = 0
 let touchStartY = 0
@@ -288,7 +328,7 @@ function onTouchEnd(e: TouchEvent) {
 </script>
 
 <template>
-  <div class="mini-editor">
+  <div ref="rootEl" :class="['mini-editor', { 'mini-editor--docs': props.variant === 'docs' }]">
     <div class="mini-editor__toggle">
       <button :class="['mini-editor__toggle-btn', { 'is-active': activePanel === 'preview' }]" @click="activePanel = 'preview'" title="Preview">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -298,16 +338,23 @@ function onTouchEnd(e: TouchEvent) {
       </button>
     </div>
     <div :class="['mini-editor__body', `mini-editor__body--${activePanel}`]" @touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd">
-      <iframe
-        ref="iframeEl"
-        :srcdoc="srcdoc"
-        @load="resizeIframe"
-        class="mini-editor__iframe"
-        sandbox="allow-same-origin allow-scripts"
-      />
-      <div class="mini-editor__divider" />
+
+      <!-- Editor pane -->
       <div class="mini-editor__editor-pane">
-        <div class="mini-editor__editor-header">
+        <!-- Docs variant: light header with template selector -->
+        <div v-if="props.variant === 'docs'" class="mini-editor__panel-header">
+          <span class="mini-editor__panel-label">Markdown</span>
+          <div class="mini-editor__header-controls">
+            <span class="mini-editor__ctrl">
+              <span class="mini-editor__ctrl-label">Template:</span>
+              <select v-model="selectedIndex" @change="onExampleChange" class="mini-editor__select mini-editor__select--light">
+                <option v-for="(ex, i) in EXAMPLES" :key="i" :value="i">{{ ex.label }}</option>
+              </select>
+            </span>
+          </div>
+        </div>
+        <!-- Default: dark header with traffic lights -->
+        <div v-else class="mini-editor__editor-header">
           <span class="mini-editor__dot" style="background:#ff5f57"></span>
           <span class="mini-editor__dot" style="background:#febc2e"></span>
           <span class="mini-editor__dot" style="background:#28c840"></span>
@@ -321,16 +368,50 @@ function onTouchEnd(e: TouchEvent) {
             </select>
           </div>
         </div>
-        <textarea
-          v-model="source"
-          @input="onInput"
-          @keydown="onKeydown"
-          class="mini-editor__textarea"
-          spellcheck="false"
-          autocomplete="off"
-          autocorrect="off"
+        <div class="mini-editor__ta-wrap">
+          <button v-if="props.variant === 'docs'" class="mini-editor__edit-btn" @click="textareaEl?.focus()" title="Edit">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <textarea
+            ref="textareaEl"
+            v-model="source"
+            @input="onInput"
+            @keydown="onKeydown"
+            :class="['mini-editor__textarea', { 'mini-editor__textarea--light': props.variant === 'docs' }]"
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+          />
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="mini-editor__divider">
+        <span v-if="props.variant === 'docs'" class="mini-editor__divider-arrow">→</span>
+      </div>
+
+      <!-- Preview pane -->
+      <div class="mini-editor__preview-side">
+        <div v-if="props.variant === 'docs'" class="mini-editor__panel-header">
+          <span class="mini-editor__panel-label">Wireframe</span>
+          <div class="mini-editor__header-controls">
+            <span class="mini-editor__ctrl">
+              <span class="mini-editor__ctrl-label">Style:</span>
+              <select v-model="style" class="mini-editor__select mini-editor__select--light">
+                <option v-for="s in STYLES" :key="s" :value="s">{{ s }}</option>
+              </select>
+            </span>
+          </div>
+        </div>
+        <iframe
+          ref="iframeEl"
+          :srcdoc="srcdoc"
+          @load="resizeIframe"
+          class="mini-editor__iframe"
+          sandbox="allow-same-origin allow-scripts"
         />
       </div>
+
     </div>
   </div>
 </template>

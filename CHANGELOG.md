@@ -7,12 +7,74 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-04-30
+
 ### Added
-- **Inline comments** — standard HTML comment syntax (`<!-- text -->`) renders as yellow sticky-note callouts in all HTML output. Comments attach to the element that follows them in source; work at any nesting depth inside `:::` containers.
-- `showComments` option in `RenderOptions` (default `true`) — pass `false` to strip all comment callouts from output
-- `--show-comments` / `--hide-comments` CLI flags (comments hidden by default in CLI output — opt-in with `--show-comments`)
-- Comments toggle in the web editor preview toolbar (pill toggle)
+- **Plugin v2** — wireframe skill split into four focused sub-skills: `editor` (live browser editor), `display` (static HTML), `chat` (markup-only), `serve` (dev server with hot reload)
+- **Plugin marketplace** — install via `/plugin marketplace add teezeit/wiremd` in Claude Code or Claude Desktop; self-contained CLI bundled, no npm install required
+- **Inline comments** — `<!-- text -->` renders as yellow sticky-note callouts in all HTML output; attach to the following element, work at any nesting depth
+- `showComments` option in `RenderOptions` (default `true`) — pass `false` to strip callouts
+- `--show-comments` CLI flag (comments hidden by default in CLI, opt-in)
+- Comments toggle pill in the web editor preview toolbar
 - Comments On/Off button in the VS Code extension preview toolbar
+- **Comment side panel** — fixed panel with thread grouping, scope isolation, and inter-cell routing; thread count badge in editor and VS Code toolbars
+- **Cursor sync** — source positions propagated from parser through AST; clicking a rendered element scrolls the source cursor to the matching line
+- Comment dot indicators on rendered elements; editor blur-to-clear behaviour
+- **Editor local file sync** — read/write `.md` files directly from the browser editor via the File System Access API (no server needed)
+- **Editor file history** — recent files list with IDB persistence; silent cross-session reopen on return
+- **`?file=` URL hint** — open the editor with a suggested file path pre-filled in the open dialog; hint stripped from URL after modal resolves
+- **URL hash sharing** — wireframe content encoded in the URL hash for instant sharing from the browser editor
+- GitHub Releases as canonical distribution for CLI binary and VS Code `.vsix`
+
+### Changed
+- `--hide-comments` flag removed; simplified to single `--show-comments` opt-in
+- Plugin `plugin.json` version bumped to `2.0.0`
+- **Docs: Claude guide restructured** around three modes (Only Claude / Claude + Editor / Only Editor) with decision table, flow diagram, and screenshots
+- **Docs: new Web Editor guide page** — share via URL, live sync, browser compatibility
+- **Docs: CLI page** merged with CLI reference — flags table, styles, serve-locally example with screenshot
+- **Docs: overview pipeline diagram** — live-rendered three-panel `Markdown → Renderer → Output` using `WmdPipeline` Vue component
+- **Docs: landing page** — new `LandingHero` (Mermaid for wireframes tagline, CTA buttons) and `LandingFeatures` (4 sections with screenshots)
+- **Docs: sidebar** reordered — Claude guide and Web Editor before VS Code Extension; CLI Reference merged into CLI page
+- **README** tagline and Why section updated to match product story; Use with Claude section condensed to 3-mode table
+
+## [0.1.7] - 2026-04-23
+
+### Fixed
+- Gallery rendering in docs — converted all examples to `:::demo` blocks
+
+## [0.1.6] - 2026-04-22
+
+### Added
+- **`:::` container syntax** — replaces `## {.grid}` / `## {.row}` heading-class layout syntax (breaking change); full nesting support via recursive parser rewrite
+- **`:::demo` container** — split preview/code showcase block for docs and examples
+- **Tabs component** — `:::tabs` with named panels
+- **Badge/pill component** — `|Label|{.variant}` inline syntax
+- **`## {.row}` flex layout** — row primitive with alignment support
+- **`![[file.md]]` includes** — resolve and inline external wireframe files
+- **`:icon-name:` syntax** — icon rendering in table cells
+- **CLI directory mode** — `wiremd <folder>` serves all `.md` files in a folder
+- **`:::demo` VitePress plugin** — live wireframe previews inside VitePress docs
+- **VS Code: Install Wiremd Claude Skill** command added to command palette
+- **VS Code: component docs** open inline in the extension webview
+- Wireframe skill shipped as Claude Code plugin (initial `plugin.json`)
+- Comprehensive docs overhaul: new sidebar, landing page, VS Code guide, Claude integration guide, visual styles reference with screenshots
+
+### Fixed
+- Parser: `[[...]]` nav inside container blocks when items contain markdown links
+- Parser: button-link sequences and nav inside block containers
+- Parser: nested `:::` openers now require blank lines (remark folds otherwise)
+- Renderer: style fixes across sketch/clean/wireframe themes (card max-width, sidebar chrome, toolbar overlap)
+- `[[ A > B > C ]]` now renders as breadcrumbs, not nav
+- VS Code: rendering parity, dotted sketch background, hot-reload dev workflow
+- VS Code: publisher updated to `eclectic-ai`; 128px icon; `.vsix` packaging fixed
+- `prepare` script added so `dist/` builds correctly on GitHub install
+- Dropdown options now correctly associate with `<select>` inside implicit row items
+
+## [0.1.5] - 2025-11-24
+
+### Fixed
+- Fixed navigation button rendering
+- Fixed checkbox and button rendering inside paragraphs
 
 ## [0.1.4] - 2025-11-24
 
@@ -97,4 +159,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-For full release notes and migration guides, see the [releases page](https://github.com/akonan/wiremd/releases).
+For full release notes and migration guides, see the [releases page](https://github.com/teezeit/wiremd/releases).

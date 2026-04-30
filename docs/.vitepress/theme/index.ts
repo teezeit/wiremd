@@ -7,6 +7,8 @@ import SidebarSearch from './components/SidebarSearch.vue'
 import LandingHero from './components/LandingHero.vue'
 import WiremdLanding from './components/WiremdLanding.vue'
 import LandingAscii from './components/LandingAscii.vue'
+import LandingFeatures from './components/LandingFeatures.vue'
+import WmdPipeline from './components/WmdPipeline.vue'
 import type { Theme } from 'vitepress'
 
 export default {
@@ -20,5 +22,7 @@ export default {
     app.component('LandingHero', LandingHero)
     app.component('WiremdLanding', WiremdLanding)
     app.component('LandingAscii', LandingAscii)
+    app.component('LandingFeatures', LandingFeatures)
+    app.component('WmdPipeline', WmdPipeline)
   }
 } satisfies Theme

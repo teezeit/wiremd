@@ -21,6 +21,8 @@ Open any `.md` file, then open the preview using any of these:
 
 The preview panel opens alongside your editor and updates live as you type.
 
+<img src="../assets/guides/guide-screenshot-vscode.png" alt="VS Code with wiremd file on the left and live wireframe preview on the right" class="doc-shot" />
+
 ## Change the visual style
 
 Use the style dropdown in the preview toolbar to switch between:

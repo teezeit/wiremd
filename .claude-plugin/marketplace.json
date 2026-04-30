@@ -1,15 +1,18 @@
 {
   "name": "wiremd",
   "description": "Skills for working with wiremd — text-first wireframes in Markdown.",
-  "version": "0.1.7",
   "owner": {
     "name": "teezeit"
   },
   "plugins": [
     {
       "name": "wireframe",
-      "source": "./",
-      "description": "Create and render wireframes using wiremd — converts Markdown into visual HTML mockups."
+      "source": "./skills/wireframe",
+      "description": "Create and render wireframes using wiremd — converts Markdown into visual HTML mockups.",
+      "homepage": "https://teezeit.github.io/wiremd/",
+      "repository": "https://github.com/teezeit/wiremd",
+      "license": "MIT",
+      "keywords": ["wireframe", "mockup", "prototype", "wiremd", "ui", "design", "sketch"]
     }
   ]
 }

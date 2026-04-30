@@ -17,9 +17,10 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: "Overview", link: "/guide/overview" },
-          { text: "VS Code Extension", link: "/guide/vscode" },
           { text: "Using with Claude", link: "/guide/claude" },
-          { text: "CLI Install", link: "/guide/installation" },
+          { text: "Web Editor", link: "/guide/web-editor" },
+          { text: "VS Code Extension", link: "/guide/vscode" },
+          { text: "CLI", link: "/guide/installation" },
           { text: "How wiremd works", link: "/guide/how-it-works" },
         ],
       },
@@ -231,7 +232,6 @@ export default defineConfig({
         text: "Reference",
         collapsed: true,
         items: [
-          { text: "CLI Reference", link: "/reference/cli" },
           { text: "FAQ & Troubleshooting", link: "/reference/faq" },
         ],
       },

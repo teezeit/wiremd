@@ -1,21 +1,21 @@
 # wiremd
 
-> Text-first UI design tool - Create wireframes and mockups using Markdown syntax
+> Mermaid for wireframes — describe a screen, get a wireframe. Saved as `textfile.md`.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-%3E%3D18.0.0-green)](https://nodejs.org/)
 
-wiremd is a markdown-based UI wireframing tool that lets you create wireframes and mockups using familiar markdown syntax with intuitive extensions. Write your UI designs as text, render them as beautiful wireframes.
+wiremd converts Markdown with extended wireframing syntax into visual mockups. Describe a screen in plain English — Claude writes and renders it. Or write the Markdown directly. 10× cheaper and faster than AI image-based design tools. Every wireframe is a `.md` file: version-controlled, diff-able, readable by any LLM.
 
 ## Why wiremd?
 
-- **Designer-friendly syntax** - No complex DSL to learn, just extended Markdown
-- **Version control ready** - Store your wireframes as plain text in Git
-- **Fast iteration** - Update designs as quickly as you can type
-- **Collaboration** - Review wireframe changes in pull requests
-- **Developer handoff** - Export to HTML or framework components
-- **No vendor lock-in** - Open source MIT license, runs anywhere
+- **10× cheaper than Claude Design** — text in, wireframe out, no image generation
+- **Plain text** — `.md` files live in Git, diff cleanly, and open in any editor
+- **LLM-native** — Claude reads the spec directly, no screenshots or translation layer
+- **Share anywhere** — embed in Notion, link in Jira, paste in Slack
+- **7 visual styles** — sketch, clean, wireframe, material, tailwind, brutal
+- **Portable** — VS Code extension, CLI, web editor, or programmatic API
 
 ## Quick Example
 
@@ -132,42 +132,28 @@ npm link
 
 ## Use with Claude
 
-This repo ships a **wireframe skill** that teaches Claude how to write wiremd syntax and render mockups. It's packaged as a Claude plugin marketplace (`.claude-plugin/marketplace.json`), so the same GitHub URL installs on every surface that supports marketplaces. A zip fallback is available for surfaces that only accept skill uploads.
-
-### Claude Code (CLI)
-
-Inside a Claude Code session:
+Install the wireframe plugin once — works on Claude Code, Claude Desktop, and claude.ai:
 
 ```text
 /plugin marketplace add teezeit/wiremd
 /plugin install wireframe@wiremd
 ```
 
-Then `/reload-plugins` (or restart the session).
+Then just ask: *"Wireframe a login screen with email, password, and a forgot password link."*
 
-### Claude Desktop
+Three modes depending on your setup:
 
-1. Open **Settings → Plugins → Add Marketplace**
-2. Paste the repo URL: `https://github.com/teezeit/wiremd` (or the shorthand `teezeit/wiremd`)
-3. In the newly added **wiremd** marketplace, install the **wireframe** plugin
+| Mode | What you see | Skill |
+|------|--------------|-------|
+| **Only Claude** | HTML artifact in Claude's panel | `/wireframe:display` |
+| **Claude + Editor** | Live browser tab — both sides read/write the `.md` | `/wireframe:editor` |
+| **Only Editor** | Paste Claude's output into the web editor | — |
 
-### Claude.ai, Claude Cowork (zip upload)
+**Claude Desktop (zip upload):** Download [wireframe-skill.zip](https://github.com/teezeit/wiremd/releases/latest/download/wireframe-skill.zip) → Settings → Capabilities → Skills → Upload skill.
 
-Surfaces that only accept skill uploads (no GitHub import) take a zip:
+**VS Code:** Install the **Wiremd** extension from the VS Code Marketplace — live preview as you type, no Claude required.
 
-1. Download the latest skill bundle:
-   **[wireframe-skill.zip](https://github.com/teezeit/wiremd/releases/latest/download/wireframe-skill.zip)**
-   *(attached to each GitHub release; or build locally with `npm run skill:zip`)*
-2. Open Claude → **Settings → Capabilities → Skills → Upload skill**
-3. Select `wireframe-skill.zip`
-
-The skill activates automatically when you ask Claude to wireframe, mock up, or sketch a UI.
-
-> **Note:** There is no `claude://` deep link yet for one-click install from a browser — you'll need to paste the URL into the Add Marketplace dialog manually.
-
-### VS Code
-
-Install the **Wiremd** extension from the VS Code Marketplace for live preview as you type — no Claude required, but composes well with Claude's edits.
+Full guide: [teezeit.github.io/wiremd/guide/claude](https://teezeit.github.io/wiremd/guide/claude)
 
 ## CLI Usage
 

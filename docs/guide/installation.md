@@ -1,146 +1,95 @@
-# Installation
+# CLI
 
-> This page covers the npm package for CLI and programmatic use. No terminal? [Install the VS Code extension](./vscode.md) instead.
+The wiremd CLI converts `.md` files to HTML, watches for changes, and optionally serves a live-reload dev server.
 
-## Requirements
+No terminal? [Install the VS Code extension](./vscode.md) instead.
 
-- Node.js >= 18.0.0
-- npm, yarn, or pnpm
-
-## Package Installation
-
-### npm
-
-```bash
-npm install wiremd
-```
-
-### yarn
-
-```bash
-yarn add wiremd
-```
-
-### pnpm
-
-```bash
-pnpm add wiremd
-```
-
-## Global CLI Installation
-
-To use the `wiremd` command globally:
+## Install
 
 ```bash
 npm install -g wiremd
 ```
 
-Verify installation:
+Verify:
 
 ```bash
 wiremd --version
 ```
 
-## Development Installation
+## Serve locally
 
-To contribute to wiremd or run from source:
-
-```bash
-# Clone the repository
-git clone https://github.com/teezeit/wiremd.git
-cd wiremd
-
-# Install dependencies
-npm install
-
-# Build the project
-npm run build
-
-# Run tests
-npm test
-
-# Link globally for development
-npm link
-```
-
-## Verify Installation
-
-### Using the CLI
+The most useful workflow — write your wireframe, see it update live in any browser:
 
 ```bash
-# Create a test file
-echo "## Test\n[Button]" > test.md
-
-# Render it
-wiremd test.md
-
-# Should create test.html
+wiremd my-screen.md --serve 3001 --watch
 ```
 
-### Using the API
+Open `http://localhost:3001`. The page reloads automatically on every save. Works in any browser including Firefox.
 
-Create a test script `test.js`:
+<img src="../assets/guides/guide-serve-cli.png" alt="wireframe rendered in the browser via the local dev server" class="doc-shot" />
 
-```javascript
-import { parse, renderToHTML } from 'wiremd';
-
-const ast = parse('## Test\n[Button]');
-const html = renderToHTML(ast);
-console.log('Success! wiremd is installed.');
-```
-
-Run it:
+For a whole folder of screens:
 
 ```bash
-node test.js
+wiremd ./screens --serve 3001
 ```
 
-## TypeScript Support
+All `.md` files under `./screens` are watched. If `screens/index.md` exists it becomes the default page. Navigate between screens at `http://localhost:3001/screen-name.html`.
 
-wiremd is written in TypeScript and includes type definitions. No additional `@types` package is needed.
-
-```typescript
-import type { DocumentNode, WiremdNode } from 'wiremd';
-```
-
-## Troubleshooting
-
-### Module not found
-
-If you see "Cannot find module 'wiremd'":
-
-1. Ensure you're in the correct directory
-2. Run `npm install` again
-3. Check that `node_modules/wiremd` exists
-
-### Permission errors (global install)
-
-On macOS/Linux, you may need sudo:
+## One-shot render
 
 ```bash
-sudo npm install -g wiremd
+# Render to HTML (default: same name as input)
+wiremd login.md
+
+# Specify output path and style
+wiremd login.md -o dist/login.html --style clean
 ```
 
-Or configure npm to use a different directory:
+## Flags
+
+| Flag | Alias | Default | Description |
+|------|-------|---------|-------------|
+| `--output <file>` | `-o` | `<input>.html` | Output file path |
+| `--style <style>` | `-s` | `sketch` | Visual style |
+| `--serve <port>` | — | — | Start live-reload dev server on port |
+| `--watch` | `-w` | — | Regenerate on file change (no server) |
+| `--format <format>` | `-f` | `html` | `html` or `json` |
+| `--show-comments` | — | off | Render `<!-- comments -->` as callout panels |
+| `--watch-pattern <glob>` | — | — | Override the default watch glob |
+| `--ignore <glob>` | — | — | Extra glob to exclude from watching |
+| `--pretty` | `-p` | `true` | Pretty-print output |
+| `--version` | `-v` | — | Print version |
+| `--help` | `-h` | — | Print help |
+
+### Styles
+
+| Value | Look |
+|-------|------|
+| `sketch` | Balsamiq-inspired hand-drawn (default) |
+| `clean` | Modern minimal |
+| `wireframe` | Traditional grayscale |
+| `material` | Google Material Design |
+| `tailwind` | Utility-first, purple accents |
+| `brutal` | Neo-brutalism, bold colors |
+| `none` | Unstyled HTML |
+
+## Notes
+
+- `--serve` starts the server but does **not** auto-enable `--watch`. Pass both to get live reload: `--serve 3001 --watch`.
+- `--watch` without `--serve` regenerates the file on disk only — no browser sync.
+- Directory mode ignores `-o`. Use `-s` to set the style for all files.
+
+## Programmatic use
 
 ```bash
-mkdir ~/.npm-global
-npm config set prefix '~/.npm-global'
-export PATH=~/.npm-global/bin:$PATH
+npm install wiremd
 ```
 
-### Node version issues
+```ts
+import { parse, renderToHTML } from 'wiremd'
 
-Check your Node version:
-
-```bash
-node --version
+const html = renderToHTML(parse('## Login\n[Sign In]*'), { style: 'clean' })
 ```
 
-If it's less than 18.0.0, upgrade Node.js.
-
-## Next Steps
-
-- [Full install options](./installation.md)
-- [Browse Components](../components/)
-- [Explore Examples](../examples/)
+Full API: [Parser](/api/parser) · [Renderers](/api/renderer)
