@@ -17,7 +17,7 @@ test('logo click from docs navigates to landing page', async ({ page }) => {
   await page.locator('.VPNavBarTitle a').first().click()
   await page.waitForLoadState('networkidle')
 
-  expect(page.url()).toBe('https://tobiashoelzer.com/wiremd/')
+  expect(page.url()).toBe('https://teezeit.github.io/wiremd/')
   await expect(page.locator('.ln')).toBeVisible()   // landing nav
   await expect(page.locator('.VPNav')).toHaveCount(0) // no vitepress nav
 })
