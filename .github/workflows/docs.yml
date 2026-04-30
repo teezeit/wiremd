@@ -5,11 +5,10 @@ on:
     branches:
       - main
     paths:
-      - 'docs/**'
-      - 'examples/**'
-      - 'editor/**'
-      - 'landing/**'
-      - 'src/**'
+      - 'apps/docs/**'
+      - 'apps/editor/**'
+      - 'apps/landing/**'
+      - 'packages/core/src/**'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
 
@@ -33,30 +32,37 @@ jobs:
         with:
           fetch-depth: 0 # For lastUpdated feature
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
+      - name: Build core
+        run: pnpm --filter wiremd run build
 
       - name: Build VitePress site
-        run: npm run docs:build
+        run: pnpm --filter wiremd-docs run build
 
       - name: Build landing
-        run: |
-          npm ci --prefix landing
-          npm run build --prefix landing
-          cp -r landing/dist/. docs/.vitepress/dist/
+        run: pnpm --filter wiremd-landing run build
+
+      - name: Copy landing into docs dist
+        run: cp -r apps/landing/dist/. apps/docs/.vitepress/dist/
 
       - name: Build editor
+        run: VITE_BASE=/wiremd/editor/ pnpm --filter wiremd-editor run build
+
+      - name: Copy editor into docs dist
         run: |
-          npm ci --prefix editor
-          VITE_BASE=/wiremd/editor/ npm run build --prefix editor
-          mkdir -p docs/.vitepress/dist/editor
-          cp -r editor/dist/. docs/.vitepress/dist/editor/
+          mkdir -p apps/docs/.vitepress/dist/editor
+          cp -r apps/editor/dist/. apps/docs/.vitepress/dist/editor/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -64,7 +70,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/.vitepress/dist
+          path: apps/docs/.vitepress/dist
 
   deploy:
     environment:

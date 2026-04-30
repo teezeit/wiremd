@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const distFile = path.join(root, '../dist/index.cjs');
+const distFile = path.join(root, '../../packages/core/dist/index.cjs');
 
 let debounce;
 
@@ -21,4 +21,4 @@ watch(distFile, () => {
   }, 200);
 });
 
-console.log('[wiremd-ext] watching ../dist/index.cjs...');
+console.log('[wiremd-ext] watching ../../packages/core/dist/index.cjs...');

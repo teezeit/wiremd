@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Propagates the root package.json version to vscode-extension/package.json
- * and skills/wireframe/.claude-plugin/plugin.json.
+ * Propagates the packages/core/package.json version to extensions/vscode/package.json
+ * and extensions/skills/wireframe/.claude-plugin/plugin.json.
  *
- * Run via: npm run sync-versions
- * Also wired as the npm `version` lifecycle hook so `npm version <bump>` keeps
- * all four artifacts in sync automatically.
+ * Run via: pnpm run sync-versions
+ * Also wired as the npm `version` lifecycle hook so `npm version <bump>` in
+ * packages/core keeps all artifacts in sync automatically.
  */
 
 import { readFileSync, writeFileSync } from 'fs';
@@ -22,17 +22,17 @@ function writeJSON(file, obj) {
   writeFileSync(file, JSON.stringify(obj, null, '\t') + '\n');
 }
 
-const rootPkg = readJSON(resolve(ROOT, 'package.json'));
-const { version } = rootPkg;
+const corePkg = readJSON(resolve(ROOT, 'packages/core/package.json'));
+const { version } = corePkg;
 
-const extPkgPath = resolve(ROOT, 'vscode-extension/package.json');
+const extPkgPath = resolve(ROOT, 'extensions/vscode/package.json');
 const extPkg = readJSON(extPkgPath);
 extPkg.version = version;
 writeJSON(extPkgPath, extPkg);
-console.log(`vscode-extension/package.json → ${version}`);
+console.log(`extensions/vscode/package.json → ${version}`);
 
-const pluginPath = resolve(ROOT, 'skills/wireframe/.claude-plugin/plugin.json');
+const pluginPath = resolve(ROOT, 'extensions/skills/wireframe/.claude-plugin/plugin.json');
 const plugin = readJSON(pluginPath);
 plugin.version = version;
 writeJSON(pluginPath, plugin);
-console.log(`skills/wireframe/.claude-plugin/plugin.json → ${version}`);
+console.log(`extensions/skills/wireframe/.claude-plugin/plugin.json → ${version}`);

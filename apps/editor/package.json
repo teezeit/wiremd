@@ -15,7 +15,7 @@
   "dependencies": {
     "lz-string": "^1.5.0",
     "monaco-editor": "^0.55.1",
-    "wiremd": "file:.."
+    "wiremd": "workspace:*"
   },
   "devDependencies": {
     "fake-indexeddb": "^6.2.5",

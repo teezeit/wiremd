@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
-const projectSrcRoot = resolve(__dirname, '../src/');
+const projectSrcRoot = resolve(__dirname, '../../packages/core/src/');
 
 export default defineConfig({
   root: resolve(__dirname),
@@ -12,7 +12,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      wiremd: resolve(__dirname, '../src/index.ts'),
+      wiremd: resolve(__dirname, '../../packages/core/src/index.ts'),
       // Stub Node.js built-ins — only used in resolveIncludes, which is never called in the browser
       fs: resolve(__dirname, 'src/stubs/fs.ts'),
       path: resolve(__dirname, 'src/stubs/path.ts'),
@@ -21,6 +21,7 @@ export default defineConfig({
   build: {
     target: 'es2022',
     outDir: 'dist',
+    target: 'esnext',
     // Monaco remains the primary editor dependency. We budget its isolated chunk
     // explicitly instead of relying on Vite's generic 500 kB warning.
     chunkSizeWarningLimit: 3900,

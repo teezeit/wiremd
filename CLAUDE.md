@@ -8,15 +8,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
+Run from the monorepo root (requires pnpm):
 ```bash
-npm run build        # TypeScript + Vite → dist/
-npm test             # Run all tests (vitest)
-npm test -- tests/parser.test.ts              # Single test file
-npm test -- tests/parser.test.ts -t "Button"  # Single test by name
-npm run test:coverage
-npm run typecheck    # Strict TypeScript check
-npm run lint         # ESLint on src/
-npm run docs:dev     # VitePress docs dev server
+pnpm install             # install all workspaces in one shot
+pnpm turbo run build     # build everything (core first, then apps/extensions)
+pnpm turbo run test      # run all tests
+pnpm turbo run dev       # start all dev servers
+pnpm turbo run typecheck
+pnpm turbo run lint
+
+# Run a single workspace:
+pnpm --filter wiremd run build
+pnpm --filter wiremd run test
+pnpm --filter wiremd-editor run dev
+pnpm --filter wiremd-docs run dev
+```
+
+Run from `packages/core/` for core-library work:
+```bash
+pnpm run build        # TypeScript + Vite → dist/
+pnpm run test         # vitest run
+pnpm test -- tests/parser.test.ts              # single test file
+pnpm test -- tests/parser.test.ts -t "Button"  # single test by name
+pnpm run test:coverage
+pnpm run typecheck
+pnpm run lint
 ```
 
 CLI usage (after build):
@@ -28,16 +44,24 @@ wiremd input.md -o output.html -f html -s sketch
 ## Monorepo layout
 
 ```
-core package (src/ + bin/)     ← npm library + CLI, built to dist/
-├── frontend apps              (three independent Vite servers, all started by npm run dev)
-│   ├── landing/               port 5175 — marketing site (Vite + Vue)
-│   ├── docs/                  port 5173 — VitePress documentation
-│   └── editor/                port 5174 — web editor (Vite + Monaco, vanilla JS)
-└── consumers                  (depend on core via "wiremd": "file:..")
-    ├── vscode-extension/      VS Code live preview extension
-    ├── figma-plugin/          imports wiremd JSON into Figma as native designs
-    └── skills/wireframe/      Claude skill (zip uploaded to Claude Desktop / claude.ai)
+wiremd/                          ← monorepo root (private, NOT published)
+├── packages/
+│   └── core/                   ← published "wiremd" npm package (src/ bin/ tests/)
+├── apps/
+│   ├── docs/                   ← VitePress docs, port 5173
+│   ├── landing/                ← marketing site (Vue), port 5175
+│   └── editor/                 ← web editor (Monaco), port 5174
+├── extensions/
+│   ├── vscode/                 ← VS Code live preview extension
+│   ├── figma/                  ← imports wiremd JSON into Figma as native designs
+│   └── skills/                 ← Claude skill (wireframe/ — zip uploaded to claude.ai)
+├── scripts/                    ← build-bundle.mjs, sync-versions.mjs, package-skill.sh
+├── pnpm-workspace.yaml
+├── turbo.json
+└── package.json                ← private root, delegates to turbo run
 ```
+
+Apps and extensions depend on the core library via `"wiremd": "workspace:*"` — pnpm resolves this to `packages/core/` automatically.
 
 Cross-app links use `import.meta.env.DEV` in the frontend apps and `process.env.WIREMD_DEV` in the VitePress config to resolve the correct port in dev vs. the shared `/wiremd/` base path in production.
 
@@ -46,7 +70,7 @@ Cross-app links use `import.meta.env.DEV` in the frontend apps and `process.env.
 The pipeline: `Markdown string → parse() → WiremdAST → render*() → HTML/React/JSON/Tailwind`
 
 ```
-src/
+packages/core/src/
 ├── types.ts                        # ~40 discriminated-union AST node types
 ├── index.ts                        # Public exports
 ├── parser/
@@ -66,28 +90,28 @@ src/
 
 **Styles**: Each visual style is a self-contained CSS string in `styles.ts`. The `sketch` style uses Comic Sans / hand-drawn look; `clean` is modern minimal; `wireframe` is traditional grayscale. Passed as `{ style: 'clean' }` to render functions.
 
-**CLI** (`src/cli/index.ts`): arg parsing → calls parse()+render() → optionally starts a chokidar watcher + WebSocket live-reload server (`src/cli/server.ts`). The `bin/wiremd.js` wrapper loads the ESM CLI module.
+**CLI** (`packages/core/src/cli/index.ts`): arg parsing → calls parse()+render() → optionally starts a chokidar watcher + WebSocket live-reload server. The `packages/core/bin/wiremd.js` wrapper loads the ESM CLI module.
 
-**VS Code extension** (`vscode-extension/`): `src/extension.ts` registers commands; `src/preview-provider.ts` is the WebView that embeds the rendered HTML and refreshes on save. Depends on the parent package via `"wiremd": "file:.."`.
+**VS Code extension** (`extensions/vscode/`): `src/extension.ts` registers commands; `src/preview-provider.ts` is the WebView that embeds the rendered HTML and refreshes on save. Depends on core via `"wiremd": "workspace:*"`.
 
 **VS Code extension local development**: uninstall any installed Wiremd extension, then launch VS Code with the dev build loaded into your current window:
 ```bash
-code --extensionDevelopmentPath=$(pwd)/vscode-extension .
+code --extensionDevelopmentPath=$(pwd)/extensions/vscode .
 ```
 Run both watchers in parallel terminals:
 ```bash
-npm run dev                              # root: rebuilds dist/ on src/ changes
-cd vscode-extension && npm run dev       # extension: rebuilds dist/ on changes
+pnpm --filter wiremd run dev          # core: rebuilds dist/ on src/ changes
+cd extensions/vscode && pnpm run dev  # extension: rebuilds dist/ on changes
 ```
 After edits rebuild: `Cmd+Shift+P` → "Developer: Reload Window".
 
 ## Testing
 
-Tests live in `tests/`. Key files: `parser.test.ts`, `renderer.test.ts`, `react-renderer.test.ts`, `tailwind-renderer.test.ts`, `integration.test.ts`, `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `api-examples.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
+Tests live in `packages/core/tests/`. Key files: `parser.test.ts`, `renderer.test.ts`, `react-renderer.test.ts`, `tailwind-renderer.test.ts`, `integration.test.ts`, `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `api-examples.test.ts`, `package-shape.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
 
 ## Build output
 
-`vite.config.ts` emits both ESM (`dist/index.mjs`) and CJS (`dist/index.cjs`) with TypeScript declarations. The CLI entry is excluded from the library bundle and built separately.
+`packages/core/vite.config.ts` emits both ESM (`dist/index.js`) and CJS (`dist/index.cjs`) with TypeScript declarations. The CLI entry is excluded from the library bundle and built separately.
 
 ## New features
 
@@ -98,8 +122,9 @@ Before marking a feature done, run through the **Feature Development Checklist**
 Four artifacts ship together under a single version: npm package, VS Code extension, Claude skill (`plugin.json`), and standalone CLI bundle.
 
 ```bash
-npm version patch   # bumps root package.json + syncs vscode-extension/package.json
-                    # and skills/wireframe/.claude-plugin/plugin.json via the `version` hook
+# Bump version in packages/core/package.json — syncs extensions/vscode/package.json
+# and extensions/skills/wireframe/.claude-plugin/plugin.json via the `version` hook:
+cd packages/core && npm version patch
 git push && git push --tags
 ```
 
@@ -107,6 +132,6 @@ Pushing the tag triggers:
 1. `release.yml` — creates the GitHub release with auto-generated notes
 2. `publish.yml` — publishes the VS Code extension to the Marketplace and attaches the skill zip
 
-**Extension-only fix**: bump `vscode-extension/package.json` independently (`cd vscode-extension && npm version patch`), then create a GitHub release manually for that tag. The root npm version stays unchanged.
+**Extension-only fix**: bump `extensions/vscode/package.json` independently (`cd extensions/vscode && npm version patch`), then create a GitHub release manually for that tag. The core npm version stays unchanged.
 
 See `CONTRIBUTING.md` → Release Process for the full checklist.

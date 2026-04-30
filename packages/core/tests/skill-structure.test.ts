@@ -12,7 +12,7 @@ import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
-const SKILL_ROOT = resolve(__dirname, '../skills/wireframe');
+const SKILL_ROOT = resolve(__dirname, '../../../extensions/skills/wireframe');
 
 describe('skill structure', () => {
   it('SKILL.md exists at plugin root (required by VS Code extension install check)', () => {

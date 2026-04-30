@@ -4,6 +4,10 @@
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 
 describe('Live Preview Integration', () => {
   describe('CLI and Server Integration', () => {
@@ -258,17 +262,18 @@ describe('Live Preview Integration', () => {
       expect(config.compilerOptions.types).toContain('node');
     });
 
-    it('should exclude vscode-extension from main build', () => {
+    it('should exclude tests and dist from main build', () => {
       const tsconfig = readFileSync('./tsconfig.json', 'utf-8');
       const config = JSON.parse(tsconfig);
 
-      expect(config.exclude).toContain('vscode-extension');
+      expect(config.exclude).toContain('tests');
+      expect(config.exclude).toContain('dist');
     });
   });
 
   describe('Documentation', () => {
     it('should have live preview guide', () => {
-      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync(resolve(ROOT, '.github/dev-docs/LIVE_PREVIEW_GUIDE.md'), 'utf-8');
 
       expect(guide).toContain('Live Preview');
       expect(guide).toContain('CLI');
@@ -276,7 +281,7 @@ describe('Live Preview Integration', () => {
     });
 
     it('should document viewport switcher', () => {
-      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync(resolve(ROOT, '.github/dev-docs/LIVE_PREVIEW_GUIDE.md'), 'utf-8');
 
       expect(guide).toContain('viewport');
       expect(guide).toContain('mobile');
@@ -285,14 +290,14 @@ describe('Live Preview Integration', () => {
     });
 
     it('should document error overlay', () => {
-      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync(resolve(ROOT, '.github/dev-docs/LIVE_PREVIEW_GUIDE.md'), 'utf-8');
 
       expect(guide).toContain('error');
       expect(guide).toContain('overlay');
     });
 
     it('should document troubleshooting', () => {
-      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync(resolve(ROOT, '.github/dev-docs/LIVE_PREVIEW_GUIDE.md'), 'utf-8');
 
       expect(guide).toContain('Troubleshooting');
     });
@@ -309,7 +314,7 @@ describe('Live Preview Integration', () => {
 
   describe('Complete Feature Coverage', () => {
     it('should implement all advertised features', () => {
-      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync(resolve(ROOT, '.github/dev-docs/LIVE_PREVIEW_GUIDE.md'), 'utf-8');
       const serverSource = readFileSync('./src/cli/server.ts', 'utf-8');
       const cliSource = readFileSync('./src/cli/index.ts', 'utf-8');
 

@@ -4,9 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - 'src/**'
-      - 'skills/**'
-      - 'vscode-extension/src/**'
+      - 'packages/core/src/**'
+      - 'extensions/skills/**'
+      - 'extensions/vscode/src/**'
       - 'scripts/build-bundle.mjs'
   workflow_dispatch:
 
@@ -19,22 +19,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
-      - run: npm ci
-      - run: npm ci --prefix vscode-extension
-
-      - run: npm run bundle
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run build
+      - run: pnpm --filter wiremd-preview run bundle
 
       # Commit the plugin copy — must stay in git for the git-subdir plugin pull
       - name: Commit plugin bin if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add skills/wireframe/bin/wiremd.js
+          git add extensions/skills/wireframe/bin/wiremd.js
           git diff --cached --quiet || git commit -m "chore(bundle): rebuild plugin CLI bundle [skip ci]"
           git push
 

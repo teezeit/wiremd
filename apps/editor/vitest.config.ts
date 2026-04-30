@@ -17,7 +17,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      wiremd: resolve(__dirname, '../src/index.ts'),
+      wiremd: resolve(__dirname, '../../packages/core/src/index.ts'),
     },
   },
 });

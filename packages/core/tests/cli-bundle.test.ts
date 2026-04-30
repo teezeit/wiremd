@@ -10,7 +10,7 @@ import { execSync } from 'child_process';
 import { resolve } from 'path';
 import { tmpdir } from 'os';
 
-const BUNDLE     = resolve(__dirname, '../skills/wireframe/bin/wiremd.js');
+const BUNDLE     = resolve(__dirname, '../../../extensions/skills/wireframe/bin/wiremd.js');
 const TMP_INPUT  = resolve(__dirname, '../tmp-bundle-test-input.md');
 const TMP_OUTPUT = resolve(__dirname, '../tmp-bundle-test-output.html');
 

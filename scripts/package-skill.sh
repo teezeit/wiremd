@@ -7,7 +7,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$ROOT/wireframe-skill.zip"
 
 rm -f "$OUT"
-cd "$ROOT/skills"
+cd "$ROOT/extensions/skills"
 zip -rq "$OUT" wireframe -x '*.DS_Store'
 
 echo "✓ $OUT"

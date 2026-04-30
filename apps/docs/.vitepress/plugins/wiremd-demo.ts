@@ -1,8 +1,6 @@
 import * as path from 'path'
 import type { Plugin } from 'vite'
-// Import from the built package (dist/) so this works in both dev and build.
-// Run `npm run build` before `npm run docs:dev` to keep dist/ fresh.
-import { parse, renderToHTML, resolveIncludes } from '../../../dist/index.js'
+import { parse, renderToHTML, resolveIncludes } from 'wiremd'
 
 export function wiremdDemoPlugin(): Plugin {
   return {

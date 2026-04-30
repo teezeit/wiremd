@@ -20,26 +20,29 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
 
     - name: Install dependencies
-      run: npm ci
+      run: pnpm install --frozen-lockfile
 
     - name: Build
-      run: npm run build
+      run: pnpm turbo run build
 
     - name: Run type check
-      run: npm run typecheck
+      run: pnpm turbo run typecheck
 
     - name: Run linter
-      run: npm run lint
+      run: pnpm turbo run lint
 
     - name: Run tests
-      run: npm test
+      run: pnpm turbo run test
 
   coverage:
     name: Coverage
@@ -49,25 +52,28 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20.x
-        cache: 'npm'
 
     - name: Install dependencies
-      run: npm ci
+      run: pnpm install --frozen-lockfile
 
     - name: Build
-      run: npm run build
+      run: pnpm turbo run build
 
     - name: Run tests with coverage
-      run: npm run test:coverage
+      run: pnpm --filter wiremd run test:coverage
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
-        files: ./coverage/coverage-final.json
+        files: ./packages/core/coverage/coverage-final.json
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: false
@@ -80,23 +86,26 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20.x
-        cache: 'npm'
 
     - name: Install dependencies
-      run: npm ci
+      run: pnpm install --frozen-lockfile
 
     - name: Build package
-      run: npm run build
+      run: pnpm --filter wiremd run build
 
     - name: Pack package
-      run: npm pack
+      run: cd packages/core && npm pack
 
     - name: Check package contents
-      run: tar -tzf wiremd-*.tgz | head -20
+      run: tar -tzf packages/core/wiremd-*.tgz | head -20
 
   test-editor:
     name: Test Editor
@@ -106,17 +115,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20.x
-        cache: 'npm'
 
-    - name: Install root dependencies
-      run: npm ci
-
-    - name: Install editor dependencies
-      run: npm ci --prefix editor
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
 
     - name: Typecheck editor
       run: npm run typecheck --prefix editor
@@ -125,7 +134,7 @@ jobs:
       run: npm run build --prefix editor
 
     - name: Run editor tests
-      run: npm test --prefix editor
+      run: pnpm --filter wiremd-editor run test
 
   test-figma-plugin:
     name: Test Figma Plugin
@@ -135,14 +144,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20.x
-        cache: 'npm'
 
-    - name: Install figma plugin dependencies
-      run: npm ci --prefix figma-plugin
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
 
     - name: Run figma plugin tests
-      run: npm test --prefix figma-plugin
+      run: pnpm --filter wiremd-figma-plugin run test
