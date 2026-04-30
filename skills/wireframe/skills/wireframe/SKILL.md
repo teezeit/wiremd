@@ -19,12 +19,26 @@ syntax into visual wireframes — 7 styles, no design tools needed.
 
 **STOP. Ask only this question before proceeding. Do not show the rest of the form yet. Do not install anything. Do not write any files.**
 
-Ask the user:
+Ask the user (use plain, friendly language — explain the workflow, not the tech):
 
 > **How would you like to view the wireframe?**
-> 1. **Browser editor** — I write the `.md` file to disk; you open it in the wiremd web editor at `tobiashoelzer.com/wiremd/editor` (Chrome/Edge/Safari 16.4+). Live-refreshes as I edit. No install needed.
-> 2. **CLI / local dev** — wiremd is (or will be) installed on your machine. I render to HTML or start a watch server.
-> 3. **Chat only** — no filesystem access. I hand you the `.md` to paste into the editor yourself.
+>
+> **1. Live browser** *(recommended)*
+> - I create the wireframe file on your computer
+> - You open a link in Chrome or Safari — the wireframe appears instantly
+> - Every time I make a change, your browser updates automatically — no refreshing
+> - You can also tweak things directly in the browser and see changes live
+>
+> **2. File handoff**
+> - I build the wireframe and save it as an HTML file on your computer
+> - You open it in any browser
+> - When I make edits, I'll let you know to refresh
+> - If there are multiple screens, you can click between them like a real website
+>
+> **3. No files — just show me the code**
+> - I paste the wireframe markup here in the chat
+> - You copy it and paste it into [wiremd.com/editor](https://tobiashoelzer.com/wiremd/editor/) to preview it
+> - Nothing gets saved anywhere
 
 Wait for the user to pick a mode. **Do not proceed until they answer.**
 
