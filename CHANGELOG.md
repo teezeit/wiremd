@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-04-30
+
+### Changed
+- Docs: screenshots added to overview page (Claude Desktop + web editor side-by-side)
+- README: screenshot added to quick example; direct VS Code marketplace link
+- GitHub repo: description and homepage updated to match product story
+
 ## [0.2.0] - 2026-04-30
 
 ### Added
