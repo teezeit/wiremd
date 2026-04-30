@@ -1,19 +1,7 @@
----
-name: editor
-description: >-
-  Create and render wireframes using wiremd — live browser editor, auto-refreshes on every save.
-  Use this skill whenever the user wants to wireframe, mockup, prototype, or sketch a UI screen —
-  from a description, Jira ticket, PRD, existing React/JSX, or rough idea. Also trigger on:
-  "draw a login page", "show what this would look like", "create a mockup", "design a screen for X",
-  "sketch the UI", "prototype this flow", "document this component as a wireframe", or any request
-  to render or preview a .md wireframe file. When in doubt, use this skill — it's better to invoke
-  it unnecessarily than to miss it.
----
+# Wireframe — Editor
 
-# Wireframe Skill
-
-Write a wiremd `.md` file, render it, and iterate. wiremd converts plain Markdown with extended
-syntax into visual wireframes — 7 styles, no design tools needed.
+Write a wiremd `.md` file, render it via the live web editor, and iterate.
+The browser auto-refreshes every ~500ms when Claude saves a change.
 
 ## Step 0 — Gather requirements
 
@@ -24,7 +12,7 @@ Ask (all at once, before writing anything):
 - **Which key components should it include?**
 - **Got a spec, ticket, or component to base it on?** *(optional)*
 
-> **Wrong mode?** Only want an artifact in Claude's panel (no browser tab)? Use `/wireframe:display`. Prefer a `localhost` dev server (any browser, including Firefox)? Use `/wireframe:serve`. No file access at all? Write markup in a fenced code block — user pastes it into the web editor.
+> **Wrong mode?** Want rendered HTML instead (no browser tab)? Re-run `/wireframe` and select **display**. Want a `localhost` dev server (any browser, including Firefox)? Select **serve** instead.
 
 ---
 
@@ -44,7 +32,7 @@ Ask (all at once, before writing anything):
 
 ## Style picker
 
-Default to `wireframe` unless the user specifies otherwise. See `references/styles.md` for full descriptions.
+Default to `wireframe` unless the user specifies otherwise. See `${CLAUDE_PLUGIN_ROOT}/references/styles.md` for full descriptions.
 
 | Style | Best for |
 |-------|----------|
@@ -60,7 +48,7 @@ Default to `wireframe` unless the user specifies otherwise. See `references/styl
 
 ## Quick reference
 
-For the full syntax including all attributes, edge cases, and disambiguation rules, read `references/syntax.md`.
+For the full syntax including all attributes, edge cases, and disambiguation rules, read `${CLAUDE_PLUGIN_ROOT}/references/syntax.md`.
 
 ```markdown
 # Navigation & breadcrumbs
@@ -230,108 +218,7 @@ Are you sure?
 ## Composite example
 
 A dashboard with sidebar, in-page tabs, a metrics grid, a grid of cards, and a data table.
-See the renderable version at `references/examples/dashboard.md`.
-
-```markdown
-[[ :logo: AppName | Dashboard | *Reports* | :gear: Settings | :user: Account ]]
-[[ Dashboard > Reports ]]
-
-::: layout {.sidebar-main}
-
-::: sidebar
-
-#### Navigation
-
-[[Overview](#)]
-[[Reports](#)]
-[[Analytics](#)]
-[[Users](#)]
-
----
-
-#### Filters
-
-[Jan 2025____________v]
-- Last 7 days
-- Last 30 days
-- This quarter
-
-[Apply Filters]*
-
-:::
-
-::: main
-
-### Monthly Reports
-
-[Summary]* [Details] [Raw Data]
-
----
-
-::: grid-3
-
-### Total Revenue
-$124,500
-
-### Active Users
-3,842
-
-### Conversion Rate
-4.2%
-
-:::
-
----
-
-::: grid-3 card
-
-### :rocket: Organic Search
-**42%** of traffic
-↑ 12% vs last month
-
-### :chart: Paid Ads
-**31%** of traffic
-↓ 3% vs last month
-
-### :bell: Email
-**27%** of traffic
-↑ 8% vs last month
-
-:::
-
----
-
-## Recent Transactions
-
-| Date   | Customer   | Amount | Status  |
-|--------|------------|--------|---------|
-| Jan 15 | Acme Corp  | $4,200 | Paid    |
-| Jan 14 | Globex Inc | $1,850 | Pending |
-| Jan 13 | Initech    | $3,100 | Paid    |
-
-[Export CSV] [View All Transactions]*
-
-:::
-
----
-
-## Modals & Dialogs
-
-> Not visible on page load.
-
-::: modal
-## Export Report
-
-Format
-[CSV_________v]
-- CSV
-- Excel
-- PDF
-
-[Export]* [Cancel]
-
-:::
-```
+See the renderable version at `${CLAUDE_PLUGIN_ROOT}/references/examples/dashboard.md`.
 
 ---
 
@@ -342,19 +229,19 @@ Format
 3. **`[[ ]]` nav hrefs require wiremd ≥ 0.1.7.** Earlier versions silently drop the URL and every item renders as `href="#"`. Mixed static + clickable works in 0.1.7+: `[[ *Home* | [About](./about.md) | [Contact](./contact.md) ]]`.
 4. **`:::accordion` doesn't exist.** Use `::: tabs` with `::: tab Label` children for tabbed panels. For a simple button-group switcher, use `[Tab]*  [Other]`.
 5. **Use `![[file.md]]` for includes, not `:::display`.** `:::display` is obsolete. `![[path/to/file.md]]` works in both the CLI and VS Code preview — path resolves relative to the current file.
-6. **Sandbox `--serve` is unreachable from the user's browser.** `wiremd --serve PORT` binds to `localhost` on Claude's host, not the user's. When Claude is running in Cowork/Desktop and the user is elsewhere, write HTML to a shared folder instead. See `references/rendering-modes.md`.
+6. **Sandbox `--serve` is unreachable from the user's browser.** `wiremd --serve PORT` binds to `localhost` on Claude's host, not the user's. When Claude is running in co-work/Desktop and the user is elsewhere, use **display** mode instead.
 7. **Static HTML keeps `.md` hrefs — rewrite after build.** `wiremd x.md -o x.html` preserves `./page.md` link targets. For `file://` double-click delivery, rewrite with: `sed -i -E 's|href="\./([A-Za-z0-9_-]+)\.md"|href="./\1.html"|g' *.html`. On macOS without GNU sed, use `sed -i ''`.
 
 ---
 
 ## Reference files
 
-- `references/quick-reference.md` — one-page cheat sheet for all components (copied from QUICK-REFERENCE.md at build time)
-- `references/syntax.md` — full syntax, all attributes, disambiguation rules, component mapping, gotchas
-- `references/styles.md` — style guide with visual descriptions and use cases
-- `references/multi-page.md` — folder layout, shared `_nav.md`, cross-page links, rebuild recipe for `.md`→`.html` handoff
-- `references/rendering-modes.md` — decision table: files-in-folder, dev server, screenshot, web-editor handoff
-- `references/vscode.md` — VS Code extension install and live-preview workflow
-- `references/examples/dashboard.md` — renderable dashboard wireframe (point user to this path)
-- `references/examples/settings-form.md` — renderable settings/form wireframe (point user to this path)
-- `references/examples/multi-page/` — minimal 2-page prototype (`_nav.md` + `index.md` + `detail.md`) demonstrating shared nav, cross-page links, and the render-and-open-html flow
+- `${CLAUDE_PLUGIN_ROOT}/references/quick-reference.md` — one-page cheat sheet for all components
+- `${CLAUDE_PLUGIN_ROOT}/references/syntax.md` — full syntax, all attributes, disambiguation rules, component mapping, gotchas
+- `${CLAUDE_PLUGIN_ROOT}/references/styles.md` — style guide with visual descriptions and use cases
+- `${CLAUDE_PLUGIN_ROOT}/references/multi-page.md` — folder layout, shared `_nav.md`, cross-page links, rebuild recipe for `.md`→`.html` handoff
+- `${CLAUDE_PLUGIN_ROOT}/references/rendering-modes.md` — decision table: files-in-folder, dev server, screenshot, web-editor handoff
+- `${CLAUDE_PLUGIN_ROOT}/references/vscode.md` — VS Code extension install and live-preview workflow
+- `${CLAUDE_PLUGIN_ROOT}/references/examples/dashboard.md` — renderable dashboard wireframe
+- `${CLAUDE_PLUGIN_ROOT}/references/examples/settings-form.md` — renderable settings/form wireframe
+- `${CLAUDE_PLUGIN_ROOT}/references/examples/multi-page/` — minimal 2-page prototype demonstrating shared nav and cross-page links

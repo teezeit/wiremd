@@ -2,13 +2,15 @@
 
 Three modes — pick based on what you want to see:
 
-| Mode | What you see | Skill |
-|------|--------------|-------|
-| **Only Claude** | HTML wireframe as an artifact in Claude's panel | `/wireframe:display` |
-| **Claude + Editor** | Live browser tab — Claude and the editor both read/write | `/wireframe:editor` |
-| **Only Editor** | Web editor in browser, no install, no Claude skill needed | — |
+| Mode | What you see |
+|------|--------------|
+| **display** | HTML wireframe as an artifact in Claude's panel |
+| **editor** | Live browser tab — Claude and the editor both read/write |
+| **serve** | Local dev server at `localhost:PORT` — any browser |
 
-Install once to unlock the Claude modes:
+Run `/wireframe` and Claude will ask which mode you want before doing anything else.
+
+Install once to unlock Claude mode:
 
 ```
 /plugin marketplace add teezeit/wiremd
@@ -19,7 +21,7 @@ Install once to unlock the Claude modes:
 
 ## Mode 1 — Only Claude {#only-claude}
 
-Uses `/wireframe:display`. Claude writes the `.md` file, runs the bundled wiremd CLI to render HTML, and shows the result as an artifact in its panel. No browser tab, no manual refresh.
+Select **display** when Claude asks for a mode. Claude writes the `.md` file, runs the bundled wiremd CLI to render HTML, and shows the result as an artifact in its panel. No browser tab, no manual refresh.
 
 Works on Claude Desktop, claude.ai, and Claude Code.
 
@@ -43,7 +45,7 @@ Works on Claude Desktop, claude.ai, and Claude Code.
 
 ## Mode 2 — Claude + Editor {#claude-and-editor}
 
-Uses `/wireframe:editor` by default. Claude writes a `.md` file, the browser editor opens it — and from that point both sides can edit. Claude edits the file and the browser updates live; you edit in the browser and Claude can read your changes too.
+Select **editor** when Claude asks for a mode. Claude writes a `.md` file, the browser editor opens it — and from that point both sides can edit. Claude edits the file and the browser updates live; you edit in the browser and Claude can read your changes too.
 
 Works with Claude Code or Claude Desktop (Cowork) running on the same machine as your browser.
 
@@ -84,11 +86,11 @@ Works with Claude Code or Claude Desktop (Cowork) running on the same machine as
 
 ### Modes
 
-| Command | Use when |
-|---------|----------|
-| `/wireframe:editor` | Default — File System Access API, Chrome/Edge/Safari |
-| `/wireframe:serve` | Firefox or any browser — starts `localhost:3001` with hot-reload |
-| `/wireframe:display` | You want a rendered HTML artifact instead of a live browser tab |
+| Mode | Use when |
+|------|----------|
+| **editor** | Default — File System Access API, Chrome/Edge/Safari |
+| **serve** | Firefox or any browser — starts `localhost:3001` with hot-reload |
+| **display** | You want a rendered HTML artifact instead of a live browser tab |
 
 ### What you can ask
 
