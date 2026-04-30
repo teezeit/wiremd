@@ -137,11 +137,13 @@
 		}
 	},
 	"scripts": {
-		"vscode:prepublish": "npm run bundle",
+		"vscode:prepublish": "pnpm run bundle",
+		"build": "pnpm run bundle",
 		"bundle": "rm -rf ./skills && cp -r ../../extensions/skills ./skills && rm -rf ./docs && mkdir -p ./docs && cp -r ../../apps/docs/components ./docs/components && cp -r ../../apps/docs/examples ./docs/examples && cp -r ../../apps/docs/reference ./docs/reference && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
 		"dev": "node scripts/watch.mjs",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
+		"typecheck": "tsc --noEmit -p ./",
 		"package": "vsce package",
 		"publish": "vsce publish",
 		"lint": "eslint src --ext ts"
