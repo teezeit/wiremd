@@ -151,7 +151,7 @@ Three modes depending on your setup:
 
 **Claude Desktop (zip upload):** Download [wireframe-skill.zip](https://github.com/teezeit/wiremd/releases/latest/download/wireframe-skill.zip) → Settings → Capabilities → Skills → Upload skill.
 
-**VS Code:** Install the **Wiremd** extension from the VS Code Marketplace — live preview as you type, no Claude required.
+**VS Code:** Install the **[Wiremd extension](https://marketplace.visualstudio.com/items?itemName=eclectic-ai.wiremd-preview)** from the VS Code Marketplace — live preview as you type, no Claude required.
 
 Full guide: [teezeit.github.io/wiremd/guide/claude](https://teezeit.github.io/wiremd/guide/claude)
 
