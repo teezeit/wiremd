@@ -25,6 +25,22 @@ wiremd input.md --style clean --serve 3001 --watch
 wiremd input.md -o output.html -f html -s sketch
 ```
 
+## Monorepo layout
+
+```
+core package (src/ + bin/)     ← npm library + CLI, built to dist/
+├── frontend apps              (three independent Vite servers, all started by npm run dev)
+│   ├── landing/               port 5175 — marketing site (Vite + Vue)
+│   ├── docs/                  port 5173 — VitePress documentation
+│   └── editor/                port 5174 — web editor (Vite + Monaco, vanilla JS)
+└── consumers                  (depend on core via "wiremd": "file:..")
+    ├── vscode-extension/      VS Code live preview extension
+    ├── figma-plugin/          imports wiremd JSON into Figma as native designs
+    └── skills/wireframe/      Claude skill (zip uploaded to Claude Desktop / claude.ai)
+```
+
+Cross-app links use `import.meta.env.DEV` in the frontend apps and `process.env.WIREMD_DEV` in the VitePress config to resolve the correct port in dev vs. the shared `/wiremd/` base path in production.
+
 ## Architecture
 
 The pipeline: `Markdown string → parse() → WiremdAST → render*() → HTML/React/JSON/Tailwind`

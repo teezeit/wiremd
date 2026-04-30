@@ -92,14 +92,26 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 
 ## Project Structure
 
-This is an open-source MIT-licensed project containing:
+wiremd is a monorepo with three layers:
 
-- **`src/`** - Core parser and renderer library
-- **`tests/`** - Comprehensive test suite (48 tests)
-- **`docs/`** - Documentation site ([**Live at teezeit.github.io/wiremd**](https://teezeit.github.io/wiremd))
-- **`docs/examples/`** - Example wireframes
-- **`figma-plugin/`** - Figma plugin for importing wiremd designs
-- **`vscode-extension/`** - VS Code extension with live preview and style switching
+**Core** — npm library + CLI (published to npm)
+- **`src/`** — Parser, renderers (HTML/React/Tailwind/JSON), and 7 CSS styles
+- **`bin/`** — CLI entry point (`wiremd` command)
+- **`tests/`** — Test suite
+
+**Frontend apps** — independent Vite apps, each on its own dev port
+- **`landing/`** — Marketing site (Vite + Vue) · `localhost:5175`
+- **`docs/`** — Documentation (VitePress) · `localhost:5173` · [live](https://teezeit.github.io/wiremd)
+- **`editor/`** — Web editor (Vite + Monaco) · `localhost:5174`
+
+**Consumers** — depend on the core package via `"wiremd": "file:.."`
+- **`vscode-extension/`** — VS Code live preview with style switching
+- **`figma-plugin/`** — Import wiremd JSON into Figma as editable native designs
+- **`skills/wireframe/`** — Claude skill for generating wireframes with Claude
+
+```bash
+npm run dev   # starts all three frontend apps concurrently
+```
 
 ## Installation
 
