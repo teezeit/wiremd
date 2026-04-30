@@ -144,8 +144,8 @@
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"typecheck": "tsc --noEmit -p ./",
-		"package": "vsce package",
-		"publish": "vsce publish",
+		"package": "vsce package --no-dependencies",
+		"publish": "vsce publish --no-dependencies",
 		"lint": "eslint src --ext ts"
 	},
 	"dependencies": {

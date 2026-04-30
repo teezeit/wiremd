@@ -16,3 +16,8 @@ RELOAD-*
 DEVELOPMENT.md
 TROUBLESHOOTING.md
 TESTING.md
+.turbo/**
+turbo.json
+vite.config.ts
+icon.svg
+scripts/**
