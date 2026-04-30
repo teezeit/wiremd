@@ -8,6 +8,7 @@ on:
       - 'docs/**'
       - 'examples/**'
       - 'editor/**'
+      - 'landing/**'
       - 'src/**'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
@@ -43,6 +44,12 @@ jobs:
 
       - name: Build VitePress site
         run: npm run docs:build
+
+      - name: Build landing
+        run: |
+          npm ci --prefix landing
+          npm run build --prefix landing
+          cp -r landing/dist/. docs/.vitepress/dist/
 
       - name: Build editor
         run: |
