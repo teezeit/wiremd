@@ -118,7 +118,7 @@ export function renderToHTML(
           `best.scrollIntoView({behavior:'smooth',block:'nearest'});` +
         `}` +
       `});` +
-      `})();<\/script>`
+      `})();</script>`
     : '';
 
   const styleBlock = css || cursorCSS
