@@ -134,7 +134,7 @@ jobs:
       run: npm run build --prefix editor
 
     - name: Run editor tests
-      run: pnpm --filter wiremd-editor run test
+      run: pnpm turbo run test --filter=wiremd-editor
 
   test-figma-plugin:
     name: Test Figma Plugin
@@ -157,4 +157,4 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Run figma plugin tests
-      run: pnpm --filter wiremd-figma-plugin run test
+      run: pnpm turbo run test --filter=wiremd-figma-plugin

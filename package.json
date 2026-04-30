@@ -2,6 +2,7 @@
   "name": "wiremd-monorepo",
   "private": true,
   "scripts": {
+    "preinstall":     "npx only-allow pnpm",
     "build":          "turbo run build",
     "dev":            "turbo run dev",
     "test":           "turbo run test",
