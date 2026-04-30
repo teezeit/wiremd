@@ -12,7 +12,7 @@ export default defineConfig({
 
   themeConfig: {
     logo: "/logo.svg",
-    logoLink: isDev ? 'http://localhost:5175/wiremd/' : { link: '/wiremd/', rel: 'external' },
+    logoLink: isDev ? 'http://localhost:5175/wiremd/' : { link: '/wiremd/', target: '_self' },
 
     sidebar: [
       {
