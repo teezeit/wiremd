@@ -46,6 +46,8 @@ wiremd contact.md --style sketch
 
 This renders into a styled HTML wireframe with a form, inputs, and buttons.
 
+![wiremd web editor screenshot](https://teezeit.github.io/wiremd/assets/guides/guide-screenshot-webeditor.png)
+
 ### Grid Layout
 
 Create a `features.md` file:

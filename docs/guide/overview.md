@@ -6,6 +6,11 @@ Write a screen as Markdown, see it render as a visual mockup — no design tool,
 
 <WmdPipeline />
 
+<div class="doc-shots-2" style="margin-top:1.5rem">
+  <img src="../assets/guides/guide-screenshot-claude-desktop.png" alt="Claude Desktop showing wireframe artifact" class="doc-shot" />
+  <img src="../assets/guides/guide-screenshot-webeditor.png" alt="wiremd browser editor with live preview" class="doc-shot" />
+</div>
+
 ---
 
 ## What you can do with it
