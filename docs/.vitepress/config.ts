@@ -12,7 +12,7 @@ export default defineConfig({
 
   themeConfig: {
     logo: "/logo.svg",
-    logoLink: isDev ? 'http://localhost:5175/wiremd/' : '/wiremd/',
+    logoLink: isDev ? 'http://localhost:5175/wiremd/' : { link: '/wiremd/', rel: 'external' },
 
     sidebar: [
       {
@@ -268,7 +268,7 @@ export default defineConfig({
       { text: "Docs", link: "/guide/overview" },
       {
         text: "Editor",
-        link: isDev ? 'http://localhost:5174/wiremd/editor/' : '/wiremd/editor/',
+        link: isDev ? 'http://localhost:5174/wiremd/editor/' : '/editor/',
         target: "_blank",
       },
     ],
