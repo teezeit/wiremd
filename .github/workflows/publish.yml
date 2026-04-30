@@ -31,3 +31,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: wireframe-skill.zip
+
+      - name: Build VS Code extension
+        run: |
+          npm ci --prefix vscode-extension
+          npm run bundle --prefix vscode-extension
+
+      - name: Publish VS Code extension to Marketplace
+        run: npm run publish --prefix vscode-extension
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}

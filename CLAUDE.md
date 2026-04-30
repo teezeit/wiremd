@@ -76,3 +76,21 @@ Tests live in `tests/`. Key files: `parser.test.ts`, `renderer.test.ts`, `react-
 ## New features
 
 Before marking a feature done, run through the **Feature Development Checklist** in `CONTRIBUTING.md`. It covers: types → parser → renderers (HTML/React/Tailwind) → renderer index → public exports → CLI → editor → VS Code extension → tests → CHANGELOG → docs → skill → landing page → URL share smoke test.
+
+## Releasing
+
+Four artifacts ship together under a single version: npm package, VS Code extension, Claude skill (`plugin.json`), and standalone CLI bundle.
+
+```bash
+npm version patch   # bumps root package.json + syncs vscode-extension/package.json
+                    # and skills/wireframe/.claude-plugin/plugin.json via the `version` hook
+git push && git push --tags
+```
+
+Pushing the tag triggers:
+1. `release.yml` — creates the GitHub release with auto-generated notes
+2. `publish.yml` — publishes the VS Code extension to the Marketplace and attaches the skill zip
+
+**Extension-only fix**: bump `vscode-extension/package.json` independently (`cd vscode-extension && npm version patch`), then create a GitHub release manually for that tag. The root npm version stays unchanged.
+
+See `CONTRIBUTING.md` → Release Process for the full checklist.

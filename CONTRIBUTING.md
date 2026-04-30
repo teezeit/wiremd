@@ -223,50 +223,36 @@ Run through this before opening a PR for any new syntax, render option, or user-
 
 ## Plugin Maintenance
 
-The wiremd Claude Code plugin lives in `skills/wireframe/`. This is what gets installed when someone runs `/plugin install wireframe@wiremd` from the [teezeit/wiremd marketplace](https://github.com/teezeit/wiremd).
+The wiremd Claude Code plugin lives in `skills/wireframe/`. It is installed via the VS Code extension's "Install Wiremd Claude Skill" command, or manually by copying the directory to `.claude/skills/wireframe/`.
 
 ### Structure
 
 ```
 skills/wireframe/
+├── SKILL.md                 # Ambient trigger — activates when user mentions wireframes
 ├── .claude-plugin/
-│   └── plugin.json          # Plugin metadata (name, description, keywords — no version pin)
+│   └── plugin.json          # Plugin metadata (name, version, description)
 ├── bin/
-│   └── wiremd               # Executable copy of the CLI, auto-added to Bash PATH
-└── skills/                  # One sub-skill per workflow mode
-    ├── editor/SKILL.md      # /wireframe:editor — live browser editor (default)
-    ├── display/SKILL.md     # /wireframe:display — render to static HTML files
-    ├── serve/SKILL.md       # /wireframe:serve — local dev server with hot-reload
-    └── chat/SKILL.md        # /wireframe:chat — write markup for user to paste
+│   └── wiremd.js            # Bundled CLI — auto-built by `npm run bundle`
+├── commands/
+│   └── wireframe.md         # /wireframe slash command
+└── references/              # Lazy-loaded docs (only read when Claude needs them)
+    ├── display.md
+    ├── editor.md
+    ├── serve.md
+    ├── syntax.md
+    ├── styles.md
+    ├── quick-reference.md
+    ├── rendering-modes.md
+    ├── multi-page.md
+    ├── vscode.md
+    └── examples/
 
 .claude-plugin/
 └── marketplace.json         # Marketplace index — points source to ./skills/wireframe
 ```
 
-The `bin/wiremd` executable is on PATH inside Bash tool calls, so skills can invoke `wiremd` as a bare command rather than `node ${CLAUDE_PLUGIN_ROOT}/bin/wiremd.js`.
-
-### Validating skills
-
-The skill-creator tool includes a validator. Run it per sub-skill:
-
-```bash
-python3 .claude/skills/skill-creator/scripts/quick_validate.py skills/wireframe/skills/editor
-python3 .claude/skills/skill-creator/scripts/quick_validate.py skills/wireframe/skills/display
-python3 .claude/skills/skill-creator/scripts/quick_validate.py skills/wireframe/skills/chat
-python3 .claude/skills/skill-creator/scripts/quick_validate.py skills/wireframe/skills/serve
-```
-
-Requires `pyyaml` (`pip install pyyaml` or use a venv).
-
-### Updating the bin
-
-When the CLI changes, rebuild and copy to `skills/wireframe/bin/wiremd`:
-
-```bash
-npm run build
-cp skills/wireframe/bin/wiremd.js skills/wireframe/bin/wiremd
-chmod +x skills/wireframe/bin/wiremd
-```
+The `bin/wiremd.js` is rebuilt automatically by `npm run bundle` (run in CI on every push to `main`). Do not edit it by hand.
 
 ### Marketplace
 
@@ -276,29 +262,47 @@ The repo root `.claude-plugin/marketplace.json` registers wiremd as a public mar
 /plugin marketplace add teezeit/wiremd
 ```
 
-No version is pinned in `plugin.json` — the plugin tracks by git commit SHA so users always get the latest on reinstall.
-
 ---
 
 ## Release Process
 
-Releases are managed by project maintainers following semantic versioning (semver):
+Releases follow semantic versioning. Four artifacts ship together: npm package, VS Code extension, Claude skill (`plugin.json`), and standalone CLI bundle.
 
-- **MAJOR** version: Breaking changes
-- **MINOR** version: New features (backward compatible)
-- **PATCH** version: Bug fixes
+### Between releases
 
-### Release Checklist (Maintainers)
+Merge PRs to `main` as normal. CI rebuilds the bundles and updates the rolling `latest` prerelease on GitHub. No version changes.
 
-1. Update version in `package.json`
-2. Update `CHANGELOG.md` with changes
-3. Run `npm run build` and verify
-4. Run `npm test` - all tests must pass
-5. Commit: `chore: release v0.x.x`
-6. Create git tag: `git tag v0.x.x`
-7. Push: `git push && git push --tags`
-8. Publish to npm: `npm publish`
-9. Create GitHub release with changelog
+### Cutting a release
+
+```bash
+# 1. Make sure CHANGELOG.md has an entry under [Unreleased]
+# 2. Run tests
+npm test
+
+# 3. Bump version (patch / minor / major)
+#    This also syncs vscode-extension/package.json and plugin.json via the version hook
+npm version patch
+
+# 4. Push branch + tag
+git push && git push --tags
+```
+
+Pushing the tag triggers CI automatically:
+- **`release.yml`** — creates the GitHub release with auto-generated notes from PR titles
+- **`publish.yml`** — publishes the VS Code extension to the Marketplace and attaches the skill zip to the release
+
+No manual steps on GitHub or npm are needed.
+
+### Extension-only fix
+
+If only the VS Code extension changes and you don't want to bump the npm package version:
+
+```bash
+cd vscode-extension && npm version patch
+git push && git push --tags
+```
+
+Then create a GitHub release for that tag manually. `publish.yml` will fire and publish to the Marketplace.
 
 ## Documentation
 

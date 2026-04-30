@@ -94,6 +94,18 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
+  const currentVersion = context.extension.packageJSON.version as string;
+
+  async function installSkill(destDir: string, skillSrc: string): Promise<boolean> {
+    if (!fs.existsSync(path.join(skillSrc, 'SKILL.md'))) {
+      vscode.window.showErrorMessage('Wiremd: Skill files not found in extension.');
+      return false;
+    }
+    copyDirSync(skillSrc, destDir);
+    context.globalState.update('wiremd.skillVersion', currentVersion);
+    return true;
+  }
+
   context.subscriptions.push(
     vscode.commands.registerCommand('wiremd.installClaudeSkill', async () => {
       const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -101,17 +113,10 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showErrorMessage('Wiremd: No workspace folder open.');
         return;
       }
-
       const skillSrc = path.join(context.extensionPath, 'skills', 'wireframe');
-      if (!fs.existsSync(path.join(skillSrc, 'SKILL.md'))) {
-        vscode.window.showErrorMessage('Wiremd: Skill files not found in extension.');
-        return;
-      }
-
       const destDir = path.join(workspaceFolders[0].uri.fsPath, '.claude', 'skills', 'wireframe');
-      copyDirSync(skillSrc, destDir);
-
-      context.globalState.update('wiremd.claudeSkillInstalled', true);
+      const ok = await installSkill(destDir, skillSrc);
+      if (!ok) { return; }
       const open = await vscode.window.showInformationMessage(
         'Wiremd skill installed to .claude/skills/wireframe/',
         'Open Folder'
@@ -122,22 +127,43 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  // Prompt to install Claude skill on first activation
-  const skillInstalled = context.globalState.get('wiremd.claudeSkillInstalled', false);
-  if (!skillInstalled) {
-    vscode.window.showInformationMessage(
-      'Wiremd: Want Claude Code to generate wireframes for you? Install the Claude skill.',
-      'Install Skill',
-      'Not Now'
-    ).then((choice) => {
-      if (choice === 'Install Skill') {
-        vscode.commands.executeCommand('wiremd.installClaudeSkill').then(() => {
-          context.globalState.update('wiremd.claudeSkillInstalled', true);
-        });
-      } else if (choice === 'Not Now') {
-        context.globalState.update('wiremd.claudeSkillInstalled', true);
-      }
-    });
+  // Prompt to install, or silently update if already installed with an older version
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  if (workspaceFolders) {
+    const skillSrc = path.join(context.extensionPath, 'skills', 'wireframe');
+    const destDir = path.join(workspaceFolders[0].uri.fsPath, '.claude', 'skills', 'wireframe');
+    const installedVersion = context.globalState.get<string>('wiremd.skillVersion', '');
+    const alreadyInstalled = fs.existsSync(path.join(destDir, 'SKILL.md'));
+
+    if (alreadyInstalled && installedVersion !== currentVersion) {
+      // Skill is installed but stale — prompt to update
+      vscode.window.showInformationMessage(
+        `Wiremd skill updated to v${currentVersion}. Reinstall to get the latest?`,
+        'Update Skill',
+        'Skip'
+      ).then((choice) => {
+        if (choice === 'Update Skill') {
+          installSkill(destDir, skillSrc).then((ok) => {
+            if (ok) { vscode.window.showInformationMessage('Wiremd skill updated.'); }
+          });
+        } else if (choice === 'Skip') {
+          context.globalState.update('wiremd.skillVersion', currentVersion);
+        }
+      });
+    } else if (!alreadyInstalled && installedVersion === '') {
+      // First time — prompt to install
+      vscode.window.showInformationMessage(
+        'Wiremd: Want Claude Code to generate wireframes for you? Install the Claude skill.',
+        'Install Skill',
+        'Not Now'
+      ).then((choice) => {
+        if (choice === 'Install Skill') {
+          vscode.commands.executeCommand('wiremd.installClaudeSkill');
+        } else if (choice === 'Not Now') {
+          context.globalState.update('wiremd.skillVersion', currentVersion);
+        }
+      });
+    }
   }
 
   // Auto-open preview if configured
