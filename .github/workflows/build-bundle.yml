@@ -27,7 +27,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm turbo run build
-      - run: pnpm --filter wiremd-preview run bundle
+      - run: node scripts/build-bundle.mjs
 
       # Commit the plugin copy — must stay in git for the git-subdir plugin pull
       - name: Commit plugin bin if changed

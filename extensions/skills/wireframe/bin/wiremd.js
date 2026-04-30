@@ -31,9 +31,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// node_modules/extend/index.js
+// node_modules/.pnpm/extend@3.0.2/node_modules/extend/index.js
 var require_extend = __commonJS({
-  "node_modules/extend/index.js"(exports2, module2) {
+  "node_modules/.pnpm/extend@3.0.2/node_modules/extend/index.js"(exports2, module2) {
     "use strict";
     var hasOwn = Object.prototype.hasOwnProperty;
     var toStr = Object.prototype.toString;
@@ -122,9 +122,9 @@ var require_extend = __commonJS({
   }
 });
 
-// src/cli/index.ts
-var index_exports = {};
-__export(index_exports, {
+// packages/core/src/cli/index.ts
+var cli_exports = {};
+__export(cli_exports, {
   checkFileSize: () => checkFileSize,
   generateOutput: () => generateOutput,
   main: () => main,
@@ -132,30 +132,30 @@ __export(index_exports, {
   showHelp: () => showHelp,
   showVersion: () => showVersion
 });
-module.exports = __toCommonJS(index_exports);
+module.exports = __toCommonJS(cli_exports);
 var import_fs5 = require("fs");
 var import_path3 = require("path");
 var import_url = require("url");
 
-// src/parser/index.ts
+// packages/core/src/parser/index.ts
 var import_fs = require("fs");
 var import_path = require("path");
 
-// node_modules/bail/index.js
+// node_modules/.pnpm/bail@2.0.2/node_modules/bail/index.js
 function bail(error) {
   if (error) {
     throw error;
   }
 }
 
-// node_modules/unified/lib/index.js
+// node_modules/.pnpm/unified@11.0.5/node_modules/unified/lib/index.js
 var import_extend = __toESM(require_extend(), 1);
 
-// node_modules/devlop/lib/default.js
+// node_modules/.pnpm/devlop@1.1.0/node_modules/devlop/lib/default.js
 function ok() {
 }
 
-// node_modules/is-plain-obj/index.js
+// node_modules/.pnpm/is-plain-obj@4.1.0/node_modules/is-plain-obj/index.js
 function isPlainObject(value) {
   if (typeof value !== "object" || value === null) {
     return false;
@@ -164,7 +164,7 @@ function isPlainObject(value) {
   return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
 }
 
-// node_modules/trough/lib/index.js
+// node_modules/.pnpm/trough@2.2.0/node_modules/trough/lib/index.js
 function trough() {
   const fns = [];
   const pipeline = { run, use };
@@ -248,7 +248,7 @@ function wrap(middleware, callback) {
   }
 }
 
-// node_modules/unist-util-stringify-position/lib/index.js
+// node_modules/.pnpm/unist-util-stringify-position@4.0.0/node_modules/unist-util-stringify-position/lib/index.js
 function stringifyPosition(value) {
   if (!value || typeof value !== "object") {
     return "";
@@ -274,7 +274,7 @@ function index(value) {
   return value && typeof value === "number" ? value : 1;
 }
 
-// node_modules/vfile-message/lib/index.js
+// node_modules/.pnpm/vfile-message@4.0.3/node_modules/vfile-message/lib/index.js
 var VFileMessage = class extends Error {
   /**
    * Create a message for `reason`.
@@ -410,16 +410,16 @@ VFileMessage.prototype.place = void 0;
 VFileMessage.prototype.ruleId = void 0;
 VFileMessage.prototype.source = void 0;
 
-// node_modules/vfile/lib/minpath.js
+// node_modules/.pnpm/vfile@6.0.3/node_modules/vfile/lib/minpath.js
 var import_node_path = __toESM(require("node:path"), 1);
 
-// node_modules/vfile/lib/minproc.js
+// node_modules/.pnpm/vfile@6.0.3/node_modules/vfile/lib/minproc.js
 var import_node_process = __toESM(require("node:process"), 1);
 
-// node_modules/vfile/lib/minurl.js
+// node_modules/.pnpm/vfile@6.0.3/node_modules/vfile/lib/minurl.js
 var import_node_url = require("node:url");
 
-// node_modules/vfile/lib/minurl.shared.js
+// node_modules/.pnpm/vfile@6.0.3/node_modules/vfile/lib/minurl.shared.js
 function isUrl(fileUrlOrPath) {
   return Boolean(
     fileUrlOrPath !== null && typeof fileUrlOrPath === "object" && "href" in fileUrlOrPath && fileUrlOrPath.href && "protocol" in fileUrlOrPath && fileUrlOrPath.protocol && // @ts-expect-error: indexing is fine.
@@ -427,7 +427,7 @@ function isUrl(fileUrlOrPath) {
   );
 }
 
-// node_modules/vfile/lib/index.js
+// node_modules/.pnpm/vfile@6.0.3/node_modules/vfile/lib/index.js
 var order = (
   /** @type {const} */
   [
@@ -883,7 +883,7 @@ function isUint8Array(value) {
   );
 }
 
-// node_modules/unified/lib/callable-instance.js
+// node_modules/.pnpm/unified@11.0.5/node_modules/unified/lib/callable-instance.js
 var CallableInstance = (
   /**
    * @type {new <Parameters extends Array<unknown>, Result>(property: string | symbol) => (...parameters: Parameters) => Result}
@@ -894,7 +894,7 @@ var CallableInstance = (
    * @param {string | symbol} property
    * @returns {(...parameters: Array<unknown>) => unknown}
    */
-  (function(property) {
+  function(property) {
     const self = this;
     const constr = self.constructor;
     const proto2 = (
@@ -909,10 +909,10 @@ var CallableInstance = (
     };
     Object.setPrototypeOf(apply, proto2);
     return apply;
-  })
+  }
 );
 
-// node_modules/unified/lib/index.js
+// node_modules/.pnpm/unified@11.0.5/node_modules/unified/lib/index.js
 var own = {}.hasOwnProperty;
 var Processor = class _Processor extends CallableInstance {
   /**
@@ -1548,7 +1548,7 @@ function isUint8Array2(value) {
   );
 }
 
-// node_modules/mdast-util-to-string/lib/index.js
+// node_modules/.pnpm/mdast-util-to-string@4.0.0/node_modules/mdast-util-to-string/lib/index.js
 var emptyOptions = {};
 function toString(value, options) {
   const settings = options || emptyOptions;
@@ -1585,7 +1585,7 @@ function node(value) {
   return Boolean(value && typeof value === "object");
 }
 
-// node_modules/character-entities/index.js
+// node_modules/.pnpm/character-entities@2.0.2/node_modules/character-entities/index.js
 var characterEntities = {
   AElig: "\xC6",
   AMP: "&",
@@ -3714,13 +3714,13 @@ var characterEntities = {
   zwnj: "\u200C"
 };
 
-// node_modules/decode-named-character-reference/index.js
+// node_modules/.pnpm/decode-named-character-reference@1.3.0/node_modules/decode-named-character-reference/index.js
 var own2 = {}.hasOwnProperty;
 function decodeNamedCharacterReference(value) {
   return own2.call(characterEntities, value) ? characterEntities[value] : false;
 }
 
-// node_modules/micromark-util-chunked/index.js
+// node_modules/.pnpm/micromark-util-chunked@2.0.1/node_modules/micromark-util-chunked/index.js
 function splice(list3, start, remove, items) {
   const end = list3.length;
   let chunkStart = 0;
@@ -3736,7 +3736,8 @@ function splice(list3, start, remove, items) {
     parameters.unshift(start, remove);
     list3.splice(...parameters);
   } else {
-    if (remove) list3.splice(start, remove);
+    if (remove)
+      list3.splice(start, remove);
     while (chunkStart < items.length) {
       parameters = items.slice(chunkStart, chunkStart + 1e4);
       parameters.unshift(start, 0);
@@ -3754,7 +3755,7 @@ function push(list3, items) {
   return items;
 }
 
-// node_modules/micromark-util-combine-extensions/index.js
+// node_modules/.pnpm/micromark-util-combine-extensions@2.0.1/node_modules/micromark-util-combine-extensions/index.js
 var hasOwnProperty = {}.hasOwnProperty;
 function combineExtensions(extensions) {
   const all2 = {};
@@ -3773,7 +3774,8 @@ function syntaxExtension(all2, extension2) {
     let code3;
     if (right) {
       for (code3 in right) {
-        if (!hasOwnProperty.call(left, code3)) left[code3] = [];
+        if (!hasOwnProperty.call(left, code3))
+          left[code3] = [];
         const value = right[code3];
         constructs(
           // @ts-expect-error Looks like a list.
@@ -3794,7 +3796,7 @@ function constructs(existing, list3) {
   splice(existing, 0, 0, before);
 }
 
-// node_modules/micromark-util-decode-numeric-character-reference/index.js
+// node_modules/.pnpm/micromark-util-decode-numeric-character-reference@2.0.2/node_modules/micromark-util-decode-numeric-character-reference/index.js
 function decodeNumericCharacterReference(value, base) {
   const code3 = Number.parseInt(value, base);
   if (
@@ -3812,12 +3814,12 @@ function decodeNumericCharacterReference(value, base) {
   return String.fromCodePoint(code3);
 }
 
-// node_modules/micromark-util-normalize-identifier/index.js
+// node_modules/.pnpm/micromark-util-normalize-identifier@2.0.1/node_modules/micromark-util-normalize-identifier/index.js
 function normalizeIdentifier(value) {
   return value.replace(/[\t\n\r ]+/g, " ").replace(/^ | $/g, "").toLowerCase().toUpperCase();
 }
 
-// node_modules/micromark-util-character/index.js
+// node_modules/.pnpm/micromark-util-character@2.1.1/node_modules/micromark-util-character/index.js
 var asciiAlpha = regexCheck(/[A-Za-z]/);
 var asciiAlphanumeric = regexCheck(/[\dA-Za-z]/);
 var asciiAtext = regexCheck(/[#-'*+\--9=?A-Z^-~]/);
@@ -3849,7 +3851,7 @@ function regexCheck(regex) {
   }
 }
 
-// node_modules/micromark-factory-space/index.js
+// node_modules/.pnpm/micromark-factory-space@2.0.1/node_modules/micromark-factory-space/index.js
 function factorySpace(effects, ok3, type, max) {
   const limit = max ? max - 1 : Number.POSITIVE_INFINITY;
   let size = 0;
@@ -3871,7 +3873,7 @@ function factorySpace(effects, ok3, type, max) {
   }
 }
 
-// node_modules/micromark/lib/initialize/content.js
+// node_modules/.pnpm/micromark@4.0.2/node_modules/micromark/lib/initialize/content.js
 var content = {
   tokenize: initializeContent
 };
@@ -3921,7 +3923,7 @@ function initializeContent(effects) {
   }
 }
 
-// node_modules/micromark/lib/initialize/document.js
+// node_modules/.pnpm/micromark@4.0.2/node_modules/micromark/lib/initialize/document.js
 var document = {
   tokenize: initializeDocument
 };
@@ -3988,7 +3990,8 @@ function initializeDocument(effects) {
     return effects.check(containerConstruct, thereIsANewContainer, thereIsNoNewContainer)(code3);
   }
   function thereIsANewContainer(code3) {
-    if (childFlow) closeFlow();
+    if (childFlow)
+      closeFlow();
     exitContainers(continued);
     return documentContinued(code3);
   }
@@ -4008,7 +4011,8 @@ function initializeDocument(effects) {
   }
   function flowStart(code3) {
     if (code3 === null) {
-      if (childFlow) closeFlow();
+      if (childFlow)
+        closeFlow();
       exitContainers(0);
       effects.consume(code3);
       return;
@@ -4040,9 +4044,11 @@ function initializeDocument(effects) {
   }
   function writeToChild(token, endOfFile) {
     const stream = self.sliceStream(token);
-    if (endOfFile) stream.push(null);
+    if (endOfFile)
+      stream.push(null);
     token.previous = childToken;
-    if (childToken) childToken.next = token;
+    if (childToken)
+      childToken.next = token;
     childToken = token;
     childFlow.defineSkip(token.start);
     childFlow.write(stream);
@@ -4103,7 +4109,7 @@ function tokenizeContainer(effects, ok3, nok) {
   return factorySpace(effects, effects.attempt(this.parser.constructs.document, ok3, nok), "linePrefix", this.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4);
 }
 
-// node_modules/micromark-util-classify-character/index.js
+// node_modules/.pnpm/micromark-util-classify-character@2.0.1/node_modules/micromark-util-classify-character/index.js
 function classifyCharacter(code3) {
   if (code3 === null || markdownLineEndingOrSpace(code3) || unicodeWhitespace(code3)) {
     return 1;
@@ -4113,7 +4119,7 @@ function classifyCharacter(code3) {
   }
 }
 
-// node_modules/micromark-util-resolve-all/index.js
+// node_modules/.pnpm/micromark-util-resolve-all@2.0.1/node_modules/micromark-util-resolve-all/index.js
 function resolveAll(constructs2, events, context) {
   const called = [];
   let index2 = -1;
@@ -4127,7 +4133,7 @@ function resolveAll(constructs2, events, context) {
   return events;
 }
 
-// node_modules/micromark-core-commonmark/lib/attention.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/attention.js
 var attention = {
   name: "attention",
   resolveAll: resolveAllAttention,
@@ -4258,7 +4264,7 @@ function movePoint(point3, offset) {
   point3._bufferIndex += offset;
 }
 
-// node_modules/micromark-core-commonmark/lib/autolink.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/autolink.js
 var autolink = {
   name: "autolink",
   tokenize: tokenizeAutolink
@@ -4359,7 +4365,7 @@ function tokenizeAutolink(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/blank-line.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/blank-line.js
 var blankLine = {
   partial: true,
   tokenize: tokenizeBlankLine
@@ -4374,7 +4380,7 @@ function tokenizeBlankLine(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/block-quote.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/block-quote.js
 var blockQuote = {
   continuation: {
     tokenize: tokenizeBlockQuoteContinuation
@@ -4432,7 +4438,7 @@ function exit(effects) {
   effects.exit("blockQuote");
 }
 
-// node_modules/micromark-core-commonmark/lib/character-escape.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/character-escape.js
 var characterEscape = {
   name: "characterEscape",
   tokenize: tokenizeCharacterEscape
@@ -4458,7 +4464,7 @@ function tokenizeCharacterEscape(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/character-reference.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/character-reference.js
 var characterReference = {
   name: "characterReference",
   tokenize: tokenizeCharacterReference
@@ -4523,7 +4529,7 @@ function tokenizeCharacterReference(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/code-fenced.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/code-fenced.js
 var nonLazyContinuation = {
   partial: true,
   tokenize: tokenizeNonLazyContinuation
@@ -4706,7 +4712,7 @@ function tokenizeNonLazyContinuation(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/code-indented.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/code-indented.js
 var codeIndented = {
   name: "codeIndented",
   tokenize: tokenizeCodeIndented
@@ -4770,7 +4776,7 @@ function tokenizeFurtherStart(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/code-text.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/code-text.js
 var codeText = {
   name: "codeText",
   previous,
@@ -4885,7 +4891,7 @@ function tokenizeCodeText(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-util-subtokenize/lib/splice-buffer.js
+// node_modules/.pnpm/micromark-util-subtokenize@2.1.0/node_modules/micromark-util-subtokenize/lib/splice-buffer.js
 var SpliceBuffer = class {
   /**
    * @param {ReadonlyArray<T> | null | undefined} [initial]
@@ -4910,7 +4916,8 @@ var SpliceBuffer = class {
     if (index2 < 0 || index2 >= this.left.length + this.right.length) {
       throw new RangeError("Cannot access index `" + index2 + "` in a splice buffer of size `" + (this.left.length + this.right.length) + "`");
     }
-    if (index2 < this.left.length) return this.left[index2];
+    if (index2 < this.left.length)
+      return this.left[index2];
     return this.right[this.right.length - index2 + this.left.length - 1];
   }
   /**
@@ -4976,7 +4983,8 @@ var SpliceBuffer = class {
     const count = deleteCount || 0;
     this.setCursor(Math.trunc(start));
     const removed = this.right.splice(this.right.length - count, Number.POSITIVE_INFINITY);
-    if (items) chunkedPush(this.left, items);
+    if (items)
+      chunkedPush(this.left, items);
     return removed.reverse();
   }
   /**
@@ -5056,7 +5064,8 @@ var SpliceBuffer = class {
    *   Nothing.
    */
   setCursor(n) {
-    if (n === this.left.length || n > this.left.length && this.right.length === 0 || n < 0 && this.left.length === 0) return;
+    if (n === this.left.length || n > this.left.length && this.right.length === 0 || n < 0 && this.left.length === 0)
+      return;
     if (n < this.left.length) {
       const removed = this.left.splice(n, Number.POSITIVE_INFINITY);
       chunkedPush(this.right, removed.reverse());
@@ -5078,7 +5087,7 @@ function chunkedPush(list3, right) {
   }
 }
 
-// node_modules/micromark-util-subtokenize/index.js
+// node_modules/.pnpm/micromark-util-subtokenize@2.1.0/node_modules/micromark-util-subtokenize/index.js
 function subtokenize(eventsArray) {
   const jumps = {};
   let index2 = -1;
@@ -5231,7 +5240,7 @@ function subcontent(events, eventIndex) {
   return gaps;
 }
 
-// node_modules/micromark-core-commonmark/lib/content.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/content.js
 var content2 = {
   resolve: resolveContent,
   tokenize: tokenizeContent
@@ -5302,7 +5311,7 @@ function tokenizeContinuation(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-factory-destination/index.js
+// node_modules/.pnpm/micromark-factory-destination@2.0.1/node_modules/micromark-factory-destination/index.js
 function factoryDestination(effects, ok3, nok, type, literalType, literalMarkerType, rawType, stringType, max) {
   const limit = max || Number.POSITIVE_INFINITY;
   let balance = 0;
@@ -5394,7 +5403,7 @@ function factoryDestination(effects, ok3, nok, type, literalType, literalMarkerT
   }
 }
 
-// node_modules/micromark-factory-label/index.js
+// node_modules/.pnpm/micromark-factory-label@2.0.1/node_modules/micromark-factory-label/index.js
 function factoryLabel(effects, ok3, nok, type, markerType, stringType) {
   const self = this;
   let size = 0;
@@ -5442,7 +5451,8 @@ function factoryLabel(effects, ok3, nok, type, markerType, stringType) {
       return atBreak(code3);
     }
     effects.consume(code3);
-    if (!seen) seen = !markdownSpace(code3);
+    if (!seen)
+      seen = !markdownSpace(code3);
     return code3 === 92 ? labelEscape : labelInside;
   }
   function labelEscape(code3) {
@@ -5455,7 +5465,7 @@ function factoryLabel(effects, ok3, nok, type, markerType, stringType) {
   }
 }
 
-// node_modules/micromark-factory-title/index.js
+// node_modules/.pnpm/micromark-factory-title@2.0.1/node_modules/micromark-factory-title/index.js
 function factoryTitle(effects, ok3, nok, type, markerType, stringType) {
   let marker;
   return start;
@@ -5517,7 +5527,7 @@ function factoryTitle(effects, ok3, nok, type, markerType, stringType) {
   }
 }
 
-// node_modules/micromark-factory-whitespace/index.js
+// node_modules/.pnpm/micromark-factory-whitespace@2.0.1/node_modules/micromark-factory-whitespace/index.js
 function factoryWhitespace(effects, ok3) {
   let seen;
   return start;
@@ -5536,7 +5546,7 @@ function factoryWhitespace(effects, ok3) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/definition.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/definition.js
 var definition = {
   name: "definition",
   tokenize: tokenizeDefinition
@@ -5622,7 +5632,7 @@ function tokenizeTitleBefore(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/hard-break-escape.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/hard-break-escape.js
 var hardBreakEscape = {
   name: "hardBreakEscape",
   tokenize: tokenizeHardBreakEscape
@@ -5643,7 +5653,7 @@ function tokenizeHardBreakEscape(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/heading-atx.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/heading-atx.js
 var headingAtx = {
   name: "headingAtx",
   resolve: resolveHeadingAtx,
@@ -5734,7 +5744,7 @@ function tokenizeHeadingAtx(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-util-html-tag-name/index.js
+// node_modules/.pnpm/micromark-util-html-tag-name@2.0.1/node_modules/micromark-util-html-tag-name/index.js
 var htmlBlockNames = [
   "address",
   "article",
@@ -5801,7 +5811,7 @@ var htmlBlockNames = [
 ];
 var htmlRawNames = ["pre", "script", "style", "textarea"];
 
-// node_modules/micromark-core-commonmark/lib/html-flow.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/html-flow.js
 var htmlFlow = {
   concrete: true,
   name: "htmlFlow",
@@ -6180,7 +6190,7 @@ function tokenizeBlankLineBefore(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/html-text.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/html-text.js
 var htmlText = {
   name: "htmlText",
   tokenize: tokenizeHtmlText
@@ -6486,7 +6496,7 @@ function tokenizeHtmlText(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/label-end.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/label-end.js
 var labelEnd = {
   name: "labelEnd",
   resolveAll: resolveAllLabelEnd,
@@ -6712,7 +6722,7 @@ function tokenizeReferenceCollapsed(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/label-start-image.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/label-start-image.js
 var labelStartImage = {
   name: "labelStartImage",
   resolveAll: labelEnd.resolveAll,
@@ -6743,7 +6753,7 @@ function tokenizeLabelStartImage(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/label-start-link.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/label-start-link.js
 var labelStartLink = {
   name: "labelStartLink",
   resolveAll: labelEnd.resolveAll,
@@ -6765,7 +6775,7 @@ function tokenizeLabelStartLink(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/line-ending.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/line-ending.js
 var lineEnding = {
   name: "lineEnding",
   tokenize: tokenizeLineEnding
@@ -6780,7 +6790,7 @@ function tokenizeLineEnding(effects, ok3) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/thematic-break.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/thematic-break.js
 var thematicBreak = {
   name: "thematicBreak",
   tokenize: tokenizeThematicBreak
@@ -6819,7 +6829,7 @@ function tokenizeThematicBreak(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/list.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/list.js
 var list = {
   continuation: {
     tokenize: tokenizeListContinuation
@@ -6949,7 +6959,7 @@ function tokenizeListItemPrefixWhitespace(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-core-commonmark/lib/setext-underline.js
+// node_modules/.pnpm/micromark-core-commonmark@2.0.3/node_modules/micromark-core-commonmark/lib/setext-underline.js
 var setextUnderline = {
   name: "setextUnderline",
   resolveTo: resolveToSetextUnderline,
@@ -7041,7 +7051,7 @@ function tokenizeSetextUnderline(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark/lib/initialize/flow.js
+// node_modules/.pnpm/micromark@4.0.2/node_modules/micromark/lib/initialize/flow.js
 var flow = {
   tokenize: initializeFlow
 };
@@ -7079,7 +7089,7 @@ function initializeFlow(effects) {
   }
 }
 
-// node_modules/micromark/lib/initialize/text.js
+// node_modules/.pnpm/micromark@4.0.2/node_modules/micromark/lib/initialize/text.js
 var resolver = {
   resolveAll: createResolver()
 };
@@ -7174,7 +7184,8 @@ function resolveAllLineSuffixes(events, context) {
             size++;
             bufferIndex--;
           }
-          if (bufferIndex) break;
+          if (bufferIndex)
+            break;
           bufferIndex = -1;
         } else if (chunk === -2) {
           tabs = true;
@@ -7218,7 +7229,7 @@ function resolveAllLineSuffixes(events, context) {
   return events;
 }
 
-// node_modules/micromark/lib/constructs.js
+// node_modules/.pnpm/micromark@4.0.2/node_modules/micromark/lib/constructs.js
 var constructs_exports = {};
 __export(constructs_exports, {
   attentionMarkers: () => attentionMarkers,
@@ -7293,7 +7304,7 @@ var disable = {
   null: []
 };
 
-// node_modules/micromark/lib/create-tokenizer.js
+// node_modules/.pnpm/micromark@4.0.2/node_modules/micromark/lib/create-tokenizer.js
 function createTokenizer(parser, initialize, from) {
   let point3 = {
     _bufferIndex: -1,
@@ -7584,39 +7595,41 @@ function serializeChunks(chunks, expandTabs) {
     let value;
     if (typeof chunk === "string") {
       value = chunk;
-    } else switch (chunk) {
-      case -5: {
-        value = "\r";
-        break;
+    } else
+      switch (chunk) {
+        case -5: {
+          value = "\r";
+          break;
+        }
+        case -4: {
+          value = "\n";
+          break;
+        }
+        case -3: {
+          value = "\r\n";
+          break;
+        }
+        case -2: {
+          value = expandTabs ? " " : "	";
+          break;
+        }
+        case -1: {
+          if (!expandTabs && atTab)
+            continue;
+          value = " ";
+          break;
+        }
+        default: {
+          value = String.fromCharCode(chunk);
+        }
       }
-      case -4: {
-        value = "\n";
-        break;
-      }
-      case -3: {
-        value = "\r\n";
-        break;
-      }
-      case -2: {
-        value = expandTabs ? " " : "	";
-        break;
-      }
-      case -1: {
-        if (!expandTabs && atTab) continue;
-        value = " ";
-        break;
-      }
-      default: {
-        value = String.fromCharCode(chunk);
-      }
-    }
     atTab = chunk === -2;
     result.push(value);
   }
   return result.join("");
 }
 
-// node_modules/micromark/lib/parse.js
+// node_modules/.pnpm/micromark@4.0.2/node_modules/micromark/lib/parse.js
 function parse(options) {
   const settings = options || {};
   const constructs2 = (
@@ -7642,14 +7655,14 @@ function parse(options) {
   }
 }
 
-// node_modules/micromark/lib/postprocess.js
+// node_modules/.pnpm/micromark@4.0.2/node_modules/micromark/lib/postprocess.js
 function postprocess(events) {
   while (!subtokenize(events)) {
   }
   return events;
 }
 
-// node_modules/micromark/lib/preprocess.js
+// node_modules/.pnpm/micromark@4.0.2/node_modules/micromark/lib/preprocess.js
 var search = /[\0\t\n\r]/g;
 function preprocess() {
   let column = 1;
@@ -7703,7 +7716,8 @@ function preprocess() {
           case 9: {
             next = Math.ceil(column / 4) * 4;
             chunks.push(-2);
-            while (column++ < next) chunks.push(-1);
+            while (column++ < next)
+              chunks.push(-1);
             break;
           }
           case 10: {
@@ -7720,15 +7734,17 @@ function preprocess() {
       startPosition = endPosition + 1;
     }
     if (end) {
-      if (atCarriageReturn) chunks.push(-5);
-      if (buffer) chunks.push(buffer);
+      if (atCarriageReturn)
+        chunks.push(-5);
+      if (buffer)
+        chunks.push(buffer);
       chunks.push(null);
     }
     return chunks;
   }
 }
 
-// node_modules/micromark-util-decode-string/index.js
+// node_modules/.pnpm/micromark-util-decode-string@2.0.1/node_modules/micromark-util-decode-string/index.js
 var characterEscapeOrReference = /\\([!-/:-@[-`{-~])|&(#(?:\d{1,7}|x[\da-f]{1,6})|[\da-z]{1,31});/gi;
 function decodeString(value) {
   return value.replace(characterEscapeOrReference, decode);
@@ -7746,10 +7762,10 @@ function decode($0, $1, $2) {
   return decodeNamedCharacterReference($2) || $0;
 }
 
-// node_modules/mdast-util-from-markdown/lib/index.js
+// node_modules/.pnpm/mdast-util-from-markdown@2.0.3/node_modules/mdast-util-from-markdown/lib/index.js
 var own3 = {}.hasOwnProperty;
 function fromMarkdown(value, encoding, options) {
-  if (typeof encoding !== "string") {
+  if (encoding && typeof encoding === "object") {
     options = encoding;
     encoding = void 0;
   }
@@ -7965,7 +7981,8 @@ function compiler(options) {
           while (tailIndex--) {
             const tailEvent = events[tailIndex];
             if (tailEvent[1].type === "lineEnding" || tailEvent[1].type === "lineEndingBlank") {
-              if (tailEvent[0] === "exit") continue;
+              if (tailEvent[0] === "exit")
+                continue;
               if (lineIndex) {
                 events[lineIndex][1].type = "lineEndingBlank";
                 listSpread = true;
@@ -8009,7 +8026,8 @@ function compiler(options) {
     return open2;
     function open2(token) {
       enter.call(this, create(token), token);
-      if (and) and.call(this, token);
+      if (and)
+        and.call(this, token);
     }
   }
   function buffer() {
@@ -8033,7 +8051,8 @@ function compiler(options) {
   function closer(and) {
     return close;
     function close(token) {
-      if (and) and.call(this, token);
+      if (and)
+        and.call(this, token);
       exit3.call(this, token);
     }
   }
@@ -8079,7 +8098,8 @@ function compiler(options) {
     node2.meta = data2;
   }
   function onexitcodefencedfence() {
-    if (this.data.flowCodeInside) return;
+    if (this.data.flowCodeInside)
+      return;
     this.buffer();
     this.data.flowCodeInside = true;
   }
@@ -8455,7 +8475,7 @@ function defaultOnError(left, right) {
   }
 }
 
-// node_modules/remark-parse/lib/index.js
+// node_modules/.pnpm/remark-parse@11.0.0/node_modules/remark-parse/lib/index.js
 function remarkParse(options) {
   const self = this;
   self.parser = parser;
@@ -8472,7 +8492,7 @@ function remarkParse(options) {
   }
 }
 
-// node_modules/ccount/index.js
+// node_modules/.pnpm/ccount@2.0.1/node_modules/ccount/index.js
 function ccount(value, character) {
   const source = String(value);
   if (typeof character !== "string") {
@@ -8487,7 +8507,7 @@ function ccount(value, character) {
   return count;
 }
 
-// node_modules/mdast-util-find-and-replace/node_modules/escape-string-regexp/index.js
+// node_modules/.pnpm/escape-string-regexp@5.0.0/node_modules/escape-string-regexp/index.js
 function escapeStringRegexp(string3) {
   if (typeof string3 !== "string") {
     throw new TypeError("Expected a string");
@@ -8495,7 +8515,7 @@ function escapeStringRegexp(string3) {
   return string3.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d");
 }
 
-// node_modules/unist-util-is/lib/index.js
+// node_modules/.pnpm/unist-util-is@6.0.1/node_modules/unist-util-is/lib/index.js
 var convert = (
   // Note: overloads in JSDoc can’t yet use different `@template`s.
   /**
@@ -8511,7 +8531,7 @@ var convert = (
    * @param {Test} [test]
    * @returns {Check}
    */
-  (function(test) {
+  function(test) {
     if (test === null || test === void 0) {
       return ok2;
     }
@@ -8532,7 +8552,7 @@ var convert = (
       return typeFactory(test);
     }
     throw new Error("Expected function, string, or object as test");
-  })
+  }
 );
 function anyFactory(tests) {
   const checks = [];
@@ -8544,7 +8564,8 @@ function anyFactory(tests) {
   function any(...parameters) {
     let index3 = -1;
     while (++index3 < checks.length) {
-      if (checks[index3].apply(this, parameters)) return true;
+      if (checks[index3].apply(this, parameters))
+        return true;
     }
     return false;
   }
@@ -8563,7 +8584,8 @@ function propertiesFactory(check) {
     );
     let key;
     for (key in check) {
-      if (nodeAsRecord[key] !== checkAsRecord[key]) return false;
+      if (nodeAsRecord[key] !== checkAsRecord[key])
+        return false;
     }
     return true;
   }
@@ -8594,12 +8616,12 @@ function looksLikeANode(value) {
   return value !== null && typeof value === "object" && "type" in value;
 }
 
-// node_modules/unist-util-visit-parents/lib/color.node.js
+// node_modules/.pnpm/unist-util-visit-parents@6.0.2/node_modules/unist-util-visit-parents/lib/color.node.js
 function color(d) {
   return "\x1B[33m" + d + "\x1B[39m";
 }
 
-// node_modules/unist-util-visit-parents/lib/index.js
+// node_modules/.pnpm/unist-util-visit-parents@6.0.2/node_modules/unist-util-visit-parents/lib/index.js
 var empty = [];
 var CONTINUE = true;
 var EXIT = false;
@@ -8676,7 +8698,7 @@ function toResult(value) {
   return value === null || value === void 0 ? empty : [value];
 }
 
-// node_modules/mdast-util-find-and-replace/lib/index.js
+// node_modules/.pnpm/mdast-util-find-and-replace@3.0.2/node_modules/mdast-util-find-and-replace/lib/index.js
 function findAndReplace(tree, list3, options) {
   const settings = options || {};
   const ignored = convert(settings.ignore || []);
@@ -8781,7 +8803,7 @@ function toFunction(replace2) {
   };
 }
 
-// node_modules/mdast-util-gfm-autolink-literal/lib/index.js
+// node_modules/.pnpm/mdast-util-gfm-autolink-literal@2.0.1/node_modules/mdast-util-gfm-autolink-literal/lib/index.js
 var inConstruct = "phrasing";
 var notInConstruct = ["autolink", "link", "image", "label"];
 function gfmAutolinkLiteralFromMarkdown() {
@@ -8873,7 +8895,8 @@ function findUrl(_, protocol, domain2, path2, match) {
     return false;
   }
   const parts = splitUrl(domain2 + path2);
-  if (!parts[0]) return false;
+  if (!parts[0])
+    return false;
   const result = {
     type: "link",
     title: null,
@@ -8931,7 +8954,7 @@ function previous2(match, email) {
   (!email || code3 !== 47);
 }
 
-// node_modules/mdast-util-gfm-footnote/lib/index.js
+// node_modules/.pnpm/mdast-util-gfm-footnote@2.1.0/node_modules/mdast-util-gfm-footnote/lib/index.js
 footnoteReference.peek = footnoteReferencePeek;
 function enterFootnoteCallString() {
   this.buffer();
@@ -9044,7 +9067,7 @@ function mapAll(line, index2, blank) {
   return (blank ? "" : "    ") + line;
 }
 
-// node_modules/mdast-util-gfm-strikethrough/lib/index.js
+// node_modules/.pnpm/mdast-util-gfm-strikethrough@2.0.0/node_modules/mdast-util-gfm-strikethrough/lib/index.js
 var constructsWithoutStrikethrough = [
   "autolink",
   "destinationLiteral",
@@ -9096,7 +9119,7 @@ function peekDelete() {
   return "~";
 }
 
-// node_modules/markdown-table/index.js
+// node_modules/.pnpm/markdown-table@3.0.4/node_modules/markdown-table/index.js
 function defaultStringLength(value) {
   return value.length;
 }
@@ -9237,7 +9260,7 @@ function toAlignment(value) {
   return code3 === 67 || code3 === 99 ? 99 : code3 === 76 || code3 === 108 ? 108 : code3 === 82 || code3 === 114 ? 114 : 0;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/blockquote.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/blockquote.js
 function blockquote(node2, _, state, info) {
   const exit3 = state.enter("blockquote");
   const tracker = state.createTracker(info);
@@ -9254,7 +9277,7 @@ function map(line, _, blank) {
   return ">" + (blank ? "" : " ") + line;
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/pattern-in-scope.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/pattern-in-scope.js
 function patternInScope(stack, pattern) {
   return listInScope(stack, pattern.inConstruct, true) && !listInScope(stack, pattern.notInConstruct, false);
 }
@@ -9274,7 +9297,7 @@ function listInScope(stack, list3, none) {
   return false;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/break.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/break.js
 function hardBreak(_, _1, state, info) {
   let index2 = -1;
   while (++index2 < state.unsafe.length) {
@@ -9285,7 +9308,7 @@ function hardBreak(_, _1, state, info) {
   return "\\\n";
 }
 
-// node_modules/longest-streak/index.js
+// node_modules/.pnpm/longest-streak@3.1.0/node_modules/longest-streak/index.js
 function longestStreak(value, substring) {
   const source = String(value);
   let index2 = source.indexOf(substring);
@@ -9309,7 +9332,7 @@ function longestStreak(value, substring) {
   return max;
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/format-code-as-indented.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/format-code-as-indented.js
 function formatCodeAsIndented(node2, state) {
   return Boolean(
     state.options.fences === false && node2.value && // If there’s no info…
@@ -9319,7 +9342,7 @@ function formatCodeAsIndented(node2, state) {
   );
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-fence.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-fence.js
 function checkFence(state) {
   const marker = state.options.fence || "`";
   if (marker !== "`" && marker !== "~") {
@@ -9330,7 +9353,7 @@ function checkFence(state) {
   return marker;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/code.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/code.js
 function code(node2, _, state, info) {
   const marker = checkFence(state);
   const raw = node2.value || "";
@@ -9382,7 +9405,7 @@ function map2(line, _, blank) {
   return (blank ? "" : "    ") + line;
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-quote.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-quote.js
 function checkQuote(state) {
   const marker = state.options.quote || '"';
   if (marker !== '"' && marker !== "'") {
@@ -9393,7 +9416,7 @@ function checkQuote(state) {
   return marker;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/definition.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/definition.js
 function definition2(node2, _, state, info) {
   const quote = checkQuote(state);
   const suffix = quote === '"' ? "Quote" : "Apostrophe";
@@ -9449,7 +9472,7 @@ function definition2(node2, _, state, info) {
   return value;
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-emphasis.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-emphasis.js
 function checkEmphasis(state) {
   const marker = state.options.emphasis || "*";
   if (marker !== "*" && marker !== "_") {
@@ -9460,12 +9483,12 @@ function checkEmphasis(state) {
   return marker;
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/encode-character-reference.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/encode-character-reference.js
 function encodeCharacterReference(code3) {
   return "&#x" + code3.toString(16).toUpperCase() + ";";
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/encode-info.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/encode-info.js
 function encodeInfo(outside, inside, marker) {
   const outsideKind = classifyCharacter(outside);
   const insideKind = classifyCharacter(inside);
@@ -9507,7 +9530,7 @@ function encodeInfo(outside, inside, marker) {
   );
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/emphasis.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/emphasis.js
 emphasis.peek = emphasisPeek;
 function emphasis(node2, _, state, info) {
   const marker = checkEmphasis(state);
@@ -9547,7 +9570,7 @@ function emphasisPeek(_, _1, state) {
   return state.options.emphasis || "*";
 }
 
-// node_modules/unist-util-visit/lib/index.js
+// node_modules/.pnpm/unist-util-visit@5.1.0/node_modules/unist-util-visit/lib/index.js
 function visit(tree, testOrVisitor, visitorOrReverse, maybeReverse) {
   let reverse;
   let test;
@@ -9569,7 +9592,7 @@ function visit(tree, testOrVisitor, visitorOrReverse, maybeReverse) {
   }
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/format-heading-as-setext.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/format-heading-as-setext.js
 function formatHeadingAsSetext(node2, state) {
   let literalWithBreak = false;
   visit(node2, function(node3) {
@@ -9583,7 +9606,7 @@ function formatHeadingAsSetext(node2, state) {
   );
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/heading.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/heading.js
 function heading(node2, _, state, info) {
   const rank = Math.max(Math.min(6, node2.depth || 1), 1);
   const tracker = state.createTracker(info);
@@ -9625,7 +9648,7 @@ function heading(node2, _, state, info) {
   return value;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/html.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/html.js
 html.peek = htmlPeek;
 function html(node2) {
   return node2.value || "";
@@ -9634,7 +9657,7 @@ function htmlPeek() {
   return "<";
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/image.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/image.js
 image.peek = imagePeek;
 function image(node2, _, state, info) {
   const quote = checkQuote(state);
@@ -9691,7 +9714,7 @@ function imagePeek() {
   return "!";
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/image-reference.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/image-reference.js
 imageReference.peek = imageReferencePeek;
 function imageReference(node2, _, state, info) {
   const type = node2.referenceType;
@@ -9730,7 +9753,7 @@ function imageReferencePeek() {
   return "!";
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/inline-code.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/inline-code.js
 inlineCode.peek = inlineCodePeek;
 function inlineCode(node2, _, state) {
   let value = node2.value || "";
@@ -9746,7 +9769,8 @@ function inlineCode(node2, _, state) {
     const pattern = state.unsafe[index2];
     const expression = state.compilePattern(pattern);
     let match;
-    if (!pattern.atBreak) continue;
+    if (!pattern.atBreak)
+      continue;
     while (match = expression.exec(value)) {
       let position2 = match.index;
       if (value.charCodeAt(position2) === 10 && value.charCodeAt(position2 - 1) === 13) {
@@ -9761,7 +9785,7 @@ function inlineCodePeek() {
   return "`";
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/format-link-as-autolink.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/format-link-as-autolink.js
 function formatLinkAsAutolink(node2, state) {
   const raw = toString(node2);
   return Boolean(
@@ -9776,7 +9800,7 @@ function formatLinkAsAutolink(node2, state) {
   );
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/link.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/link.js
 link.peek = linkPeek;
 function link(node2, _, state, info) {
   const quote = checkQuote(state);
@@ -9856,7 +9880,7 @@ function linkPeek(node2, _, state) {
   return formatLinkAsAutolink(node2, state) ? "<" : "[";
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/link-reference.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/link-reference.js
 linkReference.peek = linkReferencePeek;
 function linkReference(node2, _, state, info) {
   const type = node2.referenceType;
@@ -9895,7 +9919,7 @@ function linkReferencePeek() {
   return "[";
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-bullet.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-bullet.js
 function checkBullet(state) {
   const marker = state.options.bullet || "*";
   if (marker !== "*" && marker !== "+" && marker !== "-") {
@@ -9906,7 +9930,7 @@ function checkBullet(state) {
   return marker;
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-bullet-other.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-bullet-other.js
 function checkBulletOther(state) {
   const bullet = checkBullet(state);
   const bulletOther = state.options.bulletOther;
@@ -9926,7 +9950,7 @@ function checkBulletOther(state) {
   return bulletOther;
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-bullet-ordered.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-bullet-ordered.js
 function checkBulletOrdered(state) {
   const marker = state.options.bulletOrdered || ".";
   if (marker !== "." && marker !== ")") {
@@ -9937,7 +9961,7 @@ function checkBulletOrdered(state) {
   return marker;
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-rule.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-rule.js
 function checkRule(state) {
   const marker = state.options.rule || "*";
   if (marker !== "*" && marker !== "-" && marker !== "_") {
@@ -9948,7 +9972,7 @@ function checkRule(state) {
   return marker;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/list.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/list.js
 function list2(node2, parent, state, info) {
   const exit3 = state.enter("list");
   const bulletCurrent = state.bulletCurrent;
@@ -9988,7 +10012,7 @@ function list2(node2, parent, state, info) {
   return value;
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-list-item-indent.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-list-item-indent.js
 function checkListItemIndent(state) {
   const style = state.options.listItemIndent || "one";
   if (style !== "tab" && style !== "one" && style !== "mixed") {
@@ -9999,7 +10023,7 @@ function checkListItemIndent(state) {
   return style;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/list-item.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/list-item.js
 function listItem(node2, parent, state, info) {
   const listItemIndent = checkListItemIndent(state);
   let bullet = state.bulletCurrent || checkBullet(state);
@@ -10028,7 +10052,7 @@ function listItem(node2, parent, state, info) {
   }
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/paragraph.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/paragraph.js
 function paragraph(node2, _, state, info) {
   const exit3 = state.enter("paragraph");
   const subexit = state.enter("phrasing");
@@ -10038,7 +10062,7 @@ function paragraph(node2, _, state, info) {
   return value;
 }
 
-// node_modules/mdast-util-phrasing/lib/index.js
+// node_modules/.pnpm/mdast-util-phrasing@4.1.0/node_modules/mdast-util-phrasing/lib/index.js
 var phrasing = (
   /** @type {(node?: unknown) => node is Exclude<PhrasingContent, Html>} */
   convert([
@@ -10066,7 +10090,7 @@ var phrasing = (
   ])
 );
 
-// node_modules/mdast-util-to-markdown/lib/handle/root.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/root.js
 function root(node2, _, state, info) {
   const hasPhrasing = node2.children.some(function(d) {
     return phrasing(d);
@@ -10075,7 +10099,7 @@ function root(node2, _, state, info) {
   return container.call(state, node2, info);
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-strong.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-strong.js
 function checkStrong(state) {
   const marker = state.options.strong || "*";
   if (marker !== "*" && marker !== "_") {
@@ -10086,7 +10110,7 @@ function checkStrong(state) {
   return marker;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/strong.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/strong.js
 strong.peek = strongPeek;
 function strong(node2, _, state, info) {
   const marker = checkStrong(state);
@@ -10126,12 +10150,12 @@ function strongPeek(_, _1, state) {
   return state.options.strong || "*";
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/text.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/text.js
 function text3(node2, _, state, info) {
   return state.safe(node2.value, info);
 }
 
-// node_modules/mdast-util-to-markdown/lib/util/check-rule-repetition.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-rule-repetition.js
 function checkRuleRepetition(state) {
   const repetition = state.options.ruleRepetition || 3;
   if (repetition < 3) {
@@ -10142,13 +10166,13 @@ function checkRuleRepetition(state) {
   return repetition;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/thematic-break.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/thematic-break.js
 function thematicBreak2(_, _1, state) {
   const value = (checkRule(state) + (state.options.ruleSpaces ? " " : "")).repeat(checkRuleRepetition(state));
   return state.options.ruleSpaces ? value.slice(0, -1) : value;
 }
 
-// node_modules/mdast-util-to-markdown/lib/handle/index.js
+// node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/index.js
 var handle = {
   blockquote,
   break: hardBreak,
@@ -10172,7 +10196,7 @@ var handle = {
   thematicBreak: thematicBreak2
 };
 
-// node_modules/mdast-util-gfm-table/lib/index.js
+// node_modules/.pnpm/mdast-util-gfm-table@2.0.0/node_modules/mdast-util-gfm-table/lib/index.js
 function gfmTableFromMarkdown() {
   return {
     enter: {
@@ -10325,7 +10349,7 @@ function gfmTableToMarkdown(options) {
   }
 }
 
-// node_modules/mdast-util-gfm-task-list-item/lib/index.js
+// node_modules/.pnpm/mdast-util-gfm-task-list-item@2.0.0/node_modules/mdast-util-gfm-task-list-item/lib/index.js
 function gfmTaskListItemFromMarkdown() {
   return {
     exit: {
@@ -10398,7 +10422,7 @@ function listItemWithTaskListItem(node2, parent, state, info) {
   }
 }
 
-// node_modules/mdast-util-gfm/lib/index.js
+// node_modules/.pnpm/mdast-util-gfm@3.1.0/node_modules/mdast-util-gfm/lib/index.js
 function gfmFromMarkdown() {
   return [
     gfmAutolinkLiteralFromMarkdown(),
@@ -10420,7 +10444,7 @@ function gfmToMarkdown(options) {
   };
 }
 
-// node_modules/micromark-extension-gfm-autolink-literal/lib/syntax.js
+// node_modules/.pnpm/micromark-extension-gfm-autolink-literal@2.1.0/node_modules/micromark-extension-gfm-autolink-literal/lib/syntax.js
 var wwwPrefix = {
   tokenize: tokenizeWwwPrefix,
   partial: true
@@ -10466,8 +10490,10 @@ var code2 = 48;
 while (code2 < 123) {
   text4[code2] = emailAutolink;
   code2++;
-  if (code2 === 58) code2 = 65;
-  else if (code2 === 91) code2 = 97;
+  if (code2 === 58)
+    code2 = 65;
+  else if (code2 === 91)
+    code2 = 97;
 }
 text4[43] = emailAutolink;
 text4[45] = emailAutolink;
@@ -10762,7 +10788,7 @@ function previousUnbalanced(events) {
   return result;
 }
 
-// node_modules/micromark-extension-gfm-footnote/lib/syntax.js
+// node_modules/.pnpm/micromark-extension-gfm-footnote@2.1.0/node_modules/micromark-extension-gfm-footnote/lib/syntax.js
 var indent = {
   tokenize: tokenizeIndent2,
   partial: true
@@ -10899,7 +10925,8 @@ function tokenizeGfmFootnoteCall(effects, ok3, nok) {
     return callStart;
   }
   function callStart(code3) {
-    if (code3 !== 94) return nok(code3);
+    if (code3 !== 94)
+      return nok(code3);
     effects.enter("gfmFootnoteCallMarker");
     effects.consume(code3);
     effects.exit("gfmFootnoteCallMarker");
@@ -11037,7 +11064,7 @@ function tokenizeIndent2(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-extension-gfm-strikethrough/lib/syntax.js
+// node_modules/.pnpm/micromark-extension-gfm-strikethrough@2.1.0/node_modules/micromark-extension-gfm-strikethrough/lib/syntax.js
 function gfmStrikethrough(options) {
   const options_ = options || {};
   let single = options_.singleTilde;
@@ -11116,12 +11143,14 @@ function gfmStrikethrough(options) {
     function more(code3) {
       const before = classifyCharacter(previous3);
       if (code3 === 126) {
-        if (size > 1) return nok(code3);
+        if (size > 1)
+          return nok(code3);
         effects.consume(code3);
         size++;
         return more;
       }
-      if (size < 2 && !single) return nok(code3);
+      if (size < 2 && !single)
+        return nok(code3);
       const token = effects.exit("strikethroughSequenceTemporary");
       const after = classifyCharacter(code3);
       token._open = !after || after === 2 && Boolean(before);
@@ -11131,7 +11160,7 @@ function gfmStrikethrough(options) {
   }
 }
 
-// node_modules/micromark-extension-gfm-table/lib/edit-map.js
+// node_modules/.pnpm/micromark-extension-gfm-table@2.1.1/node_modules/micromark-extension-gfm-table/lib/edit-map.js
 var EditMap = class {
   /**
    * Create a new edit map.
@@ -11210,7 +11239,7 @@ function addImplementation(editMap, at, remove, add) {
   editMap.map.push([at, remove, add]);
 }
 
-// node_modules/micromark-extension-gfm-table/lib/infer.js
+// node_modules/.pnpm/micromark-extension-gfm-table@2.1.1/node_modules/micromark-extension-gfm-table/lib/infer.js
 function gfmTableAlign(events, index2) {
   let inDelimiterRow = false;
   const align = [];
@@ -11237,7 +11266,7 @@ function gfmTableAlign(events, index2) {
   return align;
 }
 
-// node_modules/micromark-extension-gfm-table/lib/syntax.js
+// node_modules/.pnpm/micromark-extension-gfm-table@2.1.1/node_modules/micromark-extension-gfm-table/lib/syntax.js
 function gfmTable() {
   return {
     flow: {
@@ -11260,8 +11289,10 @@ function tokenizeTable(effects, ok3, nok) {
     while (index2 > -1) {
       const type = self.events[index2][1].type;
       if (type === "lineEnding" || // Note: markdown-rs uses `whitespace` instead of `linePrefix`
-      type === "linePrefix") index2--;
-      else break;
+      type === "linePrefix")
+        index2--;
+      else
+        break;
     }
     const tail = index2 > -1 ? self.events[index2][1].type : null;
     const next = tail === "tableHead" || tail === "tableRow" ? bodyRowStart : headRowBefore;
@@ -11623,7 +11654,7 @@ function getPoint(events, index2) {
   return event[1][side];
 }
 
-// node_modules/micromark-extension-gfm-task-list-item/lib/syntax.js
+// node_modules/.pnpm/micromark-extension-gfm-task-list-item@2.1.0/node_modules/micromark-extension-gfm-task-list-item/lib/syntax.js
 var tasklistCheck = {
   name: "tasklistCheck",
   tokenize: tokenizeTasklistCheck
@@ -11697,7 +11728,7 @@ function spaceThenNonSpace(effects, ok3, nok) {
   }
 }
 
-// node_modules/micromark-extension-gfm/index.js
+// node_modules/.pnpm/micromark-extension-gfm@3.0.0/node_modules/micromark-extension-gfm/index.js
 function gfm(options) {
   return combineExtensions([
     gfmAutolinkLiteral(),
@@ -11708,7 +11739,7 @@ function gfm(options) {
   ]);
 }
 
-// node_modules/remark-gfm/lib/index.js
+// node_modules/.pnpm/remark-gfm@4.0.1/node_modules/remark-gfm/lib/index.js
 var emptyOptions2 = {};
 function remarkGfm(options) {
   const self = (
@@ -11725,9 +11756,10 @@ function remarkGfm(options) {
   toMarkdownExtensions.push(gfmToMarkdown(settings));
 }
 
-// src/renderer/html-renderer.ts
+// packages/core/src/renderer/html-renderer.ts
 function renderNode(node2, context) {
-  if (node2 == null) return "";
+  if (node2 == null)
+    return "";
   switch (node2.type) {
     case "button":
       return renderButton(node2, context);
@@ -11814,7 +11846,8 @@ function renderChildrenList(children, context) {
         const text5 = node2.text;
         if (context._nextCommentId != null) {
           const thread = context._comments.find((c) => c.id === context._nextCommentId);
-          if (thread) thread.texts.push(text5);
+          if (thread)
+            thread.texts.push(text5);
         } else {
           const id = context._comments.length + 1;
           context._comments.push({ id, texts: [text5] });
@@ -12082,20 +12115,23 @@ function renderSidebarMainLayout(node2, context, classes) {
   let current = null;
   for (const child of children) {
     if (child.type === "container" && (child.containerType === "sidebar" || child.containerType === "main")) {
-      if (current) sections.push(current);
+      if (current)
+        sections.push(current);
       sections.push({ name: child.containerType, nodes: child.children || [] });
       current = null;
     } else {
       const childClasses = child.props?.classes || [];
       if (child.type === "heading" && (childClasses.includes("sidebar") || childClasses.includes("main"))) {
-        if (current) sections.push(current);
+        if (current)
+          sections.push(current);
         current = { name: childClasses.includes("sidebar") ? "sidebar" : "main", nodes: [] };
       } else if (current) {
         current.nodes.push(child);
       }
     }
   }
-  if (current) sections.push(current);
+  if (current)
+    sections.push(current);
   const sectionsHTML = sections.map((s) => {
     const contentHTML = renderChildrenList(s.nodes, context);
     return `  <div class="${prefix}layout-${s.name}">
@@ -12173,7 +12209,8 @@ function renderRow(node2, context) {
 </div>`;
 }
 function renderHeading(node2, context) {
-  if (!node2.content && !node2.children?.length) return "";
+  if (!node2.content && !node2.children?.length)
+    return "";
   const { classPrefix: prefix } = context;
   const level = node2.level || 1;
   const classes = buildClasses(prefix, `h${level}`, node2.props);
@@ -12373,16 +12410,19 @@ function renderDemo(node2, context) {
 </div>`;
 }
 function renderComment(node2, context) {
-  if (!context.showComments) return "";
-  if (context._comments != null) return "";
+  if (!context.showComments)
+    return "";
+  if (context._comments != null)
+    return "";
   return `<span class="${context.classPrefix}comment">${escapeHtml(node2.text)}</span>`;
 }
 function escapeHtml(text5) {
-  if (!text5) return "";
+  if (!text5)
+    return "";
   return text5.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-// src/renderer/styles.ts
+// packages/core/src/renderer/styles.ts
 function getStyleCSS(style, prefix) {
   const linkButtonReset = `a.${prefix}button { text-decoration: none; color: inherit; }
 `;
@@ -16193,7 +16233,7 @@ body {
 `;
 }
 
-// src/renderer/index.ts
+// packages/core/src/renderer/index.ts
 function renderToHTML(ast, options = {}) {
   const {
     style = "sketch",
@@ -16244,10 +16284,10 @@ function renderToJSON(ast, options = {}) {
   return JSON.stringify(ast, null, pretty ? 2 : 0);
 }
 
-// src/index.ts
+// packages/core/src/index.ts
 var SYNTAX_VERSION = "0.1";
 
-// src/parser/transformer.ts
+// packages/core/src/parser/transformer.ts
 function transformToWiremdAST(mdast, options = {}) {
   const meta = {
     version: SYNTAX_VERSION,
@@ -16319,7 +16359,8 @@ function transformNode(node2, options, nextNode) {
       };
     case "html": {
       const m = node2.value.match(/^<!--([\s\S]*?)-->$/);
-      if (m) return { type: "comment", text: m[1].trim() };
+      if (m)
+        return { type: "comment", text: m[1].trim() };
       return null;
     }
     default:
@@ -16341,12 +16382,14 @@ function processNodeList(nodeChildren, options) {
         transformed.position = node2.position;
       }
       result.push(transformed);
-      if (transformed.type === "select" && nextNode && nextNode.type === "list") i++;
+      if (transformed.type === "select" && nextNode && nextNode.type === "list")
+        i++;
       if (transformed.type === "container" && nextNode && nextNode.type === "list") {
         const hasSelectWithOptions = (transformed.children || []).some(
           (child) => child.type === "select" && child.options && child.options.length > 0
         );
-        if (hasSelectWithOptions) i++;
+        if (hasSelectWithOptions)
+          i++;
       }
     }
     i++;
@@ -16359,7 +16402,8 @@ function isHtmlCommentNode(node2) {
 function collectGridItemsFromContainer(children, options, isCard) {
   const gridItems = [];
   const firstHeading = children.find((n) => n.type === "heading");
-  if (!firstHeading) return gridItems;
+  if (!firstHeading)
+    return gridItems;
   const itemDepth = firstHeading.depth;
   let pending = [];
   let i = 0;
@@ -16368,29 +16412,36 @@ function collectGridItemsFromContainer(children, options, isCard) {
     if (child.type === "heading" && child.depth === itemDepth) {
       for (const c of pending) {
         const m = c.value.match(/^<!--([\s\S]*?)-->$/);
-        if (m) gridItems.push({ type: "comment", text: m[1].trim() });
+        if (m)
+          gridItems.push({ type: "comment", text: m[1].trim() });
       }
       pending = [];
       const rawItemNodes = [child];
       i++;
       while (i < children.length) {
         const next = children[i];
-        if (next.type === "heading" && next.depth <= itemDepth) break;
+        if (next.type === "heading" && next.depth <= itemDepth)
+          break;
         rawItemNodes.push(next);
         i++;
       }
       if (i < children.length) {
         let split = rawItemNodes.length;
-        while (split > 0 && isHtmlCommentNode(rawItemNodes[split - 1])) split--;
-        if (split < rawItemNodes.length) pending = rawItemNodes.splice(split);
+        while (split > 0 && isHtmlCommentNode(rawItemNodes[split - 1]))
+          split--;
+        if (split < rawItemNodes.length)
+          pending = rawItemNodes.splice(split);
       }
       const headingContent = extractTextContent(child);
       const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
       const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
       const itemProps = { classes: [] };
-      if (isCard) itemProps.classes.push("card");
-      if (colSpanMatch) itemProps.classes.push(`col-span-${colSpanMatch[1]}`);
-      if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
+      if (isCard)
+        itemProps.classes.push("card");
+      if (colSpanMatch)
+        itemProps.classes.push(`col-span-${colSpanMatch[1]}`);
+      if (alignMatch)
+        itemProps.classes.push(`align-${alignMatch[1]}`);
       gridItems.push({
         type: "grid-item",
         props: itemProps,
@@ -16416,17 +16467,20 @@ function collectRowItemsFromContainer(children, options) {
         const headingContent = extractTextContent(child);
         const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
         const itemProps = { classes: [] };
-        if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
+        if (alignMatch)
+          itemProps.classes.push(`align-${alignMatch[1]}`);
         for (const c of pending) {
           const m = c.value.match(/^<!--([\s\S]*?)-->$/);
-          if (m) items.push({ type: "comment", text: m[1].trim() });
+          if (m)
+            items.push({ type: "comment", text: m[1].trim() });
         }
         pending = [];
         i++;
         const rawItemNodes = [];
         while (i < children.length) {
           const next = children[i];
-          if (next.type === "heading" && next.depth <= itemDepth) break;
+          if (next.type === "heading" && next.depth <= itemDepth)
+            break;
           if (next.type === "paragraph") {
             const nodeText = extractTextContent(next);
             const isDropdown = /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
@@ -16443,8 +16497,10 @@ function collectRowItemsFromContainer(children, options) {
         }
         if (i < children.length) {
           let split = rawItemNodes.length;
-          while (split > 0 && isHtmlCommentNode(rawItemNodes[split - 1])) split--;
-          if (split < rawItemNodes.length) pending = rawItemNodes.splice(split);
+          while (split > 0 && isHtmlCommentNode(rawItemNodes[split - 1]))
+            split--;
+          if (split < rawItemNodes.length)
+            pending = rawItemNodes.splice(split);
         }
         items.push({
           type: "grid-item",
@@ -16694,16 +16750,22 @@ function transformHeading(node2, _options) {
   };
 }
 function tryParseButtonLinkSequence(children) {
-  if (!children || children.length < 3 || children.length % 2 === 0) return null;
+  if (!children || children.length < 3 || children.length % 2 === 0)
+    return null;
   for (let i = 0; i < children.length; i++) {
-    if (i % 2 === 0 && children[i].type !== "text") return null;
-    if (i % 2 === 1 && children[i].type !== "link") return null;
+    if (i % 2 === 0 && children[i].type !== "text")
+      return null;
+    if (i % 2 === 1 && children[i].type !== "link")
+      return null;
   }
-  if (!/^\s*\[$/.test(children[0].value)) return null;
+  if (!/^\s*\[$/.test(children[0].value))
+    return null;
   const lastText = children[children.length - 1].value;
-  if (!/^\](\*)?\s*(\{[^}]*\})?\s*$/.test(lastText)) return null;
+  if (!/^\](\*)?\s*(\{[^}]*\})?\s*$/.test(lastText))
+    return null;
   for (let i = 2; i <= children.length - 3; i += 2) {
-    if (!/^\](\*)?\s*(\{[^}]*\})?\s*\[$/.test(children[i].value)) return null;
+    if (!/^\](\*)?\s*(\{[^}]*\})?\s*\[$/.test(children[i].value))
+      return null;
   }
   return children.filter((_, i) => i % 2 === 1).map((linkNode, idx) => {
     const closingText = children[idx * 2 + 2].value;
@@ -16725,8 +16787,10 @@ function serializeMdastChildren(children) {
       const text5 = (child.children || []).map((c) => c.value || "").join("");
       return `[${text5}](${child.url})`;
     }
-    if (child.type === "strong") return `**${serializeMdastChildren(child.children)}**`;
-    if (child.type === "emphasis") return `*${serializeMdastChildren(child.children)}*`;
+    if (child.type === "strong")
+      return `**${serializeMdastChildren(child.children)}**`;
+    if (child.type === "emphasis")
+      return `*${serializeMdastChildren(child.children)}*`;
     return child.value || "";
   }).join("");
 }
@@ -16746,7 +16810,8 @@ function transformParagraph(node2, _options, nextNode) {
   );
   const buttonLinks = tryParseButtonLinkSequence(node2.children);
   if (buttonLinks !== null) {
-    if (buttonLinks.length === 1) return buttonLinks[0];
+    if (buttonLinks.length === 1)
+      return buttonLinks[0];
     return {
       type: "container",
       containerType: "button-group",
@@ -16980,8 +17045,10 @@ function transformParagraph(node2, _options, nextNode) {
     const isInputLike = (s) => /\[[^\]]*_{3,}[^\]]*\]/.test(s) || /\[[_*]+\]/.test(s);
     const lineIsAllButtons = (line) => {
       const trimmed = line.trim();
-      if (!trimmed || !/\[/.test(trimmed)) return false;
-      if (isInputLike(trimmed)) return false;
+      if (!trimmed || !/\[/.test(trimmed))
+        return false;
+      if (isInputLike(trimmed))
+        return false;
       const stripped = trimmed.replace(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/g, "").trim();
       return stripped === "";
     };
@@ -16993,10 +17060,12 @@ function transformParagraph(node2, _options, nextNode) {
         let match;
         buttonPattern.lastIndex = 0;
         while ((match = buttonPattern.exec(line.trim())) !== null) {
-          if (/^\[[_*]+\]/.test(match[0])) continue;
+          if (/^\[[_*]+\]/.test(match[0]))
+            continue;
           const [, text5, isPrimary, attrs] = match;
           const props = parseAttributes(attrs || "");
-          if (isPrimary) props.variant = "primary";
+          if (isPrimary)
+            props.variant = "primary";
           buttons.push({ type: "button", content: text5, props });
         }
       }
@@ -17016,7 +17085,8 @@ function transformParagraph(node2, _options, nextNode) {
     const labelLines = labelLineArray.join("\n");
     const lineIsAllInlineElements = (line) => {
       const trimmed = line.trim();
-      if (!trimmed || !/\[/.test(trimmed)) return false;
+      if (!trimmed || !/\[/.test(trimmed))
+        return false;
       const stripped = trimmed.replace(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/g, "").trim();
       return stripped === "";
     };
@@ -17033,10 +17103,12 @@ function transformParagraph(node2, _options, nextNode) {
           const p = parseAttributes(attrs || "");
           if (isInputText(text5)) {
             const placeholderMatch = text5.match(/^([^_*]+)_{3,}$/);
-            if (placeholderMatch) p.placeholder = placeholderMatch[1].trim();
+            if (placeholderMatch)
+              p.placeholder = placeholderMatch[1].trim();
             nodes.push({ type: "input", props: p });
           } else {
-            if (isPrimary) p.variant = "primary";
+            if (isPrimary)
+              p.variant = "primary";
             nodes.push({ type: "button", content: text5, props: p });
           }
         }
@@ -17174,8 +17246,10 @@ function transformParagraph(node2, _options, nextNode) {
       while ((match = buttonPattern.exec(lastLine)) !== null) {
         const [, text5, isPrimary, attrs] = match;
         const props = parseAttributes(attrs || "");
-        if (isInputTextMulti(text5) || "rows" in props) continue;
-        if (isPrimary) props.variant = "primary";
+        if (isInputTextMulti(text5) || "rows" in props)
+          continue;
+        if (isPrimary)
+          props.variant = "primary";
         buttons.push({ type: "button", content: text5, props });
       }
       if (buttons.length > 0) {
@@ -17307,18 +17381,22 @@ function transformParagraph(node2, _options, nextNode) {
       const props = parseAttributes(attrs || "");
       if (isSelectText(text5)) {
         const placeholder = text5.replace(/_{1,}v$/, "").trim() || void 0;
-        if (placeholder) props.placeholder = placeholder;
+        if (placeholder)
+          props.placeholder = placeholder;
         elements.push({ type: "select", props, options: [] });
         continue;
       }
       if (isInputText(text5)) {
         const placeholderMatch = text5.match(/^([^_*]+)_{3,}$/);
-        if (placeholderMatch) props.placeholder = placeholderMatch[1].trim();
+        if (placeholderMatch)
+          props.placeholder = placeholderMatch[1].trim();
         elements.push({ type: "input", props });
         continue;
       }
-      if ("rows" in props) continue;
-      if (isPrimary) props.variant = "primary";
+      if ("rows" in props)
+        continue;
+      if (isPrimary)
+        props.variant = "primary";
       if (/:([a-z-]+):/.test(text5)) {
         const iconPattern = /:([a-z-]+):/g;
         const parts = text5.split(iconPattern);
@@ -17714,13 +17792,14 @@ function parseAttributes(attrString) {
   return props;
 }
 
-// src/parser/remark-containers.ts
+// packages/core/src/parser/remark-containers.ts
 function parseContainerOpener(node2) {
   if (node2.type !== "paragraph" || !node2.children?.length || node2.children[0].type !== "text")
     return null;
   const firstLine = node2.children[0].value.split("\n")[0].trim();
   const match = firstLine.match(/^:::\s*(\S+)(?:\s*(\{[^}]+\}))?(?:\s+(.+))?$/);
-  if (!match) return null;
+  if (!match)
+    return null;
   return {
     containerType: (match[1] || "section").trim(),
     attrs: match[2] ? match[2].trim() : "",
@@ -17747,7 +17826,8 @@ function makeContainerNode(containerType, attrs, children, position2) {
 }
 function finishContainer(containerType, attrs, inline, children, nextIndex, position2) {
   const node2 = makeContainerNode(containerType, attrs, children, position2);
-  if (inline) node2.inline = inline;
+  if (inline)
+    node2.inline = inline;
   if (containerType === "demo") {
     node2.rawContent = mdastNodesToText(children);
   }
@@ -17802,7 +17882,8 @@ function collectContainer(nodes, startIdx) {
       const ch = openerNode.children[j];
       if (j === openerNode.children.length - 1 && ch.type === "text") {
         const value = ch.value.replace(/\n?:::$/, "").trim();
-        if (value) processedChildren.push({ ...ch, value });
+        if (value)
+          processedChildren.push({ ...ch, value });
       } else {
         processedChildren.push(ch);
       }
@@ -17921,7 +18002,8 @@ function mdastNodesToText(nodes) {
         const rows = node2.children.map(
           (row) => row.children.map((cell) => mdastInlinesToText(cell.children || []))
         );
-        if (!rows.length) return "";
+        if (!rows.length)
+          return "";
         const colWidths = rows[0].map(
           (_, ci) => Math.max(...rows.map((r) => (r[ci] || "").length), 3)
         );
@@ -17973,14 +18055,16 @@ var remarkWiremdContainers = () => {
   };
 };
 
-// src/parser/remark-inline-containers.ts
+// packages/core/src/parser/remark-inline-containers.ts
 function serializeChild(c) {
   if (c.type === "link") {
     const text5 = (c.children || []).map((cc) => cc.value || "").join("");
     return `[${text5}](${c.url})`;
   }
-  if (c.type === "strong") return `**${(c.children || []).map(serializeChild).join("")}**`;
-  if (c.type === "emphasis") return `*${(c.children || []).map(serializeChild).join("")}*`;
+  if (c.type === "strong")
+    return `**${(c.children || []).map(serializeChild).join("")}**`;
+  if (c.type === "emphasis")
+    return `*${(c.children || []).map(serializeChild).join("")}*`;
   return c.value || "";
 }
 var remarkWiremdInlineContainers = () => {
@@ -18017,13 +18101,14 @@ var remarkWiremdInlineContainers = () => {
   };
 };
 
-// src/parser/index.ts
+// packages/core/src/parser/index.ts
 var INCLUDE_PATTERN = /!\[\[\s*([^\]]+?\.md)\s*\]\]/g;
 function resolveIncludes(markdown, basePath) {
   const dir = (0, import_path.dirname)((0, import_path.resolve)(basePath));
   const parts = markdown.split(/(```[\s\S]*?```|`[^`\n]+`)/g);
   return parts.map((part, i) => {
-    if (i % 2 === 1) return part;
+    if (i % 2 === 1)
+      return part;
     return part.replace(INCLUDE_PATTERN, (_match, relPath) => {
       const targetPath = (0, import_path.resolve)(dir, relPath.trim());
       if (!(0, import_fs.existsSync)(targetPath)) {
@@ -18045,7 +18130,7 @@ function parse2(input, options = {}) {
   return wiremdAST;
 }
 
-// src/cli/server.ts
+// packages/core/src/cli/server.ts
 var import_http = require("http");
 var import_fs2 = require("fs");
 var import_crypto = require("crypto");
@@ -18434,12 +18519,20 @@ var liveReloadScript = `
 </script>
 `;
 var wsClients = /* @__PURE__ */ new Set();
+var IGNORED_DIRS = /* @__PURE__ */ new Set(["node_modules", "dist", "build", ".git"]);
 function buildTree(dir, base) {
   const node2 = { dirs: {}, files: [] };
   for (const entry of (0, import_fs2.readdirSync)(dir).sort()) {
-    if (entry.startsWith("_") || entry.startsWith(".")) continue;
+    if (entry.startsWith("_") || entry.startsWith(".") || IGNORED_DIRS.has(entry))
+      continue;
     const full = (0, import_path2.join)(dir, entry);
-    if ((0, import_fs2.statSync)(full).isDirectory()) {
+    let stat4;
+    try {
+      stat4 = (0, import_fs2.statSync)(full);
+    } catch {
+      continue;
+    }
+    if (stat4.isDirectory()) {
       node2.dirs[entry] = buildTree(full, base);
     } else if (entry.endsWith(".md")) {
       node2.files.push((0, import_path2.relative)(base, full));
@@ -18499,6 +18592,12 @@ function startServer(options) {
     }
     const urlPath = (req.url || "/").split("?")[0];
     let html2 = null;
+    if (urlPath === "/_index") {
+      html2 = renderIndex(rootDir);
+      res.writeHead(200, { "Content-Type": "text/html", "Cache-Control": "no-cache, no-store, must-revalidate" });
+      res.end(injectScript(html2));
+      return;
+    }
     if (urlPath === "/" || urlPath === "") {
       if (inputFile) {
         res.writeHead(302, { Location: `/${inputFile}` });
@@ -18606,13 +18705,13 @@ function sendMessageToClients(message) {
   });
 }
 
-// node_modules/chokidar/esm/index.js
+// node_modules/.pnpm/chokidar@4.0.3/node_modules/chokidar/esm/index.js
 var import_fs4 = require("fs");
 var import_promises3 = require("fs/promises");
 var import_events = require("events");
 var sysPath2 = __toESM(require("path"), 1);
 
-// node_modules/readdirp/esm/index.js
+// node_modules/.pnpm/readdirp@4.1.2/node_modules/readdirp/esm/index.js
 var import_promises = require("node:fs/promises");
 var import_node_stream = require("node:stream");
 var import_node_path2 = require("node:path");
@@ -18831,7 +18930,7 @@ function readdirp(root2, options = {}) {
   return new ReaddirpStream(options);
 }
 
-// node_modules/chokidar/esm/handler.js
+// node_modules/.pnpm/chokidar@4.0.3/node_modules/chokidar/esm/handler.js
 var import_fs3 = require("fs");
 var import_promises2 = require("fs/promises");
 var sysPath = __toESM(require("path"), 1);
@@ -19587,7 +19686,7 @@ var NodeFsHandler = class {
   }
 };
 
-// node_modules/chokidar/esm/index.js
+// node_modules/.pnpm/chokidar@4.0.3/node_modules/chokidar/esm/index.js
 var SLASH = "/";
 var SLASH_SLASH = "//";
 var ONE_DOT = ".";
@@ -20297,7 +20396,7 @@ function watch(paths, options = {}) {
 }
 var esm_default = { watch, FSWatcher };
 
-// node_modules/chalk/source/vendor/ansi-styles/index.js
+// node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/ansi-styles/index.js
 var ANSI_BACKGROUND_OFFSET = 10;
 var wrapAnsi16 = (offset = 0) => (code3) => `\x1B[${code3 + offset}m`;
 var wrapAnsi256 = (offset = 0) => (code3) => `\x1B[${38 + offset};5;${code3}m`;
@@ -20483,7 +20582,7 @@ function assembleStyles() {
 var ansiStyles = assembleStyles();
 var ansi_styles_default = ansiStyles;
 
-// node_modules/chalk/source/vendor/supports-color/index.js
+// node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/supports-color/index.js
 var import_node_process2 = __toESM(require("node:process"), 1);
 var import_node_os = __toESM(require("node:os"), 1);
 var import_node_tty = __toESM(require("node:tty"), 1);
@@ -20615,7 +20714,7 @@ var supportsColor = {
 };
 var supports_color_default = supportsColor;
 
-// node_modules/chalk/source/utilities.js
+// node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/utilities.js
 function stringReplaceAll(string3, substring, replacer) {
   let index2 = string3.indexOf(substring);
   if (index2 === -1) {
@@ -20645,11 +20744,11 @@ function stringEncaseCRLFWithFirstIndex(string3, prefix, postfix, index2) {
   return returnValue;
 }
 
-// node_modules/chalk/source/index.js
+// node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/index.js
 var { stdout: stdoutColor, stderr: stderrColor } = supports_color_default;
-var GENERATOR = /* @__PURE__ */ Symbol("GENERATOR");
-var STYLER = /* @__PURE__ */ Symbol("STYLER");
-var IS_EMPTY = /* @__PURE__ */ Symbol("IS_EMPTY");
+var GENERATOR = Symbol("GENERATOR");
+var STYLER = Symbol("STYLER");
+var IS_EMPTY = Symbol("IS_EMPTY");
 var levelMapping = [
   "ansi",
   "ansi",
@@ -20792,7 +20891,7 @@ var chalk = createChalk();
 var chalkStderr = createChalk({ level: stderrColor ? stderrColor.level : 0 });
 var source_default = chalk;
 
-// src/cli/index.ts
+// packages/core/src/cli/index.ts
 var import_meta = {};
 function showHelp() {
   console.log(`
@@ -21024,13 +21123,16 @@ function main() {
     });
     watcher.on("change", (path2) => {
       logger.changed(`${source_default.bold("changed")}: ${source_default.dim(path2.replace(process.cwd(), "."))}`);
-      if (options.serve) notifyReload();
+      if (options.serve)
+        notifyReload();
     }).on("add", (path2) => {
       logger.info(`New file: ${source_default.dim(path2.replace(process.cwd(), "."))}`);
-      if (options.serve) notifyReload();
+      if (options.serve)
+        notifyReload();
     }).on("unlink", (path2) => {
       logger.warning(`Removed: ${source_default.dim(path2.replace(process.cwd(), "."))}`);
-      if (options.serve) notifyReload();
+      if (options.serve)
+        notifyReload();
     }).on("ready", () => logger.info("Watcher ready. Press Ctrl+C to stop."));
     return;
   }

@@ -33,6 +33,7 @@
   ],
   "scripts": {
     "prepublishOnly": "pnpm run build",
+    "version": "node ../../scripts/sync-versions.mjs && git add ../../extensions/vscode/package.json ../../extensions/skills/wireframe/.claude-plugin/plugin.json",
     "build": "tsc && vite build",
     "dev": "vite build --watch",
     "test": "vitest run --config vitest.config.ts",

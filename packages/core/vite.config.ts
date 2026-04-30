@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
 
+const isWatch = process.argv.includes('--watch');
+
 export default defineConfig({
   ssr: {
     // Bundle all dependencies into the CJS build
@@ -9,6 +11,7 @@ export default defineConfig({
   },
   build: {
     ssr: true, // This is a Node.js library, not a browser library
+    emptyOutDir: !isWatch, // in watch mode keep existing dist/ to avoid race with dependents
     lib: {
       entry: {
         index: resolve(__dirname, 'src/index.ts'),

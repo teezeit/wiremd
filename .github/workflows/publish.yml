@@ -32,7 +32,7 @@ jobs:
       - name: Attach skill zip to GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          files: wireframe-skill.zip
+          files: releases/wireframe-skill.zip
 
       - name: Build VS Code extension
         run: pnpm --filter wiremd-preview run bundle
