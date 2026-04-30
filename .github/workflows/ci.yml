@@ -118,6 +118,9 @@ jobs:
     - name: Install editor dependencies
       run: npm ci --prefix editor
 
+    - name: Typecheck editor
+      run: npm run typecheck --prefix editor
+
     - name: Build editor
       run: npm run build --prefix editor
 
