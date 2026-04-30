@@ -56,7 +56,7 @@ Works with Claude Code or Claude Desktop (Cowork) running on the same machine as
 
 <div class="flow-diagram">
   <div class="flow-node">
-    <img src="/wiremd/assets/logos/logo-claude.png" class="flow-node__logo" alt="" />
+    <img src="/assets/logos/logo-claude.png" class="flow-node__logo" alt="" />
     <span class="flow-node__label">Claude Desktop<br/>· Claude Code</span>
   </div>
   <div class="flow-edge">
@@ -71,7 +71,7 @@ Works with Claude Code or Claude Desktop (Cowork) running on the same machine as
     <span class="flow-edge__arrow">⇄</span>
   </div>
   <div class="flow-node">
-    <img src="/wiremd/assets/logos/logo-chrome.jpg" class="flow-node__logo" alt="" />
+    <img src="/assets/logos/logo-chrome.jpg" class="flow-node__logo" alt="" />
     <span class="flow-node__label">Browser<br/>editor</span>
   </div>
 </div>
