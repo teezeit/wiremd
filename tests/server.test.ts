@@ -61,11 +61,20 @@ describe('Multi-file routing', () => {
     const res = await fetch(`http://localhost:${TEST_PORT}/nonexistent.md`);
     expect(res.status).toBe(404);
   });
+
+  it('should always serve file tree at /_index even when inputFile is set', async () => {
+    const renderFile = vi.fn().mockReturnValue('<html><body>Main Page</body></html>');
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.', inputFile: 'index.md' });
+    const res = await fetch(`http://localhost:${TEST_PORT}/_index`);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain('<ul>');
+  });
 });
 
 describe('Dev Server', () => {
   const TEST_PORT = 3456;
-  const TEST_OUTPUT = './test-output.html';
+  const TEST_OUTPUT = './test-server-output.html';
   let server: any;
 
   beforeEach(() => {

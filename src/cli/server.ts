@@ -412,12 +412,16 @@ interface TreeNode {
   files: string[];
 }
 
+const IGNORED_DIRS = new Set(['node_modules', 'dist', 'build', '.git']);
+
 function buildTree(dir: string, base: string): TreeNode {
   const node: TreeNode = { dirs: {}, files: [] };
   for (const entry of readdirSync(dir).sort()) {
-    if (entry.startsWith('_') || entry.startsWith('.')) continue;
+    if (entry.startsWith('_') || entry.startsWith('.') || IGNORED_DIRS.has(entry)) continue;
     const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
+    let stat;
+    try { stat = statSync(full); } catch { continue; }
+    if (stat.isDirectory()) {
       node.dirs[entry] = buildTree(full, base);
     } else if (entry.endsWith('.md')) {
       node.files.push(relative(base, full));
@@ -482,6 +486,13 @@ export function startServer(options: ServerOptions): ReturnType<typeof createSer
 
     const urlPath = (req.url || '/').split('?')[0];
     let html: string | null = null;
+
+    if (urlPath === '/_index') {
+      html = renderIndex(rootDir);
+      res.writeHead(200, { 'Content-Type': 'text/html', 'Cache-Control': 'no-cache, no-store, must-revalidate' });
+      res.end(injectScript(html));
+      return;
+    }
 
     if (urlPath === '/' || urlPath === '') {
       if (inputFile) {

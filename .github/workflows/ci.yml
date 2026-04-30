@@ -97,3 +97,46 @@ jobs:
 
     - name: Check package contents
       run: tar -tzf wiremd-*.tgz | head -20
+
+  test-editor:
+    name: Test Editor
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+
+    - name: Install root dependencies
+      run: npm ci
+
+    - name: Install editor dependencies
+      run: npm ci --prefix editor
+
+    - name: Run editor tests
+      run: npm test --prefix editor
+
+  test-figma-plugin:
+    name: Test Figma Plugin
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+
+    - name: Install figma plugin dependencies
+      run: npm ci --prefix figma-plugin
+
+    - name: Run figma plugin tests
+      run: npm test --prefix figma-plugin
