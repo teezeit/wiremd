@@ -1,15 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { docsUrl, editorUrl } from './urls.ts'
+</script>
 
 <template>
   <section class="lh">
     <h1 class="lh-headline">Mermaid for wireframes.</h1>
     <p class="lh-tagline"><span class="lh-em">10×</span> cheaper than Claude Design. <span class="lh-em">10×</span> faster. Saved as <code>textfile.md</code>.</p>
     <div class="lh-ctas">
-      <a href="/wiremd/editor/" class="lh-cta lh-cta--primary" target="_blank" rel="noopener">
+      <a :href="editorUrl()" class="lh-cta lh-cta--primary" target="_blank" rel="noopener">
         <img src="/wiremd/assets/logos/logo-chrome.jpg" class="lh-cta__logo" alt="" />
         Web Editor
       </a>
-      <a href="/wiremd/guide/claude.html" class="lh-cta lh-cta--secondary">
+      <a :href="docsUrl('/guide/claude.html')" class="lh-cta lh-cta--secondary">
         <img src="/wiremd/assets/logos/logo-claude.png" class="lh-cta__logo" alt="" />
         Install for Claude
       </a>

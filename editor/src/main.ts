@@ -29,6 +29,10 @@ import { addToHistory, getRecentFiles } from './file-history.js';
 // --- DOM Elements ---
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
+($<HTMLAnchorElement>('brand-link')).href = import.meta.env.DEV
+  ? 'http://localhost:5175/wiremd/'
+  : '/wiremd/';
+
 const fileSyncContainer = $('file-sync-indicator');
 const monacoContainer = $('monaco-container');
 const previewIframe = $<HTMLIFrameElement>('preview-iframe');

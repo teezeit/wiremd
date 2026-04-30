@@ -2,6 +2,8 @@ import { defineConfig } from "vitepress";
 import { resolve } from "path";
 import { wiremdDemoPlugin } from "./plugins/wiremd-demo";
 
+const isDev = !!process.env.WIREMD_DEV
+
 export default defineConfig({
   title: "wiremd",
   description:
@@ -10,6 +12,7 @@ export default defineConfig({
 
   themeConfig: {
     logo: "/logo.svg",
+    logoLink: isDev ? 'http://localhost:5175/wiremd/' : '/wiremd/',
 
     sidebar: [
       {
@@ -263,7 +266,11 @@ export default defineConfig({
 
     nav: [
       { text: "Docs", link: "/guide/overview" },
-      { text: "Editor", link: "/editor/", target: "_blank" },
+      {
+        text: "Editor",
+        link: isDev ? 'http://localhost:5174/wiremd/editor/' : '/wiremd/editor/',
+        target: "_blank",
+      },
     ],
 
     socialLinks: [
