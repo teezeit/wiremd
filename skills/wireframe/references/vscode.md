@@ -39,6 +39,18 @@ Available styles: `sketch` (default), `clean`, `wireframe`, `material`, `tailwin
 
 ---
 
+## Preview at different screen sizes
+
+Click the **Viewport** button in the preview toolbar to pick a size: Desktop, Laptop, Tablet, Mobile, or Full Width.
+
+---
+
+## Toggle inline comments
+
+Click the **💬 Comments On/Off** button in the preview toolbar to show or hide inline comment callouts without changing the source file.
+
+---
+
 ## Component reference
 
 The **?** button in the preview toolbar opens the component docs rendered inside VS Code — a quick reference for all wiremd syntax and components.

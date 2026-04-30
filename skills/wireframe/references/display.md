@@ -1,12 +1,3 @@
----
-name: display
-description: >-
-  Render wireframes as HTML using the bundled wiremd CLI — shows the result as
-  an artifact in Claude's panel AND saves the file for the user to open, share,
-  or archive. Use for single-page and multi-page prototypes. Works in Claude
-  Desktop, claude.ai, Claude Code, and any session with file system access.
----
-
 # Wireframe — Display
 
 Render wiremd `.md` files to HTML using the bundled CLI. No install needed —
@@ -51,13 +42,13 @@ Share the path to `wireframes/index.html`. Re-run after each edit cycle.
 - `_sidebar.md` if using sidebar layout
 - one `.md` per page at top level
 
-See `${CLAUDE_PLUGIN_ROOT}/skills/editor/references/multi-page.md`.
+See `${CLAUDE_PLUGIN_ROOT}/references/multi-page.md`.
 
 ---
 
 ## Writing the wireframe
 
-Full syntax reference: `${CLAUDE_PLUGIN_ROOT}/skills/editor/references/syntax.md`.
+Full syntax reference: `${CLAUDE_PLUGIN_ROOT}/references/syntax.md`.
 
 ### From a description or spec
 1. Understand the screen's purpose
@@ -74,7 +65,7 @@ Full syntax reference: `${CLAUDE_PLUGIN_ROOT}/skills/editor/references/syntax.md
 
 ## Style picker
 
-Default to `wireframe`. See `${CLAUDE_PLUGIN_ROOT}/skills/editor/references/styles.md`.
+Default to `wireframe`. See `${CLAUDE_PLUGIN_ROOT}/references/styles.md`.
 
 | Style | Best for |
 |-------|----------|
@@ -93,4 +84,4 @@ Default to `wireframe`. See `${CLAUDE_PLUGIN_ROOT}/skills/editor/references/styl
 2. **Label directly above input.** No blank line between label text and `[_____]`.
 3. **Blank line before `:::` when last child has inline elements.**
 
-Full gotchas and syntax edge cases: `${CLAUDE_PLUGIN_ROOT}/skills/editor/references/syntax.md`.
+Full gotchas and syntax edge cases: `${CLAUDE_PLUGIN_ROOT}/references/syntax.md`.

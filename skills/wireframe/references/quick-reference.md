@@ -29,7 +29,7 @@
 | **Generic** | `::: type ... :::` | Any container block |
 | **Card** | `::: card ... :::` | Card component |
 | **Hero** | `::: hero ... :::` | Hero section |
-| **Alert** | `::: alert type ... :::` | `success`, `info`, `warning`, `error` |
+| **Alert** | `::: alert {.success} ... :::` | variants: `.success`, `.warning`, `.error` — **not yet rendered** (parses but no visual style) |
 | **Modal** | `::: modal ... :::` | Dialog/modal |
 | **Sidebar** | `::: sidebar ... :::` | Sidebar navigation |
 | **Footer** | `::: footer ... :::` | Footer section |
@@ -47,7 +47,7 @@
 | **Row (aligned)** | `::: row {.right}` … `:::` | Right-aligned row |
 | **Tabs** | `::: tabs` with `::: tab Label` children | Tabbed panels |
 | **Col span** | `### Item {.col-span-2}` | Item spans 2 columns |
-| **Item alignment** | `### {.right}` inside `::: row` or `::: grid-N` | Right-aligns that item |
+| **Item alignment** | `### {.right}` / `### {.left}` / `### {.center}` inside `::: row` or `::: grid-N` | Aligns that item |
 
 Grid items are defined by `###` headings inside the `::: grid-N` container.
 
@@ -74,6 +74,8 @@ Grid items are defined by `###` headings inside the `::: grid-N` container.
 {type:date}      # Date
 {type:time}      # Time
 {type:search}    # Search
+{type:file}      # File upload
+{type:color}     # Color picker
 ```
 
 ## Input Attributes
@@ -94,13 +96,12 @@ Grid items are defined by `###` headings inside the `::: grid-N` container.
 ```markdown
 [Button]                    # Default
 [Button]*                   # Primary (asterisk shorthand)
-[Button]{.primary}          # Primary (class)
-[Button]{.secondary}        # Secondary
-[Button]{.outline}          # Outline
 [Button]{variant:danger}    # Danger/destructive
-[Button]{state:disabled}    # Disabled
+[Button]{state:disabled}    # Disabled ← use state:disabled, not {disabled}
 [Button]{state:loading}     # Loading
 ```
+
+> **⚠️ Gotcha:** `{disabled}` (without `state:`) is silently ignored on buttons. Always use `{state:disabled}`.
 
 ## Form Pattern
 

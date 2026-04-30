@@ -232,6 +232,8 @@ export default defineConfig({
         text: "Reference",
         collapsed: true,
         items: [
+          { text: "Syntax Reference", link: "/reference/syntax" },
+          { text: "CLI Reference", link: "/reference/cli" },
           { text: "FAQ & Troubleshooting", link: "/reference/faq" },
         ],
       },
