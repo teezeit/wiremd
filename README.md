@@ -94,20 +94,25 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 
 wiremd is a monorepo with three layers:
 
-**Core** — npm library + CLI (published to npm)
-- **`src/`** — Parser, renderers (HTML/React/Tailwind/JSON), and 7 CSS styles
-- **`bin/`** — CLI entry point (`wiremd` command)
-- **`tests/`** — Test suite
+```mermaid
+graph TD
+  core["<b>core</b><br/>src/ · bin/<br/>npm library + CLI"]
 
-**Frontend apps** — independent Vite apps, each on its own dev port
-- **`landing/`** — Marketing site (Vite + Vue) · `localhost:5175`
-- **`docs/`** — Documentation (VitePress) · `localhost:5173` · [live](https://teezeit.github.io/wiremd)
-- **`editor/`** — Web editor (Vite + Monaco) · `localhost:5174`
+  landing["<b>landing/</b><br/>marketing site<br/>Vite + Vue · :5175"]
+  docs["<b>docs/</b><br/>documentation<br/>VitePress · :5173"]
+  editor["<b>editor/</b><br/>web editor<br/>Vite + Monaco · :5174"]
 
-**Consumers** — depend on the core package via `"wiremd": "file:.."`
-- **`vscode-extension/`** — VS Code live preview with style switching
-- **`figma-plugin/`** — Import wiremd JSON into Figma as editable native designs
-- **`skills/wireframe/`** — Claude skill for generating wireframes with Claude
+  vscode["<b>vscode-extension/</b><br/>live preview"]
+  figma["<b>figma-plugin/</b><br/>import to Figma"]
+  skill["<b>skills/wireframe/</b><br/>Claude skill"]
+
+  core -->|"aliases src/ at dev time"| landing
+  core -->|"aliases src/ at dev time"| docs
+  core -->|"aliases src/ at dev time"| editor
+  core -->|"wiremd: file:.."| vscode
+  core -->|"wiremd: file:.."| figma
+  core -.->|"zip upload"| skill
+```
 
 ```bash
 npm run dev   # starts all three frontend apps concurrently
