@@ -5,10 +5,14 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { readFileSync, writeFileSync, unlinkSync, existsSync } from 'fs';
 import { execSync } from 'child_process';
+import { tmpdir } from 'os';
+import { resolve } from 'path';
 
 describe('CLI', () => {
-  const TEST_INPUT = './test-input.md';
-  const TEST_OUTPUT = './test-output.html';
+  // Use os.tmpdir() so concurrent turbo tasks (e.g. wiremd-landing's vite copy
+  // through apps/docs/node_modules/wiremd) don't race on these files.
+  const TEST_INPUT = resolve(tmpdir(), 'wiremd-cli-test-input.md');
+  const TEST_OUTPUT = resolve(tmpdir(), 'wiremd-cli-test-output.html');
 
   beforeEach(() => {
     // Create test input file
@@ -221,7 +225,7 @@ describe('CLI', () => {
     });
 
     it('should generate JSON format', () => {
-      const jsonOutput = './test-output.json';
+      const jsonOutput = resolve(tmpdir(), 'wiremd-cli-test-output.json');
       execSync(
         `node dist/cli/index.js ${TEST_INPUT} -o ${jsonOutput} --format json`
       );
@@ -276,7 +280,7 @@ describe('CLI', () => {
     });
 
     it('should respect custom output path', () => {
-      const customOutput = './custom-output.html';
+      const customOutput = resolve(tmpdir(), 'wiremd-cli-test-custom-output.html');
       execSync(`node dist/cli/index.js ${TEST_INPUT} -o ${customOutput}`);
 
       expect(existsSync(customOutput)).toBe(true);

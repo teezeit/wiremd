@@ -11,8 +11,10 @@ import { resolve } from 'path';
 import { tmpdir } from 'os';
 
 const BUNDLE     = resolve(__dirname, '../../../extensions/skills/wireframe/bin/wiremd.js');
-const TMP_INPUT  = resolve(__dirname, '../tmp-bundle-test-input.md');
-const TMP_OUTPUT = resolve(__dirname, '../tmp-bundle-test-output.html');
+// Write outside the package tree so concurrent turbo tasks (e.g. wiremd-landing's
+// vite copy through apps/docs/node_modules/wiremd) don't race on these files.
+const TMP_INPUT  = resolve(tmpdir(), 'wiremd-cli-bundle-test-input.md');
+const TMP_OUTPUT = resolve(tmpdir(), 'wiremd-cli-bundle-test-output.html');
 
 const MD = `# Test Page\n\n[Click Me]*\n\nEmail\n[_____________________________]{type:email}\n`;
 

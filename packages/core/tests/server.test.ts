@@ -4,13 +4,20 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createServer } from 'http';
-import { readFileSync, writeFileSync, unlinkSync } from 'fs';
+import { readFileSync, writeFileSync, unlinkSync, mkdtempSync, rmSync } from 'fs';
+import { tmpdir } from 'os';
+import { join, resolve } from 'path';
 import { startServer, notifyReload, notifyError } from '../src/cli/server.js';
+
+// Use a contained temp dir so concurrent turbo tasks (e.g. wiremd-landing's
+// vite copy through apps/docs/node_modules/wiremd) don't race on these files,
+// and so the server's _index walk doesn't hit OS-protected siblings in tmpdir().
+const TMP = mkdtempSync(join(tmpdir(), 'wiremd-server-'));
 
 describe('Multi-file routing', () => {
   const TEST_PORT = 3457;
-  const TEST_OUTPUT = './test-main.html';
-  const TEST_OTHER_MD = './test-other.md';
+  const TEST_OUTPUT = resolve(TMP, 'test-main.html');
+  const TEST_OTHER_MD = resolve(TMP, 'test-other.md');
   let server: any;
 
   beforeEach(() => {
@@ -32,7 +39,7 @@ describe('Multi-file routing', () => {
 
   it('should redirect / to the entry file when inputFile is provided', async () => {
     const renderFile = vi.fn().mockReturnValue('<html><body>Main Page</body></html>');
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.', inputFile: 'test-other.md' });
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: TMP, inputFile: 'test-other.md' });
     const res = await fetch(`http://localhost:${TEST_PORT}/`, { redirect: 'manual' });
     expect(res.status).toBe(302);
     expect(res.headers.get('location')).toBe('/test-other.md');
@@ -48,7 +55,7 @@ describe('Multi-file routing', () => {
 
   it('should call renderFile for .md requests and serve result', async () => {
     const renderFile = vi.fn().mockReturnValue('<html><body>Rendered Other</body></html>');
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.' });
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: TMP });
     const res = await fetch(`http://localhost:${TEST_PORT}/test-other.md`);
     expect(res.status).toBe(200);
     expect(renderFile).toHaveBeenCalledWith(expect.stringContaining('test-other.md'));
@@ -57,14 +64,14 @@ describe('Multi-file routing', () => {
   });
 
   it('should return 404 for unknown paths', async () => {
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, rootDir: '.' });
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, rootDir: TMP });
     const res = await fetch(`http://localhost:${TEST_PORT}/nonexistent.md`);
     expect(res.status).toBe(404);
   });
 
   it('should always serve file tree at /_index even when inputFile is set', async () => {
     const renderFile = vi.fn().mockReturnValue('<html><body>Main Page</body></html>');
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.', inputFile: 'index.md' });
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: TMP, inputFile: 'index.md' });
     const res = await fetch(`http://localhost:${TEST_PORT}/_index`);
     expect(res.status).toBe(200);
     const html = await res.text();
@@ -74,7 +81,7 @@ describe('Multi-file routing', () => {
 
 describe('Dev Server', () => {
   const TEST_PORT = 3456;
-  const TEST_OUTPUT = './test-server-output.html';
+  const TEST_OUTPUT = resolve(TMP, 'test-server-output.html');
   let server: any;
 
   beforeEach(() => {

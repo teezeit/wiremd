@@ -5,6 +5,8 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { writeFileSync, unlinkSync, existsSync, mkdirSync, rmSync } from 'fs';
+import { tmpdir } from 'os';
+import { resolve } from 'path';
 import {
   parseArgs,
   showHelp,
@@ -285,7 +287,9 @@ describe('CLI Unit Tests', () => {
   });
 
   describe('checkFileSize', () => {
-    const TEST_DIR = './test-temp-cli-unit';
+    // Use os.tmpdir() so concurrent turbo tasks don't race on these files via
+    // apps/docs/node_modules/wiremd's symlink walk during the landing build.
+    const TEST_DIR = resolve(tmpdir(), 'wiremd-test-temp-cli-unit-checkFileSize');
     const SMALL_FILE = `${TEST_DIR}/small.md`;
     const LARGE_FILE = `${TEST_DIR}/large.md`;
 
@@ -341,7 +345,7 @@ describe('CLI Unit Tests', () => {
   });
 
   describe('generateOutput', () => {
-    const TEST_DIR = './test-temp-cli-unit';
+    const TEST_DIR = resolve(tmpdir(), 'wiremd-test-temp-cli-unit-generateOutput');
     const TEST_FILE = `${TEST_DIR}/test.md`;
 
     beforeEach(() => {
