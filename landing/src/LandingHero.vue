@@ -9,7 +9,7 @@ import { docsUrl, editorUrl } from './urls.ts'
     <div class="lh-ctas">
       <a :href="editorUrl()" class="lh-cta lh-cta--primary" target="_blank" rel="noopener">
         <img src="/wiremd/assets/logos/logo-chrome.jpg" class="lh-cta__logo" alt="" />
-        Web Editor
+        Open Editor
       </a>
       <a :href="docsUrl('/guide/claude.html')" class="lh-cta lh-cta--secondary">
         <img src="/wiremd/assets/logos/logo-claude.png" class="lh-cta__logo" alt="" />
