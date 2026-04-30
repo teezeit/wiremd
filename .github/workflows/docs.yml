@@ -33,8 +33,6 @@ jobs:
           fetch-depth: 0 # For lastUpdated feature
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
