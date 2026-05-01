@@ -47,12 +47,17 @@ describe('clean style: known CSS gaps (it.fails until styles.ts grows the rule)'
     expect(clean()).toMatch(/wmd-align-(?:left|center|right)[^{]*\{[^}]*text-align/);
   });
 
-  it('styles ::: alert containers (chrome + variants)', () => {
-    // The `alert` container type renders as a plain `wmd-container-alert`
-    // div with no border, background, icon, or variant differentiation
-    // in `clean`. Other styles (sketch, wireframe, material, brutal)
-    // do implement alert chrome — `clean` is the outlier.
-    expect(clean()).toMatch(/\.wmd-container-alert\b/);
+  it('styles ::: alert containers (chrome + all three variants)', () => {
+    // Base chrome must exist, AND the variant selectors must match the
+    // classes the renderer actually emits (`wmd-success` / `wmd-warning` /
+    // `wmd-error` — note: NO `state-` prefix). Earlier iterations of these
+    // rules used `state-success`/`state-error` which silently never matched
+    // the rendered HTML; the visual review surfaced it.
+    const css = clean();
+    expect(css).toMatch(/\.wmd-container-alert\b/);
+    expect(css).toMatch(/\.wmd-container-alert\.wmd-success\b/);
+    expect(css).toMatch(/\.wmd-container-alert\.wmd-warning\b/);
+    expect(css).toMatch(/\.wmd-container-alert\.wmd-error\b/);
   });
 
   it('styles button size variants (.small / .large)', () => {
