@@ -88,7 +88,7 @@ function finishContainer(containerType: string, attrs: string, inline: string, c
 function collectContainer(
   nodes: any[],
   startIdx: number,
-): { node: any; nextIndex: number } {
+): { node: any; trailing?: any[]; nextIndex: number } {
   const openerNode = nodes[startIdx];
   const opener = parseContainerOpener(openerNode)!;
 
@@ -122,7 +122,18 @@ function collectContainer(
           children: [{ type: 'text', value: contentText }],
         });
       }
-      return finishContainer(opener.containerType, opener.attrs, opener.inline, children, startIdx + 1, openerNode.position);
+      // Preserve any text after the closer line as sibling node(s). Remark
+      // folds the entire run of non-blank lines into the opener paragraph,
+      // so trailing content here is content that lived after `::: ` on
+      // disk and would otherwise be silently dropped.
+      const trailingText = lines.slice(closingIdx + 1).join('\n').trim();
+      const trailing = trailingText
+        ? [{ type: 'paragraph', children: [{ type: 'text', value: trailingText }] }]
+        : undefined;
+      return {
+        ...finishContainer(opener.containerType, opener.attrs, opener.inline, children, startIdx + 1, openerNode.position),
+        trailing,
+      };
     }
   }
 
@@ -204,6 +215,37 @@ function collectContainer(
         containerChildren.push(syntheticPara);
       }
     }
+  } else if (
+    openerNode.children.length > 1 &&
+    openerNode.children[0]?.type === 'text'
+  ) {
+    // Trailing whitespace on the opener line (e.g. `::: card   `) makes remark
+    // emit a hard `break` node, splitting the paragraph children into
+    // [text:'::: card', break, text:'first content line', …]. Extract the
+    // post-opener children as a synthetic paragraph so content isn't dropped.
+    const firstText = openerNode.children[0].value as string;
+    const newlineIdx = firstText.indexOf('\n');
+    const restChildren: any[] = [];
+    if (newlineIdx >= 0) {
+      const remainder = firstText.slice(newlineIdx + 1);
+      if (remainder) restChildren.push({ type: 'text', value: remainder });
+      restChildren.push(...openerNode.children.slice(1));
+    } else {
+      // First text is exactly the opener line; skip a leading hard break if present.
+      const startSliceIdx = openerNode.children[1]?.type === 'break' ? 2 : 1;
+      restChildren.push(...openerNode.children.slice(startSliceIdx));
+    }
+    if (restChildren.length > 0) {
+      const syntheticPara = {
+        type: 'paragraph',
+        children: restChildren,
+      };
+      if (parseContainerOpener(syntheticPara)) {
+        pendingAfterOpener = syntheticPara;
+      } else {
+        containerChildren.push(syntheticPara);
+      }
+    }
   }
 
   let i = startIdx + 1;
@@ -214,6 +256,7 @@ function collectContainer(
     const virtualNodes = [pendingAfterOpener, ...nodes.slice(startIdx + 1)];
     const inner = collectContainer(virtualNodes, 0);
     containerChildren.push(inner.node);
+    if (inner.trailing) containerChildren.push(...inner.trailing);
     // inner.nextIndex is relative to virtualNodes whose [0] is the synthetic para;
     // real nodes start at startIdx+1, so advance i by (inner.nextIndex - 1).
     i = startIdx + inner.nextIndex;
@@ -233,6 +276,7 @@ function collectContainer(
     if (parseContainerOpener(child)) {
       const inner = collectContainer(nodes, i);
       containerChildren.push(inner.node);
+      if (inner.trailing) containerChildren.push(...inner.trailing);
       i = inner.nextIndex;
       continue;
     }
@@ -351,8 +395,9 @@ function processNodes(nodes: any[]): any[] {
     const node = nodes[i];
 
     if (parseContainerOpener(node)) {
-      const { node: containerNode, nextIndex } = collectContainer(nodes, i);
+      const { node: containerNode, trailing, nextIndex } = collectContainer(nodes, i);
       result.push(containerNode);
+      if (trailing) result.push(...trailing);
       i = nextIndex;
     } else {
       result.push(node);

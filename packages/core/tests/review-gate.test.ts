@@ -40,18 +40,14 @@ const LOG_PATH = join(TESTS_DIR, 'fixtures', 'REVIEW_LOG.md');
 const KNOWN_FAILURES = new Set<string>([
   'fixture-regression-containers-closer-no-blank-line-before-list',
   'fixture-regression-containers-closer-text-before-nested-opener',
-  'fixture-regression-formatting-closer-with-trailing-space',
   'fixture-regression-formatting-icon-needs-blank-line',
   'fixture-regression-formatting-inline-nav-needs-blank-line',
   'fixture-regression-formatting-siblings-no-blank-between',
-  'fixture-regression-formatting-trailing-whitespace-opener',
   'fixture-regression-grid-text-after-opener-flag',
   'fixture-regression-inline-text-after-button',
   'fixture-docs-inputs-with-placeholder',
   'fixture-docs-badges-in-a-table',
   'fixture-docs-cards-card',
-  'fixture-docs-page-layouts-sidebar-layout',
-  'fixture-docs-page-layouts-sidebar-with-sections',
   'fixture-docs-tables-with-badges',
   'fixture-docs-tables-data-table-with-actions',
   // Button .small/.large size rules only landed in clean during Phase A;
