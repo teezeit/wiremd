@@ -20944,7 +20944,7 @@ STYLES:
   material   - Google Material Design with elevation system
   brutal     - Neo-brutalism with bold colors and thick borders
 
-For more information: https://github.com/akonan/wiremd
+For more information: https://github.com/teezeit/wiremd
 `);
 }
 function showVersion() {
