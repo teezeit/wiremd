@@ -308,7 +308,7 @@ For very large files, disable auto-refresh:
 
 ## 📚 Additional Resources
 
-- [Wiremd Documentation](https://github.com/akonan/wiremd)
+- [Wiremd Documentation](https://github.com/teezeit/wiremd)
 - [VS Code Extension Guide](../../extensions/vscode/README.md)
 - [CLI Reference](./README.md)
 - [Examples](./examples/)

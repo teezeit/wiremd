@@ -20,8 +20,11 @@ pnpm turbo run lint
 # Run a single workspace:
 pnpm --filter wiremd run build
 pnpm --filter wiremd run test
+pnpm --filter wiremd run test:watch
 pnpm --filter wiremd-editor run dev
 pnpm --filter wiremd-docs run dev
+pnpm --filter wiremd-landing run dev
+pnpm --filter wiremd-preview run dev   # VS Code extension watcher
 ```
 
 Run from `packages/core/` for core-library work:
@@ -107,7 +110,9 @@ After edits rebuild: `Cmd+Shift+P` → "Developer: Reload Window".
 
 ## Testing
 
-Tests live in `packages/core/tests/`. Key files: `parser.test.ts`, `renderer.test.ts`, `react-renderer.test.ts`, `tailwind-renderer.test.ts`, `integration.test.ts`, `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `api-examples.test.ts`, `package-shape.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
+**Unit/integration tests** live in `packages/core/tests/`. Key files: `parser.test.ts`, `renderer.test.ts`, `react-renderer.test.ts`, `tailwind-renderer.test.ts`, `integration.test.ts`, `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `api-examples.test.ts`, `package-shape.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
+
+**E2E tests** live in `tests/e2e/` (Playwright, configured at root `playwright.config.ts`). They run against the deployed site at `teezeit.github.io` — not locally. Run with `pnpm exec playwright test`.
 
 ## Build output
 
@@ -131,6 +136,12 @@ git push && git push --tags
 Pushing the tag triggers:
 1. `release.yml` — creates the GitHub release with auto-generated notes
 2. `publish.yml` — publishes the VS Code extension to the Marketplace and attaches the skill zip
+
+**npm is NOT published by CI.** To push a new version of the npm package, do it manually after the tag:
+```bash
+pnpm --filter wiremd run build
+cd packages/core && npm publish --access public
+```
 
 **Extension-only fix**: bump `extensions/vscode/package.json` independently (`cd extensions/vscode && npm version patch`), then create a GitHub release manually for that tag. The core npm version stays unchanged.
 

@@ -83,7 +83,7 @@ wiremd login.md -o dist/login.html --style clean
 ## Programmatic use
 
 ```bash
-npm install wiremd
+npm install @eclectic-ai/wiremd
 ```
 
 ```ts

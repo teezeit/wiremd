@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import { parse, renderToHTML } from 'wiremd'
+import { parse, renderToHTML } from '@eclectic-ai/wiremd'
 
 const STYLES = ['sketch', 'clean', 'wireframe', 'material', 'brutal', 'tailwind'] as const
 type WiremdStyle = typeof STYLES[number]

@@ -149,7 +149,7 @@
 		"lint": "eslint src --ext ts"
 	},
 	"dependencies": {
-		"wiremd": "workspace:*"
+		"@eclectic-ai/wiremd": "workspace:*"
 	},
 	"devDependencies": {
 		"@types/node": "^18.0.0",
@@ -163,7 +163,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/akonan/wiremd.git",
+		"url": "https://github.com/teezeit/wiremd.git",
 		"directory": "extensions/vscode"
 	},
 	"license": "MIT"

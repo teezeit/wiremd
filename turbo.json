@@ -29,6 +29,10 @@
       "dependsOn": ["transit"],
       "inputs": ["src/**", "tests/**", ".eslintrc*", "eslint.config*"],
       "outputs": []
+    },
+    "publish:npm": {
+      "dependsOn": ["build", "test"],
+      "cache": false
     }
   }
 }

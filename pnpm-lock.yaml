@@ -20,7 +20,7 @@ importers:
 
   apps/docs:
     dependencies:
-      wiremd:
+      '@eclectic-ai/wiremd':
         specifier: workspace:*
         version: link:../../packages/core
     devDependencies:
@@ -30,15 +30,15 @@ importers:
 
   apps/editor:
     dependencies:
+      '@eclectic-ai/wiremd':
+        specifier: workspace:*
+        version: link:../../packages/core
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0
       monaco-editor:
         specifier: ^0.55.1
         version: 0.55.1
-      wiremd:
-        specifier: workspace:*
-        version: link:../../packages/core
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^1.0.0
@@ -58,12 +58,12 @@ importers:
 
   apps/landing:
     dependencies:
+      '@eclectic-ai/wiremd':
+        specifier: workspace:*
+        version: link:../../packages/core
       vue:
         specifier: ^3.5.0
         version: 3.5.33(typescript@5.9.3)
-      wiremd:
-        specifier: workspace:*
-        version: link:../../packages/core
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^5.0.0
@@ -98,7 +98,7 @@ importers:
 
   extensions/vscode:
     dependencies:
-      wiremd:
+      '@eclectic-ai/wiremd':
         specifier: workspace:*
         version: link:../../packages/core
     devDependencies:

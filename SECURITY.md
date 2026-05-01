@@ -75,7 +75,7 @@ npm audit fix
 
 ## Known Issues
 
-Currently no known security issues. Check the [Security Advisories](https://github.com/akonan/wiremd/security/advisories) page for updates.
+Currently no known security issues. Check the [Security Advisories](https://github.com/teezeit/wiremd/security/advisories) page for updates.
 
 ## Security Updates
 

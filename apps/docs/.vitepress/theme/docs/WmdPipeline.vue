@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { parse, renderToHTML } from 'wiremd'
+import { parse, renderToHTML } from '@eclectic-ai/wiremd'
 
 const CODE = `## Login
 
