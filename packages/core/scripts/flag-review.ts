@@ -17,9 +17,11 @@
  *   - Glob on id: "docs/alerts:*"
  *
  * --snapshot-changes flips every fixture whose .html / .react.tsx /
- * .tailwind.html / .tree.txt has changed in `git diff` since <ref>
- * (default: HEAD~1). Doesn't help for CSS-only changes — pass those
- * fixtures explicitly.
+ * .tailwind.html / .tree.txt has changed against <since>. The default
+ * (`HEAD`) looks at *working-tree changes* — pair it with `pnpm test -u`
+ * to flip exactly the fixtures whose snapshots just got refreshed.
+ * Pass `--since HEAD~1` etc. to compare across commits. Doesn't help
+ * for CSS-only changes — pass those fixtures explicitly.
  */
 
 import { writeFileSync, readFileSync, existsSync } from 'fs';
@@ -79,14 +81,16 @@ function matchFixtures(fixtures: Fixture[], patterns: string[]): Fixture[] {
 }
 
 function fixturesWithChangedSnapshots(fixtures: Fixture[], since: string): Fixture[] {
+  // Default `since=HEAD` means working-tree-vs-HEAD (intentional — pairs
+  // with `pnpm test -u`). A non-HEAD ref gives commit-range diff.
+  const cmd = since === 'HEAD' || since === ''
+    ? 'git diff --name-only HEAD'
+    : `git diff --name-only ${since}..HEAD`;
   let diffOut: string;
   try {
-    diffOut = execSync(`git diff --name-only ${since}..HEAD`, {
-      cwd: REPO_ROOT,
-      encoding: 'utf-8',
-    });
+    diffOut = execSync(cmd, { cwd: REPO_ROOT, encoding: 'utf-8' });
   } catch (err) {
-    console.error(`Failed to run git diff vs ${since}:`, err);
+    console.error(`Failed to run \`${cmd}\`:`, err);
     return [];
   }
   const changed = new Set(
@@ -129,7 +133,7 @@ function flipToTodo(text: string, anchors: Set<string>): { text: string; flipped
 }
 
 const args = process.argv.slice(2);
-let since = 'HEAD~1';
+let since = 'HEAD';
 let useSnapshotChanges = false;
 let useAll = false;
 const patterns: string[] = [];

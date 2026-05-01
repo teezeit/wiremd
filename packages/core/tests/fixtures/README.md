@@ -164,7 +164,9 @@ In `tests/lib/fixture-runner.ts`, append the path to `DOC_SOURCES`. Run `pnpm te
 
 ## Reviewing snapshots
 
-For visual judgment of rendered output, use the review tool. It generates a single static HTML page with every fixture rendered with full styles, and uses the File System Access API (Chrome/Edge/Opera) to write status changes back to `REVIEW_LOG.md`:
+For visual judgment of rendered output, use the review tool. It generates a single static HTML page with every fixture rendered with full styles, and uses the File System Access API (Chrome/Edge/Opera) to write status changes back to `REVIEW_LOG.md`.
+
+`REVIEW_LOG.md` is **committed to git** — visual review verdicts are part of the project's source of truth. The [Review gate](#review-gate) test in `tests/review-gate.test.ts` fails when any fixture is ⏳, so the test suite enforces visual review before code can ship.
 
 ```bash
 # From packages/core/
@@ -175,10 +177,14 @@ pnpm review        # builds REVIEW.html and opens it in your browser
 # Per fixture row: glance source + rendered output, click a status emoji,
 # optionally type a comment. Autosaves on blur.
 
-# After a code change that affects rendering, flip the affected fixtures
-# back to ⏳ for re-review:
+# After a code change that affects rendering — refresh snapshots AND flip
+# the affected fixtures back to ⏳ in one shot:
+pnpm review:refresh   # = pnpm review:log + pnpm test -u + pnpm review:flag --snapshot-changes
+
+# Or do the steps manually:
 pnpm review:flag "alerts/variants" "active-state"  # by id, short name, or glob
-pnpm review:flag --snapshot-changes --since HEAD~1 # auto-detect via git diff
+pnpm review:flag --snapshot-changes                # working-tree-vs-HEAD
+pnpm review:flag --snapshot-changes --since HEAD~1 # commit-range
 pnpm review:flag --all                             # flip everything (fresh sweep)
 ```
 
@@ -192,6 +198,17 @@ Row border colour reflects status. Top filter chips restrict visible rows. Stick
 `REVIEW_LOG.md` is a reference-style markdown checklist — the source of truth for the sweep. Hand-edits are also fine; the page picks them up on the next focus event. Re-running `pnpm review:log` is **idempotent**: existing verdicts and comments are merged forward verbatim, new fixtures land at their filesystem-derived status, removed fixtures drop out.
 
 After the sweep, ask Claude (or do it yourself) to translate `📝` and `❌` log entries into `.notes.md` and `.expected-fail.invariants.ts` files. The log captures intent; promotion to executable contracts is deliberate.
+
+### Review gate
+
+[`tests/review-gate.test.ts`](../review-gate.test.ts) parses `REVIEW_LOG.md` and fails if any fixture is ⏳. This makes visual review load-bearing in the test suite:
+
+- Refresh a snapshot via `pnpm test -u` → matching fixture becomes ⏳ (when paired with `pnpm review:flag --snapshot-changes`, or via the combined `pnpm review:refresh`).
+- `pnpm test` now goes red on the gate test, listing every pending fixture.
+- Open `pnpm review`, eyeball, click ✅ — gate clears, suite goes green.
+- CI enforces the same: a PR with un-reviewed snapshot drift cannot merge.
+
+The gate is a forcing function, not a lock. If you need to ship without review (don't), manually flip the row in `REVIEW_LOG.md` — git history will show that the verdict was set without a review commit, which is the audit trail.
 
 ---
 
@@ -327,6 +344,7 @@ The test suite is the truth. The README is the map. The bugs are bookmarked in `
 | `tests/lib/*.test.ts` | Unit tests for the infrastructure itself |
 | `tests/fixtures.test.ts` | The driver — iterates `loadFixtures()`, asserts snapshots, runs invariants |
 | `tests/styles.test.ts` | The CSS-gap channel — `it.fails` against `getStyleCSS('clean', …)` for missing rules |
+| `tests/review-gate.test.ts` | The visual-review gate — fails on any ⏳ row in `REVIEW_LOG.md` |
 | `scripts/build-review-log.ts` | Seeds `REVIEW_LOG.md` (idempotent — re-runs merge with existing verdicts) |
 | `scripts/build-review-page.ts` | Builds `REVIEW.html` with FSAccess-driven log round-tripping |
 | `scripts/flag-review.ts` | Flips fixtures back to ⏳ after a code change (used by `pnpm review:flag`) |
