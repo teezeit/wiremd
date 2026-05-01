@@ -76,7 +76,7 @@ export type WiremdNode =
   // Content
   | { type: 'heading'; level: 1 | 2 | 3 | 4 | 5 | 6; content?: string; children?: WiremdNode[]; props: ComponentProps; position?: Location }
   | { type: 'paragraph'; content?: string; children?: WiremdNode[]; props: ComponentProps; position?: Location }
-  | { type: 'text'; content: string; props?: ComponentProps; position?: Location }
+  | { type: 'text'; content: string; mark?: 'strong' | 'em' | 'code'; props?: ComponentProps; position?: Location }
   | { type: 'image'; src: string; alt: string; props: ComponentProps & { width?: number | string; height?: number | string; loading?: 'lazy' | 'eager' }; position?: Location }
   | { type: 'icon'; props: ComponentProps & { name: string; size?: 'small' | 'medium' | 'large' }; position?: Location }
   | { type: 'link'; href: string; title?: string; content?: string; children?: WiremdNode[]; props: ComponentProps; position?: Location }

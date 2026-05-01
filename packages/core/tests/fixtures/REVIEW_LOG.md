@@ -149,7 +149,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [✅ basic-usage][98]
 - [✅ threads-multiple-comments-on-one-element][99]
 - [✅ annotating-a-whole-card][100]
-- [📝 annotating-a-whole-card-2][101] — test should be called annotate item inside a card
+- [✅ annotating-a-whole-card-2][101] — test should be called annotate item inside a card
 - [✅ annotating-a-whole-grid-column][102]
 - [✅ comments-between-tabs][103]
 - [✅ multiline-comments][104]

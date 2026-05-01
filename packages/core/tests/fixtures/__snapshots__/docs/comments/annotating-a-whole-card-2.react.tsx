@@ -6,7 +6,7 @@ export const WiremdComponent: React.FC = () => {
   <div className="wmd-container-card">
     <h3 className="wmd-h3">Pro Plan</h3>
 
-    <p className="wmd-paragraph">&lt;strong&gt;$12/mo&lt;/strong&gt; · unlimited</p>
+    <p className="wmd-paragraph"><strong>$12/mo</strong> · unlimited</p>
     <button className="wmd-button wmd-button-primary">
       Start Trial
     </button>

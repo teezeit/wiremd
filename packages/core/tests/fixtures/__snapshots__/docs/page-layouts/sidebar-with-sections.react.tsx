@@ -5,7 +5,7 @@ export const WiremdComponent: React.FC = () => {
     <div className="wmd-root">
   <div className="wmd-container-layout wmd-sidebar-main">
     <div className="wmd-container-sidebar">
-      <p className="wmd-paragraph">&lt;strong&gt;Acme Co.&lt;/strong&gt;</p>
+      <p className="wmd-paragraph"><strong>Acme Co.</strong></p>
       <h4 className="wmd-h4">Workspace</h4>
       <div className="wmd-container-button-group">
         <button className="wmd-button wmd-button-primary">
@@ -40,15 +40,15 @@ export const WiremdComponent: React.FC = () => {
       <div className="wmd-grid wmd-grid-3" style={{ '--grid-columns': 3 } as React.CSSProperties}>
         <div className="wmd-grid-item wmd-card">
           <h3 className="wmd-h3">Tasks Done</h3>
-          <p className="wmd-paragraph">&lt;strong&gt;48&lt;/strong&gt; this week</p>
+          <p className="wmd-paragraph"><strong>48</strong> this week</p>
         </div>
         <div className="wmd-grid-item wmd-card">
           <h3 className="wmd-h3">In Progress</h3>
-          <p className="wmd-paragraph">&lt;strong&gt;12&lt;/strong&gt; open</p>
+          <p className="wmd-paragraph"><strong>12</strong> open</p>
         </div>
         <div className="wmd-grid-item wmd-card">
           <h3 className="wmd-h3">Upcoming</h3>
-          <p className="wmd-paragraph">&lt;strong&gt;5&lt;/strong&gt; due today</p>
+          <p className="wmd-paragraph"><strong>5</strong> due today</p>
         </div>
       </div>
     </div>
