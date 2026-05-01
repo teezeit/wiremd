@@ -519,10 +519,12 @@ ${sections}
       const [, status, name, ref, comment] = m;
       const anchor = refToAnchor[ref];
       if (!anchor) continue;
+      // Decode the soft newline marker back to real newlines for display.
+      const decoded = (comment || '').replace(/ \\\\n /g, '\\n').trim();
       state[anchor] = {
         ref: Number(ref),
         status: STATUSES.includes(status) ? status : '⏳',
-        comment: (comment || '').trim(),
+        comment: decoded,
         name: name.trim(),
       };
     }
@@ -550,7 +552,12 @@ ${sections}
       const entry = logState[anchor];
       if (!entry) return line;
       let out = '- [' + entry.status + ' ' + entry.name + '][' + ref + ']';
-      if (entry.comment) out += ' — ' + entry.comment;
+      if (entry.comment) {
+        // Encode newlines as a sentinel so the row stays single-line on disk.
+        // Read back via the decoder in parseLog.
+        const flat = entry.comment.replace(/[\\r\\n]+/g, ' \\\\n ');
+        out += ' — ' + flat;
+      }
       return out;
     }).join('\\n');
   }
