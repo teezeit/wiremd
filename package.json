@@ -13,7 +13,10 @@
     "skill:zip":      "bash scripts/package-skill.sh",
     "bundle":         "node scripts/build-bundle.mjs",
     "sync-versions":  "node scripts/sync-versions.mjs",
-    "version":        "node scripts/sync-versions.mjs && git add extensions/vscode/package.json extensions/skills/wireframe/.claude-plugin/plugin.json"
+    "version":        "node scripts/sync-versions.mjs && git add extensions/vscode/package.json extensions/skills/wireframe/.claude-plugin/plugin.json",
+    "version:patch":  "cd packages/core && npm version patch",
+    "version:minor":  "cd packages/core && npm version minor",
+    "version:major":  "cd packages/core && npm version major"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
