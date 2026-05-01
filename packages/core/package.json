@@ -44,7 +44,8 @@
     "clean": "rm -rf dist node_modules",
     "publish:npm": "npm publish --access public",
     "review": "tsx scripts/build-review-page.ts && open tests/fixtures/REVIEW.html",
-    "review:log": "tsx scripts/build-review-log.ts"
+    "review:log": "tsx scripts/build-review-log.ts",
+    "review:flag": "tsx scripts/flag-review.ts"
   },
   "dependencies": {
     "chalk": "^5.6.2",

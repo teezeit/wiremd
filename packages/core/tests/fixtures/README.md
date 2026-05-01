@@ -150,12 +150,18 @@ For visual judgment of rendered output, use the review tool. It generates a sing
 
 ```bash
 # From packages/core/
-pnpm review:log    # seeds REVIEW_LOG.md with all fixtures as ⏳ (todo)
+pnpm review:log    # seeds REVIEW_LOG.md with all fixtures (idempotent — preserves verdicts)
 pnpm review        # builds REVIEW.html and opens it in your browser
 
 # In the page header: click "Connect to REVIEW_LOG.md" → grant write access.
 # Per fixture row: glance source + rendered output, click a status emoji,
 # optionally type a comment. Autosaves on blur.
+
+# After a code change that affects rendering, flip the affected fixtures
+# back to ⏳ for re-review:
+pnpm review:flag "alerts/variants" "active-state"  # by id, short name, or glob
+pnpm review:flag --snapshot-changes --since HEAD~1 # auto-detect via git diff
+pnpm review:flag --all                             # flip everything (fresh sweep)
 ```
 
 Each fixture row has 3 columns:
