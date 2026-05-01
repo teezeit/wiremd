@@ -73,18 +73,24 @@ When a category gets dense enough to deserve its own folder under `regressions/`
 
 ---
 
-## Two test channels
+## Three test channels
 
-The corpus has two separate channels, deliberately:
+Bugs and contracts get tracked in one of three places, depending on what they're about:
 
 | Channel | Asserts | Form | Fails when |
 |---|---|---|---|
-| **Snapshot** | "What the system *currently* produces." | Generated `.html`/`.react.tsx`/`.tailwind.html`/`.tree.txt` files. | Output drifts from last commit. Could be a bug, a fix, or a refactor — diff tells the story. |
-| **Invariants** | "What the system *must* produce." | Optional `.invariants.ts` sidecar. | Real correctness violation. Don't paper over with `-u`. |
+| **Snapshot** | "What the system *currently* produces." | Generated `.html`/`.react.tsx`/`.tailwind.html`/`.tree.txt` next to each fixture. | Output drifts from last commit. Could be a bug, a fix, or a refactor — diff tells the story. |
+| **Invariants** | "What the system *must* produce." | Optional `.invariants.ts` (or `.expected-fail.invariants.ts`) sidecar on a specific fixture. | Real correctness violation in the AST/HTML/React/Tailwind output. Don't paper over with `-u`. |
+| **Style gaps** | "A specific CSS selector exists in `getStyleCSS('clean', …)`." | `it.fails(...)` (or `it(...)`) in [`tests/styles.test.ts`](../styles.test.ts). | A CSS rule we depend on was removed, or a new gap is documented and not yet filled. |
 
-**Snapshots catch regressions. Invariants catch bugs.** Different signals, different responses.
+**Snapshots catch regressions. Invariants catch bugs in rendered output. Style gaps catch missing CSS rules.** Different signals, different responses.
 
-A fixture without an invariants file is fine — most are. The invariants channel is for cases where you can articulate a contract that must hold, especially for known bugs you're tracking before fixing.
+A fixture without an invariants file is fine — most are. Invariants are for cases where you can articulate an output contract that must hold (especially for known bugs tracked before fixing). Style-gap tests live separately because CSS rules don't show up in our snapshot strings — when an AST is correct and the rendered HTML is correct but the *visual output* is wrong, the assertion belongs in `tests/styles.test.ts`.
+
+The two it-fails patterns mirror each other:
+
+- Parser/renderer bug → `<base>.expected-fail.invariants.ts` next to the fixture. When the parser is fixed, the contract starts passing under `it.fails`, vitest reports red, you rename the file (drop `.expected-fail.`) to close.
+- Missing CSS rule → `it.fails(...)` in `tests/styles.test.ts`. When the rule lands in `styles.ts`, the test goes red, you drop `.fails` to close.
 
 ---
 
@@ -308,7 +314,9 @@ The test suite is the truth. The README is the map. The bugs are bookmarked in `
 | `tests/lib/ast-serializer.ts` | Pretty-tree formatter for `.tree.txt` snapshots, position-stripped |
 | `tests/lib/*.test.ts` | Unit tests for the infrastructure itself |
 | `tests/fixtures.test.ts` | The driver — iterates `loadFixtures()`, asserts snapshots, runs invariants |
-| `scripts/build-review-log.ts` | Seeds `REVIEW_LOG.md` from filesystem state |
+| `tests/styles.test.ts` | The CSS-gap channel — `it.fails` against `getStyleCSS('clean', …)` for missing rules |
+| `scripts/build-review-log.ts` | Seeds `REVIEW_LOG.md` (idempotent — re-runs merge with existing verdicts) |
 | `scripts/build-review-page.ts` | Builds `REVIEW.html` with FSAccess-driven log round-tripping |
+| `scripts/flag-review.ts` | Flips fixtures back to ⏳ after a code change (used by `pnpm review:flag`) |
 
 The infrastructure is unit-tested (24 tests). Bugs in it would corrupt every snapshot downstream, so it doesn't get a free pass.
