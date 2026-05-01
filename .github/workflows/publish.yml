@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
 
       - uses: pnpm/action-setup@v4
 
@@ -39,6 +41,7 @@ jobs:
       - name: Attach skill zip to GitHub release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event.release.tag_name || github.event.inputs.tag }}
           files: releases/wireframe-skill.zip
 
       - name: Build VS Code extension
