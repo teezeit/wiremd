@@ -343,12 +343,14 @@ function renderNav(node: any, context: TailwindRenderContext): string {
 function renderNavItem(node: any, context: TailwindRenderContext): string {
   const classes = 'text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors font-medium';
   const href = node.href || '#';
+  const isActive = Array.isArray(node.props?.classes) && node.props.classes.includes('active');
+  const ariaCurrent = isActive ? ' aria-current="page"' : '';
 
   const contentHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
     : escapeHtml(node.content);
 
-  return `<a href="${href}" class="${classes}">${contentHTML}</a>`;
+  return `<a href="${href}"${ariaCurrent} class="${classes}">${contentHTML}</a>`;
 }
 
 function renderBrand(node: any, context: TailwindRenderContext): string {

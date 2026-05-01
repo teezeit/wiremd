@@ -7,7 +7,7 @@ export const WiremdComponent: React.FC = () => {
     <div className="wmd-nav-content">
       <div className="wmd-brand">Logo</div>
       <a href="#" className="wmd-nav-item">Home</a>
-      <a href="#" className="wmd-nav-item wmd-active">Products</a>
+      <a href="#" aria-current="page" className="wmd-nav-item wmd-active">Products</a>
       <a href="#" className="wmd-nav-item">About</a>
       <a href="#" className="wmd-nav-item">Contact</a>
     </div>

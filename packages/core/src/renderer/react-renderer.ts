@@ -328,12 +328,14 @@ function renderNavItem(node: any, context: ReactRenderContext, indent: number): 
   const classes = buildClasses(prefix, 'nav-item', node.props);
   const href = node.href || '#';
   const classAttr = context.useClassName ? 'className' : 'class';
+  const isActive = Array.isArray(node.props?.classes) && node.props.classes.includes('active');
+  const ariaCurrent = isActive ? ' aria-current="page"' : '';
 
   const contentJSX = node.children
     ? node.children.map((child: any) => renderNode(child, context, 0)).join('')
     : escapeJSX(node.content);
 
-  return `${indentStr}<a href="${href}" ${classAttr}="${classes}">${contentJSX}</a>`;
+  return `${indentStr}<a href="${href}"${ariaCurrent} ${classAttr}="${classes}">${contentJSX}</a>`;
 }
 
 function renderBrand(node: any, context: ReactRenderContext, indent: number): string {

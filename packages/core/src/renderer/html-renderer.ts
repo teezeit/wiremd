@@ -541,6 +541,8 @@ function renderNav(node: any, context: RenderContext): string {
 function renderNavItem(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const href = node.href || '#';
+  const isActive = Array.isArray(node.props?.classes) && node.props.classes.includes('active');
+  const ariaCurrent = isActive ? ' aria-current="page"' : '';
 
   const contentHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
@@ -548,11 +550,11 @@ function renderNavItem(node: any, context: RenderContext): string {
 
   if (node.props?.variant === 'primary') {
     const classes = `${buildClasses(prefix, 'button', node.props)} ${prefix}button-primary`;
-    return `<a href="${href}" class="${classes.trim()}" style="text-decoration:none;color:inherit;">${contentHTML}</a>`;
+    return `<a href="${href}"${ariaCurrent} class="${classes.trim()}" style="text-decoration:none;color:inherit;">${contentHTML}</a>`;
   }
 
   const classes = buildClasses(prefix, 'nav-item', node.props);
-  return `<a href="${href}" class="${classes}">${contentHTML}</a>`;
+  return `<a href="${href}"${ariaCurrent} class="${classes}">${contentHTML}</a>`;
 }
 
 function renderBreadcrumbs(node: any, context: RenderContext): string {
