@@ -1180,7 +1180,7 @@ td.${prefix}align-right, th.${prefix}align-right { text-align: right; }
   margin: 16px 0;
   color: #1e3a8a;
 }
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   border-left-color: #10b981;
   background: #d1fae5;
   color: #065f46;
@@ -1190,7 +1190,7 @@ td.${prefix}align-right, th.${prefix}align-right { text-align: right; }
   background: #fef3c7;
   color: #92400e;
 }
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   border-left-color: #ef4444;
   background: #fee2e2;
   color: #991b1b;
@@ -2110,13 +2110,13 @@ body {
   color: #92400e;
 }
 
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   background: #fee2e2;
   border-left-color: #ef4444;
   color: #991b1b;
 }
 
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   background: #d1fae5;
   border-left-color: #10b981;
   color: #065f46;
@@ -2789,12 +2789,12 @@ body {
   color: #e65100;
 }
 
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   background: #ffebee;
   color: #c62828;
 }
 
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   background: #e8f5e9;
   color: #2e7d32;
 }
@@ -3484,12 +3484,12 @@ body {
   color: #000000;
 }
 
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   background: #ff6b6b;
   color: #000000;
 }
 
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   background: #6bcf7f;
   color: #000000;
 }
