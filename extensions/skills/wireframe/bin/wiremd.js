@@ -17688,6 +17688,46 @@ function renderToJSON(ast, options = {}) {
 // packages/core/src/index.ts
 var SYNTAX_VERSION = "0.1";
 
+// packages/core/src/parser/_context.ts
+function makeContext(siblings, startIndex, options, deps) {
+  let cursor = startIndex;
+  const ctx = {
+    options,
+    peekNext: () => {
+      const next = siblings[cursor + 1];
+      return next === void 0 ? null : next;
+    },
+    consumeNext: () => {
+      cursor++;
+    },
+    transformChild: (mdast) => deps.transformNode(mdast, makeIsolatedContext(options, deps).ctx),
+    transformChildren: (mdastList) => deps.processNodeList(mdastList, options),
+    parseAttributes: deps.parseAttributes,
+    extractTextContent: deps.extractTextContent,
+    isHtmlCommentNode: deps.isHtmlCommentNode
+  };
+  return {
+    ctx,
+    getCursor: () => cursor
+  };
+}
+function makeIsolatedContext(options, deps) {
+  let cursor = 0;
+  const ctx = {
+    options,
+    peekNext: () => null,
+    consumeNext: () => {
+      cursor++;
+    },
+    transformChild: (mdast) => deps.transformNode(mdast, ctx),
+    transformChildren: (mdastList) => deps.processNodeList(mdastList, options),
+    parseAttributes: deps.parseAttributes,
+    extractTextContent: deps.extractTextContent,
+    isHtmlCommentNode: deps.isHtmlCommentNode
+  };
+  return { ctx, getCursor: () => cursor };
+}
+
 // packages/core/src/parser/transformer.ts
 function transformToWiremdAST(mdast, options = {}) {
   const meta = {
@@ -17702,29 +17742,36 @@ function transformToWiremdAST(mdast, options = {}) {
     children: processNodeList(mdast.children, options)
   };
 }
-function transformNode(node2, options, nextNode) {
+var ctxDeps = {
+  transformNode: (mdast, ctx) => transformNode(mdast, ctx),
+  processNodeList: (mdastList, options) => processNodeList(mdastList, options),
+  parseAttributes,
+  extractTextContent,
+  isHtmlCommentNode
+};
+function transformNode(node2, ctx) {
   switch (node2.type) {
     case "wiremdContainer":
-      return transformContainer(node2, options);
+      return transformContainer(node2, ctx);
     case "wiremdInlineContainer":
-      return transformInlineContainer(node2, options);
+      return transformInlineContainer(node2, ctx);
     case "heading":
-      return transformHeading(node2, options);
+      return transformHeading(node2, ctx);
     case "paragraph":
-      return transformParagraph(node2, options, nextNode);
+      return transformParagraph(node2, ctx);
     case "text":
       return {
         type: "text",
         content: node2.value
       };
     case "list":
-      return transformList(node2, options);
+      return transformList(node2, ctx);
     case "listItem":
-      return transformListItem(node2, options);
+      return transformListItem(node2, ctx);
     case "table":
-      return transformTable(node2, options);
+      return transformTable(node2, ctx);
     case "blockquote":
-      return transformBlockquote(node2, options);
+      return transformBlockquote(node2, ctx);
     case "code":
       return {
         type: "code",
@@ -17750,7 +17797,7 @@ function transformNode(node2, options, nextNode) {
         type: "link",
         href: node2.url || "#",
         title: node2.title,
-        children: node2.children?.map((child) => transformNode(child, options)).filter(Boolean) || [],
+        children: node2.children?.map((child) => ctx.transformChild(child)).filter(Boolean) || [],
         props: {}
       };
     case "thematicBreak":
@@ -17776,31 +17823,22 @@ function processNodeList(nodeChildren, options) {
   let i = 0;
   while (i < nodeChildren.length) {
     const node2 = nodeChildren[i];
-    const nextNode = nodeChildren[i + 1];
-    const transformed = transformNode(node2, options, nextNode);
+    const handle2 = makeContext(nodeChildren, i, options, ctxDeps);
+    const transformed = transformNode(node2, handle2.ctx);
     if (transformed) {
       if (node2.position && !transformed.position) {
         transformed.position = node2.position;
       }
       result.push(transformed);
-      if (transformed.type === "select" && nextNode && nextNode.type === "list")
-        i++;
-      if (transformed.type === "container" && nextNode && nextNode.type === "list") {
-        const hasSelectWithOptions = (transformed.children || []).some(
-          (child) => child.type === "select" && child.options && child.options.length > 0
-        );
-        if (hasSelectWithOptions)
-          i++;
-      }
     }
-    i++;
+    i = handle2.getCursor() + 1;
   }
   return result;
 }
 function isHtmlCommentNode(node2) {
   return node2.type === "html" && typeof node2.value === "string" && /^<!--[\s\S]*-->$/.test(node2.value.trim());
 }
-function collectGridItemsFromContainer(children, options, isCard) {
+function collectGridItemsFromContainer(children, ctx, isCard) {
   const gridItems = [];
   const firstHeading = children.find((n) => n.type === "heading");
   if (!firstHeading)
@@ -17846,7 +17884,7 @@ function collectGridItemsFromContainer(children, options, isCard) {
       gridItems.push({
         type: "grid-item",
         props: itemProps,
-        children: processNodeList(rawItemNodes, options)
+        children: ctx.transformChildren(rawItemNodes)
       });
     } else {
       i++;
@@ -17854,7 +17892,7 @@ function collectGridItemsFromContainer(children, options, isCard) {
   }
   return gridItems;
 }
-function collectRowItemsFromContainer(children, options) {
+function collectRowItemsFromContainer(children, ctx) {
   const items = [];
   const hasHeadings = children.some((n) => n.type === "heading");
   if (hasHeadings) {
@@ -17906,7 +17944,7 @@ function collectRowItemsFromContainer(children, options) {
         items.push({
           type: "grid-item",
           props: itemProps,
-          children: processNodeList(rawItemNodes, options)
+          children: ctx.transformChildren(rawItemNodes)
         });
       } else {
         i++;
@@ -17929,13 +17967,13 @@ function collectRowItemsFromContainer(children, options) {
       items.push({
         type: "grid-item",
         props: { classes: [] },
-        children: processNodeList(groupNodes, options)
+        children: ctx.transformChildren(groupNodes)
       });
     }
   }
   return items;
 }
-function transformContainer(node2, options) {
+function transformContainer(node2, ctx) {
   const props = parseAttributes(node2.attributes || "");
   const containerType = (node2.containerType || "").trim();
   const gridMatch = containerType.match(/^grid-(\d+)$/);
@@ -17948,18 +17986,18 @@ function transformContainer(node2, options) {
       type: "grid",
       columns,
       props: { ...props, card: hasCard, classes: (props.classes || []).filter((c) => c !== "card") },
-      children: collectGridItemsFromContainer(contentChildren, options, hasCard)
+      children: collectGridItemsFromContainer(contentChildren, ctx, hasCard)
     };
   }
   if (containerType === "row") {
     return {
       type: "row",
       props,
-      children: collectRowItemsFromContainer(node2.children || [], options)
+      children: collectRowItemsFromContainer(node2.children || [], ctx)
     };
   }
   if (containerType === "tabs") {
-    const processed = processNodeList(node2.children || [], options);
+    const processed = ctx.transformChildren(node2.children || []);
     const pending = [];
     const tabs2 = [];
     for (const n of processed) {
@@ -17995,7 +18033,7 @@ function transformContainer(node2, options) {
       label,
       active: isActive,
       props,
-      children: processNodeList(contentChildren, options)
+      children: ctx.transformChildren(contentChildren)
     };
   }
   if (containerType === "demo") {
@@ -18003,17 +18041,17 @@ function transformContainer(node2, options) {
       type: "demo",
       raw: node2.rawContent || "",
       props,
-      children: processNodeList(node2.children || [], options)
+      children: ctx.transformChildren(node2.children || [])
     };
   }
   return {
     type: "container",
     containerType,
     props,
-    children: processNodeList(node2.children || [], options)
+    children: ctx.transformChildren(node2.children || [])
   };
 }
-function transformInlineContainer(node2, _options) {
+function transformInlineContainer(node2, _ctx) {
   const props = parseAttributes(node2.attributes || "");
   const items = node2.items || [];
   const children = [];
@@ -18107,7 +18145,7 @@ function transformInlineContainer(node2, _options) {
     children
   };
 }
-function transformHeading(node2, _options) {
+function transformHeading(node2, _ctx) {
   const content3 = extractTextContent(node2);
   const attrMatch = content3.match(/^(.*?)(\{[^}]+\})$/);
   let headingText = content3;
@@ -18195,7 +18233,8 @@ function serializeMdastChildren(children) {
     return child.value || "";
   }).join("");
 }
-function transformParagraph(node2, _options, nextNode) {
+function transformParagraph(node2, ctx) {
+  const nextNode = ctx.peekNext();
   if (node2.children?.length) {
     const serialized = serializeMdastChildren(node2.children);
     const inlineMatch = serialized.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?$/);
@@ -18203,7 +18242,7 @@ function transformParagraph(node2, _options, nextNode) {
       const content4 = inlineMatch[1];
       const attrs = inlineMatch[2] || "";
       const items = content4.split("|").map((item) => item.trim());
-      return transformInlineContainer({ type: "wiremdInlineContainer", content: content4, items, attributes: attrs.trim() }, _options);
+      return transformInlineContainer({ type: "wiremdInlineContainer", content: content4, items, attributes: attrs.trim() }, ctx);
     }
   }
   const hasRichContent = node2.children && node2.children.some(
@@ -18381,7 +18420,7 @@ function transformParagraph(node2, _options, nextNode) {
       items,
       attributes: attrs.trim()
     };
-    const transformed = transformInlineContainer(inlineContainerNode, _options);
+    const transformed = transformInlineContainer(inlineContainerNode, ctx);
     const remainingText = content3.substring(inlineContainerMatch[0].length).trim();
     if (remainingText) {
       return {
@@ -18531,6 +18570,8 @@ function transformParagraph(node2, _options, nextNode) {
             selected: false
           });
         }
+        if (options.length > 0)
+          ctx.consumeNext();
       }
       if (labelLinesAreButtons) {
         return {
@@ -18700,6 +18741,7 @@ function transformParagraph(node2, _options, nextNode) {
           selected: false
         });
       }
+      ctx.consumeNext();
     }
     return {
       type: "select",
@@ -18923,10 +18965,10 @@ function transformParagraph(node2, _options, nextNode) {
     props: {}
   };
 }
-function transformList(node2, options) {
+function transformList(node2, ctx) {
   const children = [];
   for (const item of node2.children) {
-    const transformed = transformNode(item, options);
+    const transformed = ctx.transformChild(item);
     if (transformed) {
       children.push(transformed);
     }
@@ -18938,7 +18980,7 @@ function transformList(node2, options) {
     children
   };
 }
-function transformListItem(node2, options) {
+function transformListItem(node2, ctx) {
   let immediateContent = "";
   const nestedChildren = [];
   if (node2.children && Array.isArray(node2.children)) {
@@ -18946,7 +18988,7 @@ function transformListItem(node2, options) {
       if (child.type === "paragraph" && !immediateContent) {
         immediateContent = extractTextContent(child);
       } else if (child.type === "list") {
-        const transformed = transformList(child, options);
+        const transformed = transformList(child, ctx);
         if (transformed) {
           nestedChildren.push(transformed);
         }
@@ -19055,7 +19097,7 @@ function transformListItem(node2, options) {
     children: nestedChildren.length > 0 ? nestedChildren : void 0
   };
 }
-function transformTable(node2, options) {
+function transformTable(node2, ctx) {
   const children = [];
   const align = node2.align || [];
   for (let rowIndex = 0; rowIndex < node2.children.length; rowIndex++) {
@@ -19108,7 +19150,7 @@ function transformTable(node2, options) {
             props: {}
           });
         } else {
-          const transformed = transformNode(child, options);
+          const transformed = ctx.transformChild(child);
           if (transformed) {
             cellChildren.push(transformed);
           }
@@ -19140,10 +19182,10 @@ function transformTable(node2, options) {
     children
   };
 }
-function transformBlockquote(node2, options) {
+function transformBlockquote(node2, ctx) {
   const children = [];
   for (const child of node2.children) {
-    const transformed = transformNode(child, options);
+    const transformed = ctx.transformChild(child);
     if (transformed) {
       children.push(transformed);
     }
