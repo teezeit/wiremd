@@ -233,6 +233,65 @@ Used in `REVIEW_LOG.md`, the review tool, and this README:
 
 ---
 
+## Current state & next steps
+
+This is the handover surface for a fresh conversation or contributor. Updated as work progresses.
+
+### Where we are
+
+- **114 fixtures** in the corpus (3 regressions + extracted from 19 docs files). Total test count: 1140 passing.
+- **14 known parser bugs** tracked as `.expected-fail.invariants.ts` (will turn red the moment a fix lands; rename to drop `.expected-fail.` to close).
+- **11 renderer/CSS gaps** consolidated in `KNOWN_ISSUES.md` (variant button CSS, required indicators, alerts not implemented, etc.).
+- **Review tool** (`pnpm review` from `packages/core/`) is operational; uses the File System Access API for round-tripping `REVIEW_LOG.md`.
+- One full snapshot review sweep complete (`REVIEW_LOG.md` reflects user verdicts, gitignored).
+
+### Suggested order of work
+
+The bug list is now machine-checkable. Pick a category and the test suite tells you when you're done.
+
+**1. Formatting bugs (smallest, highest leverage).** Six `.expected-fail.invariants.ts` in `regressions/formatting/` plus one in `regressions/containers/closer/`. Likely share machinery in `parser/remark-containers.ts` and `parser/transformer.ts`. When fixed, several tests turn green at once.
+
+**2. Inline-text bugs.** `regressions/inline/text-after-button` and the related `docs/cards/card`. Concerns how block-level elements interact with surrounding text in markdown paragraphs.
+
+**3. Grid opener parsing.** `regressions/grid/text-after-opener-flag` (the `card` flag gets eaten by trailing text). Localized to opener-line tokenization.
+
+**4. Quoted attribute values with spaces.** `docs/inputs/with-placeholder`. The attribute parser drops everything after the first space inside a quoted value.
+
+**5. Badge syntax in table cells.** `docs/badges/in-a-table` + `docs/tables/with-badges`. Badge syntax `|cell|{.warning}` isn't recognized inside `<td>`. Likely needs a transformer pass over table cells.
+
+**6. Sidebar layout.** `docs/page-layouts/sidebar-layout` + `sidebar-with-sections`. Same family as the formatting bugs (no blank line after `::: sidebar`).
+
+**7. Renderer/CSS pass.** Pick a section from `KNOWN_ISSUES.md` and add the missing rules in `src/renderer/styles.ts`.
+
+**8. Property tests + coverage gate** (Phase 5 of the original plan). `tests/property/` with `fast-check`, plus a CI floor on `src/parser/` and `src/renderer/`. Surfaces parser bugs that no human enumerated.
+
+### Design decisions worth knowing
+
+- **Fixtures are the syntax spec.** A new feature isn't done until a fixture demonstrates it. `:::demo` blocks in `apps/docs/components/*.md` are auto-extracted as fixtures — so docs and tests are unified.
+- **Minimal-blank-line style.** Fixtures use the smallest set of blank lines required. Where a blank line is currently load-bearing (e.g., before `:::` closer), we document it as a parser bug, not a feature.
+- **Robustness counts as syntax.** If the parser misbehaves on a common formatting variation, the right place to catalog it is here as a `.expected-fail.invariants.ts`.
+- **Topic folders, not verdict folders.** Folder names describe what's being tested (`formatting/`, `inline/`, `grid/`); status emoji and `.expected-fail.` suffix carry the verdict.
+- **Static review tool over server-backed.** `REVIEW.html` is a single static page that uses File System Access API to round-trip `REVIEW_LOG.md`. No backend.
+
+### Pending decisions (not yet committed to)
+
+- **`inputs/textarea-columns`** — `[___]{rows:5 cols:40}` should probably emit a `textarea` node. Documented in `KNOWN_ISSUES.md`. No fix planned yet.
+- **`((pill content))` as badge syntax** — user suggested as cleaner than `|content|{.modifier}`. Backwards-incompatible. Documented in `badges/variants.notes.md`.
+- **`grid` should require `::: column` children?** Design suggestion to mirror tabs syntax. Backwards-incompatible. Documented in `grid/layout-grid-no-card-chrome.notes.md`.
+- **Alerts implementation** — AST exists; styles missing for all 7 visual styles. Likely substantial work.
+
+### What a fresh session needs to do to continue
+
+1. Read this README from the top.
+2. Read `KNOWN_ISSUES.md`.
+3. Pick a category from "Suggested order of work" (1–8 above).
+4. For parser bugs: open the `.expected-fail.invariants.ts`, read the contract, fix the parser/renderer until the contract holds, rename the file to drop `.expected-fail.`, refresh the snapshot with `pnpm test -u`, commit.
+5. For renderer gaps: pick a section in `KNOWN_ISSUES.md`, add CSS in `src/renderer/styles.ts`, refresh snapshots, eyeball them, commit. Prune the entry from `KNOWN_ISSUES.md`.
+
+The test suite is the truth. The README is the map. The bugs are bookmarked in `.expected-fail.invariants.ts` files.
+
+---
+
 ## Test infrastructure (for the curious)
 
 | File | Role |
