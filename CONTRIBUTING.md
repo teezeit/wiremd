@@ -35,7 +35,7 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 3. **Make your changes** following our coding standards
 4. **Add tests** for any new functionality
 5. **Update documentation** as needed
-6. **Ensure tests pass** with `npm test`
+6. **Ensure tests pass** with `pnpm turbo run test`
 7. **Submit a pull request**
 
 ## Development Setup
@@ -43,53 +43,87 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 ### Prerequisites
 
 - Node.js >= 18.0.0
-- npm or yarn
+- pnpm 9+ — npm and yarn are blocked by a `preinstall` guard. Install with `npm install -g pnpm` or `corepack enable`.
 
 ### Getting Started
+
+All commands run from the repo root unless noted. The workspace is driven by Turborepo — `pnpm turbo run <task>` fans the task out to every package that defines it, with caching and correct dependency order.
 
 ```bash
 # Clone your fork
 git clone https://github.com/YOUR_USERNAME/wiremd.git
 cd wiremd
 
-# Install dependencies
-npm install
+# Install all workspaces in one shot
+pnpm install
 
-# Run tests
-npm test
+# Build everything (core first, then apps & extensions)
+pnpm turbo run build
 
-# Run tests in watch mode
-npm run test:watch
+# Run the full test suite
+pnpm turbo run test
 
-# Build the project
-npm run build
+# Type check / lint everything
+pnpm turbo run typecheck
+pnpm turbo run lint
 
-# Type check
-npm run typecheck
-
-# Run linter
-npm run lint
+# Iterate on a single workspace
+pnpm --filter wiremd run test:watch          # core library
+pnpm --filter wiremd-editor run dev          # web editor at :5174
+pnpm --filter wiremd-docs run dev            # VitePress docs at :5173
+pnpm --filter wiremd-landing run dev         # marketing site at :5175
 ```
+
+### Workspace names
+
+| Path | Workspace name | What it is |
+|---|---|---|
+| `packages/core/` | `wiremd` | Published npm package — parser, renderers, CLI |
+| `apps/docs/` | `wiremd-docs` | VitePress documentation site |
+| `apps/editor/` | `wiremd-editor` | Browser editor (Vite + Monaco) |
+| `apps/landing/` | `wiremd-landing` | Marketing site (Vite + Vue) |
+| `extensions/vscode/` | `wiremd-preview` | VS Code live preview extension |
+| `extensions/figma/` | `wiremd-figma-plugin` | Figma plugin |
+| `extensions/skills/wireframe/` | n/a (Claude plugin) | Claude skill, packaged as a zip |
 
 ### Project Structure
 
 ```
 wiremd/
-├── src/
-│   ├── parser/              # Markdown + wiremd syntax parser
-│   │   ├── index.ts         # Main parser entry
-│   │   ├── transformer.ts   # MDAST to wiremd AST
-│   │   ├── remark-containers.ts        # ::: syntax plugin
-│   │   └── remark-inline-containers.ts # [[...]] syntax plugin
-│   ├── renderer/            # HTML/JSON renderer
-│   │   ├── index.ts         # Main renderer entry
-│   │   ├── html-renderer.ts # Component HTML generation
-│   │   └── styles.ts        # Visual styles
-│   ├── cli/                 # CLI tool
-│   ├── types.ts             # TypeScript types
-│   └── index.ts             # Library entry point
-├── tests/                   # Test suite
-└── examples/                # Example wireframes
+├── packages/
+│   └── core/                       # published "wiremd" npm package
+│       ├── src/
+│       │   ├── parser/             # Markdown + wiremd syntax parser
+│       │   │   ├── index.ts                # Main parser entry
+│       │   │   ├── transformer.ts          # MDAST → wiremd AST
+│       │   │   ├── remark-containers.ts    # ::: syntax plugin
+│       │   │   └── remark-inline-containers.ts # [[...]] syntax plugin
+│       │   ├── renderer/           # HTML / React / Tailwind / JSON
+│       │   │   ├── index.ts
+│       │   │   ├── html-renderer.ts
+│       │   │   ├── react-renderer.ts
+│       │   │   ├── tailwind-renderer.ts
+│       │   │   └── styles.ts       # 7 visual style CSS strings
+│       │   ├── cli/                # CLI tool (wiremd binary)
+│       │   ├── types.ts            # WiremdNode discriminated union
+│       │   └── index.ts            # Library entry point
+│       ├── bin/wiremd.js           # CLI shim (loaded via `bin` field)
+│       └── tests/                  # vitest test suite
+├── apps/
+│   ├── docs/                       # VitePress site
+│   ├── editor/                     # browser editor
+│   └── landing/                    # marketing site
+├── extensions/
+│   ├── vscode/                     # VS Code extension
+│   ├── figma/                      # Figma plugin
+│   └── skills/wireframe/           # Claude skill (plugin marketplace source)
+├── scripts/
+│   ├── build-bundle.mjs            # builds standalone CLI + .vsix into releases/
+│   ├── sync-versions.mjs           # syncs core version → vscode + skill plugin.json
+│   └── package-skill.sh            # zips the wireframe skill for upload
+├── pnpm-workspace.yaml
+├── turbo.json
+└── package.json                    # private root, only delegates to turbo
 ```
 
 ## Coding Standards
@@ -149,22 +183,27 @@ test(parser): add tests for nested containers
 ### Running Tests
 
 ```bash
-# Run all tests
-npm test
+# Run all tests across the monorepo (cached by turbo)
+pnpm turbo run test
 
-# Run with coverage
-npm run test:coverage
+# Run only the core library's tests
+pnpm --filter wiremd run test
 
-# Run specific test file
-npm test -- tests/parser.test.ts
+# Coverage
+pnpm --filter wiremd run test:coverage
+
+# Single test file or single test by name (run from packages/core/)
+pnpm --filter wiremd run test -- tests/parser.test.ts
+pnpm --filter wiremd run test -- tests/parser.test.ts -t "Button"
 
 # Watch mode
-npm run test:watch
+pnpm --filter wiremd run test:watch
 ```
 
 ### Writing Tests
 
 ```typescript
+// packages/core/tests/feature.test.ts
 import { describe, it, expect } from 'vitest';
 import { parse } from '../src/parser';
 
@@ -187,53 +226,53 @@ describe('Feature Name', () => {
 
 ## Feature Development Checklist
 
-Run through this before opening a PR for any new syntax, render option, or user-visible behaviour.
+Run through this before opening a PR for any new syntax, render option, or user-visible behaviour. All paths are repo-relative.
 
-### Core implementation
-- [ ] **Types** — add node type to `WiremdNode` union in `src/types.ts`; add any new option to `RenderOptions`
-- [ ] **Parser** — handle new MDAST node type in `src/parser/transformer.ts`; add to `validTypes` in `src/parser/index.ts`
-- [ ] **HTML renderer** — add `case` in `src/renderer/html-renderer.ts`; extend `RenderContext` if needed
-- [ ] **CSS** — add shared structural CSS in `src/renderer/styles.ts` (`getStyleCSS`)
-- [ ] **React renderer** — add `case` in `src/renderer/react-renderer.ts` (full or silent no-op)
-- [ ] **Tailwind renderer** — add `case` in `src/renderer/tailwind-renderer.ts` (full or silent no-op)
-- [ ] **Renderer index** — plumb any new `RenderOptions` field through all four render functions in `src/renderer/index.ts`
-- [ ] **Public exports** — export new types/options from `src/index.ts` so library consumers can use them
+### Core implementation (`packages/core/`)
+- [ ] **Types** — add node type to `WiremdNode` union in `packages/core/src/types.ts`; add any new option to `RenderOptions`
+- [ ] **Parser** — handle new MDAST node type in `packages/core/src/parser/transformer.ts`; add to `validTypes` in `packages/core/src/parser/index.ts`
+- [ ] **HTML renderer** — add `case` in `packages/core/src/renderer/html-renderer.ts`; extend `RenderContext` if needed
+- [ ] **CSS** — add shared structural CSS in `packages/core/src/renderer/styles.ts` (`getStyleCSS`)
+- [ ] **React renderer** — add `case` in `packages/core/src/renderer/react-renderer.ts` (full or silent no-op)
+- [ ] **Tailwind renderer** — add `case` in `packages/core/src/renderer/tailwind-renderer.ts` (full or silent no-op)
+- [ ] **Renderer index** — plumb any new `RenderOptions` field through all four render functions in `packages/core/src/renderer/index.ts`
+- [ ] **Public exports** — export new types/options from `packages/core/src/index.ts` so library consumers can use them
 
 ### Entry points
-- [ ] **CLI** — add flag(s) to `CLIOptions` and `parseArgs` in `src/cli/index.ts`; pass through `generateOutput`
-- [ ] **Web editor** — update `renderMarkup.ts`, `preview.ts` (state + setter), `main.ts` (event wiring), `index.html` (UI control)
-- [ ] **VS Code extension** — update `preview-provider.ts` (state, `handleMessage` case, toolbar button); register command in `extension.ts` if needed
+- [ ] **CLI** — add flag(s) to `CLIOptions` and `parseArgs` in `packages/core/src/cli/index.ts`; pass through `generateOutput`
+- [ ] **Web editor** (`apps/editor/`) — update `src/renderMarkup.ts`, `src/preview.ts` (state + setter), `src/main.ts` (event wiring), `index.html` (UI control)
+- [ ] **VS Code extension** (`extensions/vscode/`) — update `src/preview-provider.ts` (state, `handleMessage` case, toolbar button); register command in `src/extension.ts` if needed
 
 ### Quality
-- [ ] **Tests (TDD)** — write failing tests first in `tests/parser.test.ts`, `tests/renderer.test.ts`, `tests/cli-unit.test.ts`; confirm green after implementation
-- [ ] **Full suite** — `npm test` passes with no regressions (currently 659 tests)
-- [ ] **Typecheck** — `npm run typecheck` clean
+- [ ] **Tests (TDD)** — write failing tests first in `packages/core/tests/parser.test.ts`, `renderer.test.ts`, `cli-unit.test.ts`; confirm green after implementation
+- [ ] **Full suite** — `pnpm turbo run test` passes with no regressions (currently 659 tests)
+- [ ] **Typecheck + lint** — `pnpm turbo run typecheck` and `pnpm turbo run lint` clean
 
 ### Documentation & distribution
-- [ ] **CHANGELOG.md** — add entry under `[Unreleased]`
-- [ ] **`docs/components/`** — create a component page with live `::: demo` blocks; add to `_sidebar.md`
-- [ ] **`docs/reference/cli.md`** — add any new flags to the flags table
-- [ ] **Claude skill** — update `.claude/skills/wireframe/references/syntax.md` and add example to `SKILL.md` quick reference
-- [ ] **Landing page** (`index.html`) — update feature list if the change is a meaningful selling point
+- [ ] **CHANGELOG.md** — add entry under `[Unreleased]` at the repo root
+- [ ] **`apps/docs/components/`** — create a component page with live `::: demo` blocks; add to `_sidebar.md`. The VS Code extension's `bundle` script copies this directory in, so the new page ships to the extension automatically.
+- [ ] **`apps/docs/reference/cli.md`** — add any new flags to the flags table
+- [ ] **Claude skill** — update `extensions/skills/wireframe/references/syntax.md` and add an example to `SKILL.md` quick reference
+- [ ] **Landing page** (`apps/landing/index.html`) — update feature list if the change is a meaningful selling point
 - [ ] **README.md** — update if the change affects installation, usage, or the headline feature list
 
 ### Smoke test
-- [ ] **URL share** — paste a wireframe using the new feature into the editor, copy link, open in a new tab — confirm it round-trips correctly
+- [ ] **URL share** — paste a wireframe using the new feature into the editor (`pnpm --filter wiremd-editor run dev`), copy link, open in a new tab — confirm it round-trips correctly
 - [ ] **Notion embed** — if applicable, embed the share URL in a Notion page and confirm it renders
 
 ## Plugin Maintenance
 
-The wiremd Claude Code plugin lives in `skills/wireframe/`. It is installed via the VS Code extension's "Install Wiremd Claude Skill" command, or manually by copying the directory to `.claude/skills/wireframe/`.
+The wiremd Claude Code plugin lives in `extensions/skills/wireframe/`. It is installed via the VS Code extension's "Install Wiremd Claude Skill" command, the Claude plugin marketplace, or manually by copying the directory into `.claude/skills/wireframe/`.
 
 ### Structure
 
 ```
-skills/wireframe/
+extensions/skills/wireframe/
 ├── SKILL.md                 # Ambient trigger — activates when user mentions wireframes
 ├── .claude-plugin/
 │   └── plugin.json          # Plugin metadata (name, version, description)
 ├── bin/
-│   └── wiremd.js            # Bundled CLI — auto-built by `npm run bundle`
+│   └── wiremd.js            # Bundled CLI — produced by scripts/build-bundle.mjs
 ├── commands/
 │   └── wireframe.md         # /wireframe slash command
 └── references/              # Lazy-loaded docs (only read when Claude needs them)
@@ -247,62 +286,100 @@ skills/wireframe/
     ├── multi-page.md
     ├── vscode.md
     └── examples/
-
-.claude-plugin/
-└── marketplace.json         # Marketplace index — points source to ./skills/wireframe
 ```
 
-The `bin/wiremd.js` is rebuilt automatically by `npm run bundle` (run in CI on every push to `main`). Do not edit it by hand.
-
-### Marketplace
-
-The repo root `.claude-plugin/marketplace.json` registers wiremd as a public marketplace. Users add it once with:
+The repo-root `.claude-plugin/marketplace.json` registers wiremd as a public marketplace and points `source` at `./extensions/skills/wireframe`. Users add it once with:
 
 ```
 /plugin marketplace add teezeit/wiremd
 ```
 
+The `bin/wiremd.js` is regenerated by `pnpm bundle` (which runs `scripts/build-bundle.mjs`). The `build-bundle.yml` workflow re-runs it on every push to `main` that touches `packages/core/src/**`, `extensions/skills/**`, `extensions/vscode/src/**`, or the script itself, then commits the refreshed bundle back to `main`. Do not edit it by hand.
+
 ---
 
 ## Release Process
 
-Releases follow semantic versioning. Four artifacts ship together: npm package, VS Code extension, Claude skill (`plugin.json`), and standalone CLI bundle.
+Releases follow semantic versioning. Four artifacts ship together under a single version: the npm package, the VS Code extension, the Claude skill (`plugin.json`), and the standalone CLI bundle.
 
 ### Between releases
 
-Merge PRs to `main` as normal. CI rebuilds the bundles and updates the rolling `latest` prerelease on GitHub. No version changes.
+Merge PRs to `main` as normal. CI rebuilds artifacts and rolls a prerelease called `latest` on GitHub Releases (CLI binary + `.vsix`). No version changes are required.
+
+### Version sync
+
+`packages/core/package.json` is the source of truth for the version. The repo-root `package.json` wires `scripts/sync-versions.mjs` into the `version` lifecycle so `npm version <bump>` (run inside `packages/core/`) propagates the new version to:
+
+- `extensions/vscode/package.json`
+- `extensions/skills/wireframe/.claude-plugin/plugin.json`
+
+…and stages those files automatically. **Do not bump the version in those files by hand.**
 
 ### Cutting a release
 
 ```bash
 # 1. Make sure CHANGELOG.md has an entry under [Unreleased]
-# 2. Run tests
-npm test
+# 2. Run the full suite
+pnpm turbo run test
 
-# 3. Bump version (patch / minor / major)
-#    This also syncs vscode-extension/package.json and plugin.json via the version hook
+# 3. Bump version (patch / minor / major) — must run inside packages/core/
+cd packages/core
 npm version patch
+# ↑ updates packages/core/package.json, runs sync-versions.mjs,
+#   stages extensions/vscode/package.json + extensions/skills/wireframe/.claude-plugin/plugin.json,
+#   commits and tags the release
 
 # 4. Push branch + tag
 git push && git push --tags
 ```
 
 Pushing the tag triggers CI automatically:
-- **`release.yml`** — creates the GitHub release with auto-generated notes from PR titles
-- **`publish.yml`** — publishes the VS Code extension to the Marketplace and attaches the skill zip to the release
+- **`release.yml`** — runs on tag push, creates the GitHub release with auto-generated notes from PR titles
+- **`publish.yml`** — runs on the `release: published` event: builds the VS Code extension via `pnpm --filter wiremd-preview run bundle`, publishes it to the VS Code Marketplace using `VSCE_PAT`, and attaches the wireframe skill zip to the GitHub release
 
-No manual steps on GitHub or npm are needed.
+No manual steps on GitHub or in the VS Code Marketplace are needed.
 
 ### Extension-only fix
 
-If only the VS Code extension changes and you don't want to bump the npm package version:
+If only the VS Code extension changes and you don't want to bump the npm package version, bump the extension independently:
 
 ```bash
-cd vscode-extension && npm version patch
+cd extensions/vscode
+npm version patch
 git push && git push --tags
 ```
 
-Then create a GitHub release for that tag manually. `publish.yml` will fire and publish to the Marketplace.
+Then create a GitHub release for that tag manually. `publish.yml` fires on the release event and publishes the new `.vsix` to the Marketplace.
+
+### npm publishing
+
+The current `publish.yml` does **not** publish `wiremd` to npm — only the VS Code extension and the Claude skill. To push a new version of the npm package, do it manually from `packages/core/` after the version bump:
+
+```bash
+pnpm --filter wiremd run build
+cd packages/core
+npm publish --access public
+```
+
+If automated npm publishing is added later, drop a step into `publish.yml` (`pnpm --filter wiremd publish --access public --no-git-checks`) gated on `NPM_TOKEN`.
+
+### Frontend deploys (docs / editor / landing)
+
+`docs.yml` deploys the public site to GitHub Pages on every push to `main` that touches `apps/docs/**`, `apps/editor/**`, `apps/landing/**`, `packages/core/src/**`, or the workflow itself. The job:
+
+1. Builds `packages/core/` (the editor and docs depend on its types and runtime).
+2. Builds `apps/docs/` (`vitepress build`) into `apps/docs/.vitepress/dist/`.
+3. Builds `apps/landing/` and overlays its `dist/` onto the VitePress dist root.
+4. Builds `apps/editor/` with `VITE_BASE=/wiremd/editor/` and copies it into `apps/docs/.vitepress/dist/editor/`.
+5. Uploads the merged tree to GitHub Pages.
+
+The result: `teezeit.github.io/wiremd/` serves the landing page at the root, the docs from VitePress, and the live editor at `/editor/` — all from a single Pages deployment.
+
+### Standalone CLI bundle (`releases/wiremd.js`)
+
+`scripts/build-bundle.mjs` produces a single-file CommonJS CLI from `packages/core/src/cli/index.ts` using esbuild and writes it to `releases/wiremd.js`. The same file is copied into `extensions/skills/wireframe/bin/wiremd.js` so the Claude plugin ships with a self-contained CLI (no `npm install` required for plugin users). The script also runs `pnpm package` inside `extensions/vscode/` and copies the resulting `.vsix` to `releases/wiremd.vsix`.
+
+The `build-bundle.yml` workflow runs this on every relevant push to `main`, commits the refreshed plugin bin back to the repo, and uploads `releases/wiremd.js` + `releases/wiremd.vsix` to a rolling `latest` GitHub prerelease.
 
 ## Documentation
 

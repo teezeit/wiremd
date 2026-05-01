@@ -1,0 +1,26 @@
+{
+  "name": "wiremd-editor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc && vite build",
+    "test": "vitest run --config vitest.config.ts",
+    "test:coverage": "vitest run --config vitest.config.ts --coverage",
+    "check-bundle-size": "node ./scripts/check-bundle-size.mjs",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lz-string": "^1.5.0",
+    "monaco-editor": "^0.55.1",
+    "wiremd": "workspace:*"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "^6.2.5",
+    "typescript": "^5.3.2",
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}

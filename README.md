@@ -92,32 +92,38 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 
 ## Project Structure
 
+wiremd is a pnpm + Turborepo monorepo. The published `wiremd` npm package lives in `packages/core/`; everything else (frontend apps, VS Code extension, Figma plugin, Claude skill) consumes it via `"wiremd": "workspace:*"`.
+
 ```
 wiremd/
-├── src/               # core library (parser, renderers, 7 styles)
-├── bin/               # CLI entry point
-├── tests/             # test suite
-├── landing/           # marketing site        Vite + Vue     :5175
-├── docs/              # documentation         VitePress      :5173
-├── editor/            # web editor            Vite + Monaco  :5174
-├── vscode-extension/  # VS Code live preview
-├── figma-plugin/      # import wiremd → Figma
-└── skills/            # Claude skill (zip)
+├── packages/
+│   └── core/                 # published "wiremd" npm package — parser, renderers, CLI
+├── apps/
+│   ├── docs/                 # VitePress documentation site         :5173
+│   ├── editor/               # web editor (Vite + Monaco)            :5174
+│   └── landing/              # marketing site (Vite + Vue)           :5175
+├── extensions/
+│   ├── vscode/               # VS Code live-preview extension
+│   ├── figma/                # imports wiremd JSON into Figma
+│   └── skills/wireframe/     # Claude skill (plugin marketplace)
+├── scripts/                  # build-bundle, sync-versions, package-skill
+├── pnpm-workspace.yaml
+└── turbo.json
 ```
 
 ```mermaid
 graph LR
-  core["<b>core</b><br/>src/ · bin/<br/>library + CLI"]
+  core["<b>packages/core</b><br/>library + CLI<br/>publishes <code>wiremd</code> on npm"]
 
-  subgraph apps["frontend apps"]
-    landing["landing/<br/>:5175"]
-    docs["docs/<br/>:5173"]
-    editor["editor/<br/>:5174"]
+  subgraph apps["apps/"]
+    landing["landing :5175"]
+    docs["docs :5173"]
+    editor["editor :5174"]
   end
 
-  subgraph consumers["consumers"]
-    vscode["vscode-extension/"]
-    figma["figma-plugin/"]
+  subgraph consumers["extensions/"]
+    vscode["vscode/"]
+    figma["figma/"]
     skill["skills/wireframe/"]
   end
 
@@ -126,8 +132,13 @@ graph LR
 ```
 
 ```bash
-npm run dev   # starts all three frontend apps concurrently
+pnpm install           # install all workspaces in one shot
+pnpm turbo run dev     # start all three frontend apps concurrently
+pnpm turbo run build   # build everything (core first, then apps/extensions)
+pnpm turbo run test    # run the full test suite
 ```
+
+Run a single workspace: `pnpm --filter wiremd run build` (the core library) or `pnpm --filter wiremd-editor run dev` (the editor app).
 
 ## Installation
 
@@ -155,9 +166,9 @@ brew install teezeit/wiremd/wiremd
 ```bash
 git clone https://github.com/teezeit/wiremd.git
 cd wiremd
-npm install
-npm run build
-npm link
+pnpm install
+pnpm turbo run build
+pnpm --filter wiremd exec npm link    # exposes the `wiremd` CLI globally
 ```
 
 ## Use with Claude
@@ -254,7 +265,7 @@ Your wiremd design will appear as a new Figma page with:
 ✅ Proper spacing, padding, and auto-layout constraints
 ✅ Theme-specific styling (colors, fonts, shadows)
 
-See [figma-plugin/README.md](./figma-plugin/README.md) for complete documentation.
+See [extensions/figma/README.md](./extensions/figma/README.md) for complete documentation.
 
 ## Using in Obsidian
 
@@ -348,16 +359,15 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 
 ## Documentation
 
-**Not sure where to start?** → [Getting Started](./docs/guide/getting-started.md)
+**Not sure where to start?** → [Getting Started](./apps/docs/guide/getting-started.md)
 
 ### 📖 Learning & Reference
 
 | Document | Description | Best For |
 |----------|-------------|----------|
-| **[Syntax Showcase](./docs/examples/showcase.md)** | Comprehensive interactive guide with live examples | Learning by example, copying patterns |
-| **[Quick Reference](./vscode-extension/QUICK-REFERENCE.md)** | One-page syntax cheat sheet | Quick lookups, experienced users |
-| **[Syntax Guide](./docs/guide/overview.md)** | User-friendly tutorial with best practices | Structured learning |
-| **[FAQ](./docs/reference/faq.md)** | Common questions and troubleshooting | Solving problems, known issues |
+| **[Syntax Showcase](./apps/docs/examples/demo-blocks.md)** | Comprehensive interactive guide with live examples | Learning by example, copying patterns |
+| **[Syntax Guide](./apps/docs/guide/overview.md)** | User-friendly tutorial with best practices | Structured learning |
+| **[FAQ](./apps/docs/reference/faq.md)** | Common questions and troubleshooting | Solving problems, known issues |
 
 📖 **[📚 View Full Documentation →](https://teezeit.github.io/wiremd)** - Complete documentation site with interactive examples
 
@@ -373,15 +383,15 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 | **[🔌 Framework Integrations](https://teezeit.github.io/wiremd/guide/integrations)** | Next.js, React, Vite, Express |
 | **[🔧 Troubleshooting](https://teezeit.github.io/wiremd/guide/troubleshooting)** | Common issues and solutions |
 | **[🎨 Live Showcases](https://teezeit.github.io/wiremd/showcases/)** | Examples in all 7 styles |
-| **[📂 Example Files](./examples/)** | Local wiremd files to explore |
+| **[📂 Example Files](./apps/docs/examples/)** | Local wiremd files to explore |
 
 ### 🔧 Technical Documentation
 
 | Document | Description |
 |----------|-------------|
-| **[API Documentation (Local)](./docs/api/index.md)** | Local API reference |
+| **[API Documentation (Local)](./apps/docs/api/index.md)** | Local API reference |
 | **[Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md)** | Development roadmap |
-| **[CLAUDE.md](./.github/dev-docs/CLAUDE.md)** | Project overview for AI assistants |
+| **[CLAUDE.md](./CLAUDE.md)** | Repo overview for AI assistants — monorepo layout, commands, architecture |
 
 ### 🤝 Contributing
 
@@ -436,18 +446,23 @@ Please check the [Project Plan](./.github/dev-docs/markdown-mockup-project-plan.
 git clone https://github.com/teezeit/wiremd.git
 cd wiremd
 
-# Install dependencies
-npm install
+# Install dependencies (pnpm is enforced — `preinstall` blocks npm/yarn)
+pnpm install
 
-# Run tests
-npm test
+# Run all tests
+pnpm turbo run test
 
-# Build
-npm run build
+# Build everything
+pnpm turbo run build
 
-# Run type check
-npm run typecheck
+# Type check
+pnpm turbo run typecheck
+
+# Iterate on the core library only
+pnpm --filter wiremd run test:watch
 ```
+
+See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the full feature checklist, plugin maintenance, and release process.
 
 ## License
 

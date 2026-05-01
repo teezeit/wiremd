@@ -34,8 +34,7 @@ pnpm-debug.log*
 .env.*.local
 
 # Generated HTML output from CLI
-examples/**/*.html
-skills/**/*.html
+extensions/skills/**/*.html
 
 # Temporary
 tmp/
@@ -46,20 +45,24 @@ temp/
 # OS
 .DS_Store
 Thumbs.db
-vscode-extension/*.vsix
-vscode-extension/QUICK-REFERENCE.md
-vscode-extension/docs/
 
-# Generated HTML artifacts
-examples/**/*.html
-docs/examples/**/*.html
+# Built VS Code extension package
+extensions/vscode/*.vsix
+
+# Bundle artifacts — copied from apps/docs/ and extensions/skills/ by the bundle script
+# (regenerated on every `pnpm --filter wiremd-preview run bundle`; source of truth is apps/docs/)
+extensions/vscode/docs/
+extensions/vscode/skills/
 
 # VitePress cache
-docs/.vitepress/cache/
+apps/docs/.vitepress/cache/
+
+# Turborepo per-package cache
+.turbo/
 
 # Generated skill zip (built on release, not checked in)
 wireframe-skill.zip
 
 # Release artifacts — uploaded to GitHub Releases, not committed
-# (skills/wireframe/bin/wiremd.js stays committed for the plugin)
+# (extensions/skills/wireframe/bin/wiremd.js stays committed for the plugin)
 releases/

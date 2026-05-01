@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "wireframe",
-      "source": "./skills/wireframe",
+      "source": "./extensions/skills/wireframe",
       "description": "Create and render wireframes using wiremd — converts Markdown into visual HTML mockups.",
       "homepage": "https://teezeit.github.io/wiremd/",
       "repository": "https://github.com/teezeit/wiremd",

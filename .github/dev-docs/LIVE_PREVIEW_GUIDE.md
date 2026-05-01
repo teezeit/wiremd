@@ -10,20 +10,20 @@ The CLI includes an enhanced dev server with live-reload and responsive viewport
 
 ```bash
 # Basic watch mode with live preview
-mdmock wireframe.md --watch --serve 3000
+wiremd wireframe.md --watch --serve 3000
 
 # Use different style
-mdmock wireframe.md --watch --serve 3000 --style clean
+wiremd wireframe.md --watch --serve 3000 --style clean
 
 # Just watch mode (no server)
-mdmock wireframe.md --watch
+wiremd wireframe.md --watch
 ```
 
 Then open your browser to `http://localhost:3000` to see the live preview!
 
 ### VS Code Extension
 
-1. Install the extension (from `vscode-extension/` directory)
+1. Install the extension (from `extensions/vscode/` directory)
 2. Open any markdown file
 3. Press `Ctrl+K V` (or `Cmd+K V` on Mac) to open preview to the side
 
@@ -61,22 +61,22 @@ Small notification appears in bottom-right corner when preview is reloading.
 All wiremd styles are supported in live preview:
 ```bash
 # Balsamiq-style hand-drawn (default)
-mdmock app.md --watch --serve 3000 --style sketch
+wiremd app.md --watch --serve 3000 --style sketch
 
 # Modern minimal
-mdmock app.md --watch --serve 3000 --style clean
+wiremd app.md --watch --serve 3000 --style clean
 
 # Traditional wireframe
-mdmock app.md --watch --serve 3000 --style wireframe
+wiremd app.md --watch --serve 3000 --style wireframe
 
 # Material Design
-mdmock app.md --watch --serve 3000 --style material
+wiremd app.md --watch --serve 3000 --style material
 
 # Tailwind CSS
-mdmock app.md --watch --serve 3000 --style tailwind
+wiremd app.md --watch --serve 3000 --style tailwind
 
 # Neo-brutalism
-mdmock app.md --watch --serve 3000 --style brutal
+wiremd app.md --watch --serve 3000 --style brutal
 ```
 
 ## 🔌 VS Code Extension Features
@@ -145,14 +145,14 @@ Easy to use interface
 
 Preview with live-reload:
 ```bash
-mdmock app.md --watch --serve 3000
+wiremd app.md --watch --serve 3000
 ```
 
 ### Example 2: Multi-viewport Testing
 
 ```bash
 # Start dev server
-mdmock landing.md --watch --serve 3000
+wiremd landing.md --watch --serve 3000
 
 # Open http://localhost:3000
 # Use toolbar to switch between mobile/tablet/desktop views
@@ -163,13 +163,13 @@ mdmock landing.md --watch --serve 3000
 
 ```bash
 # Terminal 1: Sketch style
-mdmock design.md --watch --serve 3001 --style sketch
+wiremd design.md --watch --serve 3001 --style sketch
 
 # Terminal 2: Clean style
-mdmock design.md --watch --serve 3002 --style clean
+wiremd design.md --watch --serve 3002 --style clean
 
 # Terminal 3: Material style
-mdmock design.md --watch --serve 3003 --style material
+wiremd design.md --watch --serve 3003 --style material
 
 # Open all three in browser tabs to compare
 ```
@@ -179,20 +179,20 @@ mdmock design.md --watch --serve 3003 --style material
 ### Custom Port
 
 ```bash
-mdmock wireframe.md --watch --serve 8080
+wiremd wireframe.md --watch --serve 8080
 ```
 
 ### Watch Without Server
 
 Generate files on change but don't start a server:
 ```bash
-mdmock wireframe.md --watch -o output.html
+wiremd wireframe.md --watch -o output.html
 ```
 
 ### Output JSON While Watching
 
 ```bash
-mdmock wireframe.md --watch --format json -o output.json
+wiremd wireframe.md --watch --format json -o output.json
 ```
 
 ## 🐛 Troubleshooting
@@ -251,7 +251,7 @@ Use the viewport switcher to test mobile layouts:
 
 Always use `--watch --serve` during active development:
 ```bash
-mdmock project.md --watch --serve 3000
+wiremd project.md --watch --serve 3000
 ```
 
 ### 2. Test Multiple Viewports
@@ -309,7 +309,7 @@ For very large files, disable auto-refresh:
 ## 📚 Additional Resources
 
 - [Wiremd Documentation](https://github.com/akonan/wiremd)
-- [VS Code Extension Guide](./vscode-extension/README.md)
+- [VS Code Extension Guide](../../extensions/vscode/README.md)
 - [CLI Reference](./README.md)
 - [Examples](./examples/)
 

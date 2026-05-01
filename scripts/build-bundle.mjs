@@ -5,7 +5,7 @@
  *   releases/wiremd.vsix      — VS Code extension (install via Extensions > ... > Install from VSIX)
  *
  * Also copies the CLI to the plugin:
- *   skills/wireframe/bin/wiremd.js
+ *   extensions/skills/wireframe/bin/wiremd.js
  */
 import { mkdirSync, copyFileSync, readdirSync } from 'fs';
 import { build } from 'esbuild';
@@ -16,16 +16,16 @@ import { execSync } from 'child_process';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const releasesDir = resolve(root, 'releases');
 const release    = resolve(releasesDir, 'wiremd.js');
-const pluginBin  = resolve(root, 'skills/wireframe/bin/wiremd.js');
-const extDir     = resolve(root, 'vscode-extension');
+const pluginBin  = resolve(root, 'extensions/skills/wireframe/bin/wiremd.js');
+const extDir     = resolve(root, 'extensions/vscode');
 
 mkdirSync(releasesDir, { recursive: true });
-mkdirSync(resolve(root, 'skills/wireframe/bin'), { recursive: true });
+mkdirSync(resolve(root, 'extensions/skills/wireframe/bin'), { recursive: true });
 
 // ── CLI bundle ─────────────────────────────────────────────────────────────
 console.log('Building CLI bundle...');
 await build({
-  entryPoints: [resolve(root, 'src/cli/index.ts')],
+  entryPoints: [resolve(root, 'packages/core/src/cli/index.ts')],
   bundle: true,
   platform: 'node',
   format: 'cjs',
