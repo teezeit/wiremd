@@ -263,14 +263,16 @@ describe('Feature Name', () => {
 Run through this before opening a PR for any new syntax, render option, or user-visible behaviour. All paths are repo-relative.
 
 ### Core implementation (`packages/core/`)
-- [ ] **Types** — add node type to `WiremdNode` union in `packages/core/src/types.ts`; add any new option to `RenderOptions`
-- [ ] **Parser** — handle new MDAST node type in `packages/core/src/parser/transformer.ts`; add to `validTypes` in `packages/core/src/parser/index.ts`
-- [ ] **HTML renderer** — add `case` in `packages/core/src/renderer/html-renderer.ts`; extend `RenderContext` if needed
-- [ ] **CSS** — add shared structural CSS in `packages/core/src/renderer/styles.ts` (`getStyleCSS`)
-- [ ] **React renderer** — add `case` in `packages/core/src/renderer/react-renderer.ts` (full or silent no-op)
-- [ ] **Tailwind renderer** — add `case` in `packages/core/src/renderer/tailwind-renderer.ts` (full or silent no-op)
-- [ ] **Renderer index** — plumb any new `RenderOptions` field through all four render functions in `packages/core/src/renderer/index.ts`
-- [ ] **Public exports** — export new types/options from `packages/core/src/index.ts` so library consumers can use them
+- [ ] **Type** — add the node variant to the `WiremdNode` union in `packages/core/src/types.ts`. Add any new field to `RenderOptions` if the feature is a render-time toggle.
+- [ ] **Parser** — handle the new MDAST node type in `packages/core/src/parser/transformer.ts`. Add the wiremd type to `validTypes` in `packages/core/src/parser/index.ts`.
+- [ ] **Node module** — drop a folder under `packages/core/src/nodes/<your-type>/`:
+  - `index.ts` exports `NodeDefinition<'<your-type>'>`
+  - `html.ts` exports `(node, ctx) => string`
+  - `react.ts` and `tailwind.ts` are **optional** — omit them and the dispatcher falls through to an "Unknown node" comment, which is what most UI nodes (tabs, breadcrumbs, demo, …) ship today.
+  - Recursion: call `renderNode(child, ctx)` (HTML/Tailwind) or `renderNode(child, ctx, indent + 1)` (React). The dispatcher routes children back through the registry.
+- [ ] **Register it** — add one line to `packages/core/src/nodes/_registry.ts`. The legacy `<target>-renderer.ts` files are now thin dispatchers; do **not** add `case` arms to them.
+- [ ] **CSS** — add structural rules shared across themes to `packages/core/src/renderer/styles/_structural.ts`. Theme-specific rules go in the matching `packages/core/src/renderer/styles/<theme>.ts` file (sketch, clean, wireframe, none, tailwind, material, brutal).
+- [ ] **Public exports** — export new types/options from `packages/core/src/index.ts` so library consumers can use them.
 
 ### Entry points
 - [ ] **CLI** — add flag(s) to `CLIOptions` and `parseArgs` in `packages/core/src/cli/index.ts`; pass through `generateOutput`
