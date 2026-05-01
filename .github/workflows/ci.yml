@@ -65,7 +65,7 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Run tests with coverage
-      run: pnpm turbo run test:coverage --filter=wiremd
+      run: pnpm turbo run test:coverage --filter=@eclectic-ai/wiremd
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
@@ -94,7 +94,7 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Build package
-      run: pnpm --filter wiremd run build
+      run: pnpm --filter @eclectic-ai/wiremd run build
 
     - name: Pack package
       run: cd packages/core && npm pack

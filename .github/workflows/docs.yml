@@ -43,7 +43,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build core
-        run: pnpm --filter wiremd run build
+        run: pnpm --filter @eclectic-ai/wiremd run build
 
       - name: Build VitePress site
         run: pnpm --filter wiremd-docs run build
