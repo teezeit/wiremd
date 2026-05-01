@@ -201,12 +201,26 @@ After the sweep, ask Claude (or do it yourself) to translate `📝` and `❌` lo
 
 ### Review gate
 
-[`tests/review-gate.test.ts`](../review-gate.test.ts) parses `REVIEW_LOG.md` and fails if any fixture is ⏳. This makes visual review load-bearing in the test suite:
+[`tests/review-gate.test.ts`](../review-gate.test.ts) parses `REVIEW_LOG.md` and fails if any fixture is ⏳. This makes visual review load-bearing in the test suite: a snapshot change cannot ship until a human has clicked ✅ in the page.
 
-- Refresh a snapshot via `pnpm test -u` → matching fixture becomes ⏳ (when paired with `pnpm review:flag --snapshot-changes`, or via the combined `pnpm review:refresh`).
-- `pnpm test` now goes red on the gate test, listing every pending fixture.
-- Open `pnpm review`, eyeball, click ✅ — gate clears, suite goes green.
-- CI enforces the same: a PR with un-reviewed snapshot drift cannot merge.
+#### The loop when your change affects rendering
+
+```bash
+# 1. edit code
+# 2. refresh snapshots AND flag affected fixtures as ⏳
+pnpm review:refresh
+
+# 3. confirm the gate is now red — error names every pending fixture
+pnpm test
+
+# 4. eyeball the rendered output, click ✅ on each row that looks right
+pnpm review
+
+# 5. gate is green again — commit
+pnpm test && git commit
+```
+
+CI enforces the same: a PR with un-reviewed snapshot drift cannot merge.
 
 The gate is a forcing function, not a lock. If you need to ship without review (don't), manually flip the row in `REVIEW_LOG.md` — git history will show that the verdict was set without a review commit, which is the audit trail.
 
