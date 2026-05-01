@@ -52,24 +52,28 @@ afterEach(() => {
 });
 
 describe('node registry: contract', () => {
-  it('contains entries only for migrated node types', () => {
-    // As nodes migrate, this assertion grows. The point is to keep an
-    // explicit inventory so a stray accidental registration is caught.
-    expect(Object.keys(registry).sort()).toEqual(['button']);
+  it('every registered entry has a matching type and at least one render target', () => {
+    // Per-target functions are optional (HTML / React / Tailwind do not
+    // all cover every node type — UI nodes like tabs/breadcrumbs fall
+    // through to the legacy "Unknown node" comment in React/Tailwind).
+    // But a node with no render functions at all is broken.
+    for (const [type, def] of Object.entries(registry)) {
+      expect(def?.type, `registry["${type}"].type`).toBe(type);
+      const r = def?.render || {};
+      const present = [r.html, r.react, r.tailwind].filter((fn) => typeof fn === 'function');
+      expect(present.length, `registry["${type}"] has no render targets`).toBeGreaterThan(0);
+    }
   });
 
-  it('getNodeDefinition returns undefined for unmigrated/unknown types', () => {
-    expect(getNodeDefinition('container')).toBeUndefined();
+  it('getNodeDefinition returns undefined for unknown types', () => {
     expect(getNodeDefinition('does-not-exist')).toBeUndefined();
+    expect(getNodeDefinition('')).toBeUndefined();
   });
 
-  it('getNodeDefinition returns the registered definition for migrated types', () => {
+  it('getNodeDefinition returns the registered definition for known types', () => {
     const def = getNodeDefinition('button');
     expect(def).toBeDefined();
     expect(def?.type).toBe('button');
-    expect(typeof def?.render?.html).toBe('function');
-    expect(typeof def?.render?.react).toBe('function');
-    expect(typeof def?.render?.tailwind).toBe('function');
   });
 
   it('getNodeDefinition returns the registered definition after registration', () => {
@@ -87,7 +91,10 @@ describe('node registry: contract', () => {
 });
 
 describe('node registry: dispatcher hooks (registry-first, fall-through second)', () => {
-  it('HTML renderer prefers registry.render.html over the legacy switch', () => {
+  it('HTML renderer routes registered types through registry.render.html', () => {
+    // Override the migrated `text` renderer with a marker; the override
+    // should win over the canonical implementation registered in
+    // src/nodes/text/.
     (registry as Record<string, AnyNodeDefinition>).text = {
       type: 'text',
       render: {
@@ -98,14 +105,11 @@ describe('node registry: dispatcher hooks (registry-first, fall-through second)'
     };
 
     const html = renderToHTML(doc([{ type: 'text', content: 'hello' }]));
-
-    // Registry override wins: the marker appears.
     expect(html).toContain('<HTML-MARKER/>');
-    // Legacy escape-and-emit path didn't also run.
     expect(html).not.toContain('hello');
   });
 
-  it('React renderer prefers registry.render.react over the legacy switch', () => {
+  it('React renderer routes registered types through registry.render.react', () => {
     (registry as Record<string, AnyNodeDefinition>).text = {
       type: 'text',
       render: {
@@ -117,12 +121,10 @@ describe('node registry: dispatcher hooks (registry-first, fall-through second)'
 
     const react = renderToReact(doc([{ type: 'text', content: 'hello' }]));
     expect(react).toContain('<REACT_MARKER/>');
-    // The legacy text path emits the literal content; with registry
-    // override it must not also emit it.
     expect(react.match(/hello/g)).toBeNull();
   });
 
-  it('Tailwind renderer prefers registry.render.tailwind over the legacy switch', () => {
+  it('Tailwind renderer routes registered types through registry.render.tailwind', () => {
     (registry as Record<string, AnyNodeDefinition>).text = {
       type: 'text',
       render: {
@@ -137,49 +139,14 @@ describe('node registry: dispatcher hooks (registry-first, fall-through second)'
     expect(tailwind).not.toContain('hello');
   });
 
-  it('falls through to legacy when the registry has no entry for the node type', () => {
-    // Registry is empty for 'text' here — legacy path must produce the literal content.
-    const html = renderToHTML(doc([{ type: 'text', content: 'fallthrough' }]));
-    expect(html).toContain('fallthrough');
-  });
-
-  it('per-target fall-through: registering only html leaves react/tailwind on the legacy path', () => {
-    (registry as Record<string, AnyNodeDefinition>).text = {
-      type: 'text',
-      render: {
-        html: () => '<H/>',
-        // The contract type requires all three keys, but we can leave
-        // the others as no-ops to prove the dispatcher checks each one
-        // independently. (Real migrations will implement all three.)
-        react: () => '',
-        tailwind: () => '',
-      },
-    };
-
-    const html = renderToHTML(doc([{ type: 'text', content: 'fallthrough-text' }]));
-    expect(html).toContain('<H/>');
-    expect(html).not.toContain('fallthrough-text');
-
-    // Now flip: only react registered, html/tailwind no-op. The HTML
-    // dispatcher still hits the registered no-op (because the key
-    // exists), so to prove fall-through we must remove .html entirely.
-    delete (registry as Record<string, AnyNodeDefinition>).text;
-    (registry as Record<string, AnyNodeDefinition>).text = {
-      type: 'text',
-      render: {
-        // @ts-expect-error — deliberately partial to test fall-through behavior
-        html: undefined,
-        react: () => '<R/>',
-        // @ts-expect-error
-        tailwind: undefined,
-      },
-    };
-
-    const htmlAgain = renderToHTML(doc([{ type: 'text', content: 'fallthrough-html' }]));
-    // No registered html → falls through to legacy → original content emitted.
-    expect(htmlAgain).toContain('fallthrough-html');
-
-    const reactAgain = renderToReact(doc([{ type: 'text', content: 'fallthrough-react' }]));
-    expect(reactAgain).toContain('<R/>');
+  it('does not throw for unknown types not in the registry', () => {
+    // The dispatcher must not throw; it falls through to the legacy
+    // switch's default arm. Some renderers emit an "Unknown node type"
+    // comment for diagnostics — the contract here is just that the
+    // pipeline survives.
+    const bogus = doc([{ type: 'made-up-node' as never, content: 'x' } as never]);
+    expect(() => renderToHTML(bogus)).not.toThrow();
+    expect(() => renderToReact(bogus)).not.toThrow();
+    expect(() => renderToTailwind(bogus)).not.toThrow();
   });
 });

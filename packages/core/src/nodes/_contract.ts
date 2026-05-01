@@ -59,10 +59,16 @@ export interface TransformContext {
  * modules can be migrated one at a time without forcing a wholesale
  * RenderContext refactor.
  */
+/**
+ * Render functions are optional per target. When a target is missing
+ * the dispatcher falls through to the legacy switch (which historically
+ * emits an "Unknown node type" comment for many nodes that never had a
+ * dedicated React/Tailwind renderer).
+ */
 export interface NodeRenderers<T extends WiremdNode> {
-  html: (node: T, ctx: HtmlRenderContext) => string;
-  react: (node: T, ctx: ReactRenderContext, indent?: number) => string;
-  tailwind: (node: T, ctx: TailwindRenderContext) => string;
+  html?: (node: T, ctx: HtmlRenderContext) => string;
+  react?: (node: T, ctx: ReactRenderContext, indent?: number) => string;
+  tailwind?: (node: T, ctx: TailwindRenderContext) => string;
 }
 
 /**
