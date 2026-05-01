@@ -40,10 +40,36 @@ tests/fixtures/
 
 **Two fixture sources:**
 
-- **Regressions** (`regressions/**/*.md`): hand-written cases covering bugs, edge cases, malformed input, and validation tests. Snapshots co-located with the input.
+- **Regressions** (`regressions/**/*.md`): hand-written cases covering bugs, edge cases, malformed input, robustness, and validation tests. Snapshots co-located with the input.
 - **Doc-derived** (`__snapshots__/docs/**`): every `::: demo` block in `apps/docs/components/*.md` is automatically a fixture. Snapshots live separately so they don't pollute the docs source tree. The list of docs files lives in `tests/lib/fixture-runner.ts` (`DOC_SOURCES`).
 
 The single `loadFixtures()` function in `tests/lib/fixture-runner.ts` returns both. The driver test `tests/fixtures.test.ts` runs every fixture through `parse() → renderToHTML() / renderToReact() / renderToTailwind()` and asserts each output matches its snapshot.
+
+---
+
+## The corpus IS the syntax spec
+
+The corpus is functioning as more than a test suite. Each fixture is a worked claim about what wiremd does for a given input — collectively they form the de facto specification of the language. That has a few practical consequences:
+
+- A new syntax feature isn't fully landed until a fixture demonstrates it. Adding the renderer case + a `:::demo` in `apps/docs/components/` are the same act.
+- "Does wiremd support X?" can be answered by `grep` (find a fixture demonstrating X). If there isn't one, the answer is "not formally."
+- The review tool's `REVIEW.html` is, in effect, "wiremd, every supported pattern, on one page with rendered output." Useful for newcomers, contributors, and self-review.
+- **Robustness counts as syntax.** If the parser misbehaves on a common formatting variation, that's a paper cut — and the right place to enumerate the cuts is here, as `.expected-fail.invariants.ts` fixtures that fail until the parser is fixed.
+
+### Rough taxonomy of what the corpus covers today
+
+| Category | Source | Examples |
+|---|---|---|
+| **Primitives** | `apps/docs/components/{buttons,button-links,inputs,textarea-select,checkboxes-radio,icons,badges}.md` | Button variants, input types, checkbox/radio groups, icons in cells |
+| **Layouts** | `{grid,row,cards,tabs,page-layouts,navigation}.md` | Grid col-span, row alignment, sidebar layout, tabs |
+| **Content** | `{tables,alerts,comments,attributes}.md` | Tables with badges, alert variants, comment threads, attributes on containers |
+| **Meta** | `{demo,index}.md` | `:::demo` syntax itself, kitchen-sink pages |
+| **Closer behavior** | `regressions/containers/closer/` | Closer after list / paragraph / heading; nested containers |
+| **Whitespace tolerance** | `regressions/whitespace-tolerance/` | CRLF, BOM, trailing whitespace, multiple blanks, sibling containers without blank line |
+
+A category isn't "covered" unless representative fixtures exist. **If you find an edge case the parser handles correctly that we don't have a fixture for, add one** — even if it works today, that pins the contract going forward. The whole point of the corpus is "what wiremd guarantees," not "what we happened to remember to test."
+
+When a category gets dense enough to deserve its own folder under `regressions/`, give it one. Categories are discovered, not designed.
 
 ---
 

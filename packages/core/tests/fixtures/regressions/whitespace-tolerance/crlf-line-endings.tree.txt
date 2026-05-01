@@ -1,0 +1,4 @@
+Document
+  └─ container[card]
+     ├─ paragraph "A paragraph."
+     └─ button "Save" props={variant="primary"}

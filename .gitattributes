@@ -1,2 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Whitespace-tolerance regression fixtures intentionally use specific byte
+# sequences (CRLF, UTF-8 BOM). Disable normalization so the parser sees
+# exactly what was committed.
+packages/core/tests/fixtures/regressions/whitespace-tolerance/crlf-line-endings.md -text
+packages/core/tests/fixtures/regressions/whitespace-tolerance/leading-bom.md -text

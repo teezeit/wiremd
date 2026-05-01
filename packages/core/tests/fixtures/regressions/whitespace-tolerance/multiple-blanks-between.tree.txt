@@ -1,0 +1,5 @@
+Document
+  └─ container[card]
+     ├─ paragraph "A"
+     ├─ paragraph "B"
+     └─ paragraph "C"
