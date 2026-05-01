@@ -26,7 +26,7 @@ npm install @eclectic-ai/wiremd
 ## Quick Example
 
 ```typescript
-import { parse, renderToHTML, renderToJSON } from 'wiremd';
+import { parse, renderToHTML, renderToJSON } from '@eclectic-ai/wiremd';
 
 // Parse markdown to AST
 const ast = parse(`
@@ -66,7 +66,7 @@ const json = renderToJSON(ast, { pretty: true });
 The parser converts markdown with wiremd syntax into an Abstract Syntax Tree (AST).
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 // Parse markdown to AST
 const ast = parse('## Heading\n[Button]');
@@ -85,7 +85,7 @@ if (errors.length > 0) {
 wiremd provides multiple rendering targets:
 
 ```typescript
-import { renderToHTML, renderToReact, renderToTailwind } from 'wiremd';
+import { renderToHTML, renderToReact, renderToTailwind } from '@eclectic-ai/wiremd';
 
 // HTML with embedded styles
 const html = renderToHTML(ast, { style: 'sketch' });
@@ -111,7 +111,7 @@ import type {
   RenderOptions,
   ButtonNode,
   InputNode
-} from 'wiremd';
+} from '@eclectic-ai/wiremd';
 ```
 
 [Explore all type definitions →](./types.md)
@@ -121,7 +121,7 @@ import type {
 ### Complete Rendering Pipeline
 
 ```typescript
-import { parse, validate, renderToHTML } from 'wiremd';
+import { parse, validate, renderToHTML } from '@eclectic-ai/wiremd';
 import { readFileSync, writeFileSync } from 'fs';
 
 // Read input
@@ -149,7 +149,7 @@ writeFileSync('output.html', html);
 ### Multiple Output Formats
 
 ```typescript
-import { parse, renderToHTML, renderToReact, renderToJSON } from 'wiremd';
+import { parse, renderToHTML, renderToReact, renderToJSON } from '@eclectic-ai/wiremd';
 
 const markdown = '## Login\n[Submit]{.primary}';
 const ast = parse(markdown);
@@ -168,7 +168,7 @@ writeFileSync('ast.json', json);
 ### AST Manipulation
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 
 const ast = parse('## Form\n[Button]');
 
@@ -211,7 +211,7 @@ Try wiremd online with our [live demo site](https://github.com/teezeit/wiremd) t
 Create custom renderers for other frameworks:
 
 ```typescript
-import type { DocumentNode, WiremdNode } from 'wiremd';
+import type { DocumentNode, WiremdNode } from '@eclectic-ai/wiremd';
 
 function renderToVue(ast: DocumentNode): string {
   // Custom Vue renderer implementation
@@ -225,7 +225,7 @@ function renderToVue(ast: DocumentNode): string {
 Handle validation errors by calling `validate()` after `parse()`. The `ParseOptions` fields (including `validate`) are not yet implemented and have no effect on `parse()`.
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 const ast = parse(userInput);
 const errors = validate(ast);

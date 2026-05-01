@@ -14,7 +14,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      wiremd: resolve(__dirname, '../../packages/core/src/index.ts'),
+      '@eclectic-ai/wiremd': resolve(__dirname, '../../packages/core/src/index.ts'),
       fs: resolve(__dirname, '../editor/src/stubs/fs.ts'),
       path: resolve(__dirname, '../editor/src/stubs/path.ts'),
     },

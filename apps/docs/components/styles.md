@@ -48,7 +48,7 @@ wiremd file.md --style wireframe -o output.html
 ## API
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 
 const html = renderToHTML(parse(markdown), { style: 'clean' });
 ```

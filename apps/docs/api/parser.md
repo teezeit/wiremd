@@ -63,7 +63,7 @@ interface DocumentNode {
 #### Basic Usage
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## Contact Form
@@ -88,7 +88,7 @@ console.log(ast.children.length); // Number of top-level nodes
 Position information would be useful for error reporting and source mapping once implemented:
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## Login Form
@@ -108,7 +108,7 @@ ast.children.forEach(node => {
 To validate an AST for structural errors, call `validate()` separately after `parse()`. The `validate` option on `ParseOptions` is not yet implemented and has no effect.
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## My Wireframe
@@ -128,7 +128,7 @@ if (errors.length > 0) {
 > **Note:** The `icons` option is not yet implemented and has no effect.
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## Header
@@ -142,7 +142,7 @@ const ast = parse(`
 > **Note:** The `strict` option is not yet implemented and has no effect.
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## Title
@@ -155,7 +155,7 @@ const ast = parse(`
 #### Processing Multiple Files
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
@@ -176,7 +176,7 @@ console.log(`Parsed ${asts.length} wireframe files`);
 #### Extract Metadata
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## My Wireframe
@@ -193,7 +193,7 @@ console.log('Viewport:', ast.meta.viewport);
 #### Parse and Analyze
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## Dashboard
@@ -258,7 +258,7 @@ If your input Markdown uses `![[file.md]]` include syntax **and** you are callin
 ### Example
 
 ```typescript
-import { resolveIncludes, parse, renderToHTML } from 'wiremd';
+import { resolveIncludes, parse, renderToHTML } from '@eclectic-ai/wiremd';
 import { readFileSync } from 'fs';
 import path from 'path';
 
@@ -304,7 +304,7 @@ interface ValidationError {
 #### Basic Validation
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## Contact Form
@@ -331,7 +331,7 @@ if (errors.length === 0) {
 #### Pre-render Validation
 
 ```typescript
-import { parse, validate, renderToHTML } from 'wiremd';
+import { parse, validate, renderToHTML } from '@eclectic-ai/wiremd';
 
 const markdown = `
 ## My Wireframe
@@ -351,7 +351,7 @@ const html = renderToHTML(ast);
 #### Custom Validation Rules
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 function validateCustomRules(ast: DocumentNode): string[] {
   const warnings: string[] = [];
@@ -393,7 +393,7 @@ warnings.forEach(w => console.warn(w));
 `parse()` is resilient and does not throw on most malformed input — it parses what it can and returns an AST. To check whether the result is structurally valid, call `validate(ast)` after parsing. The `validate` option on `ParseOptions` is not yet implemented and has no effect.
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 function parseUserInput(input: string): DocumentNode | null {
   // parse() itself rarely throws; validate() checks structural correctness
@@ -419,7 +419,7 @@ const ast = parseUserInput('## My Wireframe\n[Button]');
 For frequently used wireframes, consider caching parsed ASTs:
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const astCache = new Map<string, DocumentNode>();
 
@@ -447,7 +447,7 @@ console.log(ast1 === ast2); // true
 For large documents, consider splitting into sections:
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 function parseInSections(markdown: string): DocumentNode[] {
   // Split by top-level headings

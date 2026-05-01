@@ -24,7 +24,7 @@ fs.writeFileSync('output.html', html);
 ### ES Modules
 
 ```javascript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 import { readFileSync, writeFileSync } from 'fs';
 
 const markdown = readFileSync('wireframe.md', 'utf-8');
@@ -41,7 +41,7 @@ Create a wireframe preview component:
 
 ```typescript
 // app/wireframe/[slug]/page.tsx
-import { parse, renderToReact } from 'wiremd';
+import { parse, renderToReact } from '@eclectic-ai/wiremd';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
@@ -86,7 +86,7 @@ function WireframeRenderer({ ast }) {
 ```typescript
 // pages/wireframe/[slug].tsx
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
@@ -138,7 +138,7 @@ Create an API endpoint for parsing wireframes:
 ```typescript
 // pages/api/parse.ts
 import { NextApiRequest, NextApiResponse } from 'next';
-import { parse, renderToHTML, renderToJSON } from 'wiremd';
+import { parse, renderToHTML, renderToJSON } from '@eclectic-ai/wiremd';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -173,7 +173,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 ```typescript
 // src/components/WireframeViewer.tsx
 import React, { useState, useEffect } from 'react';
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 
 interface Props {
   markdown: string;
@@ -207,7 +207,7 @@ export const WireframeViewer: React.FC<Props> = ({ markdown, style = 'clean' }) 
 ```typescript
 // src/components/WireframeEditor.tsx
 import React, { useState } from 'react';
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 
 export const WireframeEditor: React.FC = () => {
   const [markdown, setMarkdown] = useState('## Contact Form\n[Button]');
@@ -267,7 +267,7 @@ Create a Vite plugin to process `.wmd` files:
 ```typescript
 // vite-plugin-wiremd.ts
 import { Plugin } from 'vite';
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 import { readFileSync } from 'fs';
 
 export function wiremdPlugin(): Plugin {
@@ -305,7 +305,7 @@ export default defineConfig({
 ```typescript
 // server.ts
 import express from 'express';
-import { parse, renderToHTML, renderToJSON } from 'wiremd';
+import { parse, renderToHTML, renderToJSON } from '@eclectic-ai/wiremd';
 
 const app = express();
 
@@ -358,7 +358,7 @@ Watch and auto-render wireframe files:
 ```typescript
 // watcher.ts
 import { watch } from 'chokidar';
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 import { readFileSync, writeFileSync } from 'fs';
 
 const watcher = watch('./wireframes/*.md', {
@@ -420,7 +420,7 @@ module.exports = {
 import { GatsbyNode } from 'gatsby';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
   actions,
@@ -494,7 +494,7 @@ const wiremd = require('wiremd');
 const { parse, renderToHTML } = wiremd;
 
 // ES Modules (import) - Recommended
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 ```
 
 ### TypeScript Types
@@ -502,7 +502,7 @@ import { parse, renderToHTML } from 'wiremd';
 Ensure types are properly imported:
 
 ```typescript
-import type { DocumentNode, WiremdNode, ParseOptions, RenderOptions } from 'wiremd';
+import type { DocumentNode, WiremdNode, ParseOptions, RenderOptions } from '@eclectic-ai/wiremd';
 
 const options: ParseOptions = {
   position: true,
@@ -552,7 +552,7 @@ function parseWithCache(markdown: string): DocumentNode {
 ### 2. Validate User Input
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 function safeRender(userInput: string) {
   try {

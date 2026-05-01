@@ -13,7 +13,7 @@ A custom renderer is a function that traverses the wiremd AST and produces outpu
 ### Basic Structure
 
 ```typescript
-import type { DocumentNode, WiremdNode } from 'wiremd';
+import type { DocumentNode, WiremdNode } from '@eclectic-ai/wiremd';
 
 interface CustomRenderContext {
   // Your custom options
@@ -56,7 +56,7 @@ export function renderToCustomFormat(
 Create a custom renderer for Vue components:
 
 ```typescript
-import type { DocumentNode, WiremdNode, ButtonNode, InputNode } from 'wiremd';
+import type { DocumentNode, WiremdNode, ButtonNode, InputNode } from '@eclectic-ai/wiremd';
 
 interface VueRenderContext {
   componentName?: string;
@@ -173,7 +173,7 @@ export default {
 ### Usage
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 import { renderToVue } from './vue-renderer';
 
 const ast = parse(`
@@ -200,7 +200,7 @@ console.log(vueComponent);
 ## Example: Svelte Renderer
 
 ```typescript
-import type { DocumentNode, WiremdNode } from 'wiremd';
+import type { DocumentNode, WiremdNode } from '@eclectic-ai/wiremd';
 
 interface SvelteRenderContext {
   componentName?: string;
@@ -273,7 +273,7 @@ ${content}
 Convert the AST back to markdown (useful for transformations):
 
 ```typescript
-import type { DocumentNode, WiremdNode } from 'wiremd';
+import type { DocumentNode, WiremdNode } from '@eclectic-ai/wiremd';
 
 function nodeToMarkdown(node: WiremdNode, indent: string = ''): string {
   switch (node.type) {
@@ -342,7 +342,7 @@ export function renderToMarkdown(ast: DocumentNode): string {
 ### Usage
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 import { renderToMarkdown } from './markdown-renderer';
 
 // Parse and transform
@@ -365,7 +365,7 @@ console.log(markdown);
 Generate JSON Schema from wiremd AST:
 
 ```typescript
-import type { DocumentNode, WiremdNode } from 'wiremd';
+import type { DocumentNode, WiremdNode } from '@eclectic-ai/wiremd';
 
 interface JSONSchemaProperty {
   type: string;
@@ -459,7 +459,7 @@ function renderNode(node: WiremdNode, context: any): string {
 Use TypeScript's type narrowing:
 
 ```typescript
-import type { WiremdNode, ButtonNode } from 'wiremd';
+import type { WiremdNode, ButtonNode } from '@eclectic-ai/wiremd';
 
 function renderNode(node: WiremdNode): string {
   if (node.type === 'button') {
@@ -540,7 +540,7 @@ export function renderToCustom(ast: DocumentNode): string {
 
 ```typescript
 import { describe, it, expect } from 'vitest';
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 import { renderToCustom } from './custom-renderer';
 
 describe('Custom Renderer', () => {
@@ -573,7 +573,7 @@ describe('Custom Renderer', () => {
 
 ```typescript
 import { test, expect } from 'vitest';
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 import { renderToCustom } from './custom-renderer';
 
 test('renders complex form correctly', () => {
@@ -641,7 +641,7 @@ my-wiremd-renderer/
 ### Usage in Projects
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 import { renderToVue } from 'wiremd-vue-renderer';
 
 const ast = parse('## Form\n[Submit]');
