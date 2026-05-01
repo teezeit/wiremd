@@ -1,4 +1,4 @@
-import { parse, renderToHTML, countCommentThreads } from 'wiremd';
+import { parse, renderToHTML, countCommentThreads } from '@eclectic-ai/wiremd';
 
 export type StyleName =
   | 'sketch'

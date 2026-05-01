@@ -88,7 +88,7 @@ Returns a complete HTML document string with `<!DOCTYPE html>` and embedded styl
 #### Basic Usage
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## Contact Form
@@ -111,7 +111,7 @@ const html = renderToHTML(ast);
 wiremd supports multiple visual styles:
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 
 const ast = parse(`## Dashboard\n[Login]`);
 
@@ -137,7 +137,7 @@ const none = renderToHTML(ast, { style: 'none' });
 #### Custom Class Prefix
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 
 const ast = parse(`## Form\n[Button]`);
 
@@ -153,7 +153,7 @@ const html = renderToHTML(ast, {
 #### Minified Output
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 
 const ast = parse(`## Title\n[Button]`);
 
@@ -169,7 +169,7 @@ const html = renderToHTML(ast, {
 #### External Styles
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 import { writeFileSync } from 'fs';
 
 const ast = parse(`## Dashboard\n[Button]`);
@@ -187,7 +187,7 @@ const html = renderToHTML(ast, {
 #### Batch Processing
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
@@ -242,7 +242,7 @@ Returns a JSON string representation of the AST.
 #### Basic Usage
 
 ```typescript
-import { parse, renderToJSON } from 'wiremd';
+import { parse, renderToJSON } from '@eclectic-ai/wiremd';
 
 const ast = parse(`## Login\n[Button]`);
 
@@ -253,7 +253,7 @@ console.log(json);
 #### Pretty vs Minified
 
 ```typescript
-import { parse, renderToJSON } from 'wiremd';
+import { parse, renderToJSON } from '@eclectic-ai/wiremd';
 
 const ast = parse(`## Form\n[Submit]`);
 
@@ -276,7 +276,7 @@ const minified = renderToJSON(ast, { pretty: false });
 #### Save to File
 
 ```typescript
-import { parse, renderToJSON } from 'wiremd';
+import { parse, renderToJSON } from '@eclectic-ai/wiremd';
 import { writeFileSync } from 'fs';
 
 const ast = parse(`
@@ -292,7 +292,7 @@ writeFileSync('wireframe.json', json);
 #### API Response
 
 ```typescript
-import { parse, renderToJSON } from 'wiremd';
+import { parse, renderToJSON } from '@eclectic-ai/wiremd';
 import express from 'express';
 
 const app = express();
@@ -357,7 +357,7 @@ Returns a string containing a complete React component definition.
 #### Basic Usage
 
 ```typescript
-import { parse, renderToReact } from 'wiremd';
+import { parse, renderToReact } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## Login Form
@@ -390,7 +390,7 @@ export const WiremdComponent: React.FC = () => {
 #### TypeScript vs JavaScript
 
 ```typescript
-import { parse, renderToReact } from 'wiremd';
+import { parse, renderToReact } from '@eclectic-ai/wiremd';
 
 const ast = parse(`## Form\n[Button]`);
 
@@ -410,7 +410,7 @@ const jsComponent = renderToReact(ast, {
 #### Custom Component Name
 
 ```typescript
-import { parse, renderToReact } from 'wiremd';
+import { parse, renderToReact } from '@eclectic-ai/wiremd';
 import { writeFileSync } from 'fs';
 
 const ast = parse(`
@@ -429,7 +429,7 @@ writeFileSync('ContactForm.tsx', component);
 #### Multiple Components
 
 ```typescript
-import { parse, renderToReact } from 'wiremd';
+import { parse, renderToReact } from '@eclectic-ai/wiremd';
 import { writeFileSync } from 'fs';
 
 const wireframes = [
@@ -453,7 +453,7 @@ wireframes.forEach(({ name, md }) => {
 #### Integration with Build Pipeline
 
 ```typescript
-import { parse, renderToReact } from 'wiremd';
+import { parse, renderToReact } from '@eclectic-ai/wiremd';
 import { readFileSync, writeFileSync } from 'fs';
 
 // Read wireframe
@@ -505,7 +505,7 @@ Returns a complete HTML document with Tailwind CSS classes and CDN link.
 #### Basic Usage
 
 ```typescript
-import { parse, renderToTailwind } from 'wiremd';
+import { parse, renderToTailwind } from '@eclectic-ai/wiremd';
 
 const ast = parse(`
 ## Dashboard
@@ -524,7 +524,7 @@ const html = renderToTailwind(ast);
 #### Complete Example
 
 ```typescript
-import { parse, renderToTailwind } from 'wiremd';
+import { parse, renderToTailwind } from '@eclectic-ai/wiremd';
 import { writeFileSync } from 'fs';
 
 const ast = parse(`
@@ -551,7 +551,7 @@ writeFileSync('product-page.html', html);
 #### Minified for Production
 
 ```typescript
-import { parse, renderToTailwind } from 'wiremd';
+import { parse, renderToTailwind } from '@eclectic-ai/wiremd';
 
 const ast = parse(`## Form\n[Submit]`);
 
@@ -567,7 +567,7 @@ const html = renderToTailwind(ast, {
 The generated HTML includes the Tailwind CDN by default. For custom configurations:
 
 ```typescript
-import { parse, renderToTailwind } from 'wiremd';
+import { parse, renderToTailwind } from '@eclectic-ai/wiremd';
 import { readFileSync, writeFileSync } from 'fs';
 
 const ast = parse(`## Dashboard\n[Button]`);
@@ -621,7 +621,7 @@ Returns the rendered output in the specified format.
 #### Format Selection
 
 ```typescript
-import { parse, render } from 'wiremd';
+import { parse, render } from '@eclectic-ai/wiremd';
 
 const ast = parse(`## Form\n[Submit]`);
 
@@ -641,7 +641,7 @@ const tailwind = render(ast, { format: 'tailwind' });
 #### Dynamic Format Selection
 
 ```typescript
-import { parse, render } from 'wiremd';
+import { parse, render } from '@eclectic-ai/wiremd';
 
 function renderWireframe(markdown: string, format: string): string {
   const ast = parse(markdown);
@@ -666,7 +666,7 @@ const output = renderWireframe('## Title\n[Button]', 'react');
 #### CLI-style Usage
 
 ```typescript
-import { parse, render } from 'wiremd';
+import { parse, render } from '@eclectic-ai/wiremd';
 import { readFileSync, writeFileSync } from 'fs';
 
 interface CLIOptions {
@@ -703,7 +703,7 @@ processWireframe({
 ### Reuse Parsed ASTs
 
 ```typescript
-import { parse, renderToHTML, renderToJSON, renderToReact } from 'wiremd';
+import { parse, renderToHTML, renderToJSON, renderToReact } from '@eclectic-ai/wiremd';
 
 const markdown = `## Dashboard\n[Button]`;
 
@@ -721,7 +721,7 @@ const react = renderToReact(ast);
 For very large documents, consider rendering in chunks:
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, renderToHTML } from '@eclectic-ai/wiremd';
 
 function* renderChunks(markdown: string, chunkSize: number = 1000) {
   const sections = markdown.split(/(?=^## )/gm);

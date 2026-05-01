@@ -39,7 +39,7 @@ The extensions add three things on top: `:::` container blocks for layout and co
 
 ### Can I use wiremd without installing anything?
 
-wiremd requires Node.js. Install it as a library (`npm install wiremd`) for programmatic use, or install it globally (`npm install -g wiremd`) to use the `wiremd` CLI command. There is no web-based playground at this time.
+wiremd requires Node.js. Install it as a library (`npm install @eclectic-ai/wiremd`) for programmatic use, or install it globally (`npm install -g @eclectic-ai/wiremd`) to use the `wiremd` CLI command. There is no web-based playground at this time.
 
 ### Where can I find a quick lookup of all syntax?
 

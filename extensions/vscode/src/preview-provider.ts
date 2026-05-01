@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { parse, resolveIncludes, renderToHTML, countCommentThreads } from 'wiremd';
+import { parse, resolveIncludes, renderToHTML, countCommentThreads } from '@eclectic-ai/wiremd';
 
 export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   public static readonly viewType = 'wiremd.preview';

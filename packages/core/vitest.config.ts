@@ -3,7 +3,7 @@
  * 
  * Copyright (c) 2025 wiremd
  * Licensed under MIT License
- * https://github.com/akonan/wiremd/blob/main/LICENSE
+ * https://github.com/teezeit/wiremd/blob/main/LICENSE
  */
 
 import { defineConfig } from 'vitest/config';

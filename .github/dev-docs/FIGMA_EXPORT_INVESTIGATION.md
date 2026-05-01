@@ -288,7 +288,7 @@ wiremd-figma-plugin/
 
 ```typescript
 // ast-to-figma.ts
-import type { WiremdNode, DocumentNode } from 'wiremd';
+import type { WiremdNode, DocumentNode } from '@eclectic-ai/wiremd';
 
 export class WiremdToFigmaConverter {
   async convert(ast: DocumentNode): Promise<void> {

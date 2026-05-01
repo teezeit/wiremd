@@ -1,6 +1,6 @@
 import * as path from 'path'
 import type { Plugin } from 'vite'
-import { parse, renderToHTML, resolveIncludes } from 'wiremd'
+import { parse, renderToHTML, resolveIncludes } from '@eclectic-ai/wiremd'
 
 export function wiremdDemoPlugin(): Plugin {
   return {

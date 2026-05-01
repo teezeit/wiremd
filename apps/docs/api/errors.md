@@ -64,7 +64,7 @@ interface ValidationError {
 ### Basic Error Handling
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 try {
   const ast = parse('[Invalid syntax...');
@@ -79,8 +79,8 @@ try {
 ### Detailed Error Information
 
 ```typescript
-import { parse } from 'wiremd';
-import type { ParseError } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
+import type { ParseError } from '@eclectic-ai/wiremd';
 
 function parseWithErrorHandling(markdown: string) {
   try {
@@ -115,7 +115,7 @@ const ast = parseWithErrorHandling('[Button');
 ### User-Friendly Error Messages
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 function parseUserInput(input: string) {
   try {
@@ -160,7 +160,7 @@ if (!result.success) {
 ### Basic Validation
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 const ast = parse('## Title\n[Button]');
 const errors = validate(ast);
@@ -178,7 +178,7 @@ if (errors.length > 0) {
 ### Detailed Validation Errors
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 const ast = parse('## Form\n[Submit]');
 const errors = validate(ast);
@@ -204,7 +204,7 @@ errors.forEach(error => {
 ### Pre-Render Validation
 
 ```typescript
-import { parse, validate, renderToHTML } from 'wiremd';
+import { parse, validate, renderToHTML } from '@eclectic-ai/wiremd';
 
 function safeRender(markdown: string): string | null {
   try {
@@ -233,7 +233,7 @@ const html = safeRender('## Form\n[Button]');
 ### Graceful Degradation
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 function parseWithFallback(markdown: string): DocumentNode {
   try {
@@ -258,7 +258,7 @@ console.log(ast.children.length); // 0
 ### Partial Parsing
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 function parseWithRecovery(markdown: string) {
   // Split into sections
@@ -305,7 +305,7 @@ results
 ### Retry with Options
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 function parseWithRetry(markdown: string) {
   // Try with default options
@@ -332,7 +332,7 @@ function parseWithRetry(markdown: string) {
 Always enable position information when debugging:
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse(markdown, { position: true });
 
@@ -347,7 +347,7 @@ ast.children.forEach(node => {
 ### Inspect AST Structure
 
 ```typescript
-import { parse, renderToJSON } from 'wiremd';
+import { parse, renderToJSON } from '@eclectic-ai/wiremd';
 
 const ast = parse('## Form\n[Button]');
 
@@ -360,7 +360,7 @@ console.log(renderToJSON(ast, { pretty: true }));
 Use `validate()` to check the AST after parsing. The `validate` option on `ParseOptions` is not yet implemented — passing `{ validate: true }` to `parse()` has no effect and does not throw.
 
 ```typescript
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 const ast = parse(markdown);
 
@@ -373,8 +373,8 @@ if (errors.length > 0) {
 ### Create Custom Validators
 
 ```typescript
-import { parse, validate } from 'wiremd';
-import type { WiremdNode, ValidationError } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
+import type { WiremdNode, ValidationError } from '@eclectic-ai/wiremd';
 
 function validateAccessibility(ast: DocumentNode): ValidationError[] {
   const errors: ValidationError[] = [];
@@ -423,7 +423,7 @@ if (a11yErrors.length > 0) {
 ### Comprehensive Error Handler
 
 ```typescript
-import { parse, validate, renderToHTML } from 'wiremd';
+import { parse, validate, renderToHTML } from '@eclectic-ai/wiremd';
 
 interface RenderResult {
   success: boolean;
@@ -489,7 +489,7 @@ if (result.success) {
 ### Logging Errors
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 interface ErrorLog {
   timestamp: Date;
@@ -546,7 +546,7 @@ function getErrorStats() {
 
 ```typescript
 import { describe, it, expect } from 'vitest';
-import { parse, validate } from 'wiremd';
+import { parse, validate } from '@eclectic-ai/wiremd';
 
 describe('Error Handling', () => {
   it('should throw on invalid syntax', () => {

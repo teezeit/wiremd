@@ -14,7 +14,7 @@ import type {
   RenderOptions,
   ComponentProps,
   // ... and more
-} from 'wiremd';
+} from '@eclectic-ai/wiremd';
 ```
 
 ## Core Types
@@ -45,8 +45,8 @@ interface DocumentNode {
 #### Example
 
 ```typescript
-import { parse } from 'wiremd';
-import type { DocumentNode } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
+import type { DocumentNode } from '@eclectic-ai/wiremd';
 
 const ast: DocumentNode = parse('## Title\n[Button]');
 
@@ -81,7 +81,7 @@ interface DocumentMeta {
 #### Example
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse('## My Wireframe\nA description');
 
@@ -167,7 +167,7 @@ interface ComponentProps {
 #### Example
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse('[Button]{.primary disabled}');
 
@@ -724,8 +724,8 @@ interface ParseOptions {
 #### Example
 
 ```typescript
-import { parse } from 'wiremd';
-import type { ParseOptions } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
+import type { ParseOptions } from '@eclectic-ai/wiremd';
 
 const options: ParseOptions = {
   position: true,
@@ -772,8 +772,8 @@ interface RenderOptions {
 #### Example
 
 ```typescript
-import { renderToHTML } from 'wiremd';
-import type { RenderOptions } from 'wiremd';
+import { renderToHTML } from '@eclectic-ai/wiremd';
+import type { RenderOptions } from '@eclectic-ai/wiremd';
 
 const options: RenderOptions = {
   style: 'clean',
@@ -813,7 +813,7 @@ interface Location {
 #### Example
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse } from '@eclectic-ai/wiremd';
 
 const ast = parse('[Button]', { position: true });
 
@@ -876,7 +876,7 @@ function isTextNode(node: WiremdNode): node is TextNode;
 ### Example
 
 ```typescript
-import { parse, isButtonNode, isInputNode } from 'wiremd';
+import { parse, isButtonNode, isInputNode } from '@eclectic-ai/wiremd';
 
 const ast = parse('[Submit]\n[_____________________________]');
 
@@ -895,7 +895,7 @@ ast.children.forEach(node => {
 ### Type-safe AST Traversal
 
 ```typescript
-import type { WiremdNode, DocumentNode } from 'wiremd';
+import type { WiremdNode, DocumentNode } from '@eclectic-ai/wiremd';
 
 function traverseAST(
   node: DocumentNode | WiremdNode,
@@ -925,7 +925,7 @@ traverseAST(ast, (node) => {
 ### Custom Node Processors
 
 ```typescript
-import type { WiremdNode, ButtonNode, InputNode } from 'wiremd';
+import type { WiremdNode, ButtonNode, InputNode } from '@eclectic-ai/wiremd';
 
 type NodeProcessor<T extends WiremdNode> = (node: T) => void;
 

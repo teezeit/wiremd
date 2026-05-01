@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2025 wiremd
  * Licensed under MIT License
- * https://github.com/akonan/wiremd/blob/main/LICENSE
+ * https://github.com/teezeit/wiremd/blob/main/LICENSE
  */
 
 import type { DocumentNode, WiremdNode, RenderOptions } from '../types.js';
@@ -168,8 +168,8 @@ export function renderToJSON(
  *
  * @example
  * ```ts
- * import { parse } from 'wiremd/parser';
- * import { renderToReact } from 'wiremd/renderer';
+ * import { parse } from '@eclectic-ai/wiremd/parser';
+ * import { renderToReact } from '@eclectic-ai/wiremd/renderer';
  *
  * const ast = parse('## Title\n[Button]{.primary}');
  * const jsx = renderToReact(ast, { typescript: true });
@@ -222,8 +222,8 @@ ${childrenJSX}
  *
  * @example
  * ```ts
- * import { parse } from 'wiremd/parser';
- * import { renderToTailwind } from 'wiremd/renderer';
+ * import { parse } from '@eclectic-ai/wiremd/parser';
+ * import { renderToTailwind } from '@eclectic-ai/wiremd/renderer';
  *
  * const ast = parse('## Title\n[Button]{.primary}');
  * const html = renderToTailwind(ast);

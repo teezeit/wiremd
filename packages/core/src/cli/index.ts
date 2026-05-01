@@ -6,7 +6,7 @@
  *
  * Copyright (c) 2025 wiremd
  * Licensed under MIT License
- * https://github.com/akonan/wiremd/blob/main/LICENSE
+ * https://github.com/teezeit/wiremd/blob/main/LICENSE
  */
 
 import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
@@ -82,7 +82,7 @@ STYLES:
   material   - Google Material Design with elevation system
   brutal     - Neo-brutalism with bold colors and thick borders
 
-For more information: https://github.com/akonan/wiremd
+For more information: https://github.com/teezeit/wiremd
 `);
 }
 

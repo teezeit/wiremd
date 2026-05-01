@@ -328,7 +328,7 @@ See the [wiremd-obsidian repository](https://github.com/teezeit/wiremd-obsidian)
 ## Programmatic API
 
 ```typescript
-import { parse, renderToHTML, renderToJSON, renderToReact, renderToTailwind } from 'wiremd';
+import { parse, renderToHTML, renderToJSON, renderToReact, renderToTailwind } from '@eclectic-ai/wiremd';
 
 // Parse markdown to AST
 const ast = parse(`

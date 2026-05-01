@@ -83,11 +83,11 @@ wiremd login.md -o dist/login.html --style clean
 ## Programmatic use
 
 ```bash
-npm install wiremd
+npm install @eclectic-ai/wiremd
 ```
 
 ```ts
-import { parse, renderToHTML } from 'wiremd'
+import { parse, renderToHTML } from '@eclectic-ai/wiremd'
 
 const html = renderToHTML(parse('## Login\n[Sign In]*'), { style: 'clean' })
 ```

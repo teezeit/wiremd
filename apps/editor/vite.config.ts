@@ -12,7 +12,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      wiremd: resolve(__dirname, '../../packages/core/src/index.ts'),
+      '@eclectic-ai/wiremd': resolve(__dirname, '../../packages/core/src/index.ts'),
       // Stub Node.js built-ins — only used in resolveIncludes, which is never called in the browser
       fs: resolve(__dirname, 'src/stubs/fs.ts'),
       path: resolve(__dirname, 'src/stubs/path.ts'),

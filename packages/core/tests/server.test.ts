@@ -26,7 +26,10 @@ describe('Multi-file routing', () => {
   });
 
   afterEach(async () => {
-    if (server?.close) await new Promise<void>(r => server.close(() => r()));
+    if (server?.close) {
+      server.closeAllConnections?.();
+      await new Promise<void>(r => server.close(() => r()));
+    }
     try { unlinkSync(TEST_OUTPUT); } catch {}
     try { unlinkSync(TEST_OTHER_MD); } catch {}
   });
