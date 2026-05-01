@@ -25,20 +25,20 @@ function clean(): string {
 }
 
 describe('clean style: known CSS gaps (it.fails until styles.ts grows the rule)', () => {
-  it.fails('adds a visual indicator for required inputs', () => {
+  it('adds a visual indicator for required inputs', () => {
     // [required] inputs render with the native attribute but no asterisk,
     // border colour, or `aria-required` styling. Add a rule targeting
     // `input[required]`, `.wmd-required`, or a label `::after` marker.
     expect(clean()).toMatch(/\[required\]|\.wmd-required\b/);
   });
 
-  it.fails('defines col-span rules beyond 4', () => {
+  it('defines col-span rules beyond 4', () => {
     // styles.ts caps at col-span-4. Higher spans render at the smallest
     // column width. Extend to a reasonable max (12, like Bootstrap).
     expect(clean()).toMatch(/\.wmd-col-span-(?:5|6|7|8|9|10|11|12)\b/);
   });
 
-  it.fails('honours alignment classes on table cells', () => {
+  it('honours alignment classes on table cells', () => {
     // `{.left}` / `{.center}` / `{.right}` are emitted as `wmd-align-*`
     // on `<td>`/`<th>`. The shared row CSS has `wmd-align-*` rules but
     // they set `margin: auto` (flexbox alignment), not `text-align`, so
@@ -47,7 +47,7 @@ describe('clean style: known CSS gaps (it.fails until styles.ts grows the rule)'
     expect(clean()).toMatch(/wmd-align-(?:left|center|right)[^{]*\{[^}]*text-align/);
   });
 
-  it.fails('styles ::: alert containers (chrome + variants)', () => {
+  it('styles ::: alert containers (chrome + variants)', () => {
     // The `alert` container type renders as a plain `wmd-container-alert`
     // div with no border, background, icon, or variant differentiation
     // in `clean`. Other styles (sketch, wireframe, material, brutal)
@@ -55,13 +55,13 @@ describe('clean style: known CSS gaps (it.fails until styles.ts grows the rule)'
     expect(clean()).toMatch(/\.wmd-container-alert\b/);
   });
 
-  it.fails('styles button size variants (.small / .large)', () => {
+  it('styles button size variants (.small / .large)', () => {
     // `[Small]{.small}` and `[Large]{.large}` apply the classes correctly
     // but no CSS rules exist for them — all sizes render identically.
     expect(clean()).toMatch(/\.wmd-button[^{]*\.wmd-(?:small|large)\b/);
   });
 
-  it.fails('paints {state:error} on inputs', () => {
+  it('paints {state:error} on inputs', () => {
     // `{state:error}` renders as `wmd-state-error` on the element. Other
     // styles (wireframe, material, tailwind, brutal) define a rule for
     // it; `clean` and `sketch` don't, so the error state is invisible.
