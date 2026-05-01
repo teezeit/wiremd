@@ -14,8 +14,11 @@ import { startServer, notifyReload, notifyError } from '../src/cli/server.js';
 // and so the server's _index walk doesn't hit OS-protected siblings in tmpdir().
 const TMP = mkdtempSync(join(tmpdir(), 'wiremd-server-'));
 
+function getPort(s: any): number {
+  return (s.address() as any).port;
+}
+
 describe('Multi-file routing', () => {
-  const TEST_PORT = 3457;
   const TEST_OUTPUT = resolve(TMP, 'test-main.html');
   const TEST_OTHER_MD = resolve(TMP, 'test-other.md');
   let server: any;
@@ -35,22 +38,24 @@ describe('Multi-file routing', () => {
   });
 
   it('should return the server instance from startServer', () => {
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT });
+    server = startServer({ port: 0, outputPath: TEST_OUTPUT });
     expect(server).toBeDefined();
     expect(typeof server.close).toBe('function');
   });
 
   it('should redirect / to the entry file when inputFile is provided', async () => {
     const renderFile = vi.fn().mockReturnValue('<html><body>Main Page</body></html>');
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: TMP, inputFile: 'test-other.md' });
-    const res = await fetch(`http://localhost:${TEST_PORT}/`, { redirect: 'manual' });
+    server = startServer({ port: 0, outputPath: TEST_OUTPUT, renderFile, rootDir: TMP, inputFile: 'test-other.md' });
+    const port = getPort(server);
+    const res = await fetch(`http://127.0.0.1:${port}/`, { redirect: 'manual' });
     expect(res.status).toBe(302);
     expect(res.headers.get('location')).toBe('/test-other.md');
   });
 
   it('should serve main file at / when no inputFile provided (fallback)', async () => {
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT });
-    const res = await fetch(`http://localhost:${TEST_PORT}/`);
+    server = startServer({ port: 0, outputPath: TEST_OUTPUT });
+    const port = getPort(server);
+    const res = await fetch(`http://127.0.0.1:${port}/`);
     expect(res.status).toBe(200);
     const html = await res.text();
     expect(html).toContain('Main Page');
@@ -58,8 +63,9 @@ describe('Multi-file routing', () => {
 
   it('should call renderFile for .md requests and serve result', async () => {
     const renderFile = vi.fn().mockReturnValue('<html><body>Rendered Other</body></html>');
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: TMP });
-    const res = await fetch(`http://localhost:${TEST_PORT}/test-other.md`);
+    server = startServer({ port: 0, outputPath: TEST_OUTPUT, renderFile, rootDir: TMP });
+    const port = getPort(server);
+    const res = await fetch(`http://127.0.0.1:${port}/test-other.md`);
     expect(res.status).toBe(200);
     expect(renderFile).toHaveBeenCalledWith(expect.stringContaining('test-other.md'));
     const html = await res.text();
@@ -67,15 +73,17 @@ describe('Multi-file routing', () => {
   });
 
   it('should return 404 for unknown paths', async () => {
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, rootDir: TMP });
-    const res = await fetch(`http://localhost:${TEST_PORT}/nonexistent.md`);
+    server = startServer({ port: 0, outputPath: TEST_OUTPUT, rootDir: TMP });
+    const port = getPort(server);
+    const res = await fetch(`http://127.0.0.1:${port}/nonexistent.md`);
     expect(res.status).toBe(404);
   });
 
   it('should always serve file tree at /_index even when inputFile is set', async () => {
     const renderFile = vi.fn().mockReturnValue('<html><body>Main Page</body></html>');
-    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: TMP, inputFile: 'index.md' });
-    const res = await fetch(`http://localhost:${TEST_PORT}/_index`);
+    server = startServer({ port: 0, outputPath: TEST_OUTPUT, renderFile, rootDir: TMP, inputFile: 'index.md' });
+    const port = getPort(server);
+    const res = await fetch(`http://127.0.0.1:${port}/_index`);
     expect(res.status).toBe(200);
     const html = await res.text();
     expect(html).toContain('<ul>');
