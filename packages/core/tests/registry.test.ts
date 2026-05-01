@@ -52,13 +52,24 @@ afterEach(() => {
 });
 
 describe('node registry: contract', () => {
-  it('is empty during the scaffold phase (no nodes migrated yet)', () => {
-    expect(Object.keys(registry)).toEqual([]);
+  it('contains entries only for migrated node types', () => {
+    // As nodes migrate, this assertion grows. The point is to keep an
+    // explicit inventory so a stray accidental registration is caught.
+    expect(Object.keys(registry).sort()).toEqual(['button']);
   });
 
-  it('getNodeDefinition returns undefined for unknown types', () => {
-    expect(getNodeDefinition('button')).toBeUndefined();
+  it('getNodeDefinition returns undefined for unmigrated/unknown types', () => {
+    expect(getNodeDefinition('container')).toBeUndefined();
     expect(getNodeDefinition('does-not-exist')).toBeUndefined();
+  });
+
+  it('getNodeDefinition returns the registered definition for migrated types', () => {
+    const def = getNodeDefinition('button');
+    expect(def).toBeDefined();
+    expect(def?.type).toBe('button');
+    expect(typeof def?.render?.html).toBe('function');
+    expect(typeof def?.render?.react).toBe('function');
+    expect(typeof def?.render?.tailwind).toBe('function');
   });
 
   it('getNodeDefinition returns the registered definition after registration', () => {

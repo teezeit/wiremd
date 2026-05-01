@@ -53,9 +53,6 @@ export function renderNode(node: WiremdNode, context: TailwindRenderContext): st
     return def.render.tailwind(node as never, context);
   }
   switch (node.type) {
-    case 'button':
-      return renderButton(node, context);
-
     case 'input':
       return renderInput(node, context);
 
@@ -169,45 +166,6 @@ function renderBadge(node: any): string {
   }
 
   return `<span class="${classes}">${escapeHtml(node.content)}</span>`;
-}
-
-function renderButton(node: any, context: TailwindRenderContext): string {
-  let classes = 'px-4 py-2 rounded-md font-medium transition-colors';
-
-  // Check both variant property and classes array for button type
-  const variant = node.props.variant;
-  const nodeClasses = node.props.classes || [];
-  const isPrimary = variant === 'primary' || nodeClasses.includes('primary');
-  const isSecondary = variant === 'secondary' || nodeClasses.includes('secondary');
-  const isDanger = variant === 'danger' || nodeClasses.includes('danger');
-
-  // Variant-specific styles
-  if (isPrimary) {
-    classes += ' bg-indigo-600 text-white hover:bg-indigo-700';
-  } else if (isSecondary) {
-    classes += ' bg-gray-200 text-gray-900 hover:bg-gray-300';
-  } else if (isDanger) {
-    classes += ' bg-red-600 text-white hover:bg-red-700';
-  } else {
-    classes += ' bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-300';
-  }
-
-  // State styles
-  const isDisabled = node.props.state === 'disabled' || node.props.disabled;
-  const isLoading = node.props.state === 'loading' || node.props.loading;
-  if (isDisabled) {
-    classes += ' opacity-50 cursor-not-allowed';
-  } else if (isLoading) {
-    classes += ' opacity-75 cursor-wait';
-  }
-
-  const disabled = isDisabled ? ' disabled' : '';
-
-  const contentHTML = node.children
-    ? node.children.map((child: any) => renderNode(child, context)).join('')
-    : escapeHtml(node.content);
-
-  return `<button class="${classes}"${disabled}>${contentHTML}</button>`;
 }
 
 function renderInput(node: any, _context: TailwindRenderContext): string {
@@ -617,7 +575,7 @@ function renderSeparator(): string {
 /**
  * Escape HTML special characters
  */
-function escapeHtml(text: string): string {
+export function escapeHtml(text: string): string {
   if (!text) return '';
 
   return text

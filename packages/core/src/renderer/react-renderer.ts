@@ -48,7 +48,7 @@ function applyRadioGroupName(children: any[], context: ReactRenderContext): any[
 /**
  * Helper to repeat string (ES5 compatible)
  */
-function repeatString(str: string, count: number): string {
+export function repeatString(str: string, count: number): string {
   let result = '';
   for (let i = 0; i < count; i++) {
     result += str;
@@ -69,9 +69,6 @@ export function renderNode(node: WiremdNode, context: ReactRenderContext, indent
   const indentStr = repeatString('  ', indent);
 
   switch (node.type) {
-    case 'button':
-      return renderButton(node, context, indent);
-
     case 'input':
       return renderInput(node, context, indent);
 
@@ -165,20 +162,6 @@ export function renderNode(node: WiremdNode, context: ReactRenderContext, indent
     default:
       return `${indentStr}{/* Unknown node type: ${(node as any).type} */}`;
   }
-}
-
-function renderButton(node: any, context: ReactRenderContext, indent: number): string {
-  const indentStr = repeatString('  ', indent);
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'button', node.props);
-  const disabled = node.props.state === 'disabled' || node.props.disabled;
-  const classAttr = context.useClassName ? 'className' : 'class';
-
-  const contentJSX = node.children
-    ? node.children.map((child: any) => renderNode(child, context, 0)).join('')
-    : escapeJSX(node.content);
-
-  return `${indentStr}<button ${classAttr}="${classes}"${disabled ? ' disabled' : ''}>\n${indentStr}  ${contentJSX}\n${indentStr}</button>`;
 }
 
 function renderBadge(node: any, context: ReactRenderContext, indent: number): string {
@@ -607,7 +590,7 @@ function renderSeparator(node: any, context: ReactRenderContext, indent: number)
 /**
  * Build CSS classes string from prefix, base class, and props
  */
-function buildClasses(prefix: string, baseClass: string, props: any): string {
+export function buildClasses(prefix: string, baseClass: string, props: any): string {
   const classes = [`${prefix}${baseClass}`];
 
   if (props.classes && Array.isArray(props.classes)) {
@@ -630,7 +613,7 @@ function buildClasses(prefix: string, baseClass: string, props: any): string {
 /**
  * Escape JSX special characters
  */
-function escapeJSX(text: string): string {
+export function escapeJSX(text: string): string {
   if (!text) return '';
 
   return text
