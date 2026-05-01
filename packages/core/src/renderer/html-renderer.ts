@@ -8,6 +8,7 @@
  */
 
 import type { WiremdNode } from '../types.js';
+import { getNodeDefinition } from '../nodes/_registry.js';
 
 export interface RenderContext {
   style: string;
@@ -66,6 +67,12 @@ export function applyRadioGroupName(children: any[], context: RenderContext): an
  */
 export function renderNode(node: WiremdNode, context: RenderContext): string {
   if (node == null) return '';
+  // Registry-first dispatch: migrated node types are handled here.
+  // Unmigrated types fall through to the switch below.
+  const def = getNodeDefinition(node.type);
+  if (def?.render?.html) {
+    return def.render.html(node as never, context);
+  }
   switch (node.type) {
     case 'button':
       return renderButton(node, context);

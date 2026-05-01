@@ -8,6 +8,7 @@
  */
 
 import type { WiremdNode } from '../types.js';
+import { getNodeDefinition } from '../nodes/_registry.js';
 
 export interface ReactRenderContext {
   classPrefix: string;
@@ -60,6 +61,11 @@ function repeatString(str: string, count: number): string {
  */
 export function renderNode(node: WiremdNode, context: ReactRenderContext, indent = 0): string {
   if (node == null) return '';
+  // Registry-first dispatch: migrated node types are handled here.
+  const def = getNodeDefinition(node.type);
+  if (def?.render?.react) {
+    return def.render.react(node as never, context, indent);
+  }
   const indentStr = repeatString('  ', indent);
 
   switch (node.type) {

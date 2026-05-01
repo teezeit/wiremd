@@ -8,6 +8,7 @@
  */
 
 import type { WiremdNode } from '../types.js';
+import { getNodeDefinition } from '../nodes/_registry.js';
 
 export interface TailwindRenderContext {
   pretty: boolean;
@@ -46,6 +47,11 @@ function applyRadioGroupName(children: any[], context: TailwindRenderContext): a
  */
 export function renderNode(node: WiremdNode, context: TailwindRenderContext): string {
   if (node == null) return '';
+  // Registry-first dispatch: migrated node types are handled here.
+  const def = getNodeDefinition(node.type);
+  if (def?.render?.tailwind) {
+    return def.render.tailwind(node as never, context);
+  }
   switch (node.type) {
     case 'button':
       return renderButton(node, context);
