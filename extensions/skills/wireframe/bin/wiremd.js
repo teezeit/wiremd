@@ -17770,6 +17770,16 @@ var ctxDeps = {
   extractTextContent,
   isHtmlCommentNode
 };
+function pushTransformed(arr, result) {
+  if (!result)
+    return;
+  if (Array.isArray(result)) {
+    for (const r of result)
+      arr.push(r);
+  } else {
+    arr.push(result);
+  }
+}
 function transformNode(node2, ctx) {
   switch (node2.type) {
     case "wiremdContainer":
@@ -17813,14 +17823,19 @@ function transformNode(node2, ctx) {
         alt: node2.alt || "",
         props: {}
       };
-    case "link":
+    case "link": {
+      const linkChildren = [];
+      for (const child of node2.children || []) {
+        pushTransformed(linkChildren, ctx.transformChild(child));
+      }
       return {
         type: "link",
         href: node2.url || "#",
         title: node2.title,
-        children: node2.children?.map((child) => ctx.transformChild(child)).filter(Boolean) || [],
+        children: linkChildren,
         props: {}
       };
+    }
     case "thematicBreak":
       return {
         type: "separator",
@@ -17847,10 +17862,12 @@ function processNodeList(nodeChildren, options) {
     const handle2 = makeContext(nodeChildren, i, options, ctxDeps);
     const transformed = transformNode(node2, handle2.ctx);
     if (transformed) {
-      if (node2.position && !transformed.position) {
-        transformed.position = node2.position;
+      const emitted = Array.isArray(transformed) ? transformed : [transformed];
+      if (emitted.length > 0 && node2.position && !emitted[0].position) {
+        emitted[0].position = node2.position;
       }
-      result.push(transformed);
+      for (const e of emitted)
+        result.push(e);
     }
     i = handle2.getCursor() + 1;
   }
@@ -18581,6 +18598,76 @@ function transformParagraph(node2, ctx) {
         return buttons[0];
       }
     }
+    const hasFormElement = (line) => {
+      const trimmed = line.trim();
+      if (/^\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(trimmed))
+        return true;
+      if (/\[[^\]]*[_*][^\]]*\]/.test(trimmed))
+        return true;
+      if (/\[[^\]]+\]\s*\{[^}]*\brows\s*:/.test(trimmed))
+        return true;
+      return false;
+    };
+    const lineKinds = lines.map((line) => {
+      const trimmed = line.trim();
+      if (hasFormElement(trimmed))
+        return "form";
+      if (lineIsAllButtons(trimmed))
+        return "buttons";
+      return "text";
+    });
+    const hasButtonLine = lineKinds.includes("buttons");
+    const hasTextLine = lineKinds.includes("text");
+    const hasFormLine = lineKinds.includes("form");
+    if (hasButtonLine && hasTextLine && !hasFormLine) {
+      const groups = [];
+      for (let i = 0; i < lines.length; i++) {
+        const kind = lineKinds[i];
+        const last = groups[groups.length - 1];
+        if (last && last.kind === kind)
+          last.lines.push(lines[i]);
+        else
+          groups.push({ kind, lines: [lines[i]] });
+      }
+      const out = [];
+      const splitButtonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
+      for (const group of groups) {
+        if (group.kind === "buttons") {
+          const groupButtons = [];
+          for (const line of group.lines) {
+            let m;
+            splitButtonPattern.lastIndex = 0;
+            while ((m = splitButtonPattern.exec(line.trim())) !== null) {
+              if (/^\[[_*]+\]/.test(m[0]))
+                continue;
+              const [, text6, isPrimary, attrs] = m;
+              const p = parseAttributes(attrs || "");
+              if (isPrimary)
+                p.variant = "primary";
+              groupButtons.push({ type: "button", content: text6, props: p });
+            }
+          }
+          if (groupButtons.length === 1)
+            out.push(groupButtons[0]);
+          else if (groupButtons.length > 1) {
+            out.push({
+              type: "container",
+              containerType: "button-group",
+              props: {},
+              children: groupButtons
+            });
+          }
+        } else {
+          const text6 = group.lines.join("\n").trim();
+          if (text6)
+            out.push({ type: "paragraph", content: text6, props: {} });
+        }
+      }
+      if (out.length === 1)
+        return out[0];
+      if (out.length > 1)
+        return out;
+    }
     const lastLine = lines[lines.length - 1].trim();
     const labelLineArray = lines.slice(0, -1);
     const labelLines = labelLineArray.join("\n");
@@ -19029,10 +19116,7 @@ function transformParagraph(node2, ctx) {
 function transformList(node2, ctx) {
   const children = [];
   for (const item of node2.children) {
-    const transformed = ctx.transformChild(item);
-    if (transformed) {
-      children.push(transformed);
-    }
+    pushTransformed(children, ctx.transformChild(item));
   }
   return {
     type: "list",
@@ -19211,10 +19295,7 @@ function transformTable(node2, ctx) {
             props: {}
           });
         } else {
-          const transformed = ctx.transformChild(child);
-          if (transformed) {
-            cellChildren.push(transformed);
-          }
+          pushTransformed(cellChildren, ctx.transformChild(child));
         }
       }
       cells.push({
@@ -19246,10 +19327,7 @@ function transformTable(node2, ctx) {
 function transformBlockquote(node2, ctx) {
   const children = [];
   for (const child of node2.children) {
-    const transformed = ctx.transformChild(child);
-    if (transformed) {
-      children.push(transformed);
-    }
+    pushTransformed(children, ctx.transformChild(child));
   }
   return {
     type: "blockquote",
