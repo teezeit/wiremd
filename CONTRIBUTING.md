@@ -141,6 +141,7 @@ wiremd/
 - Maintain or improve **test coverage**
 - Use **descriptive test names**
 - Test edge cases and error conditions
+- **Assert against what the code emits, not just shape.** An assertion that "a rule exists" or "a token appears somewhere" can ship green while the rendered output is wrong. Pin the exact selector / class / attribute the renderer produces, require all members of a set (not "at least one"), constrain selector shape, and demand at least one real declaration where applicable. See [`packages/core/tests/fixtures/README.md`](packages/core/tests/fixtures/README.md#writing-assertions-that-actually-catch-the-bug) for concrete patterns and worked examples.
 
 ### Code Style
 

@@ -92,6 +92,18 @@ The two it-fails patterns mirror each other:
 - Parser/renderer bug → `<base>.expected-fail.invariants.ts` next to the fixture. When the parser is fixed, the contract starts passing under `it.fails`, vitest reports red, you rename the file (drop `.expected-fail.`) to close.
 - Missing CSS rule → `it.fails(...)` in `tests/styles.test.ts`. When the rule lands in `styles.ts`, the test goes red, you drop `.fails` to close.
 
+### Writing assertions that actually catch the bug
+
+**Match what the code emits, not just the shape of it.** An assertion that "a rule exists" passes when *any* rule exists — even one that doesn't match the rendered output. The single most common way bugs ship green here is asserting against an *almost-right* selector. Concrete patterns to follow:
+
+- **Pin the exact class the renderer produces.** When the renderer emits `<div class="wmd-container-alert wmd-success">`, the test asserts `.wmd-container-alert.wmd-success` (no whitespace, no `state-` prefix). A previous version of the alert test only checked `.wmd-container-alert\b` and shipped green while the variant rules silently targeted `wmd-state-success`/`wmd-state-error` — classes the renderer never emits.
+- **Require all members of a set, not "at least one".** For `col-span-5` through `col-span-12`, loop and assert each, not `(?:5|6|7|...|12)`. Otherwise a rule for col-span-5 alone hides the gap for col-span-9.
+- **Constrain the selector shape.** `.wmd-button[^{]*\.wmd-small` matches both `.wmd-button.wmd-small` (target) and `.wmd-button .wmd-small` (descendant — wrong). Use `\.wmd-button\.wmd-small` to demand the combined form.
+- **Require a real declaration, not an empty block.** `expect(css).toMatch(/\.wmd-state-error\b/)` passes for `.wmd-state-error {}`. Tighten to `\.wmd-state-error\b[^{]*\{[^}]*(?:border-color|color)\s*:` so an empty rule can't satisfy the assertion.
+- **Fixture invariants follow the same rule.** Assert against `findFirst(ast, 'icon')` and check `props.name` — not just "there's an icon node somewhere."
+
+The fix when an assertion is found to be too weak: tighten it in the same change as the bug fix, so the test would have caught the bug if it had run earlier. See `tests/styles.test.ts` for current examples.
+
 ---
 
 ## File-naming conventions
