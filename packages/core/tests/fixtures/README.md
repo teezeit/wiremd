@@ -165,7 +165,7 @@ Each fixture row has 3 columns:
 
 Row border colour reflects status. Top filter chips restrict visible rows. Sticky TOC on the left lets you jump.
 
-`REVIEW_LOG.md` is a reference-style markdown checklist — the source of truth for the sweep. Hand-edits are also fine; the page picks them up on the next focus event. **Re-running `pnpm review:log` overwrites comments**, so seed once at the start of a sweep.
+`REVIEW_LOG.md` is a reference-style markdown checklist — the source of truth for the sweep. Hand-edits are also fine; the page picks them up on the next focus event. Re-running `pnpm review:log` is **idempotent**: existing verdicts and comments are merged forward verbatim, new fixtures land at their filesystem-derived status, removed fixtures drop out.
 
 After the sweep, ask Claude (or do it yourself) to translate `📝` and `❌` log entries into `.notes.md` and `.expected-fail.invariants.ts` files. The log captures intent; promotion to executable contracts is deliberate.
 
