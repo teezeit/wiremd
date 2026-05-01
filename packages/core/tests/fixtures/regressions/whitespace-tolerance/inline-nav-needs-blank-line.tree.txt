@@ -1,0 +1,5 @@
+Document
+  └─ container[card]
+     └─ container[form-group]
+        ├─ text "some intro text"
+        └─ button "[ home > docs > components "

@@ -1,0 +1,7 @@
+Document
+  └─ row
+     └─ grid-item
+        └─ container[form-group]
+           ├─ text ":user:\nJohn Doe |Admin|{.warning}"
+           ├─ button "Edit"
+           └─ button "Remove" props={classes=["danger"]}

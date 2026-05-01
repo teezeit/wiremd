@@ -1,0 +1,8 @@
+Document
+  ├─ container[card]
+  │  ├─ heading[1] "Outer"
+  │  └─ paragraph "some text directly before the inner opener\n::: card"
+  ├─ heading[2] "Inner"
+  ├─ button "Action" props={variant="primary"}
+  ├─ paragraph ""
+  └─ paragraph ""
