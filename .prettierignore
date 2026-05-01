@@ -1,0 +1,12 @@
+# Generated snapshot artifacts — Prettier-on-save would corrupt these and
+# silently break the fixture test suite. Snapshots are managed by vitest.
+packages/core/tests/fixtures/**/*.html
+packages/core/tests/fixtures/**/*.tailwind.html
+packages/core/tests/fixtures/**/*.react.tsx
+packages/core/tests/fixtures/**/*.tree.txt
+
+# Build outputs
+**/dist/
+**/build/
+**/.turbo/
+**/node_modules/

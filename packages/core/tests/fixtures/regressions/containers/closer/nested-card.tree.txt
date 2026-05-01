@@ -1,0 +1,6 @@
+Document
+  └─ container[card]
+     ├─ heading[1] "Outer"
+     └─ container[card]
+        ├─ heading[2] "Inner"
+        └─ button "Action" props={variant="primary"}
