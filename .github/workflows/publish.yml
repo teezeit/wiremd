@@ -46,5 +46,3 @@ jobs:
 
       - name: Publish npm package
         run: pnpm --filter "@eclectic-ai/wiremd" publish --access public --no-git-checks --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
