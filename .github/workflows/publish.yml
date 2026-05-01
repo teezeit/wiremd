@@ -53,4 +53,5 @@ jobs:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
       - name: Publish npm package
-        run: pnpm --filter "@eclectic-ai/wiremd" publish --access public --no-git-checks --provenance
+        working-directory: packages/core
+        run: npm publish --access public --provenance
