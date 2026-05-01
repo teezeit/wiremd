@@ -1,7 +1,7 @@
 Document
   └─ row
      └─ grid-item
-        └─ container[form-group]
-           ├─ text ":user:\nJohn Doe |Admin|{.warning}"
+        ├─ paragraph ":user:\nJohn Doe |Admin|{.warning}"
+        └─ container[button-group]
            ├─ button "Edit"
            └─ button "Remove" props={classes=["danger"]}

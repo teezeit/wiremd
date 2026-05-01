@@ -5,9 +5,9 @@ export const WiremdComponent: React.FC = () => {
     <div className="wmd-root">
   <div className="wmd-row">
     <div className="wmd-grid-item">
-      <div className="wmd-container-form-group">
-:user:
-John Doe |Admin|&#123;.warning&#125;
+      <p className="wmd-paragraph">:user:
+John Doe |Admin|&#123;.warning&#125;</p>
+      <div className="wmd-container-button-group">
         <button className="wmd-button">
           Edit
         </button>

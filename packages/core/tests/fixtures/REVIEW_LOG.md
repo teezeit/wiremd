@@ -32,7 +32,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [❌ text-after-opener-flag][17]
 
 ### Inline (regressions/inline)
-- [❌ text-after-button][18]
+- [✅ text-after-button][18]
 
 ## Doc-derived fixtures
 
@@ -103,7 +103,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [✅ toolbar-pattern][66]
 
 ### Cards (apps/docs/components/cards.md)
-- [❌ card][67]
+- [✅ card][67]
 - [✅ card-grid][68]
 - [✅ hero][69]
 - [✅ modal][70]

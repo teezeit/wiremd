@@ -67,12 +67,29 @@ export const __transformerInternals = {
 };
 
 /**
- * Transform a single MDAST node to wiremd node
+ * Push a transform result into a children array, flattening if the result
+ * was a list (e.g. a paragraph that split into a button + a text sibling).
+ */
+function pushTransformed(arr: WiremdNode[], result: WiremdNode | WiremdNode[] | null): void {
+  if (!result) return;
+  if (Array.isArray(result)) {
+    for (const r of result) arr.push(r);
+  } else {
+    arr.push(result);
+  }
+}
+
+/**
+ * Transform a single MDAST node to a wiremd node, or to a list of sibling
+ * wiremd nodes when the source paragraph splits into multiple block-level
+ * elements (e.g. a button line followed by a free-text line). Callers that
+ * push the result into a `children` array should spread the array form via
+ * `pushTransformed` rather than appending it directly.
  */
 function transformNode(
   node: any,
   ctx: TransformContext
-): WiremdNode | null {
+): WiremdNode | WiremdNode[] | null {
   switch (node.type) {
     case 'wiremdContainer':
       return transformContainer(node, ctx);
@@ -127,14 +144,19 @@ function transformNode(
         props: {},
       };
 
-    case 'link':
+    case 'link': {
+      const linkChildren: WiremdNode[] = [];
+      for (const child of node.children || []) {
+        pushTransformed(linkChildren, ctx.transformChild(child));
+      }
       return {
         type: 'link',
         href: node.url || '#',
         title: node.title,
-        children: node.children?.map((child: any) => ctx.transformChild(child)).filter(Boolean) || [],
+        children: linkChildren,
         props: {},
       };
+    }
 
     case 'thematicBreak':
       return {
@@ -172,10 +194,15 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
 
     const transformed = transformNode(node, handle.ctx);
     if (transformed) {
-      if (node.position && !(transformed as any).position) {
-        (transformed as any).position = node.position;
+      // A transform can return a single node or an array of sibling nodes
+      // (e.g. a paragraph that splits into a button + a free-text paragraph).
+      // Propagate the source position only to the first emitted node so the
+      // editor's source-position links still target the original line.
+      const emitted = Array.isArray(transformed) ? transformed : [transformed];
+      if (emitted.length > 0 && node.position && !(emitted[0] as any).position) {
+        (emitted[0] as any).position = node.position;
       }
-      result.push(transformed);
+      for (const e of emitted) result.push(e);
     }
     // Advance past anything the transform consumed via ctx.consumeNext().
     i = handle.getCursor() + 1;
@@ -669,7 +696,7 @@ function serializeMdastChildren(children: any[]): string {
   }).join('');
 }
 
-function transformParagraph(node: any, ctx: TransformContext): WiremdNode {
+function transformParagraph(node: any, ctx: TransformContext): WiremdNode | WiremdNode[] {
   const nextNode = ctx.peekNext() as any;
   // Check for [[...]] inline container before any other processing — handles nested containers
   // where remark-inline-containers only runs on top-level nodes
@@ -1066,6 +1093,74 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode {
       } else if (buttons.length === 1) {
         return buttons[0];
       }
+    }
+
+    // Heterogeneous mix: some lines are pure-button lines, others are free
+    // text. Split into sibling block-level nodes — `[Action]\nfree text`
+    // becomes [button, paragraph]; `text\n[Save] [Cancel]` becomes
+    // [paragraph, button-group]. Skipped when any line is a form element
+    // (input/dropdown/textarea), because those still get the legacy
+    // "label + form-element → form-group" treatment below.
+    const hasFormElement = (line: string): boolean => {
+      const trimmed = line.trim();
+      if (/^\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(trimmed)) return true;   // dropdown ends with v]
+      if (/\[[^\]]*[_*][^\]]*\]/.test(trimmed)) return true;              // input via _ / * inside brackets
+      if (/\[[^\]]+\]\s*\{[^}]*\brows\s*:/.test(trimmed)) return true;   // textarea via {rows:N}
+      return false;
+    };
+    const lineKinds = lines.map((line) => {
+      const trimmed = line.trim();
+      // Form-element detection wins over the all-buttons check, because
+      // textareas like `[Write your message...]{rows:4}` strip cleanly with
+      // the button regex but are not buttons.
+      if (hasFormElement(trimmed)) return 'form' as const;
+      if (lineIsAllButtons(trimmed)) return 'buttons' as const;
+      return 'text' as const;
+    });
+    const hasButtonLine = lineKinds.includes('buttons');
+    const hasTextLine = lineKinds.includes('text');
+    const hasFormLine = lineKinds.includes('form');
+    if (hasButtonLine && hasTextLine && !hasFormLine) {
+      type Group = { kind: 'buttons' | 'text'; lines: string[] };
+      const groups: Group[] = [];
+      for (let i = 0; i < lines.length; i++) {
+        const kind = lineKinds[i] as 'buttons' | 'text';
+        const last = groups[groups.length - 1];
+        if (last && last.kind === kind) last.lines.push(lines[i]);
+        else groups.push({ kind, lines: [lines[i]] });
+      }
+      const out: WiremdNode[] = [];
+      const splitButtonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
+      for (const group of groups) {
+        if (group.kind === 'buttons') {
+          const groupButtons: WiremdNode[] = [];
+          for (const line of group.lines) {
+            let m;
+            splitButtonPattern.lastIndex = 0;
+            while ((m = splitButtonPattern.exec(line.trim())) !== null) {
+              if (/^\[[_*]+\]/.test(m[0])) continue;
+              const [, text, isPrimary, attrs] = m;
+              const p = parseAttributes(attrs || '');
+              if (isPrimary) p.variant = 'primary';
+              groupButtons.push({ type: 'button', content: text, props: p });
+            }
+          }
+          if (groupButtons.length === 1) out.push(groupButtons[0]);
+          else if (groupButtons.length > 1) {
+            out.push({
+              type: 'container',
+              containerType: 'button-group',
+              props: {},
+              children: groupButtons as any,
+            });
+          }
+        } else {
+          const text = group.lines.join('\n').trim();
+          if (text) out.push({ type: 'paragraph', content: text, props: {} });
+        }
+      }
+      if (out.length === 1) return out[0];
+      if (out.length > 1) return out;
     }
 
     // Otherwise check if the last line is a form element with labels before it
@@ -1623,10 +1718,7 @@ function transformList(node: any, ctx: TransformContext): WiremdNode {
   const children: WiremdNode[] = [];
 
   for (const item of node.children) {
-    const transformed = ctx.transformChild(item);
-    if (transformed) {
-      children.push(transformed);
-    }
+    pushTransformed(children, ctx.transformChild(item));
   }
 
   return {
@@ -1850,10 +1942,7 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
             props: {},
           });
         } else {
-          const transformed = ctx.transformChild(child);
-          if (transformed) {
-            cellChildren.push(transformed);
-          }
+          pushTransformed(cellChildren, ctx.transformChild(child));
         }
       }
 
@@ -1893,10 +1982,7 @@ function transformBlockquote(node: any, ctx: TransformContext): WiremdNode {
   const children: WiremdNode[] = [];
 
   for (const child of node.children) {
-    const transformed = ctx.transformChild(child);
-    if (transformed) {
-      children.push(transformed);
-    }
+    pushTransformed(children, ctx.transformChild(child));
   }
 
   return {

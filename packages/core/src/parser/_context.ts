@@ -37,8 +37,12 @@ export interface TransformContext {
   /**
    * Transform a single child MDAST node. Recurses through the dispatcher with an
    * isolated context so the child cannot peek at the parent's siblings.
+   *
+   * May return an array when the source MDAST node splits into multiple sibling
+   * wiremd nodes (e.g. a paragraph that contains a button line + a text line).
+   * Callers that push into a `children` array should flatten the array form.
    */
-  transformChild(mdast: unknown): WiremdNode | null;
+  transformChild(mdast: unknown): WiremdNode | WiremdNode[] | null;
 
   /**
    * Transform a list of child MDAST nodes through the standard sibling-aware driver.
@@ -68,7 +72,7 @@ export interface ContextHandle {
  * context module stays decoupled from the concrete transform functions.
  */
 export interface ContextDeps {
-  transformNode: (mdast: unknown, ctx: TransformContext) => WiremdNode | null;
+  transformNode: (mdast: unknown, ctx: TransformContext) => WiremdNode | WiremdNode[] | null;
   processNodeList: (mdastList: unknown[], options: ParseOptions) => WiremdNode[];
   parseAttributes: (attrString: string) => Record<string, unknown>;
   extractTextContent: (node: unknown) => string;
