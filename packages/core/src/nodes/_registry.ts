@@ -10,11 +10,10 @@
  */
 
 import type { AnyNodeDefinition } from './_contract.js';
+import { button } from './button/index.js';
 
 export const registry: Partial<Record<string, AnyNodeDefinition>> = {
-  // populated as each node type is migrated:
-  //   button: button,
-  //   container: container,
+  button: button as AnyNodeDefinition,
 };
 
 /**

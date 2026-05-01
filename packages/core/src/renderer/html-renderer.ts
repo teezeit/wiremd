@@ -74,9 +74,6 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     return def.render.html(node as never, context);
   }
   switch (node.type) {
-    case 'button':
-      return renderButton(node, context);
-
     case 'input':
       return renderInput(node, context);
 
@@ -257,27 +254,6 @@ export function renderCommentsPanel(comments: Array<{ id: number; texts: string[
   </div>
   ${items}
 </aside>`;
-}
-
-function renderButton(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'button', node.props);
-  const isDisabled = node.props.state === 'disabled' || node.props.disabled;
-  const isLoading = node.props.state === 'loading' || node.props.loading;
-  const disabled = isDisabled ? ' disabled' : '';
-  const loading = isLoading ? ` ${prefix}loading` : '';
-
-  // Handle children (like icons in buttons)
-  const contentHTML = node.children
-    ? node.children.map((child: any) => renderNode(child, context)).join('')
-    : escapeHtml(node.content);
-
-  const href = node.href || node.props?.href;
-  if (href) {
-    return `<a href="${escapeHtml(href)}" class="${classes}${loading}"${sourceLine(node)}>${contentHTML}</a>`;
-  }
-
-  return `<button class="${classes}${loading}"${disabled}${sourceLine(node)}>${contentHTML}</button>`;
 }
 
 function renderBadge(node: any, context: RenderContext): string {
@@ -893,7 +869,7 @@ function getTabsScript(prefix: string): string {
   return `<script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.${prefix}tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.${prefix}tab-header').forEach(function(b){b.classList.toggle('${prefix}active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>`;
 }
 
-function sourceLine(node: any): string {
+export function sourceLine(node: any): string {
   const line = node?.position?.start?.line;
   return line != null ? ` data-source-line="${line}"` : '';
 }
@@ -901,7 +877,7 @@ function sourceLine(node: any): string {
 /**
  * Build CSS classes string from prefix, base class, and props
  */
-function buildClasses(prefix: string, baseClass: string, props: any): string {
+export function buildClasses(prefix: string, baseClass: string, props: any): string {
   const classes = [`${prefix}${baseClass}`];
 
   // Add custom classes
@@ -948,7 +924,7 @@ function renderComment(node: any, context: RenderContext): string {
 /**
  * Escape HTML special characters
  */
-function escapeHtml(text: string): string {
+export function escapeHtml(text: string): string {
   if (!text) return '';
 
   return text
