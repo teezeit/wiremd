@@ -76,6 +76,10 @@
     "url": "https://github.com/teezeit/wiremd.git",
     "directory": "packages/core"
   },
+  "homepage": "https://teezeit.github.io/wiremd/",
+  "bugs": {
+    "url": "https://github.com/teezeit/wiremd/issues"
+  },
   "keywords": [
     "markdown",
     "wireframe",
@@ -90,10 +94,6 @@
   ],
   "author": "Tobias Hoelzer <tobias@wejam.ai>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/teezeit/wiremd/issues"
-  },
-  "homepage": "https://github.com/teezeit/wiremd#readme",
   "publishConfig": {
     "access": "public"
   }
