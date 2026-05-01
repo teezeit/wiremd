@@ -18,6 +18,47 @@ export interface RenderContext {
   // Mutable state for side-panel comment collection (set by renderToHTML)
   _comments?: Array<{ id: number; texts: string[] }>; // one entry per thread
   _nextCommentId?: number | null;
+  // Mutable counter used to mint deterministic radio-group names so that
+  // sibling radios in the same group share a `name=""` attribute (browser
+  // single-select). Initialised by renderToHTML; bumped each time a group
+  // is rendered (explicit radio-group node or a list whose children are
+  // radios). Counter-based ⇒ snapshots are stable across runs.
+  _radioGroupCounter?: { value: number };
+}
+
+/**
+ * Mint the next deterministic radio-group name from the render context.
+ * Falls back to `radio-group-1` when the context lacks a counter (defensive,
+ * shouldn't happen via the public render entry points).
+ */
+export function nextRadioGroupName(context: RenderContext): string {
+  if (!context._radioGroupCounter) {
+    context._radioGroupCounter = { value: 0 };
+  }
+  context._radioGroupCounter.value += 1;
+  return `radio-group-${context._radioGroupCounter.value}`;
+}
+
+/**
+ * If `children` contains any `radio` nodes, return a copy where every radio
+ * shares a freshly-minted group name. Used by both `renderList` (block-level
+ * radios produced by `- ( ) Option` syntax that the parser doesn't wrap in a
+ * radio-group) and `renderRadioGroup` (explicit groups).
+ *
+ * When no radios are present the original array is returned unchanged so
+ * non-radio lists pay zero cost.
+ */
+export function applyRadioGroupName(children: any[], context: RenderContext): any[] {
+  if (!children || children.length === 0) return children;
+  const hasRadio = children.some((c: any) => c && c.type === 'radio');
+  if (!hasRadio) return children;
+  const name = nextRadioGroupName(context);
+  return children.map((c: any) => {
+    if (!c || c.type !== 'radio') return c;
+    // Respect any explicit name already set on the radio (e.g. via attributes).
+    if (c.props && c.props.name) return c;
+    return { ...c, props: { ...(c.props || {}), name } };
+  });
 }
 
 /**
@@ -214,8 +255,10 @@ export function renderCommentsPanel(comments: Array<{ id: number; texts: string[
 function renderButton(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'button', node.props);
-  const disabled = node.props.state === 'disabled' ? ' disabled' : '';
-  const loading = node.props.state === 'loading' ? ` ${prefix}loading` : '';
+  const isDisabled = node.props.state === 'disabled' || node.props.disabled;
+  const isLoading = node.props.state === 'loading' || node.props.loading;
+  const disabled = isDisabled ? ' disabled' : '';
+  const loading = isLoading ? ` ${prefix}loading` : '';
 
   // Handle children (like icons in buttons)
   const contentHTML = node.children
@@ -349,12 +392,14 @@ function renderRadioGroup(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'radio-group', node.props);
   const inlineClass = isInline ? ` ${prefix}radio-group-inline` : '';
 
-  // Generate a unique name for this radio group
-  const groupName = `radio-${Math.random().toString(36).substr(2, 9)}`;
+  // Use the group's explicit name if present; otherwise mint a deterministic
+  // one from the context counter so snapshots are stable.
+  const groupName = node.name || nextRadioGroupName(context);
 
   const radios = (node.children || []).map((child: any) => {
-    // Add the group name to each radio button
+    // Add the group name to each radio button (unless it already has one).
     if (child.type === 'radio') {
+      if (child.props && child.props.name) return renderNode(child, context);
       const modifiedChild = { ...child, props: { ...child.props, name: groupName } };
       return renderNode(modifiedChild, context);
     }
@@ -541,6 +586,8 @@ function renderNav(node: any, context: RenderContext): string {
 function renderNavItem(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const href = node.href || '#';
+  const isActive = Array.isArray(node.props?.classes) && node.props.classes.includes('active');
+  const ariaCurrent = isActive ? ' aria-current="page"' : '';
 
   const contentHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
@@ -548,11 +595,11 @@ function renderNavItem(node: any, context: RenderContext): string {
 
   if (node.props?.variant === 'primary') {
     const classes = `${buildClasses(prefix, 'button', node.props)} ${prefix}button-primary`;
-    return `<a href="${href}" class="${classes.trim()}" style="text-decoration:none;color:inherit;">${contentHTML}</a>`;
+    return `<a href="${href}"${ariaCurrent} class="${classes.trim()}" style="text-decoration:none;color:inherit;">${contentHTML}</a>`;
   }
 
   const classes = buildClasses(prefix, 'nav-item', node.props);
-  return `<a href="${href}" class="${classes}">${contentHTML}</a>`;
+  return `<a href="${href}"${ariaCurrent} class="${classes}">${contentHTML}</a>`;
 }
 
 function renderBreadcrumbs(node: any, context: RenderContext): string {
@@ -683,7 +730,11 @@ function renderList(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'list', node.props);
   const tag = node.ordered ? 'ol' : 'ul';
-  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+  // Block-level radios (`- ( ) Option`) sit as direct children of the list;
+  // the parser does not wrap them in a radio-group, so the renderer applies
+  // the shared `name` here.
+  const children = applyRadioGroupName(node.children || [], context);
+  const childrenHTML = children.map((child: any) => renderNode(child, context)).join('\n  ');
 
   return `<${tag} class="${classes}"${sourceLine(node)}>
   ${childrenHTML}

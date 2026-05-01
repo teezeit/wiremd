@@ -1,0 +1,3 @@
+Document
+  └─ container[card]
+     └─ paragraph "A simple paragraph that ends without a trailing blank line before the closer."

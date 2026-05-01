@@ -1,6 +1,5 @@
 
 ::: sidebar
-
 [[wiremd](./index.md)]*
 
 #### Components

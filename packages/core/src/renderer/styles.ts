@@ -955,6 +955,8 @@ body.${prefix}root {
   background: #343a40;
   color: #fff;
   border-color: #343a40;
+  pointer-events: none;
+  cursor: default;
 }
 
 .${prefix}breadcrumbs {
@@ -1029,6 +1031,14 @@ body.${prefix}root {
 .${prefix}col-span-2 { grid-column: span 2; }
 .${prefix}col-span-3 { grid-column: span 3; }
 .${prefix}col-span-4 { grid-column: span 4; }
+.${prefix}col-span-5 { grid-column: span 5; }
+.${prefix}col-span-6 { grid-column: span 6; }
+.${prefix}col-span-7 { grid-column: span 7; }
+.${prefix}col-span-8 { grid-column: span 8; }
+.${prefix}col-span-9 { grid-column: span 9; }
+.${prefix}col-span-10 { grid-column: span 10; }
+.${prefix}col-span-11 { grid-column: span 11; }
+.${prefix}col-span-12 { grid-column: span 12; }
 
 .${prefix}grid-item-card {
   background: #fff;
@@ -1149,6 +1159,51 @@ body.${prefix}root {
   display: block;
   font-size: 48px;
   margin-bottom: 20px;
+}
+
+/* Required input indicator */
+.${prefix}input[required], .${prefix}textarea[required], .${prefix}select[required] {
+  border-left: 2px solid #f59e0b;
+}
+
+/* Table-cell alignment (scoped so flex margin: auto rules don't apply) */
+td.${prefix}align-left, th.${prefix}align-left { text-align: left; }
+td.${prefix}align-center, th.${prefix}align-center { text-align: center; }
+td.${prefix}align-right, th.${prefix}align-right { text-align: right; }
+
+/* Alert containers */
+.${prefix}container-alert {
+  border-left: 3px solid #3b82f6;
+  background: #eff6ff;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  color: #1e3a8a;
+}
+.${prefix}container-alert.${prefix}success {
+  border-left-color: #10b981;
+  background: #d1fae5;
+  color: #065f46;
+}
+.${prefix}container-alert.${prefix}warning {
+  border-left-color: #f59e0b;
+  background: #fef3c7;
+  color: #92400e;
+}
+.${prefix}container-alert.${prefix}error {
+  border-left-color: #ef4444;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Button size variants */
+.${prefix}button.${prefix}small { padding: 4px 10px; font-size: 0.875rem; }
+.${prefix}button.${prefix}large { padding: 12px 24px; font-size: 1.125rem; }
+
+/* Error state on inputs and other elements */
+.${prefix}state-error {
+  border-color: #ef4444;
+  color: #b91c1c;
 }
 
 /* Responsive */
@@ -2055,13 +2110,13 @@ body {
   color: #92400e;
 }
 
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   background: #fee2e2;
   border-left-color: #ef4444;
   color: #991b1b;
 }
 
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   background: #d1fae5;
   border-left-color: #10b981;
   color: #065f46;
@@ -2734,12 +2789,12 @@ body {
   color: #e65100;
 }
 
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   background: #ffebee;
   color: #c62828;
 }
 
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   background: #e8f5e9;
   color: #2e7d32;
 }
@@ -3429,12 +3484,12 @@ body {
   color: #000000;
 }
 
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   background: #ff6b6b;
   color: #000000;
 }
 
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   background: #6bcf7f;
   color: #000000;
 }

@@ -1,0 +1,11 @@
+Document
+  └─ grid[3] props={card=false}
+     ├─ grid-item
+     │  ├─ heading[3] "Fast"
+     │  └─ paragraph "content"
+     ├─ grid-item
+     │  ├─ heading[3] "Simple"
+     │  └─ paragraph "content"
+     └─ grid-item
+        ├─ heading[3] "Flexible"
+        └─ paragraph "content"

@@ -1,2 +1,3 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Keep markdown files LF on Windows checkouts so log parsers (review-gate
+# test, build-review-log, flag-review) see consistent line endings.
+*.md text eol=lf

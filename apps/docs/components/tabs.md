@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Tabs
 
 `::: tabs` creates a tabbed panel. Child `::: tab Label` containers become panels. The first tab is active by default.
@@ -11,9 +9,7 @@
 ## Basic Tabs
 
 ::: demo
-
 ::: tabs
-
 ::: tab Overview
 ## Product Overview
 This is the main overview content shown on the first tab.
@@ -43,9 +39,7 @@ This is the main overview content shown on the first tab.
 ## Settings Pattern
 
 ::: demo
-
 ::: tabs
-
 ::: tab Profile
 Name
 [_____________________________]{required}

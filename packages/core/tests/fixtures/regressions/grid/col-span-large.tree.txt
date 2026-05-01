@@ -1,0 +1,8 @@
+Document
+  └─ grid[7] props={card=true}
+     ├─ grid-item props={classes=["card", "col-span-5"]}
+     │  ├─ heading[3] "Starter" props={classes=["col-span-5"]}
+     │  └─ paragraph "spans five"
+     └─ grid-item props={classes=["card", "col-span-1"]}
+        ├─ heading[3] "Pro" props={classes=["col-span-1"]}
+        └─ paragraph "spans one"

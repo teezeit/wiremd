@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Tables
 
 Standard Markdown table syntax renders as a styled data table.

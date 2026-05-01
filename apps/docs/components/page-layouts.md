@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Page Layouts
 
 wiremd supports three common page structure patterns: top nav, sidebar + main, and the combined navbar + sidebar + main used in most dashboards.
@@ -15,7 +13,6 @@ wiremd supports three common page structure patterns: top nav, sidebar + main, a
 Place a `[[ ... ]]` navbar above your content. No wrapper container needed — the navbar sits at the top of the page.
 
 ::: demo
-
 [[ Acme | [Home](./index.md) | Products | Pricing | [Login] | [Sign Up]* ]]
 
 ## Welcome to Acme
@@ -23,7 +20,6 @@ Place a `[[ ... ]]` navbar above your content. No wrapper container needed — t
 Build faster with our platform.
 
 ::: grid-3 card
-
 ### Feature One
 Description of the first feature goes here.
 
@@ -42,7 +38,6 @@ Description of the third feature goes here.
 Use a `::: row` with `{.right}` to push actions to the right inside a card or section:
 
 ::: demo
-
 [[ App | [Dashboard] | [Projects] | [Team] | [Settings] | [Logout] ]]
 
 ::: row {.right}
@@ -66,11 +61,8 @@ Use a `::: row` with `{.right}` to push actions to the right inside a card or se
 `::: layout {.sidebar-main}` creates a two-column layout with a fixed sidebar and a main content area.
 
 ::: demo
-
 ::: layout {.sidebar-main}
-
 ::: sidebar
-
 **App**
 
 [Dashboard]*
@@ -80,7 +72,6 @@ Use a `::: row` with `{.right}` to push actions to the right inside a card or se
 :::
 
 ::: main
-
 ## Dashboard
 
 Welcome back! Here's what's happening.
@@ -94,11 +85,8 @@ Welcome back! Here's what's happening.
 ## Sidebar with Sections
 
 ::: demo
-
 ::: layout {.sidebar-main}
-
 ::: sidebar
-
 **Acme Co.**
 
 #### Workspace
@@ -118,11 +106,9 @@ Welcome back! Here's what's happening.
 :::
 
 ::: main
-
 ## Overview
 
 ::: grid-3 card
-
 ### Tasks Done
 **48** this week
 
@@ -147,13 +133,10 @@ Welcome back! Here's what's happening.
 The most common dashboard pattern: combine a top navbar with a `::: layout {.sidebar-main}` below it.
 
 ::: demo
-
 [[ App | [Dashboard] | [Notifications] | [Settings] | [JD] ]]
 
 ::: layout {.sidebar-main}
-
 ::: sidebar
-
 #### Main
 [Dashboard]*
 [Projects]
@@ -170,11 +153,9 @@ The most common dashboard pattern: combine a top navbar with a `::: layout {.sid
 :::
 
 ::: main
-
 ## Dashboard
 
 ::: grid-3 card
-
 ### Revenue
 **$12,400**
 +8% this month

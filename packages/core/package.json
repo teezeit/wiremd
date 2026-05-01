@@ -42,7 +42,11 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "clean": "rm -rf dist node_modules",
-    "publish:npm": "npm publish --access public"
+    "publish:npm": "npm publish --access public",
+    "review": "tsx scripts/build-review-page.ts && open tests/fixtures/REVIEW.html",
+    "review:log": "tsx scripts/build-review-log.ts",
+    "review:flag": "tsx scripts/flag-review.ts",
+    "review:refresh": "pnpm run review:log && pnpm run test -- tests/fixtures.test.ts -u && pnpm run review:flag --snapshot-changes"
   },
   "dependencies": {
     "chalk": "^5.6.2",
@@ -63,6 +67,7 @@
     "@vitest/coverage-v8": "^1.0.0",
     "esbuild": "^0.28.0",
     "eslint": "^8.54.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.3.2",
     "vite": "^5.0.0",
     "vite-plugin-dts": "^3.6.4",

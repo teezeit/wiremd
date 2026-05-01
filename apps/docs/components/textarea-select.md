@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Textarea & Select
 
 ## Textarea
@@ -50,7 +48,6 @@ Role
 ## Combined Example
 
 ::: demo
-
 ## Feedback
 
 Category

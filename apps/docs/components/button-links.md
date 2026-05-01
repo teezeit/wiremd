@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Button Links
 
 Wrap a Markdown link inside button brackets to create a clickable button that navigates to another `.md` file.
@@ -18,9 +16,7 @@ Wrap a Markdown link inside button brackets to create a clickable button that na
 ## In Context
 
 ::: demo
-
 ::: card
-
 ### Getting Started
 Install wiremd and create your first wireframe in minutes.
 

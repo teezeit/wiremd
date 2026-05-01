@@ -1,0 +1,5 @@
+Document
+  └─ container[card]
+     └─ paragraph
+        ├─ button "Action" props={variant="primary"}
+        └─ text "\nthis text should be a separate paragraph below the button"

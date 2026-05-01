@@ -11,6 +11,34 @@ import type { WiremdNode } from '../types.js';
 
 export interface TailwindRenderContext {
   pretty: boolean;
+  // Mutable counter for deterministic radio-group names; see html-renderer
+  // for the rationale. Initialised by renderToTailwind.
+  _radioGroupCounter?: { value: number };
+}
+
+/** Mint the next deterministic radio-group name. */
+function nextRadioGroupName(context: TailwindRenderContext): string {
+  if (!context._radioGroupCounter) {
+    context._radioGroupCounter = { value: 0 };
+  }
+  context._radioGroupCounter.value += 1;
+  return `radio-group-${context._radioGroupCounter.value}`;
+}
+
+/**
+ * If `children` contains any `radio` nodes, return a copy where every radio
+ * shares a freshly-minted group name. Mirror of the helper in html-renderer.
+ */
+function applyRadioGroupName(children: any[], context: TailwindRenderContext): any[] {
+  if (!children || children.length === 0) return children;
+  const hasRadio = children.some((c: any) => c && c.type === 'radio');
+  if (!hasRadio) return children;
+  const name = nextRadioGroupName(context);
+  return children.map((c: any) => {
+    if (!c || c.type !== 'radio') return c;
+    if (c.props && c.props.name) return c;
+    return { ...c, props: { ...(c.props || {}), name } };
+  });
 }
 
 /**
@@ -159,13 +187,15 @@ function renderButton(node: any, context: TailwindRenderContext): string {
   }
 
   // State styles
-  if (node.props.state === 'disabled') {
+  const isDisabled = node.props.state === 'disabled' || node.props.disabled;
+  const isLoading = node.props.state === 'loading' || node.props.loading;
+  if (isDisabled) {
     classes += ' opacity-50 cursor-not-allowed';
-  } else if (node.props.state === 'loading') {
+  } else if (isLoading) {
     classes += ' opacity-75 cursor-wait';
   }
 
-  const disabled = node.props.state === 'disabled' ? ' disabled' : '';
+  const disabled = isDisabled ? ' disabled' : '';
 
   const contentHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
@@ -250,10 +280,11 @@ function renderRadioGroup(node: any, context: TailwindRenderContext): string {
   const isInline = node.props?.inline;
   const classes = isInline ? 'flex flex-wrap gap-4' : 'flex flex-col gap-2';
 
-  const groupName = `radio-${Math.random().toString(36).substr(2, 9)}`;
+  const groupName = node.name || nextRadioGroupName(context);
 
   const radios = (node.children || []).map((child: any) => {
     if (child.type === 'radio') {
+      if (child.props && child.props.name) return renderNode(child, context);
       const modifiedChild = { ...child, props: { ...child.props, name: groupName } };
       return renderNode(modifiedChild, context);
     }
@@ -343,12 +374,14 @@ function renderNav(node: any, context: TailwindRenderContext): string {
 function renderNavItem(node: any, context: TailwindRenderContext): string {
   const classes = 'text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors font-medium';
   const href = node.href || '#';
+  const isActive = Array.isArray(node.props?.classes) && node.props.classes.includes('active');
+  const ariaCurrent = isActive ? ' aria-current="page"' : '';
 
   const contentHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
     : escapeHtml(node.content);
 
-  return `<a href="${href}" class="${classes}">${contentHTML}</a>`;
+  return `<a href="${href}"${ariaCurrent} class="${classes}">${contentHTML}</a>`;
 }
 
 function renderBrand(node: any, context: TailwindRenderContext): string {
@@ -475,7 +508,10 @@ function renderList(node: any, context: TailwindRenderContext): string {
   const classes = 'my-4 pl-6 space-y-2';
   const tag = node.ordered ? 'ol' : 'ul';
   const listStyle = node.ordered ? ' list-decimal' : ' list-disc';
-  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+  // Block-level radios sit as direct children of the list; assign a shared
+  // name so the rendered <input type="radio"> elements form a single group.
+  const children = applyRadioGroupName(node.children || [], context);
+  const childrenHTML = children.map((child: any) => renderNode(child, context)).join('\n  ');
 
   return `<${tag} class="${classes}${listStyle}">
   ${childrenHTML}

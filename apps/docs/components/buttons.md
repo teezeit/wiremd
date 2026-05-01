@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Buttons
 
 Square brackets create a button. Add `*` for primary variant.
@@ -21,8 +19,6 @@ Square brackets create a button. Add `*` for primary variant.
 :::
 
 ## Disabled
-
-> **TODO:** `{disabled}` sets `props.disabled` but renderer checks `props.state === 'disabled'` — fix renderer or unify
 
 ::: demo
 [Submit]{disabled}
@@ -50,12 +46,12 @@ Square brackets create a button. Add `*` for primary variant.
 [Label]{variant:primary}     primary (explicit)
 [Label]{variant:secondary}   secondary
 [Label]{variant:danger}      danger/destructive
-[Label]{state:disabled}      disabled  ← use state:disabled, not {disabled}
-[Label]{state:loading}       loading
+[Label]{state:disabled}      disabled (also: {disabled} shorthand)
+[Label]{state:loading}       loading  (also: {loading} shorthand)
 [A] [B] [C]                  button group (inline)
 ```
 
-> **Note:** `{.primary}` and `{.danger}` add raw CSS classes with no built-in styling — use `{variant:*}` instead. `{disabled}` (without `state:`) is silently ignored on buttons.
+> **Note:** `{.primary}` and `{.danger}` add raw CSS classes with no built-in styling — use `{variant:*}` instead.
 
 :::
 

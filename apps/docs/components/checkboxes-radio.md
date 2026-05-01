@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Checkboxes & Radio
 
 ## Checkboxes
@@ -21,7 +19,6 @@ Standard Markdown task list syntax renders as checkboxes.
 ## In a Form
 
 ::: demo
-
 ## Preferences
 
 - [x] Send me product updates

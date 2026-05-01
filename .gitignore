@@ -66,3 +66,8 @@ wireframe-skill.zip
 # Release artifacts — uploaded to GitHub Releases, not committed
 # (extensions/skills/wireframe/bin/wiremd.js stays committed for the plugin)
 releases/
+
+# Snapshot review tool: REVIEW.html is regenerated on `pnpm review` and ignored.
+# REVIEW_LOG.md is committed — it's the source of truth for visual review verdicts,
+# enforced by tests/review-gate.test.ts (fails on any ⏳ row).
+packages/core/tests/fixtures/REVIEW.html

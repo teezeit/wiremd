@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Demo Blocks
 
 `::: demo` renders wiremd content as a split pane — rendered output on the left, raw source on the right. Write once, no duplication.
@@ -17,7 +15,6 @@
 ## With a Form
 
 ::: demo
-
 Email
 [_____________________________]{type:email required}
 
@@ -31,9 +28,7 @@ Password
 ## With a Grid
 
 ::: demo
-
 ::: grid-3 card
-
 ### Free
 $0/mo
 [Get Started]

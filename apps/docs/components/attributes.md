@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Attributes & Classes
 
 Any wiremd element accepts `{...}` after it to add classes, attributes, and modifiers.
@@ -40,7 +38,6 @@ Email
 Attributes on `:::` containers add classes to the wrapper element:
 
 ::: demo
-
 ::: card {.featured}
 ### Featured Plan
 The most popular choice for growing teams.
@@ -60,9 +57,7 @@ The most popular choice for growing teams.
 Use `{.col-span-N}` on `###` headings inside a grid:
 
 ::: demo
-
 ::: grid-3 card
-
 ### Starter {.col-span-1}
 $9/mo
 

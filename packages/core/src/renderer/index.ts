@@ -74,6 +74,7 @@ export function renderToHTML(
     showComments,
     _comments: showComments ? collectedComments : undefined,
     _nextCommentId: null as number | null,
+    _radioGroupCounter: { value: 0 },
   };
 
   // Render all children (comment nodes are intercepted and collected)
@@ -191,6 +192,7 @@ export function renderToReact(
     typescript,
     useClassName: true,
     componentName,
+    _radioGroupCounter: { value: 0 },
   };
 
   // Render all children
@@ -240,6 +242,7 @@ export function renderToTailwind(
 
   const context: TailwindRenderer.TailwindRenderContext = {
     pretty,
+    _radioGroupCounter: { value: 0 },
   };
 
   // Render all children

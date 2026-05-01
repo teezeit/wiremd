@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Navigation
 
 ## Navbar
@@ -47,9 +45,7 @@ Use `[[ ... ]]` with `>` separators for breadcrumb trails.
 `::: sidebar` creates a vertical nav panel, typically used inside `::: layout {.sidebar-main}`.
 
 ::: demo
-
 ::: sidebar
-
 **App**
 
 #### Main

@@ -33,9 +33,14 @@ pnpm run build        # TypeScript + Vite → dist/
 pnpm run test         # vitest run
 pnpm test -- tests/parser.test.ts              # single test file
 pnpm test -- tests/parser.test.ts -t "Button"  # single test by name
+pnpm test -- tests/fixtures.test.ts -u         # refresh fixture snapshots
 pnpm run test:coverage
 pnpm run typecheck
 pnpm run lint
+
+# Snapshot review tool (for visually verifying fixture rendering):
+pnpm review:log       # seed REVIEW_LOG.md from filesystem state
+pnpm review           # build REVIEW.html and open in browser
 ```
 
 CLI usage (after build):
@@ -110,7 +115,9 @@ After edits rebuild: `Cmd+Shift+P` → "Developer: Reload Window".
 
 ## Testing
 
-**Unit/integration tests** live in `packages/core/tests/`. Key files: `parser.test.ts`, `renderer.test.ts`, `react-renderer.test.ts`, `tailwind-renderer.test.ts`, `integration.test.ts`, `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `api-examples.test.ts`, `package-shape.test.ts`. Vitest with node environment; globals enabled. Assert on `renderToHTML(parse(md), { style: 'sketch' })` for renderer tests.
+**Fixture corpus** (preferred for syntax/render tests) — `packages/core/tests/fixtures/` + driver `tests/fixtures.test.ts`. Two sources: hand-written regressions under `regressions/` and auto-extracted `:::demo` blocks from `apps/docs/components/` (list in `tests/lib/fixture-runner.ts`). Each fixture parses to AST and renders to HTML/React/Tailwind/tree snapshots; opt-in `.invariants.ts` (or `.expected-fail.invariants.ts`) sidecars assert correctness contracts and track known bugs as `it.fails` until fixed. Adding a `:::demo` to a docs file automatically adds a regression test. **See [`packages/core/tests/fixtures/README.md`](packages/core/tests/fixtures/README.md) for the full workflow** — conventions, sweep tooling (`pnpm review`), and the snapshots-vs-invariants split.
+
+**Classic tests** live in `packages/core/tests/`: `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `package-shape.test.ts`, `integration.test.ts`, `edge-cases.test.ts`, `api-examples.test.ts`, plus the older monoliths `parser.test.ts` / `renderer.test.ts` / `react-renderer.test.ts` / `tailwind-renderer.test.ts` (gradually migrating into the fixture corpus). Use these for CLI behaviour, error paths, validation messages, server lifecycle, and anything that's not pure parse-then-render. Vitest with node environment; globals enabled.
 
 **E2E tests** live in `tests/e2e/` (Playwright, configured at root `playwright.config.ts`). They run against the deployed site at `teezeit.github.io` — not locally. Run with `pnpm exec playwright test`.
 
