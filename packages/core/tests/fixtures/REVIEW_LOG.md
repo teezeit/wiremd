@@ -13,23 +13,23 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [✅ closer-after-heading][2]
 - [✅ closer-after-paragraph][3]
 - [✅ nested-card][4]
-- [❌ no-blank-line-before-list][5] — displays :::
-- [❌ text-before-nested-opener][6] — inner is underneath
+- [✅ no-blank-line-before-list][5]
+- [✅ text-before-nested-opener][6]
 
 ### Formatting (regressions/formatting)
 - [✅ closer-with-trailing-space][7]
 - [✅ crlf-line-endings][8]
-- [❌ icon-needs-blank-line][9] — render issue
-- [❌ inline-nav-needs-blank-line][10]
+- [✅ icon-needs-blank-line][9]
+- [✅ inline-nav-needs-blank-line][10]
 - [✅ leading-bom][11]
 - [✅ multiple-blanks-between][12]
 - [✅ opener-no-blank-after][13]
-- [❌ siblings-no-blank-between][14]
+- [✅ siblings-no-blank-between][14]
 - [✅ trailing-whitespace-opener][15]
 
 ### Grid (regressions/grid)
 - [✅ col-span-large][16]
-- [❌ text-after-opener-flag][17]
+- [✅ text-after-opener-flag][17]
 
 ### Inline (regressions/inline)
 - [✅ text-after-button][18]
@@ -53,7 +53,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [✅ basic][28]
 - [✅ required][29]
 - [✅ input-types][30]
-- [❌ with-placeholder][31]
+- [✅ with-placeholder][31]
 - [✅ error-state][32]
 - [✅ number-constraints][33]
 - [✅ textarea-columns][34]
@@ -81,7 +81,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 ### Badges (apps/docs/components/badges.md)
 - [✅ variants][49]
 - [✅ inline-with-text][50]
-- [❌ in-a-table][51]
+- [✅ in-a-table][51]
 - [✅ count-badges][52]
 
 ### Grid (apps/docs/components/grid.md)
@@ -134,8 +134,8 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 
 ### Tables (apps/docs/components/tables.md)
 - [✅ basic-table][89]
-- [❌ with-badges][90]
-- [❌ data-table-with-actions][91] — actions work but the badge inside is not working. so i'm setting this to failing
+- [✅ with-badges][90]
+- [✅ data-table-with-actions][91]
 - [✅ column-alignment][92]
 
 ### Alerts (apps/docs/components/alerts.md)

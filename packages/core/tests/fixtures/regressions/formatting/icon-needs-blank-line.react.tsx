@@ -5,8 +5,8 @@ export const WiremdComponent: React.FC = () => {
     <div className="wmd-root">
   <div className="wmd-row">
     <div className="wmd-grid-item">
-      <p className="wmd-paragraph">:user:
-John Doe |Admin|&#123;.warning&#125;</p>
+      <p className="wmd-paragraph"><span className="wmd-icon" data-icon="user" aria-label="user">👤</span>
+John Doe <span className="wmd-badge wmd-badge-warning">Admin</span></p>
       <div className="wmd-container-button-group">
         <button className="wmd-button">
           Edit

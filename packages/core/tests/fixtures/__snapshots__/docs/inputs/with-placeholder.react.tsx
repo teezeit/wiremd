@@ -5,7 +5,7 @@ export const WiremdComponent: React.FC = () => {
     <div className="wmd-root">
   <div className="wmd-container-form-group">
 Search
-    <input type="text" className="wmd-input" placeholder="&quot;Search" />
+    <input type="text" className="wmd-input" placeholder="Search components..." />
   </div>
     </div>
   );

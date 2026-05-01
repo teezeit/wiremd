@@ -27,15 +27,15 @@ export const WiremdComponent: React.FC = () => {
           </tr>
           <tr>
               <td className="wmd-table-cell wmd-align-left">Support</td>
-              <td className="wmd-table-cell wmd-align-left">|Community|</td>
-              <td className="wmd-table-cell wmd-align-left">|Email|&#123;.warning&#125;</td>
-              <td className="wmd-table-cell wmd-align-left">|SLA|&#123;.success&#125;</td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge">Community</span></td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge wmd-badge-warning">Email</span></td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge wmd-badge-success">SLA</span></td>
           </tr>
           <tr>
               <td className="wmd-table-cell wmd-align-left">API Access</td>
               <td className="wmd-table-cell wmd-align-left">—</td>
-              <td className="wmd-table-cell wmd-align-left">|Yes|&#123;.success&#125;</td>
-              <td className="wmd-table-cell wmd-align-left">|Yes|&#123;.success&#125;</td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge wmd-badge-success">Yes</span></td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge wmd-badge-success">Yes</span></td>
           </tr>
     </tbody>
   </table>

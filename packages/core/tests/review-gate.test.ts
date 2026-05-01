@@ -38,16 +38,6 @@ const LOG_PATH = join(TESTS_DIR, 'fixtures', 'REVIEW_LOG.md');
  * rename the .expected-fail.invariants.ts file and close the bug).
  */
 const KNOWN_FAILURES = new Set<string>([
-  'fixture-regression-containers-closer-no-blank-line-before-list',
-  'fixture-regression-containers-closer-text-before-nested-opener',
-  'fixture-regression-formatting-icon-needs-blank-line',
-  'fixture-regression-formatting-inline-nav-needs-blank-line',
-  'fixture-regression-formatting-siblings-no-blank-between',
-  'fixture-regression-grid-text-after-opener-flag',
-  'fixture-docs-inputs-with-placeholder',
-  'fixture-docs-badges-in-a-table',
-  'fixture-docs-tables-with-badges',
-  'fixture-docs-tables-data-table-with-actions',
   // Button .small/.large size rules only landed in clean during Phase A;
   // sketch/wireframe/material/brutal/tailwind all render sizes identically.
   // Tracked here until the rules are propagated; a future styles.test.ts
