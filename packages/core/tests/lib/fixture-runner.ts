@@ -25,10 +25,40 @@ const REPO_ROOT = dirname(dirname(CORE_DIR)); // monorepo root
 const REGRESSIONS_DIR = join(TESTS_DIR, 'fixtures', 'regressions');
 const SNAPSHOTS_DOCS_DIR = join(TESTS_DIR, 'fixtures', '__snapshots__', 'docs');
 
-/** Docs files whose `::: demo` blocks become fixtures. */
+/**
+ * Docs files whose `::: demo` blocks become fixtures.
+ *
+ * Excluded by design:
+ *   - `_*.md` partials and `index.md` overview — covered as content elsewhere.
+ *   - `includes.md` — its demos use `![[ ... ]]` file includes that need a
+ *     basePath the test runner doesn't supply; would render as broken-include
+ *     warnings.
+ *   - `styles.md`, `not-implemented-components.md` — zero demos by design.
+ */
 const DOC_SOURCES = [
+  // Primitives
   'apps/docs/components/buttons.md',
+  'apps/docs/components/button-links.md',
+  'apps/docs/components/inputs.md',
+  'apps/docs/components/textarea-select.md',
+  'apps/docs/components/checkboxes-radio.md',
+  'apps/docs/components/icons.md',
+  'apps/docs/components/badges.md',
+  // Layouts
   'apps/docs/components/grid.md',
+  'apps/docs/components/row.md',
+  'apps/docs/components/cards.md',
+  'apps/docs/components/tabs.md',
+  'apps/docs/components/page-layouts.md',
+  'apps/docs/components/navigation.md',
+  // Content
+  'apps/docs/components/tables.md',
+  'apps/docs/components/alerts.md',
+  'apps/docs/components/comments.md',
+  'apps/docs/components/attributes.md',
+  // Meta (syntax demos)
+  'apps/docs/components/demo.md',
+  'apps/docs/components/index.md',
 ];
 
 export interface Fixture {

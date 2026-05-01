@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup - Tailwind</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-6">
+  <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden my-6">
+  <thead class="bg-gray-50">
+    <tr>
+      <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Project</th>
+    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Owner</th>
+    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Due</th>
+    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-gray-200">
+    <tr class="hover:bg-gray-50">
+    <td class="px-6 py-3 text-gray-900">Website redesign</td>
+    <td class="px-6 py-3 text-gray-900">Alice</td>
+    <td class="px-6 py-3 text-gray-900">Dec 15</td>
+    <td class="px-6 py-3 text-gray-900">|In Progress|{.warning}</td>
+  </tr>
+    <tr class="hover:bg-gray-50">
+    <td class="px-6 py-3 text-gray-900">Mobile app v2</td>
+    <td class="px-6 py-3 text-gray-900">Bob</td>
+    <td class="px-6 py-3 text-gray-900">Jan 10</td>
+    <td class="px-6 py-3 text-gray-900">|In Progress|{.warning}</td>
+  </tr>
+    <tr class="hover:bg-gray-50">
+    <td class="px-6 py-3 text-gray-900">API migration</td>
+    <td class="px-6 py-3 text-gray-900">Clara</td>
+    <td class="px-6 py-3 text-gray-900">Dec 20</td>
+    <td class="px-6 py-3 text-gray-900">|Review|{.primary}</td>
+  </tr>
+    <tr class="hover:bg-gray-50">
+    <td class="px-6 py-3 text-gray-900">Design system</td>
+    <td class="px-6 py-3 text-gray-900">Dan</td>
+    <td class="px-6 py-3 text-gray-900">Feb 1</td>
+    <td class="px-6 py-3 text-gray-900">|Planning|</td>
+  </tr>
+  </tbody>
+</table>
+  <button class="px-4 py-2 rounded-md font-medium transition-colors bg-indigo-600 text-white hover:bg-indigo-700">+ New Project</button>
+</body>
+</html>

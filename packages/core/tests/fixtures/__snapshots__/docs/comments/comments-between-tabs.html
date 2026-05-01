@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  
+</head>
+<body class="wmd-root wmd-clean wmd-has-comments">
+  <div class="wmd-tabs" data-wmd-tabs>
+  <div class="wmd-tab-headers" role="tablist"><button type="button" role="tab" class="wmd-tab-header wmd-active" data-wmd-tab="0">Overview</button><button type="button" role="tab" class="wmd-tab-header wmd-tab-header-annotated" data-wmd-tab="1">Details</button></div>
+  <div class="wmd-tab-panels">
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="0">
+    <h2 class="wmd-h2">Product Overview</h2>
+<button class="wmd-button wmd-button-primary">Get Started</button>
+  </div>
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="1" hidden>
+    <div class="wmd-annotated" id="wmd-ann-1"><span class="wmd-comment-badge">1</span><ul class="wmd-list">
+  <li class="wmd-list-item">Feature A</li>
+  <li class="wmd-list-item">Feature B</li>
+</ul></div>
+  </div>
+  </div>
+</div><script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.wmd-tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.wmd-tab-header').forEach(function(b){b.classList.toggle('wmd-active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>
+  <aside class="wmd-comments-panel">
+  <div class="wmd-comments-panel-header">
+    <span>💬 Comments</span>
+    <span class="wmd-comments-panel-count">1</span>
+  </div>
+  <div class="wmd-comment-card"><div class="wmd-comment-card-badge">1</div><div class="wmd-comment-card-body"><div class="wmd-comment-msg">Do we need this tab at all? @tobias</div></div></div>
+</aside>
+  
+</body>
+</html>

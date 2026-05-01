@@ -66,3 +66,7 @@ wireframe-skill.zip
 # Release artifacts — uploaded to GitHub Releases, not committed
 # (extensions/skills/wireframe/bin/wiremd.js stays committed for the plugin)
 releases/
+
+# Snapshot review tool artifacts (generated, not source-of-truth)
+packages/core/tests/fixtures/REVIEW.html
+packages/core/tests/fixtures/REVIEW_LOG.md

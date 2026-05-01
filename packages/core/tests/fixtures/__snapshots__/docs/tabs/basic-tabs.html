@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  
+</head>
+<body class="wmd-root wmd-clean">
+  <div class="wmd-tabs" data-wmd-tabs>
+  <div class="wmd-tab-headers" role="tablist"><button type="button" role="tab" class="wmd-tab-header wmd-active" data-wmd-tab="0">Overview</button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="1">Features</button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="2">Pricing</button></div>
+  <div class="wmd-tab-panels">
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="0">
+    <h2 class="wmd-h2">Product Overview</h2>
+<div class="wmd-container-form-group">
+  This is the main overview content shown on the first tab.
+<button class="wmd-button wmd-button-primary">Get Started</button>
+</div>
+  </div>
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="1" hidden>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Markdown-based wireframing</li>
+  <li class="wmd-list-item">7 visual styles</li>
+  <li class="wmd-list-item">VS Code extension</li>
+  <li class="wmd-list-item">Live reload dev server</li>
+</ul>
+  </div>
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="2" hidden>
+    <button class="wmd-button wmd-button-primary">View Plans</button>
+  </div>
+  </div>
+</div><script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.wmd-tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.wmd-tab-header').forEach(function(b){b.classList.toggle('wmd-active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>
+  
+  
+</body>
+</html>

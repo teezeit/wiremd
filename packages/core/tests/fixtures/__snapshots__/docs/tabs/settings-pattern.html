@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  
+</head>
+<body class="wmd-root wmd-clean">
+  <div class="wmd-tabs" data-wmd-tabs>
+  <div class="wmd-tab-headers" role="tablist"><button type="button" role="tab" class="wmd-tab-header wmd-active" data-wmd-tab="0">Profile</button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="1">Security</button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="2">Notifications</button></div>
+  <div class="wmd-tab-panels">
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="0">
+    <div class="wmd-container-form-group">
+  Name
+<input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Email
+<input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Bio
+<textarea class="wmd-textarea" rows="3" placeholder="Tell us about yourself..."></textarea>
+</div>
+<button class="wmd-button wmd-button-primary">Save Changes</button>
+  </div>
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="1" hidden>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">Change Password</button>
+<button class="wmd-button wmd-button-primary">Enable 2FA</button>
+<button class="wmd-button">View Active Sessions</button>
+</div>
+  </div>
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="2" hidden>
+    <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Email alerts</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>SMS alerts</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Weekly digest</span>
+  </label>
+</ul>
+<button class="wmd-button wmd-button-primary">Save Preferences</button>
+  </div>
+  </div>
+</div><script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.wmd-tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.wmd-tab-header').forEach(function(b){b.classList.toggle('wmd-active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>
+  
+  
+</body>
+</html>
