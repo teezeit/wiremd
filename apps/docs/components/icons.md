@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Icons
 
 Use `:name:` inline anywhere — in headings, buttons, nav bars, or plain text.

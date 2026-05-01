@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Alerts
 
 > **Not yet implemented.** The `::: alert` container parses correctly but has no dedicated renderer — it falls back to a generic `<div>`. Variants (`.success`, `.warning`, `.error`) are not visually distinguished. This page documents the intended syntax for when it is implemented.
@@ -13,7 +11,6 @@
 ## Default
 
 ::: demo
-
 ::: alert
 Your session will expire in 10 minutes.
 :::
@@ -23,7 +20,6 @@ Your session will expire in 10 minutes.
 ## Variants
 
 ::: demo
-
 ::: alert {.success}
 Profile updated successfully.
 :::
@@ -31,7 +27,6 @@ Profile updated successfully.
 :::
 
 ::: demo
-
 ::: alert {.warning}
 You are approaching your storage limit.
 :::
@@ -39,7 +34,6 @@ You are approaching your storage limit.
 :::
 
 ::: demo
-
 ::: alert {.error}
 Payment failed. Please check your card details.
 :::
@@ -51,9 +45,7 @@ Payment failed. Please check your card details.
 Place content directly on the opener line to use it as a title/heading.
 
 ::: demo
-
 ::: alert {.warning} Storage limit reached
-
 Upgrade your plan to continue uploading files.
 
 [Upgrade Now]* [Dismiss]

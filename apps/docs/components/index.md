@@ -1,13 +1,10 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # wiremd Components
 
 ::: demo
-
 ## Sign In
 
 Email

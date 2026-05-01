@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Inline Comments
 
 Use standard HTML comment syntax to annotate components. Comments appear in a fixed side panel with numbered badges on annotated elements — keeping your wireframe clean while surfacing reviewer notes.
@@ -59,7 +57,6 @@ Place the comment above the column heading to outline that column.
 
 ::: demo
 ::: grid-2
-
 ### Current design
 
 The existing layout. Works but feels dated.
@@ -78,7 +75,6 @@ A comment placed between `:::tab` blocks annotates the tab that follows it.
 
 ::: demo
 ::: tabs
-
 ::: tab Overview
 ## Product Overview
 

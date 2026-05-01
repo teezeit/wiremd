@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Grid
 
 `::: grid-N` creates an N-column layout. `###` headings inside become column items.
@@ -13,9 +11,7 @@
 Useful for multi-column forms or content — no visual borders on items.
 
 ::: demo
-
 ::: grid-2
-
 ### Billing address
 First name
 [_____________________________]{required}
@@ -39,9 +35,7 @@ Last name
 Add `card` after the column count to give each item card styling.
 
 ::: demo
-
 ::: grid-3 card
-
 ### Fast
 Renders in milliseconds. Works in any editor.
 
@@ -60,9 +54,7 @@ Plain Markdown syntax. No new tools to learn.
 Add `{.col-span-N}` to a `###` heading to span multiple columns.
 
 ::: demo
-
 ::: grid-3 card
-
 ### Starter {.col-span-1}
 $9 / month
 
@@ -76,9 +68,7 @@ $29 / month — most popular, spans two columns
 ## Two-column Grid
 
 ::: demo
-
 ::: grid-2 card
-
 ### What you get
 - Unlimited wireframes
 - 7 visual styles
@@ -99,9 +89,7 @@ $29 / month — most popular, spans two columns
 Add `{.left}`, `{.right}`, or `{.center}` to a `###` heading to align its column. The heading text can be empty — it just defines the column boundary and alignment. Useful for action bars: filters on the left, primary action on the right.
 
 ::: demo
-
 ::: grid-2
-
 ###
 
 [reset] [Search___________]{type:search}

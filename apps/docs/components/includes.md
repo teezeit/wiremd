@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Reuse Components
 
 `![[path.md]]` inlines another file before parsing — the included content becomes part of the page as if you'd typed it there. This is wiremd's component system: define a piece of UI once, reuse it everywhere.
@@ -34,7 +32,6 @@ Define a card or list item in its own file, then include it multiple times to si
 This renders three identical sprint cards — a realistic list without repeating markup. Here it is live:
 
 ::: demo
-
 ![[_sprint-card.md]]
 
 ![[_sprint-card.md]]
@@ -73,7 +70,6 @@ All projects listed here.
 Here it is live — the same nav component on two different pages:
 
 ::: demo
-
 ![[_demo-topnav.md]]
 
 ### Dashboard
@@ -83,7 +79,6 @@ Welcome back. Here's what's happening today.
 :::
 
 ::: demo
-
 ![[_demo-topnav.md]]
 
 ### Projects
@@ -122,7 +117,6 @@ Combine includes with button links to wire up a full clickable prototype. Each p
 Here it is live — a two-screen prototype with shared nav and navigation buttons:
 
 ::: demo
-
 ![[_demo-topnav.md]]
 
 ### Dashboard
@@ -132,7 +126,6 @@ Here it is live — a two-screen prototype with shared nav and navigation button
 :::
 
 ::: demo
-
 ![[_demo-topnav.md]]
 
 ### Projects

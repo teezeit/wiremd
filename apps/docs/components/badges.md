@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Badges
 
 Pipe delimiters create inline badges. Add a variant class to control colour.

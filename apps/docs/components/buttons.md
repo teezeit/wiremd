@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Buttons
 
 Square brackets create a button. Add `*` for primary variant.

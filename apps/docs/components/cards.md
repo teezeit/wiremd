@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Cards & Containers
 
 Generic containers wrap content in a styled block. The container type controls its visual treatment.
@@ -15,9 +13,7 @@ Generic containers wrap content in a styled block. The container type controls i
 A bordered box with padding. The most common container for grouping related content.
 
 ::: demo
-
 ::: card
-
 ### Getting Started
 Everything you need to build your first wireframe in minutes.
 [Read the guide] [View examples]*
@@ -31,9 +27,7 @@ Everything you need to build your first wireframe in minutes.
 Add `card` after `::: grid-N` to apply card styling to each grid item.
 
 ::: demo
-
 ::: grid-3 card
-
 ### Free
 $0 / month
 - 1 user
@@ -66,9 +60,7 @@ Custom pricing
 Full-width section with a gradient background. Ideal for page headers and landing sections.
 
 ::: demo
-
 ::: hero
-
 # Build wireframes in Markdown
 
 Prototype UIs with plain text — no design tools needed.
@@ -86,9 +78,7 @@ Prototype UIs with plain text — no design tools needed.
 A centred dialog panel. Use for confirmations, forms, and alerts.
 
 ::: demo
-
 ::: modal
-
 ### Delete project?
 
 This will permanently delete **Acme Redesign** and all its files. This action cannot be undone.
@@ -106,9 +96,7 @@ This will permanently delete **Acme Redesign** and all its files. This action ca
 A generic content block — lighter than a card, no border. Use for grouping page regions.
 
 ::: demo
-
 ::: section
-
 ## Recent Activity
 
 | User | Action | Time |
@@ -128,7 +116,6 @@ A generic content block — lighter than a card, no border. Use for grouping pag
 A footer bar, typically at the bottom of a page or card.
 
 ::: demo
-
 ::: footer
 © 2025 Acme Inc. — [Privacy] [Terms] [Contact]
 :::
@@ -142,9 +129,7 @@ A footer bar, typically at the bottom of a page or card.
 Shown when a list or page has no content yet.
 
 ::: demo
-
 ::: empty-state
-
 ### No projects yet
 
 Create your first project to get started.
@@ -162,7 +147,6 @@ Create your first project to get started.
 Placeholder shown while content is being fetched.
 
 ::: demo
-
 ::: loading-state
 Loading projects...
 :::
@@ -176,9 +160,7 @@ Loading projects...
 Shown when something goes wrong.
 
 ::: demo
-
 ::: error-state
-
 ### Failed to load
 
 Could not connect to the server. Check your connection and try again.

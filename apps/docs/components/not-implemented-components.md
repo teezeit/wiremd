@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
-
 ![[_sidebar.md]]
 
 ::: main
-
 # Not Implemented Components
 
 Components not yet in wiremd, with proposed syntax aligned to wiremd's design principles. All proposals follow the existing patterns: `{key:value}` attributes for progressive enhancement, `:::` containers for block components, and visually intuitive ASCII-like syntax.
@@ -11,7 +9,6 @@ Components not yet in wiremd, with proposed syntax aligned to wiremd's design pr
 > **Already supported but easy to miss:** file upload (`[_____]{type:file}`), color input (`[_____]{type:color}`).
 
 ::: grid-3 card
-
 ### UI Components
 Accordion
 [[Jump →](#ui-components)]
@@ -43,7 +40,6 @@ Paper, Speed Dial
 ## UI Components
 
 ::: grid-2
-
 ### Accordion
 
 Collapsible content sections. Used for FAQs, settings panels, and expandable detail rows.
@@ -69,7 +65,6 @@ Each `###` heading inside `::: accordion` would become a collapsible item.
 ## Inputs
 
 ::: grid-2
-
 ### Switch / Toggle
 
 On/off toggle. Appears in settings panels, feature flags, and forms.
@@ -145,7 +140,6 @@ Extends the badge `|...|` syntax — chips are badges with a `×` and the traili
 ## Feedback
 
 ::: grid-2
-
 ### Snackbar / Toast
 
 Temporary bottom-screen notification. Used for success/error confirmations after actions.
@@ -223,7 +217,6 @@ Are you sure?
 ## Navigation
 
 ::: grid-2
-
 ### Drawer
 
 Slide-in side panel for secondary navigation or detail views. Common in mobile and dashboard layouts.
@@ -315,7 +308,6 @@ Container wrapping native Markdown nested lists — no new syntax for content, j
 ## Data Display
 
 ::: grid-2
-
 ### Avatar / AvatarGroup
 
 User photo or initials placeholder. Used in comments, lists, headers, and assignments.
@@ -378,7 +370,6 @@ Extends native Markdown table syntax — sort arrows and checkboxes are rendered
 ## Surfaces
 
 ::: grid-2
-
 ### Paper
 
 A plain elevated surface with shadow — no semantic type, used as a base for custom compositions.
