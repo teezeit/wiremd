@@ -955,6 +955,8 @@ body.${prefix}root {
   background: #343a40;
   color: #fff;
   border-color: #343a40;
+  pointer-events: none;
+  cursor: default;
 }
 
 .${prefix}breadcrumbs {
@@ -1180,17 +1182,17 @@ td.${prefix}align-right, th.${prefix}align-right { text-align: right; }
 }
 .${prefix}container-alert.${prefix}state-success {
   border-left-color: #10b981;
-  background: #ecfdf5;
+  background: #d1fae5;
   color: #065f46;
 }
 .${prefix}container-alert.${prefix}warning {
   border-left-color: #f59e0b;
-  background: #fffbeb;
+  background: #fef3c7;
   color: #92400e;
 }
 .${prefix}container-alert.${prefix}state-error {
   border-left-color: #ef4444;
-  background: #fef2f2;
+  background: #fee2e2;
   color: #991b1b;
 }
 
