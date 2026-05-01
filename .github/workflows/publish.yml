@@ -48,7 +48,11 @@ jobs:
         run: pnpm --filter wiremd-preview run bundle
 
       - name: Publish VS Code extension to Marketplace
-        run: pnpm --filter wiremd-preview run publish
+        run: |
+          set -o pipefail
+          pnpm --filter wiremd-preview run publish 2>&1 | tee /tmp/vsce.log \
+            || grep -q "already exists" /tmp/vsce.log \
+            || (cat /tmp/vsce.log && exit 1)
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
