@@ -131,6 +131,62 @@ graph LR
   core --> consumers
 ```
 
+### Inside the core pipeline
+
+`packages/core` turns Markdown into HTML / React / Tailwind / JSON. Parse and render are decoupled by the `WiremdNode` AST in the middle.
+
+```mermaid
+graph LR
+  md["<b>Markdown</b><br/>(.md + wiremd syntax)"]
+
+  subgraph parser["packages/core/src/parser/"]
+    direction TB
+    remark["remark + wiremd plugins<br/><small>remark-containers,<br/>remark-inline-containers</small>"]
+    mdast["MDAST"]
+    transformer["transformer.ts<br/><small>walks MDAST</small>"]
+    remark --> mdast --> transformer
+  end
+
+  ast["<b>WiremdNode tree</b><br/><small>discriminated union,<br/>~44 node types</small>"]
+
+  subgraph render["packages/core/src/{renderer,nodes}/"]
+    direction TB
+    dispatcher["renderer/&lt;target&gt;-renderer.ts<br/><small>dispatcher (registry-first)</small>"]
+    registry[("nodes/_registry.ts<br/><small>~30 NodeDefinition entries</small>")]
+    module["nodes/&lt;type&gt;/<br/>html.ts · react.ts · tailwind.ts<br/><small>self-contained per node type</small>"]
+    dispatcher -->|"lookup node.type"| registry
+    registry -->|"def.render.{html,react,tailwind}"| module
+  end
+
+  styles["renderer/styles/&lt;theme&gt;.ts<br/><small>7 themes + _structural.ts</small>"]
+
+  out_html["HTML"]
+  out_react["React / JSX"]
+  out_tw["Tailwind HTML"]
+  out_json["JSON"]
+
+  md --> parser
+  parser --> ast
+  ast --> dispatcher
+  module --> out_html
+  module --> out_react
+  module --> out_tw
+  ast --> out_json
+  styles -. "prepended for HTML output" .-> out_html
+```
+
+**Adding a new component** = drop one folder, register it once:
+
+```
+src/nodes/<your-type>/
+  index.ts        # exports NodeDefinition<'<your-type>'>
+  html.ts         # (node, ctx) => string
+  react.ts        # optional — falls through to "Unknown node" comment if absent
+  tailwind.ts     # optional
+```
+
+Then add one line to `nodes/_registry.ts`. The dispatcher looks up `node.type` in the registry; recursion through children is handled by calling back into `renderNode(child, ctx)` from inside your render function.
+
 ```bash
 pnpm install           # install all workspaces in one shot
 pnpm turbo run dev     # start all three frontend apps concurrently
