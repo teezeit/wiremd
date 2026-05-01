@@ -124,25 +124,21 @@ Before marking a feature done, run through the **Feature Development Checklist**
 
 ## Releasing
 
-Four artifacts ship together under a single version: npm package, VS Code extension, Claude skill (`plugin.json`), and standalone CLI bundle.
+Four artifacts ship together under a single version: npm package (`@eclectic-ai/wiremd`), VS Code extension, Claude skill (`plugin.json`), and standalone CLI bundle.
 
 ```bash
-# Bump version in packages/core/package.json — syncs extensions/vscode/package.json
+# Bump version from monorepo root — syncs extensions/vscode/package.json
 # and extensions/skills/wireframe/.claude-plugin/plugin.json via the `version` hook:
-cd packages/core && npm version patch
+pnpm version:patch   # or version:minor / version:major
 git push && git push --tags
 ```
 
-Pushing the tag triggers:
-1. `release.yml` — creates the GitHub release with auto-generated notes
-2. `publish.yml` — publishes the VS Code extension to the Marketplace and attaches the skill zip
-
-**npm is NOT published by CI.** To push a new version of the npm package, do it manually after the tag:
-```bash
-pnpm --filter wiremd run build
-cd packages/core && npm publish --access public
-```
+Pushing the tag triggers the full automated pipeline:
+1. `release.yml` — creates the GitHub release (uses `GH_PAT` so step 2 fires)
+2. `publish.yml` — publishes `@eclectic-ai/wiremd` to npm, publishes VS Code extension to Marketplace, attaches skill zip
 
 **Extension-only fix**: bump `extensions/vscode/package.json` independently (`cd extensions/vscode && npm version patch`), then create a GitHub release manually for that tag. The core npm version stays unchanged.
+
+See `CONTRIBUTING.md` → Release Process for the full checklist and required GitHub secrets (`GH_PAT`, `NPM_TOKEN`, `VSCE_PAT`).
 
 See `CONTRIBUTING.md` → Release Process for the full checklist.

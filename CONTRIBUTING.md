@@ -308,7 +308,7 @@ Merge PRs to `main` as normal. CI rebuilds artifacts and rolls a prerelease call
 
 ### Version sync
 
-`packages/core/package.json` is the source of truth for the version. The repo-root `package.json` wires `scripts/sync-versions.mjs` into the `version` lifecycle so `npm version <bump>` (run inside `packages/core/`) propagates the new version to:
+`packages/core/package.json` is the source of truth for the version. The root `package.json` wires `scripts/sync-versions.mjs` into the `version` lifecycle, so bumping the version propagates it to:
 
 - `extensions/vscode/package.json`
 - `extensions/skills/wireframe/.claude-plugin/plugin.json`
@@ -322,26 +322,36 @@ Merge PRs to `main` as normal. CI rebuilds artifacts and rolls a prerelease call
 # 2. Run the full suite
 pnpm turbo run test
 
-# 3. Bump version (patch / minor / major) — must run inside packages/core/
-cd packages/core
-npm version patch
-# ↑ updates packages/core/package.json, runs sync-versions.mjs,
-#   stages extensions/vscode/package.json + extensions/skills/wireframe/.claude-plugin/plugin.json,
-#   commits and tags the release
+# 3. Bump version from the monorepo root (patch / minor / major)
+pnpm version:patch   # or pnpm version:minor / pnpm version:major
+# ↑ delegates to `cd packages/core && npm version patch`, which runs sync-versions.mjs,
+#   stages extensions/vscode/package.json + plugin.json, commits and tags
 
-# 4. Push branch + tag
+# 4. Push commit + tag
 git push && git push --tags
 ```
 
 Pushing the tag triggers CI automatically:
-- **`release.yml`** — runs on tag push, creates the GitHub release with auto-generated notes from PR titles
-- **`publish.yml`** — runs on the `release: published` event: builds the VS Code extension via `pnpm --filter wiremd-preview run bundle`, publishes it to the VS Code Marketplace using `VSCE_PAT`, and attaches the wireframe skill zip to the GitHub release
 
-No manual steps on GitHub or in the VS Code Marketplace are needed.
+| Workflow | Trigger | Does |
+|---|---|---|
+| `release.yml` | tag `v*` pushed | Creates the GitHub release with auto-generated notes (uses `GH_PAT` so the next workflow fires) |
+| `publish.yml` | GitHub release published | Publishes `@eclectic-ai/wiremd` to npm (`NPM_TOKEN`), publishes VS Code extension to Marketplace (`VSCE_PAT`), attaches skill zip to the release |
+| `build-bundle.yml` | push to `main` | Rebuilds standalone CLI + `.vsix`, commits plugin bin, uploads to `latest` prerelease |
+
+No manual steps needed.
+
+### Required GitHub secrets
+
+| Secret | Used by | Purpose |
+|---|---|---|
+| `GH_PAT` | `release.yml`, `build-bundle.yml` | Push to protected `main` branch; `release.yml` uses it so creating the release triggers `publish.yml` |
+| `NPM_TOKEN` | `publish.yml` | npm Automation token for `@eclectic-ai/wiremd` |
+| `VSCE_PAT` | `publish.yml` | VS Code Marketplace personal access token |
 
 ### Extension-only fix
 
-If only the VS Code extension changes and you don't want to bump the npm package version, bump the extension independently:
+If only the VS Code extension changes and you don't want to bump the npm package version:
 
 ```bash
 cd extensions/vscode
@@ -350,18 +360,6 @@ git push && git push --tags
 ```
 
 Then create a GitHub release for that tag manually. `publish.yml` fires on the release event and publishes the new `.vsix` to the Marketplace.
-
-### npm publishing
-
-The current `publish.yml` does **not** publish `wiremd` to npm — only the VS Code extension and the Claude skill. To push a new version of the npm package, do it manually from `packages/core/` after the version bump:
-
-```bash
-pnpm --filter wiremd run build
-cd packages/core
-npm publish --access public
-```
-
-If automated npm publishing is added later, drop a step into `publish.yml` (`pnpm --filter wiremd publish --access public --no-git-checks`) gated on `NPM_TOKEN`.
 
 ### Frontend deploys (docs / editor / landing)
 
