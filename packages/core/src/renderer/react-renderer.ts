@@ -137,7 +137,7 @@ function renderButton(node: any, context: ReactRenderContext, indent: number): s
   const indentStr = repeatString('  ', indent);
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'button', node.props);
-  const disabled = node.props.state === 'disabled';
+  const disabled = node.props.state === 'disabled' || node.props.disabled;
   const classAttr = context.useClassName ? 'className' : 'class';
 
   const contentJSX = node.children

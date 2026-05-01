@@ -159,13 +159,15 @@ function renderButton(node: any, context: TailwindRenderContext): string {
   }
 
   // State styles
-  if (node.props.state === 'disabled') {
+  const isDisabled = node.props.state === 'disabled' || node.props.disabled;
+  const isLoading = node.props.state === 'loading' || node.props.loading;
+  if (isDisabled) {
     classes += ' opacity-50 cursor-not-allowed';
-  } else if (node.props.state === 'loading') {
+  } else if (isLoading) {
     classes += ' opacity-75 cursor-wait';
   }
 
-  const disabled = node.props.state === 'disabled' ? ' disabled' : '';
+  const disabled = isDisabled ? ' disabled' : '';
 
   const contentHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')

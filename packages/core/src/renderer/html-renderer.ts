@@ -214,8 +214,10 @@ export function renderCommentsPanel(comments: Array<{ id: number; texts: string[
 function renderButton(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'button', node.props);
-  const disabled = node.props.state === 'disabled' ? ' disabled' : '';
-  const loading = node.props.state === 'loading' ? ` ${prefix}loading` : '';
+  const isDisabled = node.props.state === 'disabled' || node.props.disabled;
+  const isLoading = node.props.state === 'loading' || node.props.loading;
+  const disabled = isDisabled ? ' disabled' : '';
+  const loading = isLoading ? ` ${prefix}loading` : '';
 
   // Handle children (like icons in buttons)
   const contentHTML = node.children

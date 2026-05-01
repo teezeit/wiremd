@@ -1,10 +1,9 @@
 /**
- * `[Submit]{disabled}` should disable the rendered button. Currently the
- * shorthand `{disabled}` sets `props.disabled` but the renderer reads
- * `props.state === 'disabled'`, so the rendered HTML omits the `disabled`
- * attribute and the button is fully clickable. Either the parser should
- * map `{disabled}` → `state: 'disabled'`, or the renderer should also
- * honour `props.disabled`.
+ * `[Submit]{disabled}` must disable the rendered button. The attribute
+ * parser stores the bareword as `props.disabled = true`, while the
+ * canonical state representation is `props.state === 'disabled'`. The
+ * button renderers honour both so this shorthand works alongside the
+ * explicit `{state:disabled}` form.
  */
 
 import { expect } from 'vitest';
