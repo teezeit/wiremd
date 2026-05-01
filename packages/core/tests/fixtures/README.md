@@ -239,9 +239,10 @@ This is the handover surface for a fresh conversation or contributor. Updated as
 
 ### Where we are
 
-- **114 fixtures** in the corpus (3 regressions + extracted from 19 docs files). Total test count: 1140 passing.
-- **14 known parser bugs** tracked as `.expected-fail.invariants.ts` (will turn red the moment a fix lands; rename to drop `.expected-fail.` to close).
-- **11 renderer/CSS gaps** consolidated in `KNOWN_ISSUES.md` (variant button CSS, required indicators, alerts not implemented, etc.).
+- **114 fixtures** in the corpus (3 regressions + extracted from 19 docs files). Total test count: 1149 passing.
+- **18 parser/renderer bugs** tracked as `.expected-fail.invariants.ts` on individual fixtures (will turn red the moment a fix lands; rename to drop `.expected-fail.` to close).
+- **6 CSS gaps** tracked as `it.fails` in `tests/styles.test.ts` (assert specific selectors exist in `getStyleCSS('clean', …)`; flips red when the rule lands).
+- **4 design-pending entries** in `KNOWN_ISSUES.md` (alerts depth, attribute-hook docs, number-constraint helper, textarea-columns syntax) — items that need a decision before they can become an executable contract.
 - **Review tool** (`pnpm review` from `packages/core/`) is operational; uses the File System Access API for round-tripping `REVIEW_LOG.md`.
 - One full snapshot review sweep complete (`REVIEW_LOG.md` reflects user verdicts, gitignored).
 
@@ -261,7 +262,7 @@ The bug list is now machine-checkable. Pick a category and the test suite tells 
 
 **6. Sidebar layout.** `docs/page-layouts/sidebar-layout` + `sidebar-with-sections`. Same family as the formatting bugs (no blank line after `::: sidebar`).
 
-**7. Renderer/CSS pass.** Pick a section from `KNOWN_ISSUES.md` and add the missing rules in `src/renderer/styles.ts`.
+**7. Renderer/CSS pass.** Pick an `it.fails` from `tests/styles.test.ts`, add the missing rule in `src/renderer/styles.ts`, drop `.fails` from `it.fails`. (`KNOWN_ISSUES.md` only holds design-pending entries now.)
 
 **8. Property tests + coverage gate** (Phase 5 of the original plan). `tests/property/` with `fast-check`, plus a CI floor on `src/parser/` and `src/renderer/`. Surfaces parser bugs that no human enumerated.
 

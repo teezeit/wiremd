@@ -1,184 +1,77 @@
 # Known issues surfaced by fixture review
 
-Cross-cutting observations from reviewing snapshots — concerns that affect
-many fixtures and don't fit a single `.invariants.ts` file. Anything in
-this list is a candidate for a real fix; once tracked elsewhere (issue,
-TODO, fix), prune the entry.
+Cross-cutting observations from reviewing snapshots — concerns that
+affect many fixtures and don't fit a single `.invariants.ts` file.
 
-**Workflow:** a single-fixture concern goes in a sidecar `.notes.md`
-(quick observation) or `.expected-fail.invariants.ts` (executable
-contract). A *pattern across many fixtures* lives here.
+**Where bugs go now (preferred):**
 
-Each entry below names the concern, the affected fixtures, whether it's
-a parser or renderer/styles issue, and the suggested action.
+- A parser/renderer bug with a sharp HTML/AST contract → an
+  `.expected-fail.invariants.ts` sidecar on the affected fixture.
+- A missing CSS rule in `styles.ts` → an `it.fails(...)` in
+  `tests/styles.test.ts`.
+- This file is the residual: design-pending decisions, intentional
+  behavior that confuses reviewers, and concerns that don't reduce to
+  a single executable assertion.
 
----
-
-## styles.ts: variant button classes have no visual differentiation
-
-**Affected:** `__snapshots__/docs/buttons/variants.html`, `sizes-custom-classes.html`, `with-icons.html`
-
-The parser correctly emits distinct classes (`wmd-button`,
-`wmd-button-primary`, `wmd-button-secondary`, `wmd-button-danger`,
-`.small`, `.large`, `.danger`), but `styles.ts` doesn't define visual
-rules for many of them in `clean` (and possibly other styles). All
-variants render identically.
-
-**Action:** add CSS rules in `styles.ts` for the missing variants and
-size classes. AST-side support already exists.
+When an entry below grows a sharp contract, promote it into one of the
+two test channels above and prune the entry from this list.
 
 ---
 
-## styles.ts: required attribute has no visual indicator
-
-**Affected:** `inputs/required`, `inputs/full-form-example`,
-`textarea-select/textarea-required`, `textarea-select/select-required`,
-`textarea-select/combined-example`
-
-Inputs/textareas/selects with `{required}` produce the correct attribute
-in the AST (and on the rendered HTML element). But the renderer doesn't
-add any visual marker — no asterisk, no border colour, no `aria-required`
-beyond what the browser does.
-
-**Action:** decide on a visual convention (asterisk before label,
-red border, etc.) and add CSS in `styles.ts`.
-
----
-
-## styles.ts: error state has no visual indicator
-
-**Affected:** `inputs/error-state`
-
-`{state:error}` is captured as a state on the AST but the renderer
-doesn't paint it. Same family as the required-indicator gap.
-
-**Action:** add `[data-state="error"]` rules in `styles.ts`.
-
----
-
-## styles.ts: number constraints have no visual indicator
-
-**Affected:** `inputs/number-constraints`
-
-`min`/`max` attributes are correctly emitted on the rendered `<input>`
-but there's no visual indication of the constraint range (e.g., a
-helper hint).
-
-**Action:** add a small helper-text rendering for inputs with
-constraints, or accept that browsers handle this natively.
-
----
-
-## radio group doesn't enforce single-selection
-
-**Affected:** `checkboxes-radio/radio-buttons`,
-`checkboxes-radio/inline-options`
-
-The renderer outputs each radio as its own `<input type="radio">`
-without a shared `name` attribute. A user can select multiple radios in
-the same group, which defeats the semantic.
-
-**Action:** the renderer should derive a stable `name` per radio group
-(or the parser should attach a `radio-group` parent and the renderer
-uses its id). Likely a renderer-side fix — the AST already has a
-`radio-group` node type.
-
----
-
-## styles.ts: col-span > 4 has no CSS rules
-
-**Affected:** `regressions/grid/col-span-large`,
-`docs/grid/column-spanning`
-
-The parser correctly captures `{.col-span-N}` for any N. The CSS in
-`styles.ts` only defines rules up to col-span-4. Higher spans render at
-the smallest column width.
-
-**Action:** extend `styles.ts` with col-span rules up to a reasonable
-maximum (e.g., 12, like Bootstrap), or accept that wider grids aren't
-supported visually.
-
----
-
-## styles.ts: alignment classes ignored in clean/wireframe styles
-
-**Affected:** `tables/column-alignment`
-
-`{.left}`/`{.center}`/`{.right}` are in the AST but the rendered
-output's CSS for the `clean` and `wireframe` styles doesn't honour
-the alignment classes on table cells.
-
-**Action:** add `[class*="wmd-align-"]` rules to those styles.
-
----
-
-## styles.ts: attributes on containers/headings have no visible effect
-
-**Affected:** `attributes/on-containers`, `attributes/on-headings`
-
-Custom classes applied to containers/headings (e.g., `{.my-class}`) are
-emitted on the elements but don't have any default styling. This is
-*intentional* — they're hooks for user CSS — but the docs demos show
-no effect, which can confuse readers.
-
-**Action:** either add demonstrative CSS rules in the style sheets for a
-small set of visual classes, or update the docs to make clear that
-these are user-CSS hooks.
-
----
-
-## active link is still clickable
-
-**Affected:** `navigation/active-state`
-
-An "active" navigation link should typically not be clickable (or at
-least visually distinct), but the renderer outputs it as a normal
-clickable link.
-
-**Action:** renderer-side — either add `aria-current="page"` and disable
-pointer events for active links, or just disable them with
-`<span class="wmd-active">` when active.
-
----
-
-## alerts not implemented
+## alerts not visually implemented across all styles (design depth)
 
 **Affected:** `alerts/default`, `alerts/variants`, `alerts/variants-2`,
 `alerts/variants-3`, `alerts/with-inline-content-on-opener`
 
-The `::: alert` container syntax exists in the AST but no visual
-implementation in `styles.ts` for any style. Renders as a plain
-container with no chrome.
+The `::: alert` AST node exists. `tests/styles.test.ts` already
+asserts that `clean` defines a `wmd-container-alert` rule (currently
+failing). Full implementation is more than a one-liner: each of the
+seven visual styles needs alert chrome, and most need variant-specific
+treatment (icon + colour ring for `info`/`success`/`warning`/`error`).
 
-**Action:** implement alert chrome (icon + colour ring) in `styles.ts`
-for at least the `clean` and `sketch` styles.
-
----
-
-## buttons disabled: `{disabled}` shorthand ignored
-
-**Affected:** `buttons/disabled`
-
-`[Submit]{disabled}` (the natural shorthand) is silently ignored —
-only `[Submit]{state:disabled}` actually disables the button. The
-shorthand is documented in the syntax reference but not handled by
-the parser/renderer.
-
-**Action:** parser should treat `{disabled}` as sugar for
-`{state:disabled}` (already noted in `apps/docs/components/buttons.md`
-as a TODO).
+**Action:** design the visual treatment per style, then implement. Once
+each style has a complete variant set, retire this entry.
 
 ---
 
-## inputs: rows/cols on `[___]` should produce a textarea
+## attribute hooks on containers/headings have no default styling (intentional)
+
+**Affected:** `attributes/on-containers`, `attributes/on-headings`
+
+`{.my-class}` on a container/heading is a hook for user CSS, not a
+styled feature. The docs demos render with no visual effect, which can
+mislead readers into thinking the attribute syntax is broken.
+
+**Action:** docs change — make the docs page explicit that custom
+classes are user-styling hooks and the demo intentionally renders
+unstyled. No code change.
+
+---
+
+## number constraints have no helper text (design TBD)
+
+**Affected:** `inputs/number-constraints`
+
+`min`/`max` attributes are correctly emitted on `<input type=number>`.
+Browsers enforce them natively but show no inline hint. Whether wiremd
+should render a "min: 0, max: 100" helper line near the input is a
+design choice, not a bug.
+
+**Action:** decide whether to add helper-text rendering. If yes, becomes
+a renderer change (transformer/html-renderer) plus a fixture invariant.
+If no, retire this entry.
+
+---
+
+## inputs: `rows`/`cols` on `[___]` should produce a textarea (design TBD)
 
 **Affected:** `inputs/textarea-columns`
 
 `[_____________________________]{rows:5 cols:40}` renders as a single-
-line `<input>` because there's no parser distinction between input and
-textarea by attributes. A user using `rows:N` likely wants a
-multi-line textarea.
+line `<input>` because the parser doesn't promote `[___]` to `textarea`
+based on attributes. A user using `rows:N` likely wants multi-line.
 
-**Action:** parser should detect `rows`/`cols` attributes and emit a
-`textarea` node instead of `input`. Or document that `[___]` is always
-single-line; use `<textarea>` syntax (TBD) for multi-line.
+**Action:** decide between (a) parser promotes to `textarea` when
+`rows`/`cols` is present, or (b) document that `[___]` is always
+single-line and require an explicit textarea syntax. Either way, the
+chosen contract becomes a fixture invariant and this entry retires.
