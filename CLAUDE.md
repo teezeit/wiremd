@@ -79,24 +79,44 @@ The pipeline: `Markdown string → parse() → WiremdAST → render*() → HTML/
 
 ```
 packages/core/src/
-├── types.ts                        # ~40 discriminated-union AST node types
+├── types.ts                        # ~44 discriminated-union AST node types (WiremdNode)
 ├── index.ts                        # Public exports
 ├── parser/
 │   ├── index.ts                    # parse() + validate(); calls resolveIncludes()
-│   ├── transformer.ts              # MDAST → wiremd AST (the bulk of parsing logic)
+│   ├── transformer.ts              # MDAST → wiremd AST (still monolithic — per-node split is future work)
 │   ├── remark-containers.ts        # ::: block syntax plugin (supports nesting)
 │   └── remark-inline-containers.ts # [[ ... ]] nav/inline syntax plugin
+├── nodes/                          # one folder per migrated node type
+│   ├── _contract.ts                # NodeDefinition<K> + Render/TransformContext types
+│   ├── _registry.ts                # static map: { button, container, grid, … }
+│   ├── _helpers.ts                 # shared helpers exposed to node modules
+│   ├── button/
+│   │   ├── index.ts                # exports NodeDefinition<'button'>
+│   │   ├── html.ts                 # renderButtonHTML(node, ctx) → string
+│   │   ├── react.ts                # renderButtonReact(node, ctx, indent?) → string
+│   │   └── tailwind.ts             # renderButtonTailwind(node, ctx) → string
+│   ├── container/
+│   ├── …                           # ~30 node folders total
 └── renderer/
     ├── index.ts                    # renderToHTML(), renderToReact(), renderToJSON(), renderToTailwind()
-    ├── html-renderer.ts            # Component → HTML string (handles all node types)
-    ├── react-renderer.ts           # Component → React/JSX string
-    ├── tailwind-renderer.ts        # Component → Tailwind-classed HTML
-    └── styles.ts                   # 7 CSS style systems (sketch, clean, wireframe, material, brutal, tailwind, none)
+    ├── html-renderer.ts            # thin dispatcher: registry → node module → "Unknown" fallback
+    ├── react-renderer.ts           # same shape, React/JSX target
+    ├── tailwind-renderer.ts        # same shape, Tailwind utility target
+    └── styles/                     # one file per theme + structural CSS
+        ├── index.ts                # getStyleCSS(style, prefix) dispatcher
+        ├── _structural.ts          # rules shared across themes (tabs, rows, comments, demo block)
+        ├── sketch.ts · clean.ts · wireframe.ts · none.ts
+        ├── tailwind.ts · material.ts · brutal.ts
+        └── …
 ```
 
 **Parser flow**: unified/remark parses standard Markdown into MDAST, then `remark-containers` and `remark-inline-containers` handle wiremd-specific syntax (`::: card`, `[[ nav ]]`, buttons `[Label]*`, inputs `[_____]`). The transformer walks the MDAST and emits wiremd AST nodes.
 
-**Styles**: Each visual style is a self-contained CSS string in `styles.ts`. The `sketch` style uses Comic Sans / hand-drawn look; `clean` is modern minimal; `wireframe` is traditional grayscale. Passed as `{ style: 'clean' }` to render functions.
+**Render flow (Strategy + Registry)**: each renderer's `renderNode(node, ctx)` looks up `node.type` in `nodes/_registry.ts`. If a `NodeDefinition` exists with the matching render target (`html` / `react` / `tailwind`), it delegates to that node's module. Otherwise it falls through to an "Unknown node" comment — which is the intentional behavior for the few node types (alert, accordion, breadcrumb-item, loading/empty/error-state) that never had per-target renderers. Recursion through `node.children` is the node module's job: it calls `renderNode(child, ctx)` to dispatch back through the registry.
+
+**Adding a new component**: drop a folder under `src/nodes/<type>/` with at minimum `index.ts` (exports `NodeDefinition<'<type>'>`) and `html.ts` (the render function). Add a one-line entry to `_registry.ts`. React and Tailwind renderers are optional; the dispatcher handles missing targets cleanly. See [`CONTRIBUTING.md`](CONTRIBUTING.md#feature-development-checklist) for the full checklist.
+
+**Styles**: Each visual theme is a self-contained CSS string in its own file under `renderer/styles/`. The `sketch` style uses Comic Sans / hand-drawn look; `clean` is modern minimal; `wireframe` is traditional grayscale. The `_structural.ts` module contains rules required for behavioral correctness (tabs visibility toggling, row layout, comment annotations, demo block grid) and is concatenated in front of every theme's CSS by the dispatcher in `renderer/styles/index.ts`. Passed as `{ style: 'clean' }` to render functions.
 
 **CLI** (`packages/core/src/cli/index.ts`): arg parsing → calls parse()+render() → optionally starts a chokidar watcher + WebSocket live-reload server. The `packages/core/bin/wiremd.js` wrapper loads the ESM CLI module.
 
@@ -117,7 +137,7 @@ After edits rebuild: `Cmd+Shift+P` → "Developer: Reload Window".
 
 **Fixture corpus** (preferred for syntax/render tests) — `packages/core/tests/fixtures/` + driver `tests/fixtures.test.ts`. Two sources: hand-written regressions under `regressions/` and auto-extracted `:::demo` blocks from `apps/docs/components/` (list in `tests/lib/fixture-runner.ts`). Each fixture parses to AST and renders to HTML/React/Tailwind/tree snapshots; opt-in `.invariants.ts` (or `.expected-fail.invariants.ts`) sidecars assert correctness contracts and track known bugs as `it.fails` until fixed. Adding a `:::demo` to a docs file automatically adds a regression test. **See [`packages/core/tests/fixtures/README.md`](packages/core/tests/fixtures/README.md) for the full workflow** — conventions, sweep tooling (`pnpm review`), and the snapshots-vs-invariants split.
 
-**Classic tests** live in `packages/core/tests/`: `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `package-shape.test.ts`, `integration.test.ts`, `edge-cases.test.ts`, `api-examples.test.ts`, plus the older monoliths `parser.test.ts` / `renderer.test.ts` / `react-renderer.test.ts` / `tailwind-renderer.test.ts` (gradually migrating into the fixture corpus). Use these for CLI behaviour, error paths, validation messages, server lifecycle, and anything that's not pure parse-then-render. Vitest with node environment; globals enabled.
+**Classic tests** live in `packages/core/tests/`: `cli.test.ts`, `cli-unit.test.ts`, `server.test.ts`, `error-handling.test.ts`, `validation.test.ts`, `package-shape.test.ts`, `integration.test.ts`, `edge-cases.test.ts`, `api-examples.test.ts`, `registry.test.ts` (node-registry contract), `styles-split.test.ts` (per-theme module shape), plus the older monoliths `parser.test.ts` / `renderer.test.ts` / `react-renderer.test.ts` / `tailwind-renderer.test.ts` (gradually migrating into the fixture corpus). Use these for CLI behaviour, error paths, validation messages, server lifecycle, and anything that's not pure parse-then-render. Vitest with node environment; globals enabled.
 
 **E2E tests** live in `tests/e2e/` (Playwright, configured at root `playwright.config.ts`). They run against the deployed site at `teezeit.github.io` — not locally. Run with `pnpm exec playwright test`.
 
