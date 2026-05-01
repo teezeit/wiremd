@@ -32,6 +32,19 @@ import { tableRow } from './table-row/index.js';
 import { tableCell } from './table-cell/index.js';
 import { blockquote } from './blockquote/index.js';
 import { code } from './code/index.js';
+import { input } from './input/index.js';
+import { textarea } from './textarea/index.js';
+import { select } from './select/index.js';
+import { checkbox } from './checkbox/index.js';
+import { radio } from './radio/index.js';
+import { radioGroup } from './radio-group/index.js';
+import { badge } from './badge/index.js';
+import { separator } from './separator/index.js';
+import { comment } from './comment/index.js';
+import { breadcrumbs } from './breadcrumbs/index.js';
+import { tabs } from './tabs/index.js';
+import { tab } from './tab/index.js';
+import { demo } from './demo/index.js';
 
 export const registry: Partial<Record<string, AnyNodeDefinition>> = {
   button: button as AnyNodeDefinition,
@@ -56,6 +69,19 @@ export const registry: Partial<Record<string, AnyNodeDefinition>> = {
   'table-cell': tableCell as AnyNodeDefinition,
   blockquote: blockquote as AnyNodeDefinition,
   code: code as AnyNodeDefinition,
+  input: input as AnyNodeDefinition,
+  textarea: textarea as AnyNodeDefinition,
+  select: select as AnyNodeDefinition,
+  checkbox: checkbox as AnyNodeDefinition,
+  radio: radio as AnyNodeDefinition,
+  'radio-group': radioGroup as AnyNodeDefinition,
+  badge: badge as AnyNodeDefinition,
+  separator: separator as AnyNodeDefinition,
+  comment: comment as AnyNodeDefinition,
+  breadcrumbs: breadcrumbs as AnyNodeDefinition,
+  tabs: tabs as AnyNodeDefinition,
+  tab: tab as AnyNodeDefinition,
+  demo: demo as AnyNodeDefinition,
 };
 
 /**

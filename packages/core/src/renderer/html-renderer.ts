@@ -63,59 +63,21 @@ export function applyRadioGroupName(children: any[], context: RenderContext): an
 }
 
 /**
- * Render a wiremd AST node to HTML
+ * Render a wiremd AST node to HTML.
+ *
+ * All node types with HTML output live under src/nodes/<type>/ and are
+ * registered in src/nodes/_registry.ts. The few node types whose
+ * fixtures expect a fall-through (alert, accordion, breadcrumb-item,
+ * loading-state, empty-state, error-state) hit the comment branch
+ * below so their snapshots stay byte-identical.
  */
 export function renderNode(node: WiremdNode, context: RenderContext): string {
   if (node == null) return '';
-  // Registry-first dispatch: migrated node types are handled here.
-  // Unmigrated types fall through to the switch below.
   const def = getNodeDefinition(node.type);
   if (def?.render?.html) {
     return def.render.html(node as never, context);
   }
-  switch (node.type) {
-    case 'input':
-      return renderInput(node, context);
-
-    case 'textarea':
-      return renderTextarea(node, context);
-
-    case 'select':
-      return renderSelect(node, context);
-
-    case 'checkbox':
-      return renderCheckbox(node, context);
-
-    case 'radio':
-      return renderRadio(node, context);
-
-    case 'radio-group':
-      return renderRadioGroup(node, context);
-
-    case 'badge':
-      return renderBadge(node, context);
-
-    case 'separator':
-      return renderSeparator(node, context);
-
-    case 'tabs':
-      return renderTabs(node, context);
-
-    case 'tab':
-      return renderTab(node, context);
-
-    case 'breadcrumbs':
-      return renderBreadcrumbs(node, context);
-
-    case 'demo':
-      return renderDemo(node, context);
-
-    case 'comment':
-      return renderComment(node, context);
-
-    default:
-      return `<!-- Unknown node type: ${(node as any).type} -->`;
-  }
+  return `<!-- Unknown node type: ${(node as { type: string }).type} -->`;
 }
 
 /**
@@ -192,210 +154,6 @@ export function renderCommentsPanel(comments: Array<{ id: number; texts: string[
 </aside>`;
 }
 
-function renderBadge(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'badge', node.props);
-  return `<span class="${classes}">${escapeHtml(node.content)}</span>`;
-}
-
-function renderInput(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'input', node.props);
-  const type = node.props.inputType || node.props.type || 'text';
-  const required = node.props.required ? ' required' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
-  const placeholder = node.props.placeholder ? ` placeholder="${escapeHtml(node.props.placeholder)}"` : '';
-  const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
-
-  // Apply width based on underscore count (each underscore ~= 1ch width)
-  const style = node.props.width ? ` style="width: ${node.props.width}ch; max-width: ${node.props.width}ch;"` : '';
-
-  return `<input type="${type}" class="${classes}"${placeholder}${value}${required}${disabled}${style} />`;
-}
-
-function renderTextarea(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'textarea', node.props);
-  const rows = node.props.rows || 4;
-  const required = node.props.required ? ' required' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
-  const placeholder = node.props.placeholder ? ` placeholder="${escapeHtml(node.props.placeholder)}"` : '';
-  const value = node.props.value || '';
-
-  return `<textarea class="${classes}" rows="${rows}"${placeholder}${required}${disabled}>${escapeHtml(value)}</textarea>`;
-}
-
-function renderSelect(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'select', node.props);
-  const required = node.props.required ? ' required' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
-  const multiple = node.props.multiple ? ' multiple' : '';
-
-  const optionsHTML = (node.options || []).map((opt: any) => {
-    const selected = opt.selected ? ' selected' : '';
-    return `<option value="${escapeHtml(opt.value)}"${selected}>${escapeHtml(opt.label)}</option>`;
-  }).join('\n    ');
-
-  const placeholder = node.props.placeholder;
-  const placeholderOption = placeholder
-    ? `<option value="" disabled selected>${escapeHtml(placeholder)}</option>\n    `
-    : '';
-
-  return `<select class="${classes}"${required}${disabled}${multiple}>
-    ${placeholderOption}${optionsHTML}
-  </select>`;
-}
-
-function renderCheckbox(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'checkbox', node.props);
-  const checked = node.checked ? ' checked' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
-  const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
-
-  // Separate inline children (icons/text) from nested children (lists)
-  let labelHTML = escapeHtml(node.label || '');
-  let nestedHTML = '';
-
-  if (node.children) {
-    const inlineChildren: any[] = [];
-    const nestedChildren: any[] = [];
-
-    for (const child of node.children) {
-      if (child.type === 'list') {
-        nestedChildren.push(child);
-      } else {
-        inlineChildren.push(child);
-      }
-    }
-
-    if (inlineChildren.length > 0) {
-      labelHTML = inlineChildren.map((child: any) => renderNode(child, context)).join('');
-    }
-
-    if (nestedChildren.length > 0) {
-      nestedHTML = nestedChildren.map((child: any) => renderNode(child, context)).join('');
-    }
-  }
-
-  return `<label class="${classes}">
-    <input type="checkbox"${checked}${disabled}${value} />
-    <span>${labelHTML}</span>
-  </label>${nestedHTML}`;
-}
-
-function renderRadio(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'radio', node.props);
-  const checked = node.selected ? ' checked' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
-  const name = node.props.name ? ` name="${escapeHtml(node.props.name)}"` : '';
-  const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
-
-  // Handle children (nested lists or other content)
-  const labelHTML = escapeHtml(node.label);
-  const childrenHTML = node.children
-    ? node.children.map((child: any) => renderNode(child, context)).join('')
-    : '';
-
-  return `<label class="${classes}">
-    <input type="radio"${checked}${disabled}${name}${value} />
-    <span>${labelHTML}</span>
-  </label>${childrenHTML}`;
-}
-
-function renderRadioGroup(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const isInline = node.props?.inline;
-  const classes = buildClasses(prefix, 'radio-group', node.props);
-  const inlineClass = isInline ? ` ${prefix}radio-group-inline` : '';
-
-  // Use the group's explicit name if present; otherwise mint a deterministic
-  // one from the context counter so snapshots are stable.
-  const groupName = node.name || nextRadioGroupName(context);
-
-  const radios = (node.children || []).map((child: any) => {
-    // Add the group name to each radio button (unless it already has one).
-    if (child.type === 'radio') {
-      if (child.props && child.props.name) return renderNode(child, context);
-      const modifiedChild = { ...child, props: { ...child.props, name: groupName } };
-      return renderNode(modifiedChild, context);
-    }
-    return renderNode(child, context);
-  }).join('\n    ');
-
-  return `<div class="${classes}${inlineClass}">
-    ${radios}
-</div>`;
-}
-
-function renderBreadcrumbs(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const items: any[] = node.children || [];
-  const crumbsHTML = items.map((crumb: any, i: number) => {
-    const isLast = i === items.length - 1;
-    const label = escapeHtml(crumb.content || '');
-    return isLast
-      ? `<span class="${prefix}breadcrumb-item ${prefix}breadcrumb-current" aria-current="page">${label}</span>`
-      : `<span class="${prefix}breadcrumb-item"><a href="#">${label}</a></span><span class="${prefix}breadcrumb-sep" aria-hidden="true">›</span>`;
-  }).join('');
-  return `<nav class="${prefix}breadcrumbs"${sourceLine(node)} aria-label="breadcrumb">${crumbsHTML}</nav>`;
-}
-
-function renderSeparator(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'separator', node.props);
-
-  return `<hr class="${classes}" />`;
-}
-
-function renderTabs(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'tabs', node.props);
-  const tabs: any[] = node.children || [];
-
-  // Render panels first so we know which ones contain comment annotations
-  const renderedPanels = tabs.map((tab: any, i: number) => {
-    const commentsBefore = context._comments?.length ?? 0;
-    const panelChildren = renderChildrenList(tab.children || [], context);
-    const hasAnnotations = context.showComments && ((context._comments?.length ?? 0) > commentsBefore);
-    const hidden = tab.active ? '' : ' hidden';
-    return {
-      html: `<div class="${prefix}tab-panel" role="tabpanel" data-wmd-tab-panel="${i}"${hidden}>
-    ${panelChildren}
-  </div>`,
-      hasAnnotations,
-    };
-  });
-
-  const headers = tabs.map((tab: any, i: number) => {
-    const activeClass = tab.active ? ` ${prefix}active` : '';
-    const annotatedClass = renderedPanels[i].hasAnnotations ? ` ${prefix}tab-header-annotated` : '';
-    return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}${annotatedClass}" data-wmd-tab="${i}">${escapeHtml(tab.label || '')}</button>`;
-  }).join('');
-
-  const panels = renderedPanels.map(r => r.html).join('\n  ');
-
-  return `<div class="${classes}"${sourceLine(node)} data-wmd-tabs>
-  <div class="${prefix}tab-headers" role="tablist">${headers}</div>
-  <div class="${prefix}tab-panels">
-  ${panels}
-  </div>
-</div>${getTabsScript(prefix)}`;
-}
-
-function renderTab(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const hidden = node.active ? '' : ' hidden';
-  const childrenHTML = (node.children || []).map((c: any) => renderNode(c, context)).join('');
-  return `<div class="${prefix}tab-panel" role="tabpanel"${hidden}>${childrenHTML}</div>`;
-}
-
-function getTabsScript(prefix: string): string {
-  return `<script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.${prefix}tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.${prefix}tab-header').forEach(function(b){b.classList.toggle('${prefix}active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>`;
-}
-
 export function sourceLine(node: any): string {
   const line = node?.position?.start?.line;
   return line != null ? ` data-source-line="${line}"` : '';
@@ -425,27 +183,6 @@ export function buildClasses(prefix: string, baseClass: string, props: any): str
   }
 
   return classes.join(' ');
-}
-
-function renderDemo(node: any, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-  const previewHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n');
-  const codeHTML = escapeHtml(node.raw || '');
-  return `<div class="${prefix}demo">
-  <div class="${prefix}demo-preview">${previewHTML}</div>
-  <div class="${prefix}demo-code">
-    <div class="${prefix}demo-code-toolbar">
-      <button class="${prefix}demo-copy" onclick="(function(btn){var code=btn.closest('.${prefix}demo-code').querySelector('code');navigator.clipboard.writeText(code.textContent).then(function(){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy'},1500)})})(this)">Copy</button>
-    </div>
-    <pre><code>${codeHTML}</code></pre>
-  </div>
-</div>`;
-}
-
-function renderComment(node: any, context: RenderContext): string {
-  if (!context.showComments) return '';
-  if (context._comments != null) return ''; // handled upstream by renderChildrenList
-  return `<span class="${context.classPrefix}comment">${escapeHtml(node.text)}</span>`;
 }
 
 /**
