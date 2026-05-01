@@ -12405,17 +12405,38 @@ var paragraph2 = {
 function renderTextHTML(node2, _context) {
   const content3 = node2.content || "";
   const hasHtmlTags = /<[^>]+>/.test(content3);
-  return hasHtmlTags ? content3 : escapeHtml(content3);
+  const escaped = hasHtmlTags ? content3 : escapeHtml(content3);
+  if (node2.mark === "strong")
+    return `<strong>${escaped}</strong>`;
+  if (node2.mark === "em")
+    return `<em>${escaped}</em>`;
+  if (node2.mark === "code")
+    return `<code>${escaped}</code>`;
+  return escaped;
 }
 
 // packages/core/src/nodes/text/react.ts
 function renderTextReact(node2, _context, _indent = 0) {
-  return escapeJSX(node2.content || "");
+  const content3 = escapeJSX(node2.content || "");
+  if (node2.mark === "strong")
+    return `<strong>${content3}</strong>`;
+  if (node2.mark === "em")
+    return `<em>${content3}</em>`;
+  if (node2.mark === "code")
+    return `<code>${content3}</code>`;
+  return content3;
 }
 
 // packages/core/src/nodes/text/tailwind.ts
 function renderTextTailwind(node2, _context) {
-  return escapeHtml2(node2.content || "");
+  const content3 = escapeHtml2(node2.content || "");
+  if (node2.mark === "strong")
+    return `<strong class="font-semibold">${content3}</strong>`;
+  if (node2.mark === "em")
+    return `<em class="italic">${content3}</em>`;
+  if (node2.mark === "code")
+    return `<code class="font-mono text-sm bg-gray-100 px-1 rounded">${content3}</code>`;
+  return content3;
 }
 
 // packages/core/src/nodes/text/index.ts
@@ -18338,22 +18359,62 @@ function transformParagraph(node2, ctx) {
           props: {}
         });
       } else if (child.type === "strong") {
-        currentText += `<strong>${extractTextContent(child)}</strong>`;
+        flushText();
+        processedChildren.push({
+          type: "text",
+          content: extractTextContent(child),
+          mark: "strong",
+          props: {}
+        });
       } else if (child.type === "emphasis") {
-        currentText += `<em>${extractTextContent(child)}</em>`;
+        flushText();
+        processedChildren.push({
+          type: "text",
+          content: extractTextContent(child),
+          mark: "em",
+          props: {}
+        });
       } else if (child.type === "code" || child.type === "inlineCode") {
-        currentText += `<code>${extractTextContent(child)}</code>`;
+        flushText();
+        processedChildren.push({
+          type: "code",
+          value: extractTextContent(child),
+          inline: true
+        });
       } else if (child.type === "link") {
-        currentText += `<a href="${child.url}">${extractTextContent(child)}</a>`;
+        flushText();
+        processedChildren.push({
+          type: "link",
+          href: child.url || "#",
+          title: child.title,
+          children: [{ type: "text", content: extractTextContent(child), props: {} }],
+          props: {}
+        });
       } else {
         currentText += extractTextContent(child);
       }
     }
     flushText();
     if (processedChildren.length === 1 && processedChildren[0].type === "text") {
+      const only = processedChildren[0];
+      if (only.mark) {
+        return {
+          type: "paragraph",
+          children: [only],
+          props: {}
+        };
+      }
       return {
         type: "paragraph",
-        content: processedChildren[0].content,
+        content: only.content,
+        props: {}
+      };
+    }
+    const isInlineTextLike = (n) => n.type === "text" || n.type === "code" && n.inline === true || n.type === "link";
+    if (processedChildren.length > 0 && processedChildren.every(isInlineTextLike)) {
+      return {
+        type: "paragraph",
+        children: processedChildren,
         props: {}
       };
     }
