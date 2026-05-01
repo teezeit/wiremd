@@ -6,9 +6,9 @@ export const WiremdComponent: React.FC = () => {
   <div className="wmd-container-card">
     <p className="wmd-paragraph">A</p>
     <p className="wmd-paragraph">:::
-::: card</p>
+::: card
+B</p>
   </div>
-  <p className="wmd-paragraph">B</p>
   <p className="wmd-paragraph"></p>
     </div>
   );
