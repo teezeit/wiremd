@@ -33,18 +33,27 @@ describe('clean style: known CSS gaps (it.fails until styles.ts grows the rule)'
   });
 
   it('defines col-span rules beyond 4', () => {
-    // styles.ts caps at col-span-4. Higher spans render at the smallest
-    // column width. Extend to a reasonable max (12, like Bootstrap).
-    expect(clean()).toMatch(/\.wmd-col-span-(?:5|6|7|8|9|10|11|12)\b/);
+    // The renderer emits `wmd-col-span-N` on grid items for any N. Each of
+    // 5–12 must have a matching rule, not just one. (A rule for col-span-5
+    // alone wouldn't help users writing {.col-span-9}.)
+    const css = clean();
+    for (const n of [5, 6, 7, 8, 9, 10, 11, 12]) {
+      expect(css).toMatch(new RegExp(`\\.wmd-col-span-${n}\\b`));
+    }
   });
 
   it('honours alignment classes on table cells', () => {
     // `{.left}` / `{.center}` / `{.right}` are emitted as `wmd-align-*`
     // on `<td>`/`<th>`. The shared row CSS has `wmd-align-*` rules but
-    // they set `margin: auto` (flexbox alignment), not `text-align`, so
-    // table cells silently ignore the alignment. Need either a scoped
-    // rule (`td.wmd-align-left { text-align: left }`) or a refactor.
-    expect(clean()).toMatch(/wmd-align-(?:left|center|right)[^{]*\{[^}]*text-align/);
+    // they set `margin: auto` (flexbox alignment), not `text-align` — so
+    // the rule must be table-cell-scoped, otherwise it conflicts with the
+    // row layout. Assert all three directions are covered, scoped to td/th.
+    const css = clean();
+    for (const dir of ['left', 'center', 'right']) {
+      expect(css).toMatch(
+        new RegExp(`(?:td|th)\\.wmd-align-${dir}[^{]*\\{[^}]*text-align`)
+      );
+    }
   });
 
   it('styles ::: alert containers (chrome + all three variants)', () => {
@@ -61,15 +70,24 @@ describe('clean style: known CSS gaps (it.fails until styles.ts grows the rule)'
   });
 
   it('styles button size variants (.small / .large)', () => {
-    // `[Small]{.small}` and `[Large]{.large}` apply the classes correctly
-    // but no CSS rules exist for them — all sizes render identically.
-    expect(clean()).toMatch(/\.wmd-button[^{]*\.wmd-(?:small|large)\b/);
+    // The renderer emits e.g. `<button class="wmd-button wmd-small">`. The
+    // matching rule must target the AND of both classes on the same element
+    // (`.wmd-button.wmd-small`, no whitespace), not a descendant selector.
+    // Assert each variant has a rule with at least one declaration.
+    const css = clean();
+    for (const size of ['small', 'large']) {
+      expect(css).toMatch(
+        new RegExp(`\\.wmd-button\\.wmd-${size}\\b[^{]*\\{[^}]*[a-z-]+\\s*:`)
+      );
+    }
   });
 
   it('paints {state:error} on inputs', () => {
-    // `{state:error}` renders as `wmd-state-error` on the element. Other
-    // styles (wireframe, material, tailwind, brutal) define a rule for
-    // it; `clean` and `sketch` don't, so the error state is invisible.
-    expect(clean()).toMatch(/\.wmd-state-error\b/);
+    // `{state:error}` renders as `wmd-state-error` on the element. The CSS
+    // rule must exist AND set a visible property (border-color or color),
+    // not just an empty `.wmd-state-error {}` block.
+    expect(clean()).toMatch(
+      /\.wmd-state-error\b[^{]*\{[^}]*(?:border-color|color)\s*:/
+    );
   });
 });
