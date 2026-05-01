@@ -94,7 +94,7 @@ function fixturesWithChangedSnapshots(fixtures: Fixture[], since: string): Fixtu
     return [];
   }
   const changed = new Set(
-    diffOut.split('\n').map((p) => p.trim()).filter(Boolean)
+    diffOut.split(/\r?\n/).map((p) => p.trim()).filter(Boolean)
   );
   const matched: Fixture[] = [];
   for (const f of fixtures) {
@@ -110,7 +110,7 @@ function fixturesWithChangedSnapshots(fixtures: Fixture[], since: string): Fixtu
 function flipToTodo(text: string, anchors: Set<string>): { text: string; flipped: number; alreadyTodo: number } {
   const refToAnchor = new Map<string, string>();
   const refDef = /^\[(\d+)\]:\s+\.\/REVIEW\.html#(fixture-[a-z0-9-]+)/i;
-  for (const line of text.split('\n')) {
+  for (const line of text.split(/\r?\n/)) {
     const m = refDef.exec(line);
     if (m) refToAnchor.set(m[1], m[2]);
   }
@@ -118,7 +118,7 @@ function flipToTodo(text: string, anchors: Set<string>): { text: string; flipped
   const row = /^(- \[)(\S+)(\s+[^\]]+\]\[(\d+)\])(?:(\s+—\s+.*))?$/;
   let flipped = 0;
   let alreadyTodo = 0;
-  const lines = text.split('\n').map((line) => {
+  const lines = text.split(/\r?\n/).map((line) => {
     const m = row.exec(line);
     if (!m) return line;
     const ref = m[4];

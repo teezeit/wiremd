@@ -72,14 +72,14 @@ interface Row {
 function parseRows(text: string): Row[] {
   const refToAnchor = new Map<string, string>();
   const refDef = /^\[(\d+)\]:\s+\.\/REVIEW\.html#(fixture-[a-z0-9-]+)/i;
-  for (const line of text.split('\n')) {
+  for (const line of text.split(/\r?\n/)) {
     const m = refDef.exec(line);
     if (m) refToAnchor.set(m[1], m[2]);
   }
 
   const out: Row[] = [];
   const row = /^- \[(\S+)\s+([^\]]+)\]\[(\d+)\](?:\s+—\s+(.*))?$/;
-  for (const line of text.split('\n')) {
+  for (const line of text.split(/\r?\n/)) {
     const m = row.exec(line);
     if (!m) continue;
     const [, status, name, ref, comment] = m;

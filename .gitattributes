@@ -1,8 +1,3 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-
-# Whitespace-tolerance regression fixtures intentionally use specific byte
-# sequences (CRLF, UTF-8 BOM). Disable normalization so the parser sees
-# exactly what was committed.
-packages/core/tests/fixtures/regressions/formatting/crlf-line-endings.md -text
-packages/core/tests/fixtures/regressions/formatting/leading-bom.md -text
+# Keep markdown files LF on Windows checkouts so log parsers (review-gate
+# test, build-review-log, flag-review) see consistent line endings.
+*.md text eol=lf
