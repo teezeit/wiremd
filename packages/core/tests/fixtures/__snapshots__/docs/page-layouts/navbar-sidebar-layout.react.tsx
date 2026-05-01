@@ -53,17 +53,17 @@ export const WiremdComponent: React.FC = () => {
       <div className="wmd-grid wmd-grid-3" style={{ '--grid-columns': 3 } as React.CSSProperties}>
         <div className="wmd-grid-item wmd-card">
           <h3 className="wmd-h3">Revenue</h3>
-          <p className="wmd-paragraph">&lt;strong&gt;$12,400&lt;/strong&gt;
+          <p className="wmd-paragraph"><strong>$12,400</strong>
 +8% this month</p>
         </div>
         <div className="wmd-grid-item wmd-card">
           <h3 className="wmd-h3">Users</h3>
-          <p className="wmd-paragraph">&lt;strong&gt;1,240&lt;/strong&gt;
+          <p className="wmd-paragraph"><strong>1,240</strong>
 +23 this week</p>
         </div>
         <div className="wmd-grid-item wmd-card">
           <h3 className="wmd-h3">Open Tasks</h3>
-          <p className="wmd-paragraph">&lt;strong&gt;34&lt;/strong&gt;
+          <p className="wmd-paragraph"><strong>34</strong>
 5 due today</p>
         </div>
       </div>

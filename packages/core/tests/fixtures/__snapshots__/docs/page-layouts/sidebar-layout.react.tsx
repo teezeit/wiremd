@@ -5,7 +5,7 @@ export const WiremdComponent: React.FC = () => {
     <div className="wmd-root">
   <div className="wmd-container-layout wmd-sidebar-main">
     <div className="wmd-container-sidebar">
-      <p className="wmd-paragraph">&lt;strong&gt;App&lt;/strong&gt;</p>
+      <p className="wmd-paragraph"><strong>App</strong></p>
       <div className="wmd-container-button-group">
         <button className="wmd-button wmd-button-primary">
           Dashboard

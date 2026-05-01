@@ -797,13 +797,37 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode {
           props: {},
         });
       } else if (child.type === 'strong') {
-        currentText += `<strong>${extractTextContent(child)}</strong>`;
+        flushText();
+        processedChildren.push({
+          type: 'text',
+          content: extractTextContent(child),
+          mark: 'strong',
+          props: {},
+        });
       } else if (child.type === 'emphasis') {
-        currentText += `<em>${extractTextContent(child)}</em>`;
+        flushText();
+        processedChildren.push({
+          type: 'text',
+          content: extractTextContent(child),
+          mark: 'em',
+          props: {},
+        });
       } else if (child.type === 'code' || child.type === 'inlineCode') {
-        currentText += `<code>${extractTextContent(child)}</code>`;
+        flushText();
+        processedChildren.push({
+          type: 'code',
+          value: extractTextContent(child),
+          inline: true,
+        });
       } else if (child.type === 'link') {
-        currentText += `<a href="${child.url}">${extractTextContent(child)}</a>`;
+        flushText();
+        processedChildren.push({
+          type: 'link',
+          href: child.url || '#',
+          title: child.title,
+          children: [{ type: 'text', content: extractTextContent(child), props: {} }],
+          props: {},
+        });
       } else {
         currentText += extractTextContent(child);
       }
@@ -812,9 +836,35 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode {
 
     // If we only have one text child with no buttons, return as paragraph
     if (processedChildren.length === 1 && processedChildren[0].type === 'text') {
+      const only = processedChildren[0] as Extract<WiremdNode, { type: 'text' }>;
+      // A marked text (strong/em/code) needs to keep its mark — flatten to a
+      // children-shaped paragraph so the renderer wraps it properly.
+      if (only.mark) {
+        return {
+          type: 'paragraph',
+          children: [only] as any,
+          props: {},
+        };
+      }
       return {
         type: 'paragraph',
-        content: processedChildren[0].content,
+        content: only.content,
+        props: {},
+      };
+    }
+
+    // If every child is an inline text-like node (text, inline code, link),
+    // return a paragraph with structured children instead of folding into a
+    // form-group container. Form-group is for paragraphs that mix labels with
+    // buttons/inputs/badges/icons/images.
+    const isInlineTextLike = (n: WiremdNode) =>
+      n.type === 'text' ||
+      (n.type === 'code' && n.inline === true) ||
+      n.type === 'link';
+    if (processedChildren.length > 0 && processedChildren.every(isInlineTextLike)) {
+      return {
+        type: 'paragraph',
+        children: processedChildren as any,
         props: {},
       };
     }

@@ -6,7 +6,8 @@ export const WiremdComponent: React.FC = () => {
   <div className="wmd-row">
     <div className="wmd-grid-item wmd-align-left">
       <div className="wmd-container-form-group">
-&lt;strong&gt;Projects&lt;/strong&gt; 
+<strong>Projects</strong>
+ 
         <span className="wmd-badge wmd-badge-primary">12</span>
       </div>
     </div>
