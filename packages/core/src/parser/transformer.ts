@@ -15,6 +15,11 @@ import type {
   DocumentMeta,
 } from '../types.js';
 import { SYNTAX_VERSION } from '../index.js';
+import {
+  type TransformContext,
+  type ContextDeps,
+  makeContext,
+} from './_context.js';
 
 /**
  * Transform MDAST to wiremd AST
@@ -37,26 +42,49 @@ export function transformToWiremdAST(
   };
 }
 
+// Wiring for the per-iteration TransformContext factory. Defined as a const so
+// `makeContext` can stay decoupled from the concrete transform functions in
+// `transformer.ts`. Function declarations below are hoisted, so referencing
+// them from this initializer is safe.
+const ctxDeps: ContextDeps = {
+  transformNode: (mdast, ctx) => transformNode(mdast as any, ctx),
+  processNodeList: (mdastList, options) => processNodeList(mdastList as any[], options),
+  parseAttributes,
+  extractTextContent,
+  isHtmlCommentNode,
+};
+
+/**
+ * Test-only handle on the transformer's internals. Exposed so isolated parse
+ * tests can invoke `transformNode` against crafted MDAST without going through
+ * the full `parse(markdown)` pipeline. Not part of the public API — keep
+ * imports under `tests/`.
+ */
+export const __transformerInternals = {
+  transformNode,
+  processNodeList,
+  ctxDeps,
+};
+
 /**
  * Transform a single MDAST node to wiremd node
  */
 function transformNode(
   node: any,
-  options: ParseOptions,
-  nextNode?: any
+  ctx: TransformContext
 ): WiremdNode | null {
   switch (node.type) {
     case 'wiremdContainer':
-      return transformContainer(node, options);
+      return transformContainer(node, ctx);
 
     case 'wiremdInlineContainer':
-      return transformInlineContainer(node, options);
+      return transformInlineContainer(node, ctx);
 
     case 'heading':
-      return transformHeading(node, options);
+      return transformHeading(node, ctx);
 
     case 'paragraph':
-      return transformParagraph(node, options, nextNode);
+      return transformParagraph(node, ctx);
 
     case 'text':
       return {
@@ -65,16 +93,16 @@ function transformNode(
       };
 
     case 'list':
-      return transformList(node, options);
+      return transformList(node, ctx);
 
     case 'listItem':
-      return transformListItem(node, options);
+      return transformListItem(node, ctx);
 
     case 'table':
-      return transformTable(node, options);
+      return transformTable(node, ctx);
 
     case 'blockquote':
-      return transformBlockquote(node, options);
+      return transformBlockquote(node, ctx);
 
     case 'code':
       return {
@@ -104,7 +132,7 @@ function transformNode(
         type: 'link',
         href: node.url || '#',
         title: node.title,
-        children: node.children?.map((child: any) => transformNode(child, options)).filter(Boolean) || [],
+        children: node.children?.map((child: any) => ctx.transformChild(child)).filter(Boolean) || [],
         props: {},
       };
 
@@ -140,23 +168,17 @@ function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode
 
   while (i < nodeChildren.length) {
     const node = nodeChildren[i];
-    const nextNode = nodeChildren[i + 1];
+    const handle = makeContext(nodeChildren, i, options, ctxDeps);
 
-    const transformed = transformNode(node, options, nextNode);
+    const transformed = transformNode(node, handle.ctx);
     if (transformed) {
       if (node.position && !(transformed as any).position) {
         (transformed as any).position = node.position;
       }
       result.push(transformed);
-      if (transformed.type === 'select' && nextNode && nextNode.type === 'list') i++;
-      if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {
-        const hasSelectWithOptions = (transformed.children || []).some((child: any) =>
-          child.type === 'select' && child.options && child.options.length > 0
-        );
-        if (hasSelectWithOptions) i++;
-      }
     }
-    i++;
+    // Advance past anything the transform consumed via ctx.consumeNext().
+    i = handle.getCursor() + 1;
   }
 
   return result;
@@ -173,7 +195,7 @@ function isHtmlCommentNode(node: any): boolean {
  */
 function collectGridItemsFromContainer(
   children: any[],
-  options: ParseOptions,
+  ctx: TransformContext,
   isCard: boolean,
 ): WiremdNode[] {
   const gridItems: WiremdNode[] = [];
@@ -218,7 +240,7 @@ function collectGridItemsFromContainer(
       gridItems.push({
         type: 'grid-item',
         props: itemProps,
-        children: processNodeList(rawItemNodes, options) as any,
+        children: ctx.transformChildren(rawItemNodes) as any,
       });
     } else {
       i++;
@@ -235,7 +257,7 @@ function collectGridItemsFromContainer(
  */
 function collectRowItemsFromContainer(
   children: any[],
-  options: ParseOptions,
+  ctx: TransformContext,
 ): WiremdNode[] {
   const items: WiremdNode[] = [];
   const hasHeadings = children.some((n: any) => n.type === 'heading');
@@ -286,7 +308,7 @@ function collectRowItemsFromContainer(
         items.push({
           type: 'grid-item',
           props: itemProps,
-          children: processNodeList(rawItemNodes, options) as any,
+          children: ctx.transformChildren(rawItemNodes) as any,
         });
       } else {
         i++;
@@ -309,7 +331,7 @@ function collectRowItemsFromContainer(
       items.push({
         type: 'grid-item',
         props: { classes: [] },
-        children: processNodeList(groupNodes, options) as any,
+        children: ctx.transformChildren(groupNodes) as any,
       });
     }
   }
@@ -320,7 +342,7 @@ function collectRowItemsFromContainer(
 /**
  * Transform container node (:::)
  */
-function transformContainer(node: any, options: ParseOptions): WiremdNode {
+function transformContainer(node: any, ctx: TransformContext): WiremdNode {
   const props = parseAttributes(node.attributes || '');
   const containerType: string = (node.containerType || '').trim();
 
@@ -339,7 +361,7 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
       type: 'grid',
       columns,
       props: { ...props, card: hasCard, classes: (props.classes || []).filter((c: string) => c !== 'card') },
-      children: collectGridItemsFromContainer(contentChildren, options, hasCard) as any,
+      children: collectGridItemsFromContainer(contentChildren, ctx, hasCard) as any,
     };
   }
 
@@ -348,13 +370,13 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
     return {
       type: 'row',
       props,
-      children: collectRowItemsFromContainer(node.children || [], options) as any,
+      children: collectRowItemsFromContainer(node.children || [], ctx) as any,
     };
   }
 
   // ::: tabs  (children are ::: tab containers)
   if (containerType === 'tabs') {
-    const processed = processNodeList(node.children || [], options) as any[];
+    const processed = ctx.transformChildren(node.children || []) as any[];
     // Prepend comments that appear between :::tab blocks to the next tab's children
     const pending: any[] = [];
     const tabs: any[] = [];
@@ -396,7 +418,7 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
       label,
       active: isActive,
       props,
-      children: processNodeList(contentChildren, options) as any,
+      children: ctx.transformChildren(contentChildren) as any,
     };
   }
 
@@ -405,7 +427,7 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
       type: 'demo',
       raw: node.rawContent || '',
       props,
-      children: processNodeList(node.children || [], options) as any,
+      children: ctx.transformChildren(node.children || []) as any,
     };
   }
 
@@ -413,14 +435,14 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
     type: 'container',
     containerType: containerType as any,
     props,
-    children: processNodeList(node.children || [], options) as any,
+    children: ctx.transformChildren(node.children || []) as any,
   };
 }
 
 /**
  * Transform inline container node ([[...]])
  */
-function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode {
+function transformInlineContainer(node: any, _ctx: TransformContext): WiremdNode {
   const props = parseAttributes(node.attributes || '');
   const items = node.items || [];
   const children: WiremdNode[] = [];
@@ -538,7 +560,7 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
 /**
  * Transform heading node
  */
-function transformHeading(node: any, _options: ParseOptions): WiremdNode {
+function transformHeading(node: any, _ctx: TransformContext): WiremdNode {
   // Extract attributes from heading text
   const content = extractTextContent(node);
 
@@ -647,7 +669,8 @@ function serializeMdastChildren(children: any[]): string {
   }).join('');
 }
 
-function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): WiremdNode {
+function transformParagraph(node: any, ctx: TransformContext): WiremdNode {
+  const nextNode = ctx.peekNext() as any;
   // Check for [[...]] inline container before any other processing — handles nested containers
   // where remark-inline-containers only runs on top-level nodes
   if (node.children?.length) {
@@ -657,7 +680,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
       const content = inlineMatch[1];
       const attrs = inlineMatch[2] || '';
       const items = content.split('|').map((item: string) => item.trim());
-      return transformInlineContainer({ type: 'wiremdInlineContainer', content, items, attributes: attrs.trim() }, _options);
+      return transformInlineContainer({ type: 'wiremdInlineContainer', content, items, attributes: attrs.trim() }, ctx);
     }
   }
 
@@ -881,7 +904,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
       attributes: attrs.trim(),
     };
 
-    const transformed = transformInlineContainer(inlineContainerNode, _options);
+    const transformed = transformInlineContainer(inlineContainerNode, ctx);
 
     // If there's text after the inline container, wrap both in a container
     const remainingText = content.substring(inlineContainerMatch[0].length).trim();
@@ -1050,6 +1073,9 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
             selected: false,
           });
         }
+        // Only consume when we actually absorbed options — matches the legacy
+        // post-hoc rule which required `hasSelectWithOptions` for container shapes.
+        if (options.length > 0) ctx.consumeNext();
       }
 
       // If preceding lines are button lines, combine as a button-group instead of form-group
@@ -1254,6 +1280,9 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
           selected: false,
         });
       }
+      // Single-line dropdown always consumes when nextNode is a list — matches
+      // the legacy post-hoc rule for `select` + `list` (which didn't gate on options length).
+      ctx.consumeNext();
     }
 
     return {
@@ -1540,11 +1569,11 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 /**
  * Transform list node
  */
-function transformList(node: any, options: ParseOptions): WiremdNode {
+function transformList(node: any, ctx: TransformContext): WiremdNode {
   const children: WiremdNode[] = [];
 
   for (const item of node.children) {
-    const transformed = transformNode(item, options);
+    const transformed = ctx.transformChild(item);
     if (transformed) {
       children.push(transformed);
     }
@@ -1561,7 +1590,7 @@ function transformList(node: any, options: ParseOptions): WiremdNode {
 /**
  * Transform list item node
  */
-function transformListItem(node: any, options: ParseOptions): WiremdNode {
+function transformListItem(node: any, ctx: TransformContext): WiremdNode {
   // Extract immediate text content (from paragraph) and nested children
   let immediateContent = '';
   const nestedChildren: WiremdNode[] = [];
@@ -1574,7 +1603,7 @@ function transformListItem(node: any, options: ParseOptions): WiremdNode {
       }
       // Nested lists should be transformed and added as children
       else if (child.type === 'list') {
-        const transformed = transformList(child, options);
+        const transformed = transformList(child, ctx);
         if (transformed) {
           nestedChildren.push(transformed);
         }
@@ -1712,7 +1741,7 @@ function transformListItem(node: any, options: ParseOptions): WiremdNode {
 /**
  * Transform table node
  */
-function transformTable(node: any, options: ParseOptions): WiremdNode {
+function transformTable(node: any, ctx: TransformContext): WiremdNode {
   const children: WiremdNode[] = [];
   const align = node.align || [];
 
@@ -1771,7 +1800,7 @@ function transformTable(node: any, options: ParseOptions): WiremdNode {
             props: {},
           });
         } else {
-          const transformed = transformNode(child, options);
+          const transformed = ctx.transformChild(child);
           if (transformed) {
             cellChildren.push(transformed);
           }
@@ -1810,11 +1839,11 @@ function transformTable(node: any, options: ParseOptions): WiremdNode {
 /**
  * Transform blockquote node
  */
-function transformBlockquote(node: any, options: ParseOptions): WiremdNode {
+function transformBlockquote(node: any, ctx: TransformContext): WiremdNode {
   const children: WiremdNode[] = [];
 
   for (const child of node.children) {
-    const transformed = transformNode(child, options);
+    const transformed = ctx.transformChild(child);
     if (transformed) {
       children.push(transformed);
     }
