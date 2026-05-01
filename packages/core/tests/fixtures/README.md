@@ -1,0 +1,222 @@
+# Fixture corpus
+
+The wiremd parser/renderer test suite is built around a **fixture corpus**: small markdown inputs paired with snapshots of every renderer's output. Most test coverage for syntax and rendering lives here, not in the older monolith test files.
+
+This README covers:
+
+1. [What's in this directory](#whats-in-this-directory)
+2. [Two test channels: snapshots vs invariants](#two-test-channels)
+3. [File-naming conventions](#file-naming-conventions)
+4. [Adding a fixture](#adding-a-fixture)
+5. [Reviewing snapshots — the review tool](#reviewing-snapshots)
+6. [Workflow when something fails](#workflow-when-something-fails)
+7. [Status legend](#status-legend)
+
+---
+
+## What's in this directory
+
+```
+tests/fixtures/
+├── regressions/                  # hand-written .md fixtures
+│   └── containers/closer/
+│       ├── blank-line-before-list.md           ← input
+│       ├── blank-line-before-list.html         ← snapshot (HTML)
+│       ├── blank-line-before-list.react.tsx    ← snapshot (React)
+│       ├── blank-line-before-list.tailwind.html ← snapshot (Tailwind)
+│       └── blank-line-before-list.tree.txt     ← snapshot (AST tree)
+│
+├── __snapshots__/docs/           # auto-extracted from apps/docs/components/
+│   ├── buttons/
+│   │   ├── basic.html
+│   │   ├── basic.react.tsx
+│   │   └── basic.tailwind.html
+│   └── … (one folder per docs source)
+│
+├── KNOWN_ISSUES.md               # cross-cutting concerns from snapshot review
+├── REVIEW_LOG.md                 # (gitignored) generated review tracker
+└── REVIEW.html                   # (gitignored) review tool UI
+```
+
+**Two fixture sources:**
+
+- **Regressions** (`regressions/**/*.md`): hand-written cases covering bugs, edge cases, malformed input, and validation tests. Snapshots co-located with the input.
+- **Doc-derived** (`__snapshots__/docs/**`): every `::: demo` block in `apps/docs/components/*.md` is automatically a fixture. Snapshots live separately so they don't pollute the docs source tree. The list of docs files lives in `tests/lib/fixture-runner.ts` (`DOC_SOURCES`).
+
+The single `loadFixtures()` function in `tests/lib/fixture-runner.ts` returns both. The driver test `tests/fixtures.test.ts` runs every fixture through `parse() → renderToHTML() / renderToReact() / renderToTailwind()` and asserts each output matches its snapshot.
+
+---
+
+## Two test channels
+
+The corpus has two separate channels, deliberately:
+
+| Channel | Asserts | Form | Fails when |
+|---|---|---|---|
+| **Snapshot** | "What the system *currently* produces." | Generated `.html`/`.react.tsx`/`.tailwind.html`/`.tree.txt` files. | Output drifts from last commit. Could be a bug, a fix, or a refactor — diff tells the story. |
+| **Invariants** | "What the system *must* produce." | Optional `.invariants.ts` sidecar. | Real correctness violation. Don't paper over with `-u`. |
+
+**Snapshots catch regressions. Invariants catch bugs.** Different signals, different responses.
+
+A fixture without an invariants file is fine — most are. The invariants channel is for cases where you can articulate a contract that must hold, especially for known bugs you're tracking before fixing.
+
+---
+
+## File-naming conventions
+
+For a fixture at `<base>.md`, the runner discovers:
+
+| File | Role | Required? |
+|---|---|---|
+| `<base>.md` | Input markdown | yes |
+| `<base>.html` | HTML renderer snapshot | yes (auto-written by `pnpm test -u`) |
+| `<base>.react.tsx` | React renderer snapshot | yes (auto-written) |
+| `<base>.tailwind.html` | Tailwind renderer snapshot | yes (auto-written) |
+| `<base>.tree.txt` | AST tree snapshot (regressions only) | regressions only |
+| `<base>.invariants.ts` | Executable contract that **must** pass | optional |
+| `<base>.expected-fail.invariants.ts` | Contract that **currently** fails — documents a known bug | optional |
+| `<base>.notes.md` | Free-form review observation | optional |
+
+A fixture can carry **at most one** of `.invariants.ts` and `.expected-fail.invariants.ts` (the runner throws if both exist).
+
+The `.expected-fail.invariants.ts` is wired through vitest's `it.fails(...)`. When the parser is fixed and the contract starts passing, vitest reports "expected to fail but didn't" — forcing the author to rename the file (drop `.expected-fail.`) and refresh the snapshot. **The rename IS the signal that a bug was fixed.**
+
+For regression fixtures, leading `<!-- ... -->` comments at the top of the `.md` are stripped before parsing — use them to document why the fixture exists.
+
+---
+
+## Adding a fixture
+
+### A doc-derived fixture (the easy path)
+
+Add a `::: demo` block to the relevant `apps/docs/components/<name>.md`. Run `pnpm test -u` from `packages/core/`. The fixture and its snapshots appear automatically.
+
+The fixture's name comes from the slugified `##` / `###` heading path (skipping H1 page title). Multiple demos in the same section get a numeric suffix: `basic`, `basic-2`, `basic-3`.
+
+### A regression fixture
+
+```bash
+# 1. Create the input
+mkdir -p packages/core/tests/fixtures/regressions/<area>/<scenario>
+cat > packages/core/tests/fixtures/regressions/<area>/<scenario>/<name>.md <<'EOF'
+<!-- regression: short description of why this fixture exists -->
+... your wiremd input ...
+EOF
+
+# 2. Generate snapshots
+pnpm --filter wiremd run test -- tests/fixtures.test.ts -u
+
+# 3. Eyeball the snapshots — open the .html, .tree.txt, etc. in your editor
+#    and confirm the output is what you expect. THIS IS THE VERIFICATION STEP.
+
+# 4. Commit input + snapshots together
+```
+
+### Adding a new docs source
+
+In `tests/lib/fixture-runner.ts`, append the path to `DOC_SOURCES`. Run `pnpm test -u`. The extraction guard throws loudly if the docs file produces zero `:::demo` blocks.
+
+---
+
+## Reviewing snapshots
+
+For visual judgment of rendered output, use the review tool. It generates a single static HTML page with every fixture rendered with full styles, and uses the File System Access API (Chrome/Edge/Opera) to write status changes back to `REVIEW_LOG.md`:
+
+```bash
+# From packages/core/
+pnpm review:log    # seeds REVIEW_LOG.md with all fixtures as ⏳ (todo)
+pnpm review        # builds REVIEW.html and opens it in your browser
+
+# In the page header: click "Connect to REVIEW_LOG.md" → grant write access.
+# Per fixture row: glance source + rendered output, click a status emoji,
+# optionally type a comment. Autosaves on blur.
+```
+
+Each fixture row has 3 columns:
+- **Left**: input markdown (`.md` source).
+- **Middle**: rendered output (styled, in an iframe — full visual fidelity).
+- **Right**: status buttons (⏳/✅/❌/📝/🚧) + comment textarea + saved indicator.
+
+Row border colour reflects status. Top filter chips restrict visible rows. Sticky TOC on the left lets you jump.
+
+`REVIEW_LOG.md` is a reference-style markdown checklist — the source of truth for the sweep. Hand-edits are also fine; the page picks them up on the next focus event. **Re-running `pnpm review:log` overwrites comments**, so seed once at the start of a sweep.
+
+After the sweep, ask Claude (or do it yourself) to translate `📝` and `❌` log entries into `.notes.md` and `.expected-fail.invariants.ts` files. The log captures intent; promotion to executable contracts is deliberate.
+
+---
+
+## Workflow when something fails
+
+### Snapshot mismatch on `pnpm test`
+
+Read the diff *before* you reach for `-u`. Three things you might be seeing:
+
+1. **A real bug just got introduced.** Diff shows wrong-looking output. → fix the code, don't update the snapshot.
+2. **An intentional change.** You touched the renderer, output is what you want. → `-u`, eyeball, commit.
+3. **Formatter/editor mangled a snapshot file.** Diff shows reformatted whitespace, lowercase `<!doctype>`, etc. → `-u` to revert. (`.prettierignore` should prevent this; if you're seeing it, your editor is overriding the ignore rules.)
+
+**If the diff is hard to understand at a glance, do not `-u`.** Snapshots are most useful when the diff tells a story.
+
+### An `it.fails(...)` test "passed unexpectedly"
+
+This is a parser fix surfacing. Protocol:
+
+1. Open the `.expected-fail.invariants.ts` file. Confirm the contract still describes correct behavior.
+2. **Rename** the file: drop `.expected-fail.` (now `<base>.invariants.ts`).
+3. Run `pnpm test -u` to refresh the now-correct snapshot.
+4. Commit. The bug-doc-fixture is now a regression-guarantee fixture.
+
+The rename is intentional friction — it forces you to actively close out a bug rather than silently letting `it.fails` keep passing under different reasoning.
+
+### Found a bug while reviewing
+
+Three options, choose by how confident you are:
+
+- **Vague: "this looks weird"** → write `<base>.notes.md` (or use the review tool's comment field). Snapshot stays as-is. Triage later.
+- **Concrete: "X should produce Y"** → write `<base>.expected-fail.invariants.ts` declaring the contract. Mark in REVIEW_LOG.md. Test fails red until parser is fixed.
+- **Cross-cutting: "this affects many fixtures"** → add an entry to `KNOWN_ISSUES.md`. (Example: variant button classes have no CSS in `clean` style — affects every variant fixture.)
+
+**Never edit a snapshot file directly.** It will get clobbered by the next `-u`, fail the test until then, and the format may not match what your code actually produces.
+
+### Editor formatters corrupting snapshots
+
+`.prettierignore` covers this. If your editor still reformats snapshot files on save, your editor is bypassing the ignore file — adjust your editor settings, not the snapshots.
+
+---
+
+## Status legend
+
+Used in `REVIEW_LOG.md`, the review tool, and this README:
+
+| Icon | Meaning | Files |
+|---|---|---|
+| ⏳ | Todo (not yet reviewed) | none |
+| ✅ | OK (verified correct) | `<base>.invariants.ts` if a contract is also worth pinning |
+| ❌ | Failing — currently broken with a contract | `<base>.expected-fail.invariants.ts` |
+| 📝 | Noted — vague observation | `<base>.notes.md` |
+| 🚧 | Known cross-cutting issue | entry in `KNOWN_ISSUES.md` |
+
+---
+
+## Things that can bite you
+
+- **Running `-u` blindly.** It's the loaded gun. Snapshots are only as good as the human who reviews the diff before accepting.
+- **Treating `it.fails` as "test that passes."** Every `.expected-fail.invariants.ts` in the repo is a parked bug waiting to be fixed.
+- **Adding fixtures without reviewing.** A snapshot that locks in broken output is worse than no test — it makes the bug *harder* to fix later. The verification step at first commit is the most important moment in a fixture's life.
+- **`KNOWN_ISSUES.md` growing without action.** It's a triage queue, not a graveyard. Prune entries when fixed or moved to issue tracking.
+
+---
+
+## Test infrastructure (for the curious)
+
+| File | Role |
+|---|---|
+| `tests/lib/fixture-runner.ts` | Discovers regressions + doc-derived fixtures; resolves invariants files |
+| `tests/lib/extract-demos.ts` | Regex-based extraction of `:::demo` blocks (deliberately doesn't use the parser — would couple test discovery to the SUT) |
+| `tests/lib/ast-serializer.ts` | Pretty-tree formatter for `.tree.txt` snapshots, position-stripped |
+| `tests/lib/*.test.ts` | Unit tests for the infrastructure itself |
+| `tests/fixtures.test.ts` | The driver — iterates `loadFixtures()`, asserts snapshots, runs invariants |
+| `scripts/build-review-log.ts` | Seeds `REVIEW_LOG.md` from filesystem state |
+| `scripts/build-review-page.ts` | Builds `REVIEW.html` with FSAccess-driven log round-tripping |
+
+The infrastructure is unit-tested (24 tests). Bugs in it would corrupt every snapshot downstream, so it doesn't get a free pass.
