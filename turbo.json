@@ -6,21 +6,28 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
     "dev": {
-      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
     "test": {
       "dependsOn": ["build"],
+      "outputs": []
+    },
+    "test:coverage": {
+      "dependsOn": ["build"],
       "outputs": ["coverage/**"]
     },
     "typecheck": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["transit"],
       "outputs": []
     },
     "lint": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["transit"],
+      "inputs": ["src/**", "tests/**", ".eslintrc*", "eslint.config*"],
       "outputs": []
     }
   }
