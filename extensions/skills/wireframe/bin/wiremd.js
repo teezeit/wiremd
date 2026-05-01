@@ -19304,7 +19304,12 @@ function collectContainer(nodes, startIdx) {
           children: [{ type: "text", value: contentText }]
         });
       }
-      return finishContainer(opener.containerType, opener.attrs, opener.inline, children, startIdx + 1, openerNode.position);
+      const trailingText = lines.slice(closingIdx + 1).join("\n").trim();
+      const trailing = trailingText ? [{ type: "paragraph", children: [{ type: "text", value: trailingText }] }] : void 0;
+      return {
+        ...finishContainer(opener.containerType, opener.attrs, opener.inline, children, startIdx + 1, openerNode.position),
+        trailing
+      };
     }
   }
   const lastChild = openerNode.children[openerNode.children.length - 1];
@@ -19362,12 +19367,38 @@ function collectContainer(nodes, startIdx) {
         containerChildren.push(syntheticPara);
       }
     }
+  } else if (openerNode.children.length > 1 && openerNode.children[0]?.type === "text") {
+    const firstText = openerNode.children[0].value;
+    const newlineIdx = firstText.indexOf("\n");
+    const restChildren = [];
+    if (newlineIdx >= 0) {
+      const remainder = firstText.slice(newlineIdx + 1);
+      if (remainder)
+        restChildren.push({ type: "text", value: remainder });
+      restChildren.push(...openerNode.children.slice(1));
+    } else {
+      const startSliceIdx = openerNode.children[1]?.type === "break" ? 2 : 1;
+      restChildren.push(...openerNode.children.slice(startSliceIdx));
+    }
+    if (restChildren.length > 0) {
+      const syntheticPara = {
+        type: "paragraph",
+        children: restChildren
+      };
+      if (parseContainerOpener(syntheticPara)) {
+        pendingAfterOpener = syntheticPara;
+      } else {
+        containerChildren.push(syntheticPara);
+      }
+    }
   }
   let i = startIdx + 1;
   if (pendingAfterOpener) {
     const virtualNodes = [pendingAfterOpener, ...nodes.slice(startIdx + 1)];
     const inner = collectContainer(virtualNodes, 0);
     containerChildren.push(inner.node);
+    if (inner.trailing)
+      containerChildren.push(...inner.trailing);
     i = startIdx + inner.nextIndex;
   }
   while (i < nodes.length) {
@@ -19379,6 +19410,8 @@ function collectContainer(nodes, startIdx) {
     if (parseContainerOpener(child)) {
       const inner = collectContainer(nodes, i);
       containerChildren.push(inner.node);
+      if (inner.trailing)
+        containerChildren.push(...inner.trailing);
       i = inner.nextIndex;
       continue;
     }
@@ -19482,8 +19515,10 @@ function processNodes(nodes) {
   while (i < nodes.length) {
     const node2 = nodes[i];
     if (parseContainerOpener(node2)) {
-      const { node: containerNode, nextIndex } = collectContainer(nodes, i);
+      const { node: containerNode, trailing, nextIndex } = collectContainer(nodes, i);
       result.push(containerNode);
+      if (trailing)
+        result.push(...trailing);
       i = nextIndex;
     } else {
       result.push(node2);
