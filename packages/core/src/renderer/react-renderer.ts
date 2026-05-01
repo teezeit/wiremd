@@ -14,6 +14,34 @@ export interface ReactRenderContext {
   typescript: boolean;
   useClassName: boolean; // true = className, false = class
   componentName?: string;
+  // Mutable counter for deterministic radio-group names; see html-renderer
+  // for the rationale. Initialised by renderToReact.
+  _radioGroupCounter?: { value: number };
+}
+
+/** Mint the next deterministic radio-group name. */
+function nextRadioGroupName(context: ReactRenderContext): string {
+  if (!context._radioGroupCounter) {
+    context._radioGroupCounter = { value: 0 };
+  }
+  context._radioGroupCounter.value += 1;
+  return `radio-group-${context._radioGroupCounter.value}`;
+}
+
+/**
+ * If `children` contains any `radio` nodes, return a copy where every radio
+ * shares a freshly-minted group name. Mirror of the helper in html-renderer.
+ */
+function applyRadioGroupName(children: any[], context: ReactRenderContext): any[] {
+  if (!children || children.length === 0) return children;
+  const hasRadio = children.some((c: any) => c && c.type === 'radio');
+  if (!hasRadio) return children;
+  const name = nextRadioGroupName(context);
+  return children.map((c: any) => {
+    if (!c || c.type !== 'radio') return c;
+    if (c.props && c.props.name) return c;
+    return { ...c, props: { ...(c.props || {}), name } };
+  });
 }
 
 /**
@@ -261,10 +289,11 @@ function renderRadioGroup(node: any, context: ReactRenderContext, indent: number
   const inlineClass = isInline ? ` ${prefix}radio-group-inline` : '';
   const classAttr = context.useClassName ? 'className' : 'class';
 
-  const groupName = `radio-${Math.random().toString(36).substr(2, 9)}`;
+  const groupName = node.name || nextRadioGroupName(context);
 
   const radios = (node.children || []).map((child: any) => {
     if (child.type === 'radio') {
+      if (child.props && child.props.name) return renderNode(child, context, indent + 1);
       const modifiedChild = { ...child, props: { ...child.props, name: groupName } };
       return renderNode(modifiedChild, context, indent + 1);
     }
@@ -456,7 +485,10 @@ function renderList(node: any, context: ReactRenderContext, indent: number): str
   const classes = buildClasses(prefix, 'list', node.props);
   const tag = node.ordered ? 'ol' : 'ul';
   const classAttr = context.useClassName ? 'className' : 'class';
-  const childrenJSX = (node.children || []).map((child: any) => renderNode(child, context, indent + 1)).join('\n');
+  // Block-level radios sit as direct children of the list; assign a shared
+  // name so the rendered <input type="radio"> elements form a single group.
+  const children = applyRadioGroupName(node.children || [], context);
+  const childrenJSX = children.map((child: any) => renderNode(child, context, indent + 1)).join('\n');
 
   return `${indentStr}<${tag} ${classAttr}="${classes}">
 ${childrenJSX}
