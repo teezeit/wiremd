@@ -65,7 +65,7 @@ The corpus is functioning as more than a test suite. Each fixture is a worked cl
 | **Content** | `{tables,alerts,comments,attributes}.md` | Tables with badges, alert variants, comment threads, attributes on containers |
 | **Meta** | `{demo,index}.md` | `:::demo` syntax itself, kitchen-sink pages |
 | **Closer behavior** | `regressions/containers/closer/` | Closer after list / paragraph / heading; nested containers |
-| **Whitespace tolerance** | `regressions/whitespace-tolerance/` | CRLF, BOM, trailing whitespace, multiple blanks, sibling containers without blank line |
+| **Formatting** | `regressions/formatting/` | Whitespace handling, line endings (CRLF), BOM, trailing whitespace, blank-line discipline. The contract: wiremd should accept common formatting variations without breaking. Fixtures here document both cases that work (✅) and cases where the parser is currently strict and the contract is violated (❌). |
 
 A category isn't "covered" unless representative fixtures exist. **If you find an edge case the parser handles correctly that we don't have a fixture for, add one** — even if it works today, that pins the contract going forward. The whole point of the corpus is "what wiremd guarantees," not "what we happened to remember to test."
 
