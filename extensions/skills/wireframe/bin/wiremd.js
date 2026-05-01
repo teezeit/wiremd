@@ -3721,8 +3721,8 @@ function decodeNamedCharacterReference(value) {
 }
 
 // node_modules/.pnpm/micromark-util-chunked@2.0.1/node_modules/micromark-util-chunked/index.js
-function splice(list3, start, remove, items) {
-  const end = list3.length;
+function splice(list4, start, remove, items) {
+  const end = list4.length;
   let chunkStart = 0;
   let parameters;
   if (start < 0) {
@@ -3734,23 +3734,23 @@ function splice(list3, start, remove, items) {
   if (items.length < 1e4) {
     parameters = Array.from(items);
     parameters.unshift(start, remove);
-    list3.splice(...parameters);
+    list4.splice(...parameters);
   } else {
     if (remove)
-      list3.splice(start, remove);
+      list4.splice(start, remove);
     while (chunkStart < items.length) {
       parameters = items.slice(chunkStart, chunkStart + 1e4);
       parameters.unshift(start, 0);
-      list3.splice(...parameters);
+      list4.splice(...parameters);
       chunkStart += 1e4;
       start += 1e4;
     }
   }
 }
-function push(list3, items) {
-  if (list3.length > 0) {
-    splice(list3, list3.length, 0, items);
-    return list3;
+function push(list4, items) {
+  if (list4.length > 0) {
+    splice(list4, list4.length, 0, items);
+    return list4;
   }
   return items;
 }
@@ -3771,47 +3771,47 @@ function syntaxExtension(all2, extension2) {
     const maybe = hasOwnProperty.call(all2, hook) ? all2[hook] : void 0;
     const left = maybe || (all2[hook] = {});
     const right = extension2[hook];
-    let code3;
+    let code4;
     if (right) {
-      for (code3 in right) {
-        if (!hasOwnProperty.call(left, code3))
-          left[code3] = [];
-        const value = right[code3];
+      for (code4 in right) {
+        if (!hasOwnProperty.call(left, code4))
+          left[code4] = [];
+        const value = right[code4];
         constructs(
           // @ts-expect-error Looks like a list.
-          left[code3],
+          left[code4],
           Array.isArray(value) ? value : value ? [value] : []
         );
       }
     }
   }
 }
-function constructs(existing, list3) {
+function constructs(existing, list4) {
   let index2 = -1;
   const before = [];
-  while (++index2 < list3.length) {
+  while (++index2 < list4.length) {
     ;
-    (list3[index2].add === "after" ? existing : before).push(list3[index2]);
+    (list4[index2].add === "after" ? existing : before).push(list4[index2]);
   }
   splice(existing, 0, 0, before);
 }
 
 // node_modules/.pnpm/micromark-util-decode-numeric-character-reference@2.0.2/node_modules/micromark-util-decode-numeric-character-reference/index.js
 function decodeNumericCharacterReference(value, base) {
-  const code3 = Number.parseInt(value, base);
+  const code4 = Number.parseInt(value, base);
   if (
     // C0 except for HT, LF, FF, CR, space.
-    code3 < 9 || code3 === 11 || code3 > 13 && code3 < 32 || // Control character (DEL) of C0, and C1 controls.
-    code3 > 126 && code3 < 160 || // Lone high surrogates and low surrogates.
-    code3 > 55295 && code3 < 57344 || // Noncharacters.
-    code3 > 64975 && code3 < 65008 || /* eslint-disable no-bitwise */
-    (code3 & 65535) === 65535 || (code3 & 65535) === 65534 || /* eslint-enable no-bitwise */
+    code4 < 9 || code4 === 11 || code4 > 13 && code4 < 32 || // Control character (DEL) of C0, and C1 controls.
+    code4 > 126 && code4 < 160 || // Lone high surrogates and low surrogates.
+    code4 > 55295 && code4 < 57344 || // Noncharacters.
+    code4 > 64975 && code4 < 65008 || /* eslint-disable no-bitwise */
+    (code4 & 65535) === 65535 || (code4 & 65535) === 65534 || /* eslint-enable no-bitwise */
     // Out of range
-    code3 > 1114111
+    code4 > 1114111
   ) {
     return "\uFFFD";
   }
-  return String.fromCodePoint(code3);
+  return String.fromCodePoint(code4);
 }
 
 // node_modules/.pnpm/micromark-util-normalize-identifier@2.0.1/node_modules/micromark-util-normalize-identifier/index.js
@@ -3823,31 +3823,31 @@ function normalizeIdentifier(value) {
 var asciiAlpha = regexCheck(/[A-Za-z]/);
 var asciiAlphanumeric = regexCheck(/[\dA-Za-z]/);
 var asciiAtext = regexCheck(/[#-'*+\--9=?A-Z^-~]/);
-function asciiControl(code3) {
+function asciiControl(code4) {
   return (
     // Special whitespace codes (which have negative values), C0 and Control
     // character DEL
-    code3 !== null && (code3 < 32 || code3 === 127)
+    code4 !== null && (code4 < 32 || code4 === 127)
   );
 }
 var asciiDigit = regexCheck(/\d/);
 var asciiHexDigit = regexCheck(/[\dA-Fa-f]/);
 var asciiPunctuation = regexCheck(/[!-/:-@[-`{-~]/);
-function markdownLineEnding(code3) {
-  return code3 !== null && code3 < -2;
+function markdownLineEnding(code4) {
+  return code4 !== null && code4 < -2;
 }
-function markdownLineEndingOrSpace(code3) {
-  return code3 !== null && (code3 < 0 || code3 === 32);
+function markdownLineEndingOrSpace(code4) {
+  return code4 !== null && (code4 < 0 || code4 === 32);
 }
-function markdownSpace(code3) {
-  return code3 === -2 || code3 === -1 || code3 === 32;
+function markdownSpace(code4) {
+  return code4 === -2 || code4 === -1 || code4 === 32;
 }
 var unicodePunctuation = regexCheck(/\p{P}|\p{S}/u);
 var unicodeWhitespace = regexCheck(/\s/);
 function regexCheck(regex) {
   return check;
-  function check(code3) {
-    return code3 !== null && code3 > -1 && regex.test(String.fromCharCode(code3));
+  function check(code4) {
+    return code4 !== null && code4 > -1 && regex.test(String.fromCharCode(code4));
   }
 }
 
@@ -3856,20 +3856,20 @@ function factorySpace(effects, ok3, type, max) {
   const limit = max ? max - 1 : Number.POSITIVE_INFINITY;
   let size = 0;
   return start;
-  function start(code3) {
-    if (markdownSpace(code3)) {
+  function start(code4) {
+    if (markdownSpace(code4)) {
       effects.enter(type);
-      return prefix(code3);
+      return prefix(code4);
     }
-    return ok3(code3);
+    return ok3(code4);
   }
-  function prefix(code3) {
-    if (markdownSpace(code3) && size++ < limit) {
-      effects.consume(code3);
+  function prefix(code4) {
+    if (markdownSpace(code4) && size++ < limit) {
+      effects.consume(code4);
       return prefix;
     }
     effects.exit(type);
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 
@@ -3881,21 +3881,21 @@ function initializeContent(effects) {
   const contentStart = effects.attempt(this.parser.constructs.contentInitial, afterContentStartConstruct, paragraphInitial);
   let previous3;
   return contentStart;
-  function afterContentStartConstruct(code3) {
-    if (code3 === null) {
-      effects.consume(code3);
+  function afterContentStartConstruct(code4) {
+    if (code4 === null) {
+      effects.consume(code4);
       return;
     }
     effects.enter("lineEnding");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEnding");
     return factorySpace(effects, contentStart, "linePrefix");
   }
-  function paragraphInitial(code3) {
+  function paragraphInitial(code4) {
     effects.enter("paragraph");
-    return lineStart(code3);
+    return lineStart(code4);
   }
-  function lineStart(code3) {
+  function lineStart(code4) {
     const token = effects.enter("chunkText", {
       contentType: "text",
       previous: previous3
@@ -3904,21 +3904,21 @@ function initializeContent(effects) {
       previous3.next = token;
     }
     previous3 = token;
-    return data(code3);
+    return data(code4);
   }
-  function data(code3) {
-    if (code3 === null) {
+  function data(code4) {
+    if (code4 === null) {
       effects.exit("chunkText");
       effects.exit("paragraph");
-      effects.consume(code3);
+      effects.consume(code4);
       return;
     }
-    if (markdownLineEnding(code3)) {
-      effects.consume(code3);
+    if (markdownLineEnding(code4)) {
+      effects.consume(code4);
       effects.exit("chunkText");
       return lineStart;
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return data;
   }
 }
@@ -3938,15 +3938,15 @@ function initializeDocument(effects) {
   let childToken;
   let lineStartOffset;
   return start;
-  function start(code3) {
+  function start(code4) {
     if (continued < stack.length) {
       const item = stack[continued];
       self.containerState = item[1];
-      return effects.attempt(item[0].continuation, documentContinue, checkNewContainers)(code3);
+      return effects.attempt(item[0].continuation, documentContinue, checkNewContainers)(code4);
     }
-    return checkNewContainers(code3);
+    return checkNewContainers(code4);
   }
-  function documentContinue(code3) {
+  function documentContinue(code4) {
     continued++;
     if (self.containerState._closeFlow) {
       self.containerState._closeFlow = void 0;
@@ -3972,49 +3972,49 @@ function initializeDocument(effects) {
       }
       splice(self.events, indexBeforeFlow + 1, 0, self.events.slice(indexBeforeExits));
       self.events.length = index2;
-      return checkNewContainers(code3);
+      return checkNewContainers(code4);
     }
-    return start(code3);
+    return start(code4);
   }
-  function checkNewContainers(code3) {
+  function checkNewContainers(code4) {
     if (continued === stack.length) {
       if (!childFlow) {
-        return documentContinued(code3);
+        return documentContinued(code4);
       }
       if (childFlow.currentConstruct && childFlow.currentConstruct.concrete) {
-        return flowStart(code3);
+        return flowStart(code4);
       }
       self.interrupt = Boolean(childFlow.currentConstruct && !childFlow._gfmTableDynamicInterruptHack);
     }
     self.containerState = {};
-    return effects.check(containerConstruct, thereIsANewContainer, thereIsNoNewContainer)(code3);
+    return effects.check(containerConstruct, thereIsANewContainer, thereIsNoNewContainer)(code4);
   }
-  function thereIsANewContainer(code3) {
+  function thereIsANewContainer(code4) {
     if (childFlow)
       closeFlow();
     exitContainers(continued);
-    return documentContinued(code3);
+    return documentContinued(code4);
   }
-  function thereIsNoNewContainer(code3) {
+  function thereIsNoNewContainer(code4) {
     self.parser.lazy[self.now().line] = continued !== stack.length;
     lineStartOffset = self.now().offset;
-    return flowStart(code3);
+    return flowStart(code4);
   }
-  function documentContinued(code3) {
+  function documentContinued(code4) {
     self.containerState = {};
-    return effects.attempt(containerConstruct, containerContinue, flowStart)(code3);
+    return effects.attempt(containerConstruct, containerContinue, flowStart)(code4);
   }
-  function containerContinue(code3) {
+  function containerContinue(code4) {
     continued++;
     stack.push([self.currentConstruct, self.containerState]);
-    return documentContinued(code3);
+    return documentContinued(code4);
   }
-  function flowStart(code3) {
-    if (code3 === null) {
+  function flowStart(code4) {
+    if (code4 === null) {
       if (childFlow)
         closeFlow();
       exitContainers(0);
-      effects.consume(code3);
+      effects.consume(code4);
       return;
     }
     childFlow = childFlow || self.parser.flow(self.now());
@@ -4023,23 +4023,23 @@ function initializeDocument(effects) {
       contentType: "flow",
       previous: childToken
     });
-    return flowContinue(code3);
+    return flowContinue(code4);
   }
-  function flowContinue(code3) {
-    if (code3 === null) {
+  function flowContinue(code4) {
+    if (code4 === null) {
       writeToChild(effects.exit("chunkFlow"), true);
       exitContainers(0);
-      effects.consume(code3);
+      effects.consume(code4);
       return;
     }
-    if (markdownLineEnding(code3)) {
-      effects.consume(code3);
+    if (markdownLineEnding(code4)) {
+      effects.consume(code4);
       writeToChild(effects.exit("chunkFlow"));
       continued = 0;
       self.interrupt = void 0;
       return start;
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return flowContinue;
   }
   function writeToChild(token, endOfFile) {
@@ -4110,11 +4110,11 @@ function tokenizeContainer(effects, ok3, nok) {
 }
 
 // node_modules/.pnpm/micromark-util-classify-character@2.0.1/node_modules/micromark-util-classify-character/index.js
-function classifyCharacter(code3) {
-  if (code3 === null || markdownLineEndingOrSpace(code3) || unicodeWhitespace(code3)) {
+function classifyCharacter(code4) {
+  if (code4 === null || markdownLineEndingOrSpace(code4) || unicodeWhitespace(code4)) {
     return 1;
   }
-  if (unicodePunctuation(code3)) {
+  if (unicodePunctuation(code4)) {
     return 2;
   }
 }
@@ -4143,7 +4143,7 @@ function resolveAllAttention(events, context) {
   let index2 = -1;
   let open2;
   let group;
-  let text5;
+  let text6;
   let openingSequence;
   let closingSequence;
   let use;
@@ -4181,7 +4181,7 @@ function resolveAllAttention(events, context) {
             },
             end
           };
-          text5 = {
+          text6 = {
             type: use > 1 ? "strongText" : "emphasisText",
             start: {
               ...events[open2][1].end
@@ -4209,9 +4209,9 @@ function resolveAllAttention(events, context) {
           if (events[open2][1].end.offset - events[open2][1].start.offset) {
             nextEvents = push(nextEvents, [["enter", events[open2][1], context], ["exit", events[open2][1], context]]);
           }
-          nextEvents = push(nextEvents, [["enter", group, context], ["enter", openingSequence, context], ["exit", openingSequence, context], ["enter", text5, context]]);
+          nextEvents = push(nextEvents, [["enter", group, context], ["enter", openingSequence, context], ["exit", openingSequence, context], ["enter", text6, context]]);
           nextEvents = push(nextEvents, resolveAll(context.parser.constructs.insideSpan.null, events.slice(open2 + 1, index2), context));
-          nextEvents = push(nextEvents, [["exit", text5, context], ["enter", closingSequence, context], ["exit", closingSequence, context], ["exit", group, context]]);
+          nextEvents = push(nextEvents, [["exit", text6, context], ["enter", closingSequence, context], ["exit", closingSequence, context], ["exit", group, context]]);
           if (events[index2][1].end.offset - events[index2][1].start.offset) {
             offset = 2;
             nextEvents = push(nextEvents, [["enter", events[index2][1], context], ["exit", events[index2][1], context]]);
@@ -4239,23 +4239,23 @@ function tokenizeAttention(effects, ok3) {
   const before = classifyCharacter(previous3);
   let marker;
   return start;
-  function start(code3) {
-    marker = code3;
+  function start(code4) {
+    marker = code4;
     effects.enter("attentionSequence");
-    return inside(code3);
+    return inside(code4);
   }
-  function inside(code3) {
-    if (code3 === marker) {
-      effects.consume(code3);
+  function inside(code4) {
+    if (code4 === marker) {
+      effects.consume(code4);
       return inside;
     }
     const token = effects.exit("attentionSequence");
-    const after = classifyCharacter(code3);
-    const open2 = !after || after === 2 && before || attentionMarkers2.includes(code3);
+    const after = classifyCharacter(code4);
+    const open2 = !after || after === 2 && before || attentionMarkers2.includes(code4);
     const close = !before || before === 2 && after || attentionMarkers2.includes(previous3);
     token._open = Boolean(marker === 42 ? open2 : open2 && (before || !close));
     token._close = Boolean(marker === 42 ? close : close && (after || !open2));
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 function movePoint(point3, offset) {
@@ -4272,96 +4272,96 @@ var autolink = {
 function tokenizeAutolink(effects, ok3, nok) {
   let size = 0;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("autolink");
     effects.enter("autolinkMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("autolinkMarker");
     effects.enter("autolinkProtocol");
     return open2;
   }
-  function open2(code3) {
-    if (asciiAlpha(code3)) {
-      effects.consume(code3);
+  function open2(code4) {
+    if (asciiAlpha(code4)) {
+      effects.consume(code4);
       return schemeOrEmailAtext;
     }
-    if (code3 === 64) {
-      return nok(code3);
+    if (code4 === 64) {
+      return nok(code4);
     }
-    return emailAtext(code3);
+    return emailAtext(code4);
   }
-  function schemeOrEmailAtext(code3) {
-    if (code3 === 43 || code3 === 45 || code3 === 46 || asciiAlphanumeric(code3)) {
+  function schemeOrEmailAtext(code4) {
+    if (code4 === 43 || code4 === 45 || code4 === 46 || asciiAlphanumeric(code4)) {
       size = 1;
-      return schemeInsideOrEmailAtext(code3);
+      return schemeInsideOrEmailAtext(code4);
     }
-    return emailAtext(code3);
+    return emailAtext(code4);
   }
-  function schemeInsideOrEmailAtext(code3) {
-    if (code3 === 58) {
-      effects.consume(code3);
+  function schemeInsideOrEmailAtext(code4) {
+    if (code4 === 58) {
+      effects.consume(code4);
       size = 0;
       return urlInside;
     }
-    if ((code3 === 43 || code3 === 45 || code3 === 46 || asciiAlphanumeric(code3)) && size++ < 32) {
-      effects.consume(code3);
+    if ((code4 === 43 || code4 === 45 || code4 === 46 || asciiAlphanumeric(code4)) && size++ < 32) {
+      effects.consume(code4);
       return schemeInsideOrEmailAtext;
     }
     size = 0;
-    return emailAtext(code3);
+    return emailAtext(code4);
   }
-  function urlInside(code3) {
-    if (code3 === 62) {
+  function urlInside(code4) {
+    if (code4 === 62) {
       effects.exit("autolinkProtocol");
       effects.enter("autolinkMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("autolinkMarker");
       effects.exit("autolink");
       return ok3;
     }
-    if (code3 === null || code3 === 32 || code3 === 60 || asciiControl(code3)) {
-      return nok(code3);
+    if (code4 === null || code4 === 32 || code4 === 60 || asciiControl(code4)) {
+      return nok(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return urlInside;
   }
-  function emailAtext(code3) {
-    if (code3 === 64) {
-      effects.consume(code3);
+  function emailAtext(code4) {
+    if (code4 === 64) {
+      effects.consume(code4);
       return emailAtSignOrDot;
     }
-    if (asciiAtext(code3)) {
-      effects.consume(code3);
+    if (asciiAtext(code4)) {
+      effects.consume(code4);
       return emailAtext;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function emailAtSignOrDot(code3) {
-    return asciiAlphanumeric(code3) ? emailLabel(code3) : nok(code3);
+  function emailAtSignOrDot(code4) {
+    return asciiAlphanumeric(code4) ? emailLabel(code4) : nok(code4);
   }
-  function emailLabel(code3) {
-    if (code3 === 46) {
-      effects.consume(code3);
+  function emailLabel(code4) {
+    if (code4 === 46) {
+      effects.consume(code4);
       size = 0;
       return emailAtSignOrDot;
     }
-    if (code3 === 62) {
+    if (code4 === 62) {
       effects.exit("autolinkProtocol").type = "autolinkEmail";
       effects.enter("autolinkMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("autolinkMarker");
       effects.exit("autolink");
       return ok3;
     }
-    return emailValue(code3);
+    return emailValue(code4);
   }
-  function emailValue(code3) {
-    if ((code3 === 45 || asciiAlphanumeric(code3)) && size++ < 63) {
-      const next = code3 === 45 ? emailValue : emailLabel;
-      effects.consume(code3);
+  function emailValue(code4) {
+    if ((code4 === 45 || asciiAlphanumeric(code4)) && size++ < 63) {
+      const next = code4 === 45 ? emailValue : emailLabel;
+      effects.consume(code4);
       return next;
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 
@@ -4372,11 +4372,11 @@ var blankLine = {
 };
 function tokenizeBlankLine(effects, ok3, nok) {
   return start;
-  function start(code3) {
-    return markdownSpace(code3) ? factorySpace(effects, after, "linePrefix")(code3) : after(code3);
+  function start(code4) {
+    return markdownSpace(code4) ? factorySpace(effects, after, "linePrefix")(code4) : after(code4);
   }
-  function after(code3) {
-    return code3 === null || markdownLineEnding(code3) ? ok3(code3) : nok(code3);
+  function after(code4) {
+    return code4 === null || markdownLineEnding(code4) ? ok3(code4) : nok(code4);
   }
 }
 
@@ -4392,8 +4392,8 @@ var blockQuote = {
 function tokenizeBlockQuoteStart(effects, ok3, nok) {
   const self = this;
   return start;
-  function start(code3) {
-    if (code3 === 62) {
+  function start(code4) {
+    if (code4 === 62) {
       const state = self.containerState;
       if (!state.open) {
         effects.enter("blockQuote", {
@@ -4403,35 +4403,35 @@ function tokenizeBlockQuoteStart(effects, ok3, nok) {
       }
       effects.enter("blockQuotePrefix");
       effects.enter("blockQuoteMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("blockQuoteMarker");
       return after;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function after(code3) {
-    if (markdownSpace(code3)) {
+  function after(code4) {
+    if (markdownSpace(code4)) {
       effects.enter("blockQuotePrefixWhitespace");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("blockQuotePrefixWhitespace");
       effects.exit("blockQuotePrefix");
       return ok3;
     }
     effects.exit("blockQuotePrefix");
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 function tokenizeBlockQuoteContinuation(effects, ok3, nok) {
   const self = this;
   return contStart;
-  function contStart(code3) {
-    if (markdownSpace(code3)) {
-      return factorySpace(effects, contBefore, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code3);
+  function contStart(code4) {
+    if (markdownSpace(code4)) {
+      return factorySpace(effects, contBefore, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code4);
     }
-    return contBefore(code3);
+    return contBefore(code4);
   }
-  function contBefore(code3) {
-    return effects.attempt(blockQuote, ok3, nok)(code3);
+  function contBefore(code4) {
+    return effects.attempt(blockQuote, ok3, nok)(code4);
   }
 }
 function exit(effects) {
@@ -4445,22 +4445,22 @@ var characterEscape = {
 };
 function tokenizeCharacterEscape(effects, ok3, nok) {
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("characterEscape");
     effects.enter("escapeMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("escapeMarker");
     return inside;
   }
-  function inside(code3) {
-    if (asciiPunctuation(code3)) {
+  function inside(code4) {
+    if (asciiPunctuation(code4)) {
       effects.enter("characterEscapeValue");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("characterEscapeValue");
       effects.exit("characterEscape");
       return ok3;
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 
@@ -4475,29 +4475,29 @@ function tokenizeCharacterReference(effects, ok3, nok) {
   let max;
   let test;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("characterReference");
     effects.enter("characterReferenceMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("characterReferenceMarker");
     return open2;
   }
-  function open2(code3) {
-    if (code3 === 35) {
+  function open2(code4) {
+    if (code4 === 35) {
       effects.enter("characterReferenceMarkerNumeric");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("characterReferenceMarkerNumeric");
       return numeric;
     }
     effects.enter("characterReferenceValue");
     max = 31;
     test = asciiAlphanumeric;
-    return value(code3);
+    return value(code4);
   }
-  function numeric(code3) {
-    if (code3 === 88 || code3 === 120) {
+  function numeric(code4) {
+    if (code4 === 88 || code4 === 120) {
       effects.enter("characterReferenceMarkerHexadecimal");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("characterReferenceMarkerHexadecimal");
       effects.enter("characterReferenceValue");
       max = 6;
@@ -4507,25 +4507,25 @@ function tokenizeCharacterReference(effects, ok3, nok) {
     effects.enter("characterReferenceValue");
     max = 7;
     test = asciiDigit;
-    return value(code3);
+    return value(code4);
   }
-  function value(code3) {
-    if (code3 === 59 && size) {
+  function value(code4) {
+    if (code4 === 59 && size) {
       const token = effects.exit("characterReferenceValue");
       if (test === asciiAlphanumeric && !decodeNamedCharacterReference(self.sliceSerialize(token))) {
-        return nok(code3);
+        return nok(code4);
       }
       effects.enter("characterReferenceMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("characterReferenceMarker");
       effects.exit("characterReference");
       return ok3;
     }
-    if (test(code3) && size++ < max) {
-      effects.consume(code3);
+    if (test(code4) && size++ < max) {
+      effects.consume(code4);
       return value;
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 
@@ -4549,166 +4549,166 @@ function tokenizeCodeFenced(effects, ok3, nok) {
   let sizeOpen = 0;
   let marker;
   return start;
-  function start(code3) {
-    return beforeSequenceOpen(code3);
+  function start(code4) {
+    return beforeSequenceOpen(code4);
   }
-  function beforeSequenceOpen(code3) {
+  function beforeSequenceOpen(code4) {
     const tail = self.events[self.events.length - 1];
     initialPrefix = tail && tail[1].type === "linePrefix" ? tail[2].sliceSerialize(tail[1], true).length : 0;
-    marker = code3;
+    marker = code4;
     effects.enter("codeFenced");
     effects.enter("codeFencedFence");
     effects.enter("codeFencedFenceSequence");
-    return sequenceOpen(code3);
+    return sequenceOpen(code4);
   }
-  function sequenceOpen(code3) {
-    if (code3 === marker) {
+  function sequenceOpen(code4) {
+    if (code4 === marker) {
       sizeOpen++;
-      effects.consume(code3);
+      effects.consume(code4);
       return sequenceOpen;
     }
     if (sizeOpen < 3) {
-      return nok(code3);
+      return nok(code4);
     }
     effects.exit("codeFencedFenceSequence");
-    return markdownSpace(code3) ? factorySpace(effects, infoBefore, "whitespace")(code3) : infoBefore(code3);
+    return markdownSpace(code4) ? factorySpace(effects, infoBefore, "whitespace")(code4) : infoBefore(code4);
   }
-  function infoBefore(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
+  function infoBefore(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("codeFencedFence");
-      return self.interrupt ? ok3(code3) : effects.check(nonLazyContinuation, atNonLazyBreak, after)(code3);
+      return self.interrupt ? ok3(code4) : effects.check(nonLazyContinuation, atNonLazyBreak, after)(code4);
     }
     effects.enter("codeFencedFenceInfo");
     effects.enter("chunkString", {
       contentType: "string"
     });
-    return info(code3);
+    return info(code4);
   }
-  function info(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
+  function info(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("chunkString");
       effects.exit("codeFencedFenceInfo");
-      return infoBefore(code3);
+      return infoBefore(code4);
     }
-    if (markdownSpace(code3)) {
+    if (markdownSpace(code4)) {
       effects.exit("chunkString");
       effects.exit("codeFencedFenceInfo");
-      return factorySpace(effects, metaBefore, "whitespace")(code3);
+      return factorySpace(effects, metaBefore, "whitespace")(code4);
     }
-    if (code3 === 96 && code3 === marker) {
-      return nok(code3);
+    if (code4 === 96 && code4 === marker) {
+      return nok(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return info;
   }
-  function metaBefore(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
-      return infoBefore(code3);
+  function metaBefore(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
+      return infoBefore(code4);
     }
     effects.enter("codeFencedFenceMeta");
     effects.enter("chunkString", {
       contentType: "string"
     });
-    return meta(code3);
+    return meta(code4);
   }
-  function meta(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
+  function meta(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("chunkString");
       effects.exit("codeFencedFenceMeta");
-      return infoBefore(code3);
+      return infoBefore(code4);
     }
-    if (code3 === 96 && code3 === marker) {
-      return nok(code3);
+    if (code4 === 96 && code4 === marker) {
+      return nok(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return meta;
   }
-  function atNonLazyBreak(code3) {
-    return effects.attempt(closeStart, after, contentBefore)(code3);
+  function atNonLazyBreak(code4) {
+    return effects.attempt(closeStart, after, contentBefore)(code4);
   }
-  function contentBefore(code3) {
+  function contentBefore(code4) {
     effects.enter("lineEnding");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEnding");
     return contentStart;
   }
-  function contentStart(code3) {
-    return initialPrefix > 0 && markdownSpace(code3) ? factorySpace(effects, beforeContentChunk, "linePrefix", initialPrefix + 1)(code3) : beforeContentChunk(code3);
+  function contentStart(code4) {
+    return initialPrefix > 0 && markdownSpace(code4) ? factorySpace(effects, beforeContentChunk, "linePrefix", initialPrefix + 1)(code4) : beforeContentChunk(code4);
   }
-  function beforeContentChunk(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
-      return effects.check(nonLazyContinuation, atNonLazyBreak, after)(code3);
+  function beforeContentChunk(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
+      return effects.check(nonLazyContinuation, atNonLazyBreak, after)(code4);
     }
     effects.enter("codeFlowValue");
-    return contentChunk(code3);
+    return contentChunk(code4);
   }
-  function contentChunk(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
+  function contentChunk(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("codeFlowValue");
-      return beforeContentChunk(code3);
+      return beforeContentChunk(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return contentChunk;
   }
-  function after(code3) {
+  function after(code4) {
     effects.exit("codeFenced");
-    return ok3(code3);
+    return ok3(code4);
   }
   function tokenizeCloseStart(effects2, ok4, nok2) {
     let size = 0;
     return startBefore;
-    function startBefore(code3) {
+    function startBefore(code4) {
       effects2.enter("lineEnding");
-      effects2.consume(code3);
+      effects2.consume(code4);
       effects2.exit("lineEnding");
       return start2;
     }
-    function start2(code3) {
+    function start2(code4) {
       effects2.enter("codeFencedFence");
-      return markdownSpace(code3) ? factorySpace(effects2, beforeSequenceClose, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code3) : beforeSequenceClose(code3);
+      return markdownSpace(code4) ? factorySpace(effects2, beforeSequenceClose, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code4) : beforeSequenceClose(code4);
     }
-    function beforeSequenceClose(code3) {
-      if (code3 === marker) {
+    function beforeSequenceClose(code4) {
+      if (code4 === marker) {
         effects2.enter("codeFencedFenceSequence");
-        return sequenceClose(code3);
+        return sequenceClose(code4);
       }
-      return nok2(code3);
+      return nok2(code4);
     }
-    function sequenceClose(code3) {
-      if (code3 === marker) {
+    function sequenceClose(code4) {
+      if (code4 === marker) {
         size++;
-        effects2.consume(code3);
+        effects2.consume(code4);
         return sequenceClose;
       }
       if (size >= sizeOpen) {
         effects2.exit("codeFencedFenceSequence");
-        return markdownSpace(code3) ? factorySpace(effects2, sequenceCloseAfter, "whitespace")(code3) : sequenceCloseAfter(code3);
+        return markdownSpace(code4) ? factorySpace(effects2, sequenceCloseAfter, "whitespace")(code4) : sequenceCloseAfter(code4);
       }
-      return nok2(code3);
+      return nok2(code4);
     }
-    function sequenceCloseAfter(code3) {
-      if (code3 === null || markdownLineEnding(code3)) {
+    function sequenceCloseAfter(code4) {
+      if (code4 === null || markdownLineEnding(code4)) {
         effects2.exit("codeFencedFence");
-        return ok4(code3);
+        return ok4(code4);
       }
-      return nok2(code3);
+      return nok2(code4);
     }
   }
 }
 function tokenizeNonLazyContinuation(effects, ok3, nok) {
   const self = this;
   return start;
-  function start(code3) {
-    if (code3 === null) {
-      return nok(code3);
+  function start(code4) {
+    if (code4 === null) {
+      return nok(code4);
     }
     effects.enter("lineEnding");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEnding");
     return lineStart;
   }
-  function lineStart(code3) {
-    return self.parser.lazy[self.now().line] ? nok(code3) : ok3(code3);
+  function lineStart(code4) {
+    return self.parser.lazy[self.now().line] ? nok(code4) : ok3(code4);
   }
 }
 
@@ -4724,55 +4724,55 @@ var furtherStart = {
 function tokenizeCodeIndented(effects, ok3, nok) {
   const self = this;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("codeIndented");
-    return factorySpace(effects, afterPrefix, "linePrefix", 4 + 1)(code3);
+    return factorySpace(effects, afterPrefix, "linePrefix", 4 + 1)(code4);
   }
-  function afterPrefix(code3) {
+  function afterPrefix(code4) {
     const tail = self.events[self.events.length - 1];
-    return tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4 ? atBreak(code3) : nok(code3);
+    return tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4 ? atBreak(code4) : nok(code4);
   }
-  function atBreak(code3) {
-    if (code3 === null) {
-      return after(code3);
+  function atBreak(code4) {
+    if (code4 === null) {
+      return after(code4);
     }
-    if (markdownLineEnding(code3)) {
-      return effects.attempt(furtherStart, atBreak, after)(code3);
+    if (markdownLineEnding(code4)) {
+      return effects.attempt(furtherStart, atBreak, after)(code4);
     }
     effects.enter("codeFlowValue");
-    return inside(code3);
+    return inside(code4);
   }
-  function inside(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
+  function inside(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("codeFlowValue");
-      return atBreak(code3);
+      return atBreak(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return inside;
   }
-  function after(code3) {
+  function after(code4) {
     effects.exit("codeIndented");
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 function tokenizeFurtherStart(effects, ok3, nok) {
   const self = this;
   return furtherStart2;
-  function furtherStart2(code3) {
+  function furtherStart2(code4) {
     if (self.parser.lazy[self.now().line]) {
-      return nok(code3);
+      return nok(code4);
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       effects.enter("lineEnding");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("lineEnding");
       return furtherStart2;
     }
-    return factorySpace(effects, afterPrefix, "linePrefix", 4 + 1)(code3);
+    return factorySpace(effects, afterPrefix, "linePrefix", 4 + 1)(code4);
   }
-  function afterPrefix(code3) {
+  function afterPrefix(code4) {
     const tail = self.events[self.events.length - 1];
-    return tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4 ? ok3(code3) : markdownLineEnding(code3) ? furtherStart2(code3) : nok(code3);
+    return tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4 ? ok3(code4) : markdownLineEnding(code4) ? furtherStart2(code4) : nok(code4);
   }
 }
 
@@ -4820,8 +4820,8 @@ function resolveCodeText(events) {
   }
   return events;
 }
-function previous(code3) {
-  return code3 !== 96 || this.events[this.events.length - 1][1].type === "characterEscape";
+function previous(code4) {
+  return code4 !== 96 || this.events[this.events.length - 1][1].type === "characterEscape";
 }
 function tokenizeCodeText(effects, ok3, nok) {
   const self = this;
@@ -4829,65 +4829,65 @@ function tokenizeCodeText(effects, ok3, nok) {
   let size;
   let token;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("codeText");
     effects.enter("codeTextSequence");
-    return sequenceOpen(code3);
+    return sequenceOpen(code4);
   }
-  function sequenceOpen(code3) {
-    if (code3 === 96) {
-      effects.consume(code3);
+  function sequenceOpen(code4) {
+    if (code4 === 96) {
+      effects.consume(code4);
       sizeOpen++;
       return sequenceOpen;
     }
     effects.exit("codeTextSequence");
-    return between(code3);
+    return between(code4);
   }
-  function between(code3) {
-    if (code3 === null) {
-      return nok(code3);
+  function between(code4) {
+    if (code4 === null) {
+      return nok(code4);
     }
-    if (code3 === 32) {
+    if (code4 === 32) {
       effects.enter("space");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("space");
       return between;
     }
-    if (code3 === 96) {
+    if (code4 === 96) {
       token = effects.enter("codeTextSequence");
       size = 0;
-      return sequenceClose(code3);
+      return sequenceClose(code4);
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       effects.enter("lineEnding");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("lineEnding");
       return between;
     }
     effects.enter("codeTextData");
-    return data(code3);
+    return data(code4);
   }
-  function data(code3) {
-    if (code3 === null || code3 === 32 || code3 === 96 || markdownLineEnding(code3)) {
+  function data(code4) {
+    if (code4 === null || code4 === 32 || code4 === 96 || markdownLineEnding(code4)) {
       effects.exit("codeTextData");
-      return between(code3);
+      return between(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return data;
   }
-  function sequenceClose(code3) {
-    if (code3 === 96) {
-      effects.consume(code3);
+  function sequenceClose(code4) {
+    if (code4 === 96) {
+      effects.consume(code4);
       size++;
       return sequenceClose;
     }
     if (size === sizeOpen) {
       effects.exit("codeTextSequence");
       effects.exit("codeText");
-      return ok3(code3);
+      return ok3(code4);
     }
     token.type = "codeTextData";
-    return data(code3);
+    return data(code4);
   }
 }
 
@@ -5075,13 +5075,13 @@ var SpliceBuffer = class {
     }
   }
 };
-function chunkedPush(list3, right) {
+function chunkedPush(list4, right) {
   let chunkStart = 0;
   if (right.length < 1e4) {
-    list3.push(...right);
+    list4.push(...right);
   } else {
     while (chunkStart < right.length) {
-      list3.push(...right.slice(chunkStart, chunkStart + 1e4));
+      list4.push(...right.slice(chunkStart, chunkStart + 1e4));
       chunkStart += 1e4;
     }
   }
@@ -5256,30 +5256,30 @@ function resolveContent(events) {
 function tokenizeContent(effects, ok3) {
   let previous3;
   return chunkStart;
-  function chunkStart(code3) {
+  function chunkStart(code4) {
     effects.enter("content");
     previous3 = effects.enter("chunkContent", {
       contentType: "content"
     });
-    return chunkInside(code3);
+    return chunkInside(code4);
   }
-  function chunkInside(code3) {
-    if (code3 === null) {
-      return contentEnd(code3);
+  function chunkInside(code4) {
+    if (code4 === null) {
+      return contentEnd(code4);
     }
-    if (markdownLineEnding(code3)) {
-      return effects.check(continuationConstruct, contentContinue, contentEnd)(code3);
+    if (markdownLineEnding(code4)) {
+      return effects.check(continuationConstruct, contentContinue, contentEnd)(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return chunkInside;
   }
-  function contentEnd(code3) {
+  function contentEnd(code4) {
     effects.exit("chunkContent");
     effects.exit("content");
-    return ok3(code3);
+    return ok3(code4);
   }
-  function contentContinue(code3) {
-    effects.consume(code3);
+  function contentContinue(code4) {
+    effects.consume(code4);
     effects.exit("chunkContent");
     previous3.next = effects.enter("chunkContent", {
       contentType: "content",
@@ -5292,22 +5292,22 @@ function tokenizeContent(effects, ok3) {
 function tokenizeContinuation(effects, ok3, nok) {
   const self = this;
   return startLookahead;
-  function startLookahead(code3) {
+  function startLookahead(code4) {
     effects.exit("chunkContent");
     effects.enter("lineEnding");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEnding");
     return factorySpace(effects, prefixed, "linePrefix");
   }
-  function prefixed(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
-      return nok(code3);
+  function prefixed(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
+      return nok(code4);
     }
     const tail = self.events[self.events.length - 1];
     if (!self.parser.constructs.disable.null.includes("codeIndented") && tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4) {
-      return ok3(code3);
+      return ok3(code4);
     }
-    return effects.interrupt(self.parser.constructs.flow, nok, ok3)(code3);
+    return effects.interrupt(self.parser.constructs.flow, nok, ok3)(code4);
   }
 }
 
@@ -5316,17 +5316,17 @@ function factoryDestination(effects, ok3, nok, type, literalType, literalMarkerT
   const limit = max || Number.POSITIVE_INFINITY;
   let balance = 0;
   return start;
-  function start(code3) {
-    if (code3 === 60) {
+  function start(code4) {
+    if (code4 === 60) {
       effects.enter(type);
       effects.enter(literalType);
       effects.enter(literalMarkerType);
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit(literalMarkerType);
       return enclosedBefore;
     }
-    if (code3 === null || code3 === 32 || code3 === 41 || asciiControl(code3)) {
-      return nok(code3);
+    if (code4 === null || code4 === 32 || code4 === 41 || asciiControl(code4)) {
+      return nok(code4);
     }
     effects.enter(type);
     effects.enter(rawType);
@@ -5334,12 +5334,12 @@ function factoryDestination(effects, ok3, nok, type, literalType, literalMarkerT
     effects.enter("chunkString", {
       contentType: "string"
     });
-    return raw(code3);
+    return raw(code4);
   }
-  function enclosedBefore(code3) {
-    if (code3 === 62) {
+  function enclosedBefore(code4) {
+    if (code4 === 62) {
       effects.enter(literalMarkerType);
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit(literalMarkerType);
       effects.exit(literalType);
       effects.exit(type);
@@ -5349,57 +5349,57 @@ function factoryDestination(effects, ok3, nok, type, literalType, literalMarkerT
     effects.enter("chunkString", {
       contentType: "string"
     });
-    return enclosed(code3);
+    return enclosed(code4);
   }
-  function enclosed(code3) {
-    if (code3 === 62) {
+  function enclosed(code4) {
+    if (code4 === 62) {
       effects.exit("chunkString");
       effects.exit(stringType);
-      return enclosedBefore(code3);
+      return enclosedBefore(code4);
     }
-    if (code3 === null || code3 === 60 || markdownLineEnding(code3)) {
-      return nok(code3);
+    if (code4 === null || code4 === 60 || markdownLineEnding(code4)) {
+      return nok(code4);
     }
-    effects.consume(code3);
-    return code3 === 92 ? enclosedEscape : enclosed;
+    effects.consume(code4);
+    return code4 === 92 ? enclosedEscape : enclosed;
   }
-  function enclosedEscape(code3) {
-    if (code3 === 60 || code3 === 62 || code3 === 92) {
-      effects.consume(code3);
+  function enclosedEscape(code4) {
+    if (code4 === 60 || code4 === 62 || code4 === 92) {
+      effects.consume(code4);
       return enclosed;
     }
-    return enclosed(code3);
+    return enclosed(code4);
   }
-  function raw(code3) {
-    if (!balance && (code3 === null || code3 === 41 || markdownLineEndingOrSpace(code3))) {
+  function raw(code4) {
+    if (!balance && (code4 === null || code4 === 41 || markdownLineEndingOrSpace(code4))) {
       effects.exit("chunkString");
       effects.exit(stringType);
       effects.exit(rawType);
       effects.exit(type);
-      return ok3(code3);
+      return ok3(code4);
     }
-    if (balance < limit && code3 === 40) {
-      effects.consume(code3);
+    if (balance < limit && code4 === 40) {
+      effects.consume(code4);
       balance++;
       return raw;
     }
-    if (code3 === 41) {
-      effects.consume(code3);
+    if (code4 === 41) {
+      effects.consume(code4);
       balance--;
       return raw;
     }
-    if (code3 === null || code3 === 32 || code3 === 40 || asciiControl(code3)) {
-      return nok(code3);
+    if (code4 === null || code4 === 32 || code4 === 40 || asciiControl(code4)) {
+      return nok(code4);
     }
-    effects.consume(code3);
-    return code3 === 92 ? rawEscape : raw;
+    effects.consume(code4);
+    return code4 === 92 ? rawEscape : raw;
   }
-  function rawEscape(code3) {
-    if (code3 === 40 || code3 === 41 || code3 === 92) {
-      effects.consume(code3);
+  function rawEscape(code4) {
+    if (code4 === 40 || code4 === 41 || code4 === 92) {
+      effects.consume(code4);
       return raw;
     }
-    return raw(code3);
+    return raw(code4);
   }
 }
 
@@ -5409,59 +5409,59 @@ function factoryLabel(effects, ok3, nok, type, markerType, stringType) {
   let size = 0;
   let seen;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter(type);
     effects.enter(markerType);
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit(markerType);
     effects.enter(stringType);
     return atBreak;
   }
-  function atBreak(code3) {
-    if (size > 999 || code3 === null || code3 === 91 || code3 === 93 && !seen || // To do: remove in the future once we’ve switched from
+  function atBreak(code4) {
+    if (size > 999 || code4 === null || code4 === 91 || code4 === 93 && !seen || // To do: remove in the future once we’ve switched from
     // `micromark-extension-footnote` to `micromark-extension-gfm-footnote`,
     // which doesn’t need this.
     // Hidden footnotes hook.
     /* c8 ignore next 3 */
-    code3 === 94 && !size && "_hiddenFootnoteSupport" in self.parser.constructs) {
-      return nok(code3);
+    code4 === 94 && !size && "_hiddenFootnoteSupport" in self.parser.constructs) {
+      return nok(code4);
     }
-    if (code3 === 93) {
+    if (code4 === 93) {
       effects.exit(stringType);
       effects.enter(markerType);
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit(markerType);
       effects.exit(type);
       return ok3;
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       effects.enter("lineEnding");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("lineEnding");
       return atBreak;
     }
     effects.enter("chunkString", {
       contentType: "string"
     });
-    return labelInside(code3);
+    return labelInside(code4);
   }
-  function labelInside(code3) {
-    if (code3 === null || code3 === 91 || code3 === 93 || markdownLineEnding(code3) || size++ > 999) {
+  function labelInside(code4) {
+    if (code4 === null || code4 === 91 || code4 === 93 || markdownLineEnding(code4) || size++ > 999) {
       effects.exit("chunkString");
-      return atBreak(code3);
+      return atBreak(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     if (!seen)
-      seen = !markdownSpace(code3);
-    return code3 === 92 ? labelEscape : labelInside;
+      seen = !markdownSpace(code4);
+    return code4 === 92 ? labelEscape : labelInside;
   }
-  function labelEscape(code3) {
-    if (code3 === 91 || code3 === 92 || code3 === 93) {
-      effects.consume(code3);
+  function labelEscape(code4) {
+    if (code4 === 91 || code4 === 92 || code4 === 93) {
+      effects.consume(code4);
       size++;
       return labelInside;
     }
-    return labelInside(code3);
+    return labelInside(code4);
   }
 }
 
@@ -5469,61 +5469,61 @@ function factoryLabel(effects, ok3, nok, type, markerType, stringType) {
 function factoryTitle(effects, ok3, nok, type, markerType, stringType) {
   let marker;
   return start;
-  function start(code3) {
-    if (code3 === 34 || code3 === 39 || code3 === 40) {
+  function start(code4) {
+    if (code4 === 34 || code4 === 39 || code4 === 40) {
       effects.enter(type);
       effects.enter(markerType);
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit(markerType);
-      marker = code3 === 40 ? 41 : code3;
+      marker = code4 === 40 ? 41 : code4;
       return begin;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function begin(code3) {
-    if (code3 === marker) {
+  function begin(code4) {
+    if (code4 === marker) {
       effects.enter(markerType);
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit(markerType);
       effects.exit(type);
       return ok3;
     }
     effects.enter(stringType);
-    return atBreak(code3);
+    return atBreak(code4);
   }
-  function atBreak(code3) {
-    if (code3 === marker) {
+  function atBreak(code4) {
+    if (code4 === marker) {
       effects.exit(stringType);
       return begin(marker);
     }
-    if (code3 === null) {
-      return nok(code3);
+    if (code4 === null) {
+      return nok(code4);
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       effects.enter("lineEnding");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("lineEnding");
       return factorySpace(effects, atBreak, "linePrefix");
     }
     effects.enter("chunkString", {
       contentType: "string"
     });
-    return inside(code3);
+    return inside(code4);
   }
-  function inside(code3) {
-    if (code3 === marker || code3 === null || markdownLineEnding(code3)) {
+  function inside(code4) {
+    if (code4 === marker || code4 === null || markdownLineEnding(code4)) {
       effects.exit("chunkString");
-      return atBreak(code3);
+      return atBreak(code4);
     }
-    effects.consume(code3);
-    return code3 === 92 ? escape : inside;
+    effects.consume(code4);
+    return code4 === 92 ? escape : inside;
   }
-  function escape(code3) {
-    if (code3 === marker || code3 === 92) {
-      effects.consume(code3);
+  function escape(code4) {
+    if (code4 === marker || code4 === 92) {
+      effects.consume(code4);
       return inside;
     }
-    return inside(code3);
+    return inside(code4);
   }
 }
 
@@ -5531,18 +5531,18 @@ function factoryTitle(effects, ok3, nok, type, markerType, stringType) {
 function factoryWhitespace(effects, ok3) {
   let seen;
   return start;
-  function start(code3) {
-    if (markdownLineEnding(code3)) {
+  function start(code4) {
+    if (markdownLineEnding(code4)) {
       effects.enter("lineEnding");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("lineEnding");
       seen = true;
       return start;
     }
-    if (markdownSpace(code3)) {
-      return factorySpace(effects, start, seen ? "linePrefix" : "lineSuffix")(code3);
+    if (markdownSpace(code4)) {
+      return factorySpace(effects, start, seen ? "linePrefix" : "lineSuffix")(code4);
     }
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 
@@ -5559,11 +5559,11 @@ function tokenizeDefinition(effects, ok3, nok) {
   const self = this;
   let identifier;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("definition");
-    return before(code3);
+    return before(code4);
   }
-  function before(code3) {
+  function before(code4) {
     return factoryLabel.call(
       self,
       effects,
@@ -5573,22 +5573,22 @@ function tokenizeDefinition(effects, ok3, nok) {
       "definitionLabel",
       "definitionLabelMarker",
       "definitionLabelString"
-    )(code3);
+    )(code4);
   }
-  function labelAfter(code3) {
+  function labelAfter(code4) {
     identifier = normalizeIdentifier(self.sliceSerialize(self.events[self.events.length - 1][1]).slice(1, -1));
-    if (code3 === 58) {
+    if (code4 === 58) {
       effects.enter("definitionMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("definitionMarker");
       return markerAfter;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function markerAfter(code3) {
-    return markdownLineEndingOrSpace(code3) ? factoryWhitespace(effects, destinationBefore)(code3) : destinationBefore(code3);
+  function markerAfter(code4) {
+    return markdownLineEndingOrSpace(code4) ? factoryWhitespace(effects, destinationBefore)(code4) : destinationBefore(code4);
   }
-  function destinationBefore(code3) {
+  function destinationBefore(code4) {
     return factoryDestination(
       effects,
       destinationAfter,
@@ -5599,36 +5599,36 @@ function tokenizeDefinition(effects, ok3, nok) {
       "definitionDestinationLiteralMarker",
       "definitionDestinationRaw",
       "definitionDestinationString"
-    )(code3);
+    )(code4);
   }
-  function destinationAfter(code3) {
-    return effects.attempt(titleBefore, after, after)(code3);
+  function destinationAfter(code4) {
+    return effects.attempt(titleBefore, after, after)(code4);
   }
-  function after(code3) {
-    return markdownSpace(code3) ? factorySpace(effects, afterWhitespace, "whitespace")(code3) : afterWhitespace(code3);
+  function after(code4) {
+    return markdownSpace(code4) ? factorySpace(effects, afterWhitespace, "whitespace")(code4) : afterWhitespace(code4);
   }
-  function afterWhitespace(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
+  function afterWhitespace(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("definition");
       self.parser.defined.push(identifier);
-      return ok3(code3);
+      return ok3(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 function tokenizeTitleBefore(effects, ok3, nok) {
   return titleBefore2;
-  function titleBefore2(code3) {
-    return markdownLineEndingOrSpace(code3) ? factoryWhitespace(effects, beforeMarker)(code3) : nok(code3);
+  function titleBefore2(code4) {
+    return markdownLineEndingOrSpace(code4) ? factoryWhitespace(effects, beforeMarker)(code4) : nok(code4);
   }
-  function beforeMarker(code3) {
-    return factoryTitle(effects, titleAfter, nok, "definitionTitle", "definitionTitleMarker", "definitionTitleString")(code3);
+  function beforeMarker(code4) {
+    return factoryTitle(effects, titleAfter, nok, "definitionTitle", "definitionTitleMarker", "definitionTitleString")(code4);
   }
-  function titleAfter(code3) {
-    return markdownSpace(code3) ? factorySpace(effects, titleAfterOptionalWhitespace, "whitespace")(code3) : titleAfterOptionalWhitespace(code3);
+  function titleAfter(code4) {
+    return markdownSpace(code4) ? factorySpace(effects, titleAfterOptionalWhitespace, "whitespace")(code4) : titleAfterOptionalWhitespace(code4);
   }
-  function titleAfterOptionalWhitespace(code3) {
-    return code3 === null || markdownLineEnding(code3) ? ok3(code3) : nok(code3);
+  function titleAfterOptionalWhitespace(code4) {
+    return code4 === null || markdownLineEnding(code4) ? ok3(code4) : nok(code4);
   }
 }
 
@@ -5639,17 +5639,17 @@ var hardBreakEscape = {
 };
 function tokenizeHardBreakEscape(effects, ok3, nok) {
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("hardBreakEscape");
-    effects.consume(code3);
+    effects.consume(code4);
     return after;
   }
-  function after(code3) {
-    if (markdownLineEnding(code3)) {
+  function after(code4) {
+    if (markdownLineEnding(code4)) {
       effects.exit("hardBreakEscape");
-      return ok3(code3);
+      return ok3(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 
@@ -5663,7 +5663,7 @@ function resolveHeadingAtx(events, context) {
   let contentEnd = events.length - 2;
   let contentStart = 3;
   let content3;
-  let text5;
+  let text6;
   if (events[contentStart][1].type === "whitespace") {
     contentStart += 2;
   }
@@ -5679,67 +5679,67 @@ function resolveHeadingAtx(events, context) {
       start: events[contentStart][1].start,
       end: events[contentEnd][1].end
     };
-    text5 = {
+    text6 = {
       type: "chunkText",
       start: events[contentStart][1].start,
       end: events[contentEnd][1].end,
       contentType: "text"
     };
-    splice(events, contentStart, contentEnd - contentStart + 1, [["enter", content3, context], ["enter", text5, context], ["exit", text5, context], ["exit", content3, context]]);
+    splice(events, contentStart, contentEnd - contentStart + 1, [["enter", content3, context], ["enter", text6, context], ["exit", text6, context], ["exit", content3, context]]);
   }
   return events;
 }
 function tokenizeHeadingAtx(effects, ok3, nok) {
   let size = 0;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("atxHeading");
-    return before(code3);
+    return before(code4);
   }
-  function before(code3) {
+  function before(code4) {
     effects.enter("atxHeadingSequence");
-    return sequenceOpen(code3);
+    return sequenceOpen(code4);
   }
-  function sequenceOpen(code3) {
-    if (code3 === 35 && size++ < 6) {
-      effects.consume(code3);
+  function sequenceOpen(code4) {
+    if (code4 === 35 && size++ < 6) {
+      effects.consume(code4);
       return sequenceOpen;
     }
-    if (code3 === null || markdownLineEndingOrSpace(code3)) {
+    if (code4 === null || markdownLineEndingOrSpace(code4)) {
       effects.exit("atxHeadingSequence");
-      return atBreak(code3);
+      return atBreak(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function atBreak(code3) {
-    if (code3 === 35) {
+  function atBreak(code4) {
+    if (code4 === 35) {
       effects.enter("atxHeadingSequence");
-      return sequenceFurther(code3);
+      return sequenceFurther(code4);
     }
-    if (code3 === null || markdownLineEnding(code3)) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("atxHeading");
-      return ok3(code3);
+      return ok3(code4);
     }
-    if (markdownSpace(code3)) {
-      return factorySpace(effects, atBreak, "whitespace")(code3);
+    if (markdownSpace(code4)) {
+      return factorySpace(effects, atBreak, "whitespace")(code4);
     }
     effects.enter("atxHeadingText");
-    return data(code3);
+    return data(code4);
   }
-  function sequenceFurther(code3) {
-    if (code3 === 35) {
-      effects.consume(code3);
+  function sequenceFurther(code4) {
+    if (code4 === 35) {
+      effects.consume(code4);
       return sequenceFurther;
     }
     effects.exit("atxHeadingSequence");
-    return atBreak(code3);
+    return atBreak(code4);
   }
-  function data(code3) {
-    if (code3 === null || code3 === 35 || markdownLineEndingOrSpace(code3)) {
+  function data(code4) {
+    if (code4 === null || code4 === 35 || markdownLineEndingOrSpace(code4)) {
       effects.exit("atxHeadingText");
-      return atBreak(code3);
+      return atBreak(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return data;
   }
 }
@@ -5848,343 +5848,343 @@ function tokenizeHtmlFlow(effects, ok3, nok) {
   let index2;
   let markerB;
   return start;
-  function start(code3) {
-    return before(code3);
+  function start(code4) {
+    return before(code4);
   }
-  function before(code3) {
+  function before(code4) {
     effects.enter("htmlFlow");
     effects.enter("htmlFlowData");
-    effects.consume(code3);
+    effects.consume(code4);
     return open2;
   }
-  function open2(code3) {
-    if (code3 === 33) {
-      effects.consume(code3);
+  function open2(code4) {
+    if (code4 === 33) {
+      effects.consume(code4);
       return declarationOpen;
     }
-    if (code3 === 47) {
-      effects.consume(code3);
+    if (code4 === 47) {
+      effects.consume(code4);
       closingTag = true;
       return tagCloseStart;
     }
-    if (code3 === 63) {
-      effects.consume(code3);
+    if (code4 === 63) {
+      effects.consume(code4);
       marker = 3;
       return self.interrupt ? ok3 : continuationDeclarationInside;
     }
-    if (asciiAlpha(code3)) {
-      effects.consume(code3);
-      buffer = String.fromCharCode(code3);
+    if (asciiAlpha(code4)) {
+      effects.consume(code4);
+      buffer = String.fromCharCode(code4);
       return tagName;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function declarationOpen(code3) {
-    if (code3 === 45) {
-      effects.consume(code3);
+  function declarationOpen(code4) {
+    if (code4 === 45) {
+      effects.consume(code4);
       marker = 2;
       return commentOpenInside;
     }
-    if (code3 === 91) {
-      effects.consume(code3);
+    if (code4 === 91) {
+      effects.consume(code4);
       marker = 5;
       index2 = 0;
       return cdataOpenInside;
     }
-    if (asciiAlpha(code3)) {
-      effects.consume(code3);
+    if (asciiAlpha(code4)) {
+      effects.consume(code4);
       marker = 4;
       return self.interrupt ? ok3 : continuationDeclarationInside;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function commentOpenInside(code3) {
-    if (code3 === 45) {
-      effects.consume(code3);
+  function commentOpenInside(code4) {
+    if (code4 === 45) {
+      effects.consume(code4);
       return self.interrupt ? ok3 : continuationDeclarationInside;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function cdataOpenInside(code3) {
+  function cdataOpenInside(code4) {
     const value = "CDATA[";
-    if (code3 === value.charCodeAt(index2++)) {
-      effects.consume(code3);
+    if (code4 === value.charCodeAt(index2++)) {
+      effects.consume(code4);
       if (index2 === value.length) {
         return self.interrupt ? ok3 : continuation;
       }
       return cdataOpenInside;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function tagCloseStart(code3) {
-    if (asciiAlpha(code3)) {
-      effects.consume(code3);
-      buffer = String.fromCharCode(code3);
+  function tagCloseStart(code4) {
+    if (asciiAlpha(code4)) {
+      effects.consume(code4);
+      buffer = String.fromCharCode(code4);
       return tagName;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function tagName(code3) {
-    if (code3 === null || code3 === 47 || code3 === 62 || markdownLineEndingOrSpace(code3)) {
-      const slash = code3 === 47;
+  function tagName(code4) {
+    if (code4 === null || code4 === 47 || code4 === 62 || markdownLineEndingOrSpace(code4)) {
+      const slash = code4 === 47;
       const name = buffer.toLowerCase();
       if (!slash && !closingTag && htmlRawNames.includes(name)) {
         marker = 1;
-        return self.interrupt ? ok3(code3) : continuation(code3);
+        return self.interrupt ? ok3(code4) : continuation(code4);
       }
       if (htmlBlockNames.includes(buffer.toLowerCase())) {
         marker = 6;
         if (slash) {
-          effects.consume(code3);
+          effects.consume(code4);
           return basicSelfClosing;
         }
-        return self.interrupt ? ok3(code3) : continuation(code3);
+        return self.interrupt ? ok3(code4) : continuation(code4);
       }
       marker = 7;
-      return self.interrupt && !self.parser.lazy[self.now().line] ? nok(code3) : closingTag ? completeClosingTagAfter(code3) : completeAttributeNameBefore(code3);
+      return self.interrupt && !self.parser.lazy[self.now().line] ? nok(code4) : closingTag ? completeClosingTagAfter(code4) : completeAttributeNameBefore(code4);
     }
-    if (code3 === 45 || asciiAlphanumeric(code3)) {
-      effects.consume(code3);
-      buffer += String.fromCharCode(code3);
+    if (code4 === 45 || asciiAlphanumeric(code4)) {
+      effects.consume(code4);
+      buffer += String.fromCharCode(code4);
       return tagName;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function basicSelfClosing(code3) {
-    if (code3 === 62) {
-      effects.consume(code3);
+  function basicSelfClosing(code4) {
+    if (code4 === 62) {
+      effects.consume(code4);
       return self.interrupt ? ok3 : continuation;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function completeClosingTagAfter(code3) {
-    if (markdownSpace(code3)) {
-      effects.consume(code3);
+  function completeClosingTagAfter(code4) {
+    if (markdownSpace(code4)) {
+      effects.consume(code4);
       return completeClosingTagAfter;
     }
-    return completeEnd(code3);
+    return completeEnd(code4);
   }
-  function completeAttributeNameBefore(code3) {
-    if (code3 === 47) {
-      effects.consume(code3);
+  function completeAttributeNameBefore(code4) {
+    if (code4 === 47) {
+      effects.consume(code4);
       return completeEnd;
     }
-    if (code3 === 58 || code3 === 95 || asciiAlpha(code3)) {
-      effects.consume(code3);
+    if (code4 === 58 || code4 === 95 || asciiAlpha(code4)) {
+      effects.consume(code4);
       return completeAttributeName;
     }
-    if (markdownSpace(code3)) {
-      effects.consume(code3);
+    if (markdownSpace(code4)) {
+      effects.consume(code4);
       return completeAttributeNameBefore;
     }
-    return completeEnd(code3);
+    return completeEnd(code4);
   }
-  function completeAttributeName(code3) {
-    if (code3 === 45 || code3 === 46 || code3 === 58 || code3 === 95 || asciiAlphanumeric(code3)) {
-      effects.consume(code3);
+  function completeAttributeName(code4) {
+    if (code4 === 45 || code4 === 46 || code4 === 58 || code4 === 95 || asciiAlphanumeric(code4)) {
+      effects.consume(code4);
       return completeAttributeName;
     }
-    return completeAttributeNameAfter(code3);
+    return completeAttributeNameAfter(code4);
   }
-  function completeAttributeNameAfter(code3) {
-    if (code3 === 61) {
-      effects.consume(code3);
+  function completeAttributeNameAfter(code4) {
+    if (code4 === 61) {
+      effects.consume(code4);
       return completeAttributeValueBefore;
     }
-    if (markdownSpace(code3)) {
-      effects.consume(code3);
+    if (markdownSpace(code4)) {
+      effects.consume(code4);
       return completeAttributeNameAfter;
     }
-    return completeAttributeNameBefore(code3);
+    return completeAttributeNameBefore(code4);
   }
-  function completeAttributeValueBefore(code3) {
-    if (code3 === null || code3 === 60 || code3 === 61 || code3 === 62 || code3 === 96) {
-      return nok(code3);
+  function completeAttributeValueBefore(code4) {
+    if (code4 === null || code4 === 60 || code4 === 61 || code4 === 62 || code4 === 96) {
+      return nok(code4);
     }
-    if (code3 === 34 || code3 === 39) {
-      effects.consume(code3);
-      markerB = code3;
+    if (code4 === 34 || code4 === 39) {
+      effects.consume(code4);
+      markerB = code4;
       return completeAttributeValueQuoted;
     }
-    if (markdownSpace(code3)) {
-      effects.consume(code3);
+    if (markdownSpace(code4)) {
+      effects.consume(code4);
       return completeAttributeValueBefore;
     }
-    return completeAttributeValueUnquoted(code3);
+    return completeAttributeValueUnquoted(code4);
   }
-  function completeAttributeValueQuoted(code3) {
-    if (code3 === markerB) {
-      effects.consume(code3);
+  function completeAttributeValueQuoted(code4) {
+    if (code4 === markerB) {
+      effects.consume(code4);
       markerB = null;
       return completeAttributeValueQuotedAfter;
     }
-    if (code3 === null || markdownLineEnding(code3)) {
-      return nok(code3);
+    if (code4 === null || markdownLineEnding(code4)) {
+      return nok(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return completeAttributeValueQuoted;
   }
-  function completeAttributeValueUnquoted(code3) {
-    if (code3 === null || code3 === 34 || code3 === 39 || code3 === 47 || code3 === 60 || code3 === 61 || code3 === 62 || code3 === 96 || markdownLineEndingOrSpace(code3)) {
-      return completeAttributeNameAfter(code3);
+  function completeAttributeValueUnquoted(code4) {
+    if (code4 === null || code4 === 34 || code4 === 39 || code4 === 47 || code4 === 60 || code4 === 61 || code4 === 62 || code4 === 96 || markdownLineEndingOrSpace(code4)) {
+      return completeAttributeNameAfter(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return completeAttributeValueUnquoted;
   }
-  function completeAttributeValueQuotedAfter(code3) {
-    if (code3 === 47 || code3 === 62 || markdownSpace(code3)) {
-      return completeAttributeNameBefore(code3);
+  function completeAttributeValueQuotedAfter(code4) {
+    if (code4 === 47 || code4 === 62 || markdownSpace(code4)) {
+      return completeAttributeNameBefore(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function completeEnd(code3) {
-    if (code3 === 62) {
-      effects.consume(code3);
+  function completeEnd(code4) {
+    if (code4 === 62) {
+      effects.consume(code4);
       return completeAfter;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function completeAfter(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
-      return continuation(code3);
+  function completeAfter(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
+      return continuation(code4);
     }
-    if (markdownSpace(code3)) {
-      effects.consume(code3);
+    if (markdownSpace(code4)) {
+      effects.consume(code4);
       return completeAfter;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function continuation(code3) {
-    if (code3 === 45 && marker === 2) {
-      effects.consume(code3);
+  function continuation(code4) {
+    if (code4 === 45 && marker === 2) {
+      effects.consume(code4);
       return continuationCommentInside;
     }
-    if (code3 === 60 && marker === 1) {
-      effects.consume(code3);
+    if (code4 === 60 && marker === 1) {
+      effects.consume(code4);
       return continuationRawTagOpen;
     }
-    if (code3 === 62 && marker === 4) {
-      effects.consume(code3);
+    if (code4 === 62 && marker === 4) {
+      effects.consume(code4);
       return continuationClose;
     }
-    if (code3 === 63 && marker === 3) {
-      effects.consume(code3);
+    if (code4 === 63 && marker === 3) {
+      effects.consume(code4);
       return continuationDeclarationInside;
     }
-    if (code3 === 93 && marker === 5) {
-      effects.consume(code3);
+    if (code4 === 93 && marker === 5) {
+      effects.consume(code4);
       return continuationCdataInside;
     }
-    if (markdownLineEnding(code3) && (marker === 6 || marker === 7)) {
+    if (markdownLineEnding(code4) && (marker === 6 || marker === 7)) {
       effects.exit("htmlFlowData");
-      return effects.check(blankLineBefore, continuationAfter, continuationStart)(code3);
+      return effects.check(blankLineBefore, continuationAfter, continuationStart)(code4);
     }
-    if (code3 === null || markdownLineEnding(code3)) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("htmlFlowData");
-      return continuationStart(code3);
+      return continuationStart(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return continuation;
   }
-  function continuationStart(code3) {
-    return effects.check(nonLazyContinuationStart, continuationStartNonLazy, continuationAfter)(code3);
+  function continuationStart(code4) {
+    return effects.check(nonLazyContinuationStart, continuationStartNonLazy, continuationAfter)(code4);
   }
-  function continuationStartNonLazy(code3) {
+  function continuationStartNonLazy(code4) {
     effects.enter("lineEnding");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEnding");
     return continuationBefore;
   }
-  function continuationBefore(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
-      return continuationStart(code3);
+  function continuationBefore(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
+      return continuationStart(code4);
     }
     effects.enter("htmlFlowData");
-    return continuation(code3);
+    return continuation(code4);
   }
-  function continuationCommentInside(code3) {
-    if (code3 === 45) {
-      effects.consume(code3);
+  function continuationCommentInside(code4) {
+    if (code4 === 45) {
+      effects.consume(code4);
       return continuationDeclarationInside;
     }
-    return continuation(code3);
+    return continuation(code4);
   }
-  function continuationRawTagOpen(code3) {
-    if (code3 === 47) {
-      effects.consume(code3);
+  function continuationRawTagOpen(code4) {
+    if (code4 === 47) {
+      effects.consume(code4);
       buffer = "";
       return continuationRawEndTag;
     }
-    return continuation(code3);
+    return continuation(code4);
   }
-  function continuationRawEndTag(code3) {
-    if (code3 === 62) {
+  function continuationRawEndTag(code4) {
+    if (code4 === 62) {
       const name = buffer.toLowerCase();
       if (htmlRawNames.includes(name)) {
-        effects.consume(code3);
+        effects.consume(code4);
         return continuationClose;
       }
-      return continuation(code3);
+      return continuation(code4);
     }
-    if (asciiAlpha(code3) && buffer.length < 8) {
-      effects.consume(code3);
-      buffer += String.fromCharCode(code3);
+    if (asciiAlpha(code4) && buffer.length < 8) {
+      effects.consume(code4);
+      buffer += String.fromCharCode(code4);
       return continuationRawEndTag;
     }
-    return continuation(code3);
+    return continuation(code4);
   }
-  function continuationCdataInside(code3) {
-    if (code3 === 93) {
-      effects.consume(code3);
+  function continuationCdataInside(code4) {
+    if (code4 === 93) {
+      effects.consume(code4);
       return continuationDeclarationInside;
     }
-    return continuation(code3);
+    return continuation(code4);
   }
-  function continuationDeclarationInside(code3) {
-    if (code3 === 62) {
-      effects.consume(code3);
+  function continuationDeclarationInside(code4) {
+    if (code4 === 62) {
+      effects.consume(code4);
       return continuationClose;
     }
-    if (code3 === 45 && marker === 2) {
-      effects.consume(code3);
+    if (code4 === 45 && marker === 2) {
+      effects.consume(code4);
       return continuationDeclarationInside;
     }
-    return continuation(code3);
+    return continuation(code4);
   }
-  function continuationClose(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
+  function continuationClose(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("htmlFlowData");
-      return continuationAfter(code3);
+      return continuationAfter(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return continuationClose;
   }
-  function continuationAfter(code3) {
+  function continuationAfter(code4) {
     effects.exit("htmlFlow");
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 function tokenizeNonLazyContinuationStart(effects, ok3, nok) {
   const self = this;
   return start;
-  function start(code3) {
-    if (markdownLineEnding(code3)) {
+  function start(code4) {
+    if (markdownLineEnding(code4)) {
       effects.enter("lineEnding");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("lineEnding");
       return after;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function after(code3) {
-    return self.parser.lazy[self.now().line] ? nok(code3) : ok3(code3);
+  function after(code4) {
+    return self.parser.lazy[self.now().line] ? nok(code4) : ok3(code4);
   }
 }
 function tokenizeBlankLineBefore(effects, ok3, nok) {
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("lineEnding");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEnding");
     return effects.attempt(blankLine, ok3, nok);
   }
@@ -6201,298 +6201,298 @@ function tokenizeHtmlText(effects, ok3, nok) {
   let index2;
   let returnState;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("htmlText");
     effects.enter("htmlTextData");
-    effects.consume(code3);
+    effects.consume(code4);
     return open2;
   }
-  function open2(code3) {
-    if (code3 === 33) {
-      effects.consume(code3);
+  function open2(code4) {
+    if (code4 === 33) {
+      effects.consume(code4);
       return declarationOpen;
     }
-    if (code3 === 47) {
-      effects.consume(code3);
+    if (code4 === 47) {
+      effects.consume(code4);
       return tagCloseStart;
     }
-    if (code3 === 63) {
-      effects.consume(code3);
+    if (code4 === 63) {
+      effects.consume(code4);
       return instruction;
     }
-    if (asciiAlpha(code3)) {
-      effects.consume(code3);
+    if (asciiAlpha(code4)) {
+      effects.consume(code4);
       return tagOpen;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function declarationOpen(code3) {
-    if (code3 === 45) {
-      effects.consume(code3);
+  function declarationOpen(code4) {
+    if (code4 === 45) {
+      effects.consume(code4);
       return commentOpenInside;
     }
-    if (code3 === 91) {
-      effects.consume(code3);
+    if (code4 === 91) {
+      effects.consume(code4);
       index2 = 0;
       return cdataOpenInside;
     }
-    if (asciiAlpha(code3)) {
-      effects.consume(code3);
+    if (asciiAlpha(code4)) {
+      effects.consume(code4);
       return declaration;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function commentOpenInside(code3) {
-    if (code3 === 45) {
-      effects.consume(code3);
+  function commentOpenInside(code4) {
+    if (code4 === 45) {
+      effects.consume(code4);
       return commentEnd;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function comment(code3) {
-    if (code3 === null) {
-      return nok(code3);
+  function comment2(code4) {
+    if (code4 === null) {
+      return nok(code4);
     }
-    if (code3 === 45) {
-      effects.consume(code3);
+    if (code4 === 45) {
+      effects.consume(code4);
       return commentClose;
     }
-    if (markdownLineEnding(code3)) {
-      returnState = comment;
-      return lineEndingBefore(code3);
+    if (markdownLineEnding(code4)) {
+      returnState = comment2;
+      return lineEndingBefore(code4);
     }
-    effects.consume(code3);
-    return comment;
+    effects.consume(code4);
+    return comment2;
   }
-  function commentClose(code3) {
-    if (code3 === 45) {
-      effects.consume(code3);
+  function commentClose(code4) {
+    if (code4 === 45) {
+      effects.consume(code4);
       return commentEnd;
     }
-    return comment(code3);
+    return comment2(code4);
   }
-  function commentEnd(code3) {
-    return code3 === 62 ? end(code3) : code3 === 45 ? commentClose(code3) : comment(code3);
+  function commentEnd(code4) {
+    return code4 === 62 ? end(code4) : code4 === 45 ? commentClose(code4) : comment2(code4);
   }
-  function cdataOpenInside(code3) {
+  function cdataOpenInside(code4) {
     const value = "CDATA[";
-    if (code3 === value.charCodeAt(index2++)) {
-      effects.consume(code3);
+    if (code4 === value.charCodeAt(index2++)) {
+      effects.consume(code4);
       return index2 === value.length ? cdata : cdataOpenInside;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function cdata(code3) {
-    if (code3 === null) {
-      return nok(code3);
+  function cdata(code4) {
+    if (code4 === null) {
+      return nok(code4);
     }
-    if (code3 === 93) {
-      effects.consume(code3);
+    if (code4 === 93) {
+      effects.consume(code4);
       return cdataClose;
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       returnState = cdata;
-      return lineEndingBefore(code3);
+      return lineEndingBefore(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return cdata;
   }
-  function cdataClose(code3) {
-    if (code3 === 93) {
-      effects.consume(code3);
+  function cdataClose(code4) {
+    if (code4 === 93) {
+      effects.consume(code4);
       return cdataEnd;
     }
-    return cdata(code3);
+    return cdata(code4);
   }
-  function cdataEnd(code3) {
-    if (code3 === 62) {
-      return end(code3);
+  function cdataEnd(code4) {
+    if (code4 === 62) {
+      return end(code4);
     }
-    if (code3 === 93) {
-      effects.consume(code3);
+    if (code4 === 93) {
+      effects.consume(code4);
       return cdataEnd;
     }
-    return cdata(code3);
+    return cdata(code4);
   }
-  function declaration(code3) {
-    if (code3 === null || code3 === 62) {
-      return end(code3);
+  function declaration(code4) {
+    if (code4 === null || code4 === 62) {
+      return end(code4);
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       returnState = declaration;
-      return lineEndingBefore(code3);
+      return lineEndingBefore(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return declaration;
   }
-  function instruction(code3) {
-    if (code3 === null) {
-      return nok(code3);
+  function instruction(code4) {
+    if (code4 === null) {
+      return nok(code4);
     }
-    if (code3 === 63) {
-      effects.consume(code3);
+    if (code4 === 63) {
+      effects.consume(code4);
       return instructionClose;
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       returnState = instruction;
-      return lineEndingBefore(code3);
+      return lineEndingBefore(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return instruction;
   }
-  function instructionClose(code3) {
-    return code3 === 62 ? end(code3) : instruction(code3);
+  function instructionClose(code4) {
+    return code4 === 62 ? end(code4) : instruction(code4);
   }
-  function tagCloseStart(code3) {
-    if (asciiAlpha(code3)) {
-      effects.consume(code3);
+  function tagCloseStart(code4) {
+    if (asciiAlpha(code4)) {
+      effects.consume(code4);
       return tagClose;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function tagClose(code3) {
-    if (code3 === 45 || asciiAlphanumeric(code3)) {
-      effects.consume(code3);
+  function tagClose(code4) {
+    if (code4 === 45 || asciiAlphanumeric(code4)) {
+      effects.consume(code4);
       return tagClose;
     }
-    return tagCloseBetween(code3);
+    return tagCloseBetween(code4);
   }
-  function tagCloseBetween(code3) {
-    if (markdownLineEnding(code3)) {
+  function tagCloseBetween(code4) {
+    if (markdownLineEnding(code4)) {
       returnState = tagCloseBetween;
-      return lineEndingBefore(code3);
+      return lineEndingBefore(code4);
     }
-    if (markdownSpace(code3)) {
-      effects.consume(code3);
+    if (markdownSpace(code4)) {
+      effects.consume(code4);
       return tagCloseBetween;
     }
-    return end(code3);
+    return end(code4);
   }
-  function tagOpen(code3) {
-    if (code3 === 45 || asciiAlphanumeric(code3)) {
-      effects.consume(code3);
+  function tagOpen(code4) {
+    if (code4 === 45 || asciiAlphanumeric(code4)) {
+      effects.consume(code4);
       return tagOpen;
     }
-    if (code3 === 47 || code3 === 62 || markdownLineEndingOrSpace(code3)) {
-      return tagOpenBetween(code3);
+    if (code4 === 47 || code4 === 62 || markdownLineEndingOrSpace(code4)) {
+      return tagOpenBetween(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function tagOpenBetween(code3) {
-    if (code3 === 47) {
-      effects.consume(code3);
+  function tagOpenBetween(code4) {
+    if (code4 === 47) {
+      effects.consume(code4);
       return end;
     }
-    if (code3 === 58 || code3 === 95 || asciiAlpha(code3)) {
-      effects.consume(code3);
+    if (code4 === 58 || code4 === 95 || asciiAlpha(code4)) {
+      effects.consume(code4);
       return tagOpenAttributeName;
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       returnState = tagOpenBetween;
-      return lineEndingBefore(code3);
+      return lineEndingBefore(code4);
     }
-    if (markdownSpace(code3)) {
-      effects.consume(code3);
+    if (markdownSpace(code4)) {
+      effects.consume(code4);
       return tagOpenBetween;
     }
-    return end(code3);
+    return end(code4);
   }
-  function tagOpenAttributeName(code3) {
-    if (code3 === 45 || code3 === 46 || code3 === 58 || code3 === 95 || asciiAlphanumeric(code3)) {
-      effects.consume(code3);
+  function tagOpenAttributeName(code4) {
+    if (code4 === 45 || code4 === 46 || code4 === 58 || code4 === 95 || asciiAlphanumeric(code4)) {
+      effects.consume(code4);
       return tagOpenAttributeName;
     }
-    return tagOpenAttributeNameAfter(code3);
+    return tagOpenAttributeNameAfter(code4);
   }
-  function tagOpenAttributeNameAfter(code3) {
-    if (code3 === 61) {
-      effects.consume(code3);
+  function tagOpenAttributeNameAfter(code4) {
+    if (code4 === 61) {
+      effects.consume(code4);
       return tagOpenAttributeValueBefore;
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       returnState = tagOpenAttributeNameAfter;
-      return lineEndingBefore(code3);
+      return lineEndingBefore(code4);
     }
-    if (markdownSpace(code3)) {
-      effects.consume(code3);
+    if (markdownSpace(code4)) {
+      effects.consume(code4);
       return tagOpenAttributeNameAfter;
     }
-    return tagOpenBetween(code3);
+    return tagOpenBetween(code4);
   }
-  function tagOpenAttributeValueBefore(code3) {
-    if (code3 === null || code3 === 60 || code3 === 61 || code3 === 62 || code3 === 96) {
-      return nok(code3);
+  function tagOpenAttributeValueBefore(code4) {
+    if (code4 === null || code4 === 60 || code4 === 61 || code4 === 62 || code4 === 96) {
+      return nok(code4);
     }
-    if (code3 === 34 || code3 === 39) {
-      effects.consume(code3);
-      marker = code3;
+    if (code4 === 34 || code4 === 39) {
+      effects.consume(code4);
+      marker = code4;
       return tagOpenAttributeValueQuoted;
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       returnState = tagOpenAttributeValueBefore;
-      return lineEndingBefore(code3);
+      return lineEndingBefore(code4);
     }
-    if (markdownSpace(code3)) {
-      effects.consume(code3);
+    if (markdownSpace(code4)) {
+      effects.consume(code4);
       return tagOpenAttributeValueBefore;
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return tagOpenAttributeValueUnquoted;
   }
-  function tagOpenAttributeValueQuoted(code3) {
-    if (code3 === marker) {
-      effects.consume(code3);
+  function tagOpenAttributeValueQuoted(code4) {
+    if (code4 === marker) {
+      effects.consume(code4);
       marker = void 0;
       return tagOpenAttributeValueQuotedAfter;
     }
-    if (code3 === null) {
-      return nok(code3);
+    if (code4 === null) {
+      return nok(code4);
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       returnState = tagOpenAttributeValueQuoted;
-      return lineEndingBefore(code3);
+      return lineEndingBefore(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return tagOpenAttributeValueQuoted;
   }
-  function tagOpenAttributeValueUnquoted(code3) {
-    if (code3 === null || code3 === 34 || code3 === 39 || code3 === 60 || code3 === 61 || code3 === 96) {
-      return nok(code3);
+  function tagOpenAttributeValueUnquoted(code4) {
+    if (code4 === null || code4 === 34 || code4 === 39 || code4 === 60 || code4 === 61 || code4 === 96) {
+      return nok(code4);
     }
-    if (code3 === 47 || code3 === 62 || markdownLineEndingOrSpace(code3)) {
-      return tagOpenBetween(code3);
+    if (code4 === 47 || code4 === 62 || markdownLineEndingOrSpace(code4)) {
+      return tagOpenBetween(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return tagOpenAttributeValueUnquoted;
   }
-  function tagOpenAttributeValueQuotedAfter(code3) {
-    if (code3 === 47 || code3 === 62 || markdownLineEndingOrSpace(code3)) {
-      return tagOpenBetween(code3);
+  function tagOpenAttributeValueQuotedAfter(code4) {
+    if (code4 === 47 || code4 === 62 || markdownLineEndingOrSpace(code4)) {
+      return tagOpenBetween(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function end(code3) {
-    if (code3 === 62) {
-      effects.consume(code3);
+  function end(code4) {
+    if (code4 === 62) {
+      effects.consume(code4);
       effects.exit("htmlTextData");
       effects.exit("htmlText");
       return ok3;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function lineEndingBefore(code3) {
+  function lineEndingBefore(code4) {
     effects.exit("htmlTextData");
     effects.enter("lineEnding");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEnding");
     return lineEndingAfter;
   }
-  function lineEndingAfter(code3) {
-    return markdownSpace(code3) ? factorySpace(effects, lineEndingAfterPrefix, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code3) : lineEndingAfterPrefix(code3);
+  function lineEndingAfter(code4) {
+    return markdownSpace(code4) ? factorySpace(effects, lineEndingAfterPrefix, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code4) : lineEndingAfterPrefix(code4);
   }
-  function lineEndingAfterPrefix(code3) {
+  function lineEndingAfterPrefix(code4) {
     effects.enter("htmlTextData");
-    return returnState(code3);
+    return returnState(code4);
   }
 }
 
@@ -6575,7 +6575,7 @@ function resolveToLabelEnd(events, context) {
       ...events[close][1].end
     }
   };
-  const text5 = {
+  const text6 = {
     type: "labelText",
     start: {
       ...events[open2 + offset + 2][1].end
@@ -6586,9 +6586,9 @@ function resolveToLabelEnd(events, context) {
   };
   media = [["enter", group, context], ["enter", label, context]];
   media = push(media, events.slice(open2 + 1, open2 + offset + 3));
-  media = push(media, [["enter", text5, context]]);
+  media = push(media, [["enter", text6, context]]);
   media = push(media, resolveAll(context.parser.constructs.insideSpan.null, events.slice(open2 + offset + 4, close - 3), context));
-  media = push(media, [["exit", text5, context], events[close - 2], events[close - 1], ["exit", label, context]]);
+  media = push(media, [["exit", text6, context], events[close - 2], events[close - 1], ["exit", label, context]]);
   media = push(media, events.slice(close + 1));
   media = push(media, [["exit", group, context]]);
   splice(events, open2, events.length, media);
@@ -6606,12 +6606,12 @@ function tokenizeLabelEnd(effects, ok3, nok) {
     }
   }
   return start;
-  function start(code3) {
+  function start(code4) {
     if (!labelStart) {
-      return nok(code3);
+      return nok(code4);
     }
     if (labelStart._inactive) {
-      return labelEndNok(code3);
+      return labelEndNok(code4);
     }
     defined = self.parser.defined.includes(normalizeIdentifier(self.sliceSerialize({
       start: labelStart.end,
@@ -6619,106 +6619,106 @@ function tokenizeLabelEnd(effects, ok3, nok) {
     })));
     effects.enter("labelEnd");
     effects.enter("labelMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("labelMarker");
     effects.exit("labelEnd");
     return after;
   }
-  function after(code3) {
-    if (code3 === 40) {
-      return effects.attempt(resourceConstruct, labelEndOk, defined ? labelEndOk : labelEndNok)(code3);
+  function after(code4) {
+    if (code4 === 40) {
+      return effects.attempt(resourceConstruct, labelEndOk, defined ? labelEndOk : labelEndNok)(code4);
     }
-    if (code3 === 91) {
-      return effects.attempt(referenceFullConstruct, labelEndOk, defined ? referenceNotFull : labelEndNok)(code3);
+    if (code4 === 91) {
+      return effects.attempt(referenceFullConstruct, labelEndOk, defined ? referenceNotFull : labelEndNok)(code4);
     }
-    return defined ? labelEndOk(code3) : labelEndNok(code3);
+    return defined ? labelEndOk(code4) : labelEndNok(code4);
   }
-  function referenceNotFull(code3) {
-    return effects.attempt(referenceCollapsedConstruct, labelEndOk, labelEndNok)(code3);
+  function referenceNotFull(code4) {
+    return effects.attempt(referenceCollapsedConstruct, labelEndOk, labelEndNok)(code4);
   }
-  function labelEndOk(code3) {
-    return ok3(code3);
+  function labelEndOk(code4) {
+    return ok3(code4);
   }
-  function labelEndNok(code3) {
+  function labelEndNok(code4) {
     labelStart._balanced = true;
-    return nok(code3);
+    return nok(code4);
   }
 }
 function tokenizeResource(effects, ok3, nok) {
   return resourceStart;
-  function resourceStart(code3) {
+  function resourceStart(code4) {
     effects.enter("resource");
     effects.enter("resourceMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("resourceMarker");
     return resourceBefore;
   }
-  function resourceBefore(code3) {
-    return markdownLineEndingOrSpace(code3) ? factoryWhitespace(effects, resourceOpen)(code3) : resourceOpen(code3);
+  function resourceBefore(code4) {
+    return markdownLineEndingOrSpace(code4) ? factoryWhitespace(effects, resourceOpen)(code4) : resourceOpen(code4);
   }
-  function resourceOpen(code3) {
-    if (code3 === 41) {
-      return resourceEnd(code3);
+  function resourceOpen(code4) {
+    if (code4 === 41) {
+      return resourceEnd(code4);
     }
-    return factoryDestination(effects, resourceDestinationAfter, resourceDestinationMissing, "resourceDestination", "resourceDestinationLiteral", "resourceDestinationLiteralMarker", "resourceDestinationRaw", "resourceDestinationString", 32)(code3);
+    return factoryDestination(effects, resourceDestinationAfter, resourceDestinationMissing, "resourceDestination", "resourceDestinationLiteral", "resourceDestinationLiteralMarker", "resourceDestinationRaw", "resourceDestinationString", 32)(code4);
   }
-  function resourceDestinationAfter(code3) {
-    return markdownLineEndingOrSpace(code3) ? factoryWhitespace(effects, resourceBetween)(code3) : resourceEnd(code3);
+  function resourceDestinationAfter(code4) {
+    return markdownLineEndingOrSpace(code4) ? factoryWhitespace(effects, resourceBetween)(code4) : resourceEnd(code4);
   }
-  function resourceDestinationMissing(code3) {
-    return nok(code3);
+  function resourceDestinationMissing(code4) {
+    return nok(code4);
   }
-  function resourceBetween(code3) {
-    if (code3 === 34 || code3 === 39 || code3 === 40) {
-      return factoryTitle(effects, resourceTitleAfter, nok, "resourceTitle", "resourceTitleMarker", "resourceTitleString")(code3);
+  function resourceBetween(code4) {
+    if (code4 === 34 || code4 === 39 || code4 === 40) {
+      return factoryTitle(effects, resourceTitleAfter, nok, "resourceTitle", "resourceTitleMarker", "resourceTitleString")(code4);
     }
-    return resourceEnd(code3);
+    return resourceEnd(code4);
   }
-  function resourceTitleAfter(code3) {
-    return markdownLineEndingOrSpace(code3) ? factoryWhitespace(effects, resourceEnd)(code3) : resourceEnd(code3);
+  function resourceTitleAfter(code4) {
+    return markdownLineEndingOrSpace(code4) ? factoryWhitespace(effects, resourceEnd)(code4) : resourceEnd(code4);
   }
-  function resourceEnd(code3) {
-    if (code3 === 41) {
+  function resourceEnd(code4) {
+    if (code4 === 41) {
       effects.enter("resourceMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("resourceMarker");
       effects.exit("resource");
       return ok3;
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 function tokenizeReferenceFull(effects, ok3, nok) {
   const self = this;
   return referenceFull;
-  function referenceFull(code3) {
-    return factoryLabel.call(self, effects, referenceFullAfter, referenceFullMissing, "reference", "referenceMarker", "referenceString")(code3);
+  function referenceFull(code4) {
+    return factoryLabel.call(self, effects, referenceFullAfter, referenceFullMissing, "reference", "referenceMarker", "referenceString")(code4);
   }
-  function referenceFullAfter(code3) {
-    return self.parser.defined.includes(normalizeIdentifier(self.sliceSerialize(self.events[self.events.length - 1][1]).slice(1, -1))) ? ok3(code3) : nok(code3);
+  function referenceFullAfter(code4) {
+    return self.parser.defined.includes(normalizeIdentifier(self.sliceSerialize(self.events[self.events.length - 1][1]).slice(1, -1))) ? ok3(code4) : nok(code4);
   }
-  function referenceFullMissing(code3) {
-    return nok(code3);
+  function referenceFullMissing(code4) {
+    return nok(code4);
   }
 }
 function tokenizeReferenceCollapsed(effects, ok3, nok) {
   return referenceCollapsedStart;
-  function referenceCollapsedStart(code3) {
+  function referenceCollapsedStart(code4) {
     effects.enter("reference");
     effects.enter("referenceMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("referenceMarker");
     return referenceCollapsedOpen;
   }
-  function referenceCollapsedOpen(code3) {
-    if (code3 === 93) {
+  function referenceCollapsedOpen(code4) {
+    if (code4 === 93) {
       effects.enter("referenceMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("referenceMarker");
       effects.exit("reference");
       return ok3;
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 
@@ -6731,25 +6731,25 @@ var labelStartImage = {
 function tokenizeLabelStartImage(effects, ok3, nok) {
   const self = this;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("labelImage");
     effects.enter("labelImageMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("labelImageMarker");
     return open2;
   }
-  function open2(code3) {
-    if (code3 === 91) {
+  function open2(code4) {
+    if (code4 === 91) {
       effects.enter("labelMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("labelMarker");
       effects.exit("labelImage");
       return after;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function after(code3) {
-    return code3 === 94 && "_hiddenFootnoteSupport" in self.parser.constructs ? nok(code3) : ok3(code3);
+  function after(code4) {
+    return code4 === 94 && "_hiddenFootnoteSupport" in self.parser.constructs ? nok(code4) : ok3(code4);
   }
 }
 
@@ -6762,16 +6762,16 @@ var labelStartLink = {
 function tokenizeLabelStartLink(effects, ok3, nok) {
   const self = this;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("labelLink");
     effects.enter("labelMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("labelMarker");
     effects.exit("labelLink");
     return after;
   }
-  function after(code3) {
-    return code3 === 94 && "_hiddenFootnoteSupport" in self.parser.constructs ? nok(code3) : ok3(code3);
+  function after(code4) {
+    return code4 === 94 && "_hiddenFootnoteSupport" in self.parser.constructs ? nok(code4) : ok3(code4);
   }
 }
 
@@ -6782,9 +6782,9 @@ var lineEnding = {
 };
 function tokenizeLineEnding(effects, ok3) {
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("lineEnding");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEnding");
     return factorySpace(effects, ok3, "linePrefix");
   }
@@ -6799,33 +6799,33 @@ function tokenizeThematicBreak(effects, ok3, nok) {
   let size = 0;
   let marker;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("thematicBreak");
-    return before(code3);
+    return before(code4);
   }
-  function before(code3) {
-    marker = code3;
-    return atBreak(code3);
+  function before(code4) {
+    marker = code4;
+    return atBreak(code4);
   }
-  function atBreak(code3) {
-    if (code3 === marker) {
+  function atBreak(code4) {
+    if (code4 === marker) {
       effects.enter("thematicBreakSequence");
-      return sequence(code3);
+      return sequence(code4);
     }
-    if (size >= 3 && (code3 === null || markdownLineEnding(code3))) {
+    if (size >= 3 && (code4 === null || markdownLineEnding(code4))) {
       effects.exit("thematicBreak");
-      return ok3(code3);
+      return ok3(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function sequence(code3) {
-    if (code3 === marker) {
-      effects.consume(code3);
+  function sequence(code4) {
+    if (code4 === marker) {
+      effects.consume(code4);
       size++;
       return sequence;
     }
     effects.exit("thematicBreakSequence");
-    return markdownSpace(code3) ? factorySpace(effects, atBreak, "whitespace")(code3) : atBreak(code3);
+    return markdownSpace(code4) ? factorySpace(effects, atBreak, "whitespace")(code4) : atBreak(code4);
   }
 }
 
@@ -6852,9 +6852,9 @@ function tokenizeListStart(effects, ok3, nok) {
   let initialSize = tail && tail[1].type === "linePrefix" ? tail[2].sliceSerialize(tail[1], true).length : 0;
   let size = 0;
   return start;
-  function start(code3) {
-    const kind = self.containerState.type || (code3 === 42 || code3 === 43 || code3 === 45 ? "listUnordered" : "listOrdered");
-    if (kind === "listUnordered" ? !self.containerState.marker || code3 === self.containerState.marker : asciiDigit(code3)) {
+  function start(code4) {
+    const kind = self.containerState.type || (code4 === 42 || code4 === 43 || code4 === 45 ? "listUnordered" : "listOrdered");
+    if (kind === "listUnordered" ? !self.containerState.marker || code4 === self.containerState.marker : asciiDigit(code4)) {
       if (!self.containerState.type) {
         self.containerState.type = kind;
         effects.enter(kind, {
@@ -6863,32 +6863,32 @@ function tokenizeListStart(effects, ok3, nok) {
       }
       if (kind === "listUnordered") {
         effects.enter("listItemPrefix");
-        return code3 === 42 || code3 === 45 ? effects.check(thematicBreak, nok, atMarker)(code3) : atMarker(code3);
+        return code4 === 42 || code4 === 45 ? effects.check(thematicBreak, nok, atMarker)(code4) : atMarker(code4);
       }
-      if (!self.interrupt || code3 === 49) {
+      if (!self.interrupt || code4 === 49) {
         effects.enter("listItemPrefix");
         effects.enter("listItemValue");
-        return inside(code3);
+        return inside(code4);
       }
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function inside(code3) {
-    if (asciiDigit(code3) && ++size < 10) {
-      effects.consume(code3);
+  function inside(code4) {
+    if (asciiDigit(code4) && ++size < 10) {
+      effects.consume(code4);
       return inside;
     }
-    if ((!self.interrupt || size < 2) && (self.containerState.marker ? code3 === self.containerState.marker : code3 === 41 || code3 === 46)) {
+    if ((!self.interrupt || size < 2) && (self.containerState.marker ? code4 === self.containerState.marker : code4 === 41 || code4 === 46)) {
       effects.exit("listItemValue");
-      return atMarker(code3);
+      return atMarker(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function atMarker(code3) {
+  function atMarker(code4) {
     effects.enter("listItemMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("listItemMarker");
-    self.containerState.marker = self.containerState.marker || code3;
+    self.containerState.marker = self.containerState.marker || code4;
     return effects.check(
       blankLine,
       // Can’t be empty when interrupting.
@@ -6896,55 +6896,55 @@ function tokenizeListStart(effects, ok3, nok) {
       effects.attempt(listItemPrefixWhitespaceConstruct, endOfPrefix, otherPrefix)
     );
   }
-  function onBlank(code3) {
+  function onBlank(code4) {
     self.containerState.initialBlankLine = true;
     initialSize++;
-    return endOfPrefix(code3);
+    return endOfPrefix(code4);
   }
-  function otherPrefix(code3) {
-    if (markdownSpace(code3)) {
+  function otherPrefix(code4) {
+    if (markdownSpace(code4)) {
       effects.enter("listItemPrefixWhitespace");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("listItemPrefixWhitespace");
       return endOfPrefix;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function endOfPrefix(code3) {
+  function endOfPrefix(code4) {
     self.containerState.size = initialSize + self.sliceSerialize(effects.exit("listItemPrefix"), true).length;
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 function tokenizeListContinuation(effects, ok3, nok) {
   const self = this;
   self.containerState._closeFlow = void 0;
   return effects.check(blankLine, onBlank, notBlank);
-  function onBlank(code3) {
+  function onBlank(code4) {
     self.containerState.furtherBlankLines = self.containerState.furtherBlankLines || self.containerState.initialBlankLine;
-    return factorySpace(effects, ok3, "listItemIndent", self.containerState.size + 1)(code3);
+    return factorySpace(effects, ok3, "listItemIndent", self.containerState.size + 1)(code4);
   }
-  function notBlank(code3) {
-    if (self.containerState.furtherBlankLines || !markdownSpace(code3)) {
+  function notBlank(code4) {
+    if (self.containerState.furtherBlankLines || !markdownSpace(code4)) {
       self.containerState.furtherBlankLines = void 0;
       self.containerState.initialBlankLine = void 0;
-      return notInCurrentItem(code3);
+      return notInCurrentItem(code4);
     }
     self.containerState.furtherBlankLines = void 0;
     self.containerState.initialBlankLine = void 0;
-    return effects.attempt(indentConstruct, ok3, notInCurrentItem)(code3);
+    return effects.attempt(indentConstruct, ok3, notInCurrentItem)(code4);
   }
-  function notInCurrentItem(code3) {
+  function notInCurrentItem(code4) {
     self.containerState._closeFlow = true;
     self.interrupt = void 0;
-    return factorySpace(effects, effects.attempt(list, ok3, nok), "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code3);
+    return factorySpace(effects, effects.attempt(list, ok3, nok), "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code4);
   }
 }
 function tokenizeIndent(effects, ok3, nok) {
   const self = this;
   return factorySpace(effects, afterPrefix, "listItemIndent", self.containerState.size + 1);
-  function afterPrefix(code3) {
+  function afterPrefix(code4) {
     const tail = self.events[self.events.length - 1];
-    return tail && tail[1].type === "listItemIndent" && tail[2].sliceSerialize(tail[1], true).length === self.containerState.size ? ok3(code3) : nok(code3);
+    return tail && tail[1].type === "listItemIndent" && tail[2].sliceSerialize(tail[1], true).length === self.containerState.size ? ok3(code4) : nok(code4);
   }
 }
 function tokenizeListEnd(effects) {
@@ -6953,9 +6953,9 @@ function tokenizeListEnd(effects) {
 function tokenizeListItemPrefixWhitespace(effects, ok3, nok) {
   const self = this;
   return factorySpace(effects, afterPrefix, "listItemPrefixWhitespace", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4 + 1);
-  function afterPrefix(code3) {
+  function afterPrefix(code4) {
     const tail = self.events[self.events.length - 1];
-    return !markdownSpace(code3) && tail && tail[1].type === "listItemPrefixWhitespace" ? ok3(code3) : nok(code3);
+    return !markdownSpace(code4) && tail && tail[1].type === "listItemPrefixWhitespace" ? ok3(code4) : nok(code4);
   }
 }
 
@@ -6968,7 +6968,7 @@ var setextUnderline = {
 function resolveToSetextUnderline(events, context) {
   let index2 = events.length;
   let content3;
-  let text5;
+  let text6;
   let definition3;
   while (index2--) {
     if (events[index2][0] === "enter") {
@@ -6977,7 +6977,7 @@ function resolveToSetextUnderline(events, context) {
         break;
       }
       if (events[index2][1].type === "paragraph") {
-        text5 = index2;
+        text6 = index2;
       }
     } else {
       if (events[index2][1].type === "content") {
@@ -6988,7 +6988,7 @@ function resolveToSetextUnderline(events, context) {
       }
     }
   }
-  const heading2 = {
+  const heading3 = {
     type: "setextHeading",
     start: {
       ...events[content3][1].start
@@ -6997,57 +6997,57 @@ function resolveToSetextUnderline(events, context) {
       ...events[events.length - 1][1].end
     }
   };
-  events[text5][1].type = "setextHeadingText";
+  events[text6][1].type = "setextHeadingText";
   if (definition3) {
-    events.splice(text5, 0, ["enter", heading2, context]);
+    events.splice(text6, 0, ["enter", heading3, context]);
     events.splice(definition3 + 1, 0, ["exit", events[content3][1], context]);
     events[content3][1].end = {
       ...events[definition3][1].end
     };
   } else {
-    events[content3][1] = heading2;
+    events[content3][1] = heading3;
   }
-  events.push(["exit", heading2, context]);
+  events.push(["exit", heading3, context]);
   return events;
 }
 function tokenizeSetextUnderline(effects, ok3, nok) {
   const self = this;
   let marker;
   return start;
-  function start(code3) {
+  function start(code4) {
     let index2 = self.events.length;
-    let paragraph2;
+    let paragraph3;
     while (index2--) {
       if (self.events[index2][1].type !== "lineEnding" && self.events[index2][1].type !== "linePrefix" && self.events[index2][1].type !== "content") {
-        paragraph2 = self.events[index2][1].type === "paragraph";
+        paragraph3 = self.events[index2][1].type === "paragraph";
         break;
       }
     }
-    if (!self.parser.lazy[self.now().line] && (self.interrupt || paragraph2)) {
+    if (!self.parser.lazy[self.now().line] && (self.interrupt || paragraph3)) {
       effects.enter("setextHeadingLine");
-      marker = code3;
-      return before(code3);
+      marker = code4;
+      return before(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function before(code3) {
+  function before(code4) {
     effects.enter("setextHeadingLineSequence");
-    return inside(code3);
+    return inside(code4);
   }
-  function inside(code3) {
-    if (code3 === marker) {
-      effects.consume(code3);
+  function inside(code4) {
+    if (code4 === marker) {
+      effects.consume(code4);
       return inside;
     }
     effects.exit("setextHeadingLineSequence");
-    return markdownSpace(code3) ? factorySpace(effects, after, "lineSuffix")(code3) : after(code3);
+    return markdownSpace(code4) ? factorySpace(effects, after, "lineSuffix")(code4) : after(code4);
   }
-  function after(code3) {
-    if (code3 === null || markdownLineEnding(code3)) {
+  function after(code4) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("setextHeadingLine");
-      return ok3(code3);
+      return ok3(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 
@@ -7065,24 +7065,24 @@ function initializeFlow(effects) {
     effects.attempt(this.parser.constructs.flowInitial, afterConstruct, factorySpace(effects, effects.attempt(this.parser.constructs.flow, afterConstruct, effects.attempt(content2, afterConstruct)), "linePrefix"))
   );
   return initial;
-  function atBlankEnding(code3) {
-    if (code3 === null) {
-      effects.consume(code3);
+  function atBlankEnding(code4) {
+    if (code4 === null) {
+      effects.consume(code4);
       return;
     }
     effects.enter("lineEndingBlank");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEndingBlank");
     self.currentConstruct = void 0;
     return initial;
   }
-  function afterConstruct(code3) {
-    if (code3 === null) {
-      effects.consume(code3);
+  function afterConstruct(code4) {
+    if (code4 === null) {
+      effects.consume(code4);
       return;
     }
     effects.enter("lineEnding");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("lineEnding");
     self.currentConstruct = void 0;
     return initial;
@@ -7103,37 +7103,37 @@ function initializeFactory(field) {
   function initializeText(effects) {
     const self = this;
     const constructs2 = this.parser.constructs[field];
-    const text5 = effects.attempt(constructs2, start, notText);
+    const text6 = effects.attempt(constructs2, start, notText);
     return start;
-    function start(code3) {
-      return atBreak(code3) ? text5(code3) : notText(code3);
+    function start(code4) {
+      return atBreak(code4) ? text6(code4) : notText(code4);
     }
-    function notText(code3) {
-      if (code3 === null) {
-        effects.consume(code3);
+    function notText(code4) {
+      if (code4 === null) {
+        effects.consume(code4);
         return;
       }
       effects.enter("data");
-      effects.consume(code3);
+      effects.consume(code4);
       return data;
     }
-    function data(code3) {
-      if (atBreak(code3)) {
+    function data(code4) {
+      if (atBreak(code4)) {
         effects.exit("data");
-        return text5(code3);
+        return text6(code4);
       }
-      effects.consume(code3);
+      effects.consume(code4);
       return data;
     }
-    function atBreak(code3) {
-      if (code3 === null) {
+    function atBreak(code4) {
+      if (code4 === null) {
         return true;
       }
-      const list3 = constructs2[code3];
+      const list4 = constructs2[code4];
       let index2 = -1;
-      if (list3) {
-        while (++index2 < list3.length) {
-          const item = list3[index2];
+      if (list4) {
+        while (++index2 < list4.length) {
+          const item = list4[index2];
           if (!item.previous || item.previous.call(self, self.previous)) {
             return true;
           }
@@ -7175,7 +7175,7 @@ function resolveAllLineSuffixes(events, context) {
       let index2 = chunks.length;
       let bufferIndex = -1;
       let size = 0;
-      let tabs;
+      let tabs2;
       while (index2--) {
         const chunk = chunks[index2];
         if (typeof chunk === "string") {
@@ -7188,7 +7188,7 @@ function resolveAllLineSuffixes(events, context) {
             break;
           bufferIndex = -1;
         } else if (chunk === -2) {
-          tabs = true;
+          tabs2 = true;
           size++;
         } else if (chunk === -1) {
         } else {
@@ -7201,7 +7201,7 @@ function resolveAllLineSuffixes(events, context) {
       }
       if (size) {
         const token = {
-          type: eventIndex === events.length || tabs || size < 2 ? "lineSuffix" : "hardBreakTrailing",
+          type: eventIndex === events.length || tabs2 || size < 2 ? "lineSuffix" : "hardBreakTrailing",
           start: {
             _bufferIndex: index2 ? bufferIndex : data.start._bufferIndex + bufferIndex,
             _index: data.start._index + index2,
@@ -7399,18 +7399,18 @@ function createTokenizer(parser, initialize, from) {
       }
     }
   }
-  function go(code3) {
+  function go(code4) {
     consumed = void 0;
-    expectedCode = code3;
-    state = state(code3);
+    expectedCode = code4;
+    state = state(code4);
   }
-  function consume(code3) {
-    if (markdownLineEnding(code3)) {
+  function consume(code4) {
+    if (markdownLineEnding(code4)) {
       point3.line++;
       point3.column = 1;
-      point3.offset += code3 === -3 ? 2 : 1;
+      point3.offset += code4 === -3 ? 2 : 1;
       accountForPotentialSkip();
-    } else if (code3 !== -1) {
+    } else if (code4 !== -1) {
       point3.column++;
       point3.offset++;
     }
@@ -7426,7 +7426,7 @@ function createTokenizer(parser, initialize, from) {
         point3._index++;
       }
     }
-    context.previous = code3;
+    context.previous = code4;
     consumed = true;
   }
   function enter(type, fields) {
@@ -7468,36 +7468,36 @@ function createTokenizer(parser, initialize, from) {
       ) : handleMapOfConstructs(constructs2);
       function handleMapOfConstructs(map3) {
         return start;
-        function start(code3) {
-          const left = code3 !== null && map3[code3];
-          const all2 = code3 !== null && map3.null;
-          const list3 = [
+        function start(code4) {
+          const left = code4 !== null && map3[code4];
+          const all2 = code4 !== null && map3.null;
+          const list4 = [
             // To do: add more extension tests.
             /* c8 ignore next 2 */
             ...Array.isArray(left) ? left : left ? [left] : [],
             ...Array.isArray(all2) ? all2 : all2 ? [all2] : []
           ];
-          return handleListOfConstructs(list3)(code3);
+          return handleListOfConstructs(list4)(code4);
         }
       }
-      function handleListOfConstructs(list3) {
-        listOfConstructs = list3;
+      function handleListOfConstructs(list4) {
+        listOfConstructs = list4;
         constructIndex = 0;
-        if (list3.length === 0) {
+        if (list4.length === 0) {
           return bogusState;
         }
-        return handleConstruct(list3[constructIndex]);
+        return handleConstruct(list4[constructIndex]);
       }
       function handleConstruct(construct) {
         return start;
-        function start(code3) {
+        function start(code4) {
           info = store();
           currentConstruct = construct;
           if (!construct.partial) {
             context.currentConstruct = construct;
           }
           if (construct.name && context.parser.constructs.disable.null.includes(construct.name)) {
-            return nok(code3);
+            return nok(code4);
           }
           return construct.tokenize.call(
             // If we do have fields, create an object w/ `context` as its
@@ -7507,15 +7507,15 @@ function createTokenizer(parser, initialize, from) {
             effects,
             ok3,
             nok
-          )(code3);
+          )(code4);
         }
       }
-      function ok3(code3) {
+      function ok3(code4) {
         consumed = true;
         onreturn(currentConstruct, info);
         return returnState;
       }
-      function nok(code3) {
+      function nok(code4) {
         consumed = true;
         info.restore();
         if (++constructIndex < listOfConstructs.length) {
@@ -7676,7 +7676,7 @@ function preprocess() {
     let next;
     let startPosition;
     let endPosition;
-    let code3;
+    let code4;
     value = buffer + (typeof value === "string" ? value.toString() : new TextDecoder(encoding || void 0).decode(value));
     startPosition = 0;
     buffer = "";
@@ -7690,12 +7690,12 @@ function preprocess() {
       search.lastIndex = startPosition;
       match = search.exec(value);
       endPosition = match && match.index !== void 0 ? match.index : value.length;
-      code3 = value.charCodeAt(endPosition);
+      code4 = value.charCodeAt(endPosition);
       if (!match) {
         buffer = value.slice(startPosition);
         break;
       }
-      if (code3 === 10 && startPosition === endPosition && atCarriageReturn) {
+      if (code4 === 10 && startPosition === endPosition && atCarriageReturn) {
         chunks.push(-3);
         atCarriageReturn = void 0;
       } else {
@@ -7707,7 +7707,7 @@ function preprocess() {
           chunks.push(value.slice(startPosition, endPosition));
           column += endPosition - startPosition;
         }
-        switch (code3) {
+        switch (code4) {
           case 0: {
             chunks.push(65533);
             column++;
@@ -7776,10 +7776,10 @@ function compiler(options) {
     transforms: [],
     canContainEols: ["emphasis", "fragment", "heading", "paragraph", "strong"],
     enter: {
-      autolink: opener(link2),
+      autolink: opener(link3),
       autolinkProtocol: onenterdata,
       autolinkEmail: onenterdata,
-      atxHeading: opener(heading2),
+      atxHeading: opener(heading3),
       blockQuote: opener(blockQuote2),
       characterEscape: onenterdata,
       characterReference: onenterdata,
@@ -7802,19 +7802,19 @@ function compiler(options) {
       htmlFlowData: onenterdata,
       htmlText: opener(html2, buffer),
       htmlTextData: onenterdata,
-      image: opener(image2),
+      image: opener(image3),
       label: buffer,
-      link: opener(link2),
-      listItem: opener(listItem2),
+      link: opener(link3),
+      listItem: opener(listItem3),
       listItemValue: onenterlistitemvalue,
-      listOrdered: opener(list3, onenterlistordered),
-      listUnordered: opener(list3),
-      paragraph: opener(paragraph2),
+      listOrdered: opener(list4, onenterlistordered),
+      listUnordered: opener(list4),
+      paragraph: opener(paragraph3),
       reference: onenterreference,
       referenceString: buffer,
       resourceDestinationString: buffer,
       resourceTitleString: buffer,
-      setextHeading: opener(heading2),
+      setextHeading: opener(heading3),
       strong: opener(strong2),
       thematicBreak: opener(thematicBreak3)
     },
@@ -7936,7 +7936,7 @@ function compiler(options) {
     let index2 = start - 1;
     let containerBalance = -1;
     let listSpread = false;
-    let listItem3;
+    let listItem4;
     let lineIndex;
     let firstBlankLineIndex;
     let atMarker;
@@ -7956,7 +7956,7 @@ function compiler(options) {
         }
         case "lineEndingBlank": {
           if (event[0] === "enter") {
-            if (listItem3 && !atMarker && !containerBalance && !firstBlankLineIndex) {
+            if (listItem4 && !atMarker && !containerBalance && !firstBlankLineIndex) {
               firstBlankLineIndex = index2;
             }
             atMarker = void 0;
@@ -7975,7 +7975,7 @@ function compiler(options) {
         }
       }
       if (!containerBalance && event[0] === "enter" && event[1].type === "listItemPrefix" || containerBalance === -1 && event[0] === "exit" && (event[1].type === "listUnordered" || event[1].type === "listOrdered")) {
-        if (listItem3) {
+        if (listItem4) {
           let tailIndex = index2;
           lineIndex = void 0;
           while (tailIndex--) {
@@ -7995,10 +7995,10 @@ function compiler(options) {
             }
           }
           if (firstBlankLineIndex && (!lineIndex || firstBlankLineIndex < lineIndex)) {
-            listItem3._spread = true;
+            listItem4._spread = true;
           }
-          listItem3.end = Object.assign({}, lineIndex ? events[lineIndex][1].start : event[1].end);
-          events.splice(lineIndex || index2, 0, ["exit", listItem3, event[2]]);
+          listItem4.end = Object.assign({}, lineIndex ? events[lineIndex][1].start : event[1].end);
+          events.splice(lineIndex || index2, 0, ["exit", listItem4, event[2]]);
           index2++;
           length++;
         }
@@ -8010,7 +8010,7 @@ function compiler(options) {
             // @ts-expect-error: we’ll add `end` in a second.
             end: void 0
           };
-          listItem3 = item;
+          listItem4 = item;
           events.splice(index2, 0, ["enter", item, event[2]]);
           index2++;
           length++;
@@ -8152,7 +8152,7 @@ function compiler(options) {
     const siblings = node2.children;
     let tail = siblings[siblings.length - 1];
     if (!tail || tail.type !== "text") {
-      tail = text5();
+      tail = text6();
       tail.position = {
         start: point2(token.start),
         // @ts-expect-error: we’ll add `end` later.
@@ -8333,7 +8333,7 @@ function compiler(options) {
       children: []
     };
   }
-  function heading2() {
+  function heading3() {
     return {
       type: "heading",
       // @ts-expect-error `depth` will be set later.
@@ -8352,7 +8352,7 @@ function compiler(options) {
       value: ""
     };
   }
-  function image2() {
+  function image3() {
     return {
       type: "image",
       title: null,
@@ -8360,7 +8360,7 @@ function compiler(options) {
       alt: null
     };
   }
-  function link2() {
+  function link3() {
     return {
       type: "link",
       title: null,
@@ -8368,7 +8368,7 @@ function compiler(options) {
       children: []
     };
   }
-  function list3(token) {
+  function list4(token) {
     return {
       type: "list",
       ordered: token.type === "listOrdered",
@@ -8377,7 +8377,7 @@ function compiler(options) {
       children: []
     };
   }
-  function listItem2(token) {
+  function listItem3(token) {
     return {
       type: "listItem",
       spread: token._spread,
@@ -8385,7 +8385,7 @@ function compiler(options) {
       children: []
     };
   }
-  function paragraph2() {
+  function paragraph3() {
     return {
       type: "paragraph",
       children: []
@@ -8397,7 +8397,7 @@ function compiler(options) {
       children: []
     };
   }
-  function text5() {
+  function text6() {
     return {
       type: "text",
       value: ""
@@ -8699,10 +8699,10 @@ function toResult(value) {
 }
 
 // node_modules/.pnpm/mdast-util-find-and-replace@3.0.2/node_modules/mdast-util-find-and-replace/lib/index.js
-function findAndReplace(tree, list3, options) {
+function findAndReplace(tree, list4, options) {
   const settings = options || {};
   const ignored = convert(settings.ignore || []);
-  const pairs = toPairs(list3);
+  const pairs = toPairs(list4);
   let pairIndex = -1;
   while (++pairIndex < pairs.length) {
     visitParents(tree, "text", visitor);
@@ -8786,10 +8786,10 @@ function toPairs(tupleOrList) {
   if (!Array.isArray(tupleOrList)) {
     throw new TypeError("Expected find and replace tuple or list of tuples");
   }
-  const list3 = !tupleOrList[0] || Array.isArray(tupleOrList[0]) ? tupleOrList : [tupleOrList];
+  const list4 = !tupleOrList[0] || Array.isArray(tupleOrList[0]) ? tupleOrList : [tupleOrList];
   let index2 = -1;
-  while (++index2 < list3.length) {
-    const tuple = list3[index2];
+  while (++index2 < list4.length) {
+    const tuple = list4[index2];
     result.push([toExpression(tuple[0]), toFunction(tuple[1])]);
   }
   return result;
@@ -8949,9 +8949,9 @@ function splitUrl(url) {
   return [url, trail2];
 }
 function previous2(match, email) {
-  const code3 = match.input.charCodeAt(match.index - 1);
-  return (match.index === 0 || unicodeWhitespace(code3) || unicodePunctuation(code3)) && // If it’s an email, the previous character should not be a slash.
-  (!email || code3 !== 47);
+  const code4 = match.input.charCodeAt(match.index - 1);
+  return (match.index === 0 || unicodeWhitespace(code4) || unicodePunctuation(code4)) && // If it’s an email, the previous character should not be a slash.
+  (!email || code4 !== 47);
 }
 
 // node_modules/.pnpm/mdast-util-gfm-footnote@2.1.0/node_modules/mdast-util-gfm-footnote/lib/index.js
@@ -9123,7 +9123,7 @@ function peekDelete() {
 function defaultStringLength(value) {
   return value.length;
 }
-function markdownTable(table, options) {
+function markdownTable(table2, options) {
   const settings = options || {};
   const align = (settings.align || []).concat();
   const stringLength = settings.stringLength || defaultStringLength;
@@ -9133,15 +9133,15 @@ function markdownTable(table, options) {
   const longestCellByColumn = [];
   let mostCellsPerRow = 0;
   let rowIndex = -1;
-  while (++rowIndex < table.length) {
-    const row2 = [];
+  while (++rowIndex < table2.length) {
+    const row3 = [];
     const sizes2 = [];
     let columnIndex2 = -1;
-    if (table[rowIndex].length > mostCellsPerRow) {
-      mostCellsPerRow = table[rowIndex].length;
+    if (table2[rowIndex].length > mostCellsPerRow) {
+      mostCellsPerRow = table2[rowIndex].length;
     }
-    while (++columnIndex2 < table[rowIndex].length) {
-      const cell = serialize(table[rowIndex][columnIndex2]);
+    while (++columnIndex2 < table2[rowIndex].length) {
+      const cell = serialize(table2[rowIndex][columnIndex2]);
       if (settings.alignDelimiters !== false) {
         const size = stringLength(cell);
         sizes2[columnIndex2] = size;
@@ -9149,9 +9149,9 @@ function markdownTable(table, options) {
           longestCellByColumn[columnIndex2] = size;
         }
       }
-      row2.push(cell);
+      row3.push(cell);
     }
-    cellMatrix[rowIndex] = row2;
+    cellMatrix[rowIndex] = row3;
     sizeMatrix[rowIndex] = sizes2;
   }
   let columnIndex = -1;
@@ -9160,24 +9160,24 @@ function markdownTable(table, options) {
       alignments[columnIndex] = toAlignment(align[columnIndex]);
     }
   } else {
-    const code3 = toAlignment(align);
+    const code4 = toAlignment(align);
     while (++columnIndex < mostCellsPerRow) {
-      alignments[columnIndex] = code3;
+      alignments[columnIndex] = code4;
     }
   }
   columnIndex = -1;
-  const row = [];
+  const row2 = [];
   const sizes = [];
   while (++columnIndex < mostCellsPerRow) {
-    const code3 = alignments[columnIndex];
+    const code4 = alignments[columnIndex];
     let before = "";
     let after = "";
-    if (code3 === 99) {
+    if (code4 === 99) {
       before = ":";
       after = ":";
-    } else if (code3 === 108) {
+    } else if (code4 === 108) {
       before = ":";
-    } else if (code3 === 114) {
+    } else if (code4 === 114) {
       after = ":";
     }
     let size = settings.alignDelimiters === false ? 1 : Math.max(
@@ -9192,27 +9192,27 @@ function markdownTable(table, options) {
       }
       sizes[columnIndex] = size;
     }
-    row[columnIndex] = cell;
+    row2[columnIndex] = cell;
   }
-  cellMatrix.splice(1, 0, row);
+  cellMatrix.splice(1, 0, row2);
   sizeMatrix.splice(1, 0, sizes);
   rowIndex = -1;
   const lines = [];
   while (++rowIndex < cellMatrix.length) {
-    const row2 = cellMatrix[rowIndex];
+    const row3 = cellMatrix[rowIndex];
     const sizes2 = sizeMatrix[rowIndex];
     columnIndex = -1;
     const line = [];
     while (++columnIndex < mostCellsPerRow) {
-      const cell = row2[columnIndex] || "";
+      const cell = row3[columnIndex] || "";
       let before = "";
       let after = "";
       if (settings.alignDelimiters !== false) {
         const size = longestCellByColumn[columnIndex] - (sizes2[columnIndex] || 0);
-        const code3 = alignments[columnIndex];
-        if (code3 === 114) {
+        const code4 = alignments[columnIndex];
+        if (code4 === 114) {
           before = " ".repeat(size);
-        } else if (code3 === 99) {
+        } else if (code4 === 99) {
           if (size % 2) {
             before = " ".repeat(size / 2 + 0.5);
             after = " ".repeat(size / 2 - 0.5);
@@ -9256,8 +9256,8 @@ function serialize(value) {
   return value === null || value === void 0 ? "" : String(value);
 }
 function toAlignment(value) {
-  const code3 = typeof value === "string" ? value.codePointAt(0) : 0;
-  return code3 === 67 || code3 === 99 ? 99 : code3 === 76 || code3 === 108 ? 108 : code3 === 82 || code3 === 114 ? 114 : 0;
+  const code4 = typeof value === "string" ? value.codePointAt(0) : 0;
+  return code4 === 67 || code4 === 99 ? 99 : code4 === 76 || code4 === 108 ? 108 : code4 === 82 || code4 === 114 ? 114 : 0;
 }
 
 // node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/handle/blockquote.js
@@ -9281,16 +9281,16 @@ function map(line, _, blank) {
 function patternInScope(stack, pattern) {
   return listInScope(stack, pattern.inConstruct, true) && !listInScope(stack, pattern.notInConstruct, false);
 }
-function listInScope(stack, list3, none) {
-  if (typeof list3 === "string") {
-    list3 = [list3];
+function listInScope(stack, list4, none) {
+  if (typeof list4 === "string") {
+    list4 = [list4];
   }
-  if (!list3 || list3.length === 0) {
+  if (!list4 || list4.length === 0) {
     return none;
   }
   let index2 = -1;
-  while (++index2 < list3.length) {
-    if (stack.includes(list3[index2])) {
+  while (++index2 < list4.length) {
+    if (stack.includes(list4[index2])) {
       return true;
     }
   }
@@ -9484,8 +9484,8 @@ function checkEmphasis(state) {
 }
 
 // node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/encode-character-reference.js
-function encodeCharacterReference(code3) {
-  return "&#x" + code3.toString(16).toUpperCase() + ";";
+function encodeCharacterReference(code4) {
+  return "&#x" + code4.toString(16).toUpperCase() + ";";
 }
 
 // node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/encode-info.js
@@ -9888,12 +9888,12 @@ function linkReference(node2, _, state, info) {
   let subexit = state.enter("label");
   const tracker = state.createTracker(info);
   let value = tracker.move("[");
-  const text5 = state.containerPhrasing(node2, {
+  const text6 = state.containerPhrasing(node2, {
     before: value,
     after: "]",
     ...tracker.current()
   });
-  value += tracker.move(text5 + "][");
+  value += tracker.move(text6 + "][");
   subexit();
   const stack = state.stack;
   state.stack = [];
@@ -9906,7 +9906,7 @@ function linkReference(node2, _, state, info) {
   subexit();
   state.stack = stack;
   exit3();
-  if (type === "full" || !text5 || text5 !== reference) {
+  if (type === "full" || !text6 || text6 !== reference) {
     value += tracker.move(reference + "]");
   } else if (type === "shortcut") {
     value = value.slice(0, -1);
@@ -10095,8 +10095,8 @@ function root(node2, _, state, info) {
   const hasPhrasing = node2.children.some(function(d) {
     return phrasing(d);
   });
-  const container = hasPhrasing ? state.containerPhrasing : state.containerFlow;
-  return container.call(state, node2, info);
+  const container2 = hasPhrasing ? state.containerPhrasing : state.containerFlow;
+  return container2.call(state, node2, info);
 }
 
 // node_modules/.pnpm/mdast-util-to-markdown@2.1.2/node_modules/mdast-util-to-markdown/lib/util/check-strong.js
@@ -10291,8 +10291,8 @@ function gfmTableToMarkdown(options) {
     return serializeData(handleTableAsData(node2, state, info), node2.align);
   }
   function handleTableRow(node2, _, state, info) {
-    const row = handleTableRowAsData(node2, state, info);
-    const value = serializeData([row]);
+    const row2 = handleTableRowAsData(node2, state, info);
+    const value = serializeData([row2]);
     return value.slice(0, value.indexOf("\n"));
   }
   function handleTableCell(node2, _, state, info) {
@@ -10404,10 +10404,10 @@ function exitParagraphWithTaskListItem(token) {
 function listItemWithTaskListItem(node2, parent, state, info) {
   const head = node2.children[0];
   const checkable = typeof node2.checked === "boolean" && head && head.type === "paragraph";
-  const checkbox = "[" + (node2.checked ? "x" : " ") + "] ";
+  const checkbox2 = "[" + (node2.checked ? "x" : " ") + "] ";
   const tracker = state.createTracker(info);
   if (checkable) {
-    tracker.move(checkbox);
+    tracker.move(checkbox2);
   }
   let value = handle.listItem(node2, parent, state, {
     ...info,
@@ -10418,7 +10418,7 @@ function listItemWithTaskListItem(node2, parent, state, info) {
   }
   return value;
   function check($0) {
-    return $0 + checkbox;
+    return $0 + checkbox2;
   }
 }
 
@@ -10508,65 +10508,65 @@ function tokenizeEmailAutolink(effects, ok3, nok) {
   let dot;
   let data;
   return start;
-  function start(code3) {
-    if (!gfmAtext(code3) || !previousEmail.call(self, self.previous) || previousUnbalanced(self.events)) {
-      return nok(code3);
+  function start(code4) {
+    if (!gfmAtext(code4) || !previousEmail.call(self, self.previous) || previousUnbalanced(self.events)) {
+      return nok(code4);
     }
     effects.enter("literalAutolink");
     effects.enter("literalAutolinkEmail");
-    return atext(code3);
+    return atext(code4);
   }
-  function atext(code3) {
-    if (gfmAtext(code3)) {
-      effects.consume(code3);
+  function atext(code4) {
+    if (gfmAtext(code4)) {
+      effects.consume(code4);
       return atext;
     }
-    if (code3 === 64) {
-      effects.consume(code3);
+    if (code4 === 64) {
+      effects.consume(code4);
       return emailDomain;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function emailDomain(code3) {
-    if (code3 === 46) {
-      return effects.check(emailDomainDotTrail, emailDomainAfter, emailDomainDot)(code3);
+  function emailDomain(code4) {
+    if (code4 === 46) {
+      return effects.check(emailDomainDotTrail, emailDomainAfter, emailDomainDot)(code4);
     }
-    if (code3 === 45 || code3 === 95 || asciiAlphanumeric(code3)) {
+    if (code4 === 45 || code4 === 95 || asciiAlphanumeric(code4)) {
       data = true;
-      effects.consume(code3);
+      effects.consume(code4);
       return emailDomain;
     }
-    return emailDomainAfter(code3);
+    return emailDomainAfter(code4);
   }
-  function emailDomainDot(code3) {
-    effects.consume(code3);
+  function emailDomainDot(code4) {
+    effects.consume(code4);
     dot = true;
     return emailDomain;
   }
-  function emailDomainAfter(code3) {
+  function emailDomainAfter(code4) {
     if (data && dot && asciiAlpha(self.previous)) {
       effects.exit("literalAutolinkEmail");
       effects.exit("literalAutolink");
-      return ok3(code3);
+      return ok3(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 function tokenizeWwwAutolink(effects, ok3, nok) {
   const self = this;
   return wwwStart;
-  function wwwStart(code3) {
-    if (code3 !== 87 && code3 !== 119 || !previousWww.call(self, self.previous) || previousUnbalanced(self.events)) {
-      return nok(code3);
+  function wwwStart(code4) {
+    if (code4 !== 87 && code4 !== 119 || !previousWww.call(self, self.previous) || previousUnbalanced(self.events)) {
+      return nok(code4);
     }
     effects.enter("literalAutolink");
     effects.enter("literalAutolinkWww");
-    return effects.check(wwwPrefix, effects.attempt(domain, effects.attempt(path, wwwAfter), nok), nok)(code3);
+    return effects.check(wwwPrefix, effects.attempt(domain, effects.attempt(path, wwwAfter), nok), nok)(code4);
   }
-  function wwwAfter(code3) {
+  function wwwAfter(code4) {
     effects.exit("literalAutolinkWww");
     effects.exit("literalAutolink");
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 function tokenizeProtocolAutolink(effects, ok3, nok) {
@@ -10574,68 +10574,68 @@ function tokenizeProtocolAutolink(effects, ok3, nok) {
   let buffer = "";
   let seen = false;
   return protocolStart;
-  function protocolStart(code3) {
-    if ((code3 === 72 || code3 === 104) && previousProtocol.call(self, self.previous) && !previousUnbalanced(self.events)) {
+  function protocolStart(code4) {
+    if ((code4 === 72 || code4 === 104) && previousProtocol.call(self, self.previous) && !previousUnbalanced(self.events)) {
       effects.enter("literalAutolink");
       effects.enter("literalAutolinkHttp");
-      buffer += String.fromCodePoint(code3);
-      effects.consume(code3);
+      buffer += String.fromCodePoint(code4);
+      effects.consume(code4);
       return protocolPrefixInside;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function protocolPrefixInside(code3) {
-    if (asciiAlpha(code3) && buffer.length < 5) {
-      buffer += String.fromCodePoint(code3);
-      effects.consume(code3);
+  function protocolPrefixInside(code4) {
+    if (asciiAlpha(code4) && buffer.length < 5) {
+      buffer += String.fromCodePoint(code4);
+      effects.consume(code4);
       return protocolPrefixInside;
     }
-    if (code3 === 58) {
+    if (code4 === 58) {
       const protocol = buffer.toLowerCase();
       if (protocol === "http" || protocol === "https") {
-        effects.consume(code3);
+        effects.consume(code4);
         return protocolSlashesInside;
       }
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function protocolSlashesInside(code3) {
-    if (code3 === 47) {
-      effects.consume(code3);
+  function protocolSlashesInside(code4) {
+    if (code4 === 47) {
+      effects.consume(code4);
       if (seen) {
         return afterProtocol;
       }
       seen = true;
       return protocolSlashesInside;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function afterProtocol(code3) {
-    return code3 === null || asciiControl(code3) || markdownLineEndingOrSpace(code3) || unicodeWhitespace(code3) || unicodePunctuation(code3) ? nok(code3) : effects.attempt(domain, effects.attempt(path, protocolAfter), nok)(code3);
+  function afterProtocol(code4) {
+    return code4 === null || asciiControl(code4) || markdownLineEndingOrSpace(code4) || unicodeWhitespace(code4) || unicodePunctuation(code4) ? nok(code4) : effects.attempt(domain, effects.attempt(path, protocolAfter), nok)(code4);
   }
-  function protocolAfter(code3) {
+  function protocolAfter(code4) {
     effects.exit("literalAutolinkHttp");
     effects.exit("literalAutolink");
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 function tokenizeWwwPrefix(effects, ok3, nok) {
   let size = 0;
   return wwwPrefixInside;
-  function wwwPrefixInside(code3) {
-    if ((code3 === 87 || code3 === 119) && size < 3) {
+  function wwwPrefixInside(code4) {
+    if ((code4 === 87 || code4 === 119) && size < 3) {
       size++;
-      effects.consume(code3);
+      effects.consume(code4);
       return wwwPrefixInside;
     }
-    if (code3 === 46 && size === 3) {
-      effects.consume(code3);
+    if (code4 === 46 && size === 3) {
+      effects.consume(code4);
       return wwwPrefixAfter;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function wwwPrefixAfter(code3) {
-    return code3 === null ? nok(code3) : ok3(code3);
+  function wwwPrefixAfter(code4) {
+    return code4 === null ? nok(code4) : ok3(code4);
   }
 }
 function tokenizeDomain(effects, ok3, nok) {
@@ -10643,130 +10643,130 @@ function tokenizeDomain(effects, ok3, nok) {
   let underscoreInLastLastSegment;
   let seen;
   return domainInside;
-  function domainInside(code3) {
-    if (code3 === 46 || code3 === 95) {
-      return effects.check(trail, domainAfter, domainAtPunctuation)(code3);
+  function domainInside(code4) {
+    if (code4 === 46 || code4 === 95) {
+      return effects.check(trail, domainAfter, domainAtPunctuation)(code4);
     }
-    if (code3 === null || markdownLineEndingOrSpace(code3) || unicodeWhitespace(code3) || code3 !== 45 && unicodePunctuation(code3)) {
-      return domainAfter(code3);
+    if (code4 === null || markdownLineEndingOrSpace(code4) || unicodeWhitespace(code4) || code4 !== 45 && unicodePunctuation(code4)) {
+      return domainAfter(code4);
     }
     seen = true;
-    effects.consume(code3);
+    effects.consume(code4);
     return domainInside;
   }
-  function domainAtPunctuation(code3) {
-    if (code3 === 95) {
+  function domainAtPunctuation(code4) {
+    if (code4 === 95) {
       underscoreInLastSegment = true;
     } else {
       underscoreInLastLastSegment = underscoreInLastSegment;
       underscoreInLastSegment = void 0;
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return domainInside;
   }
-  function domainAfter(code3) {
+  function domainAfter(code4) {
     if (underscoreInLastLastSegment || underscoreInLastSegment || !seen) {
-      return nok(code3);
+      return nok(code4);
     }
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 function tokenizePath(effects, ok3) {
   let sizeOpen = 0;
   let sizeClose = 0;
   return pathInside;
-  function pathInside(code3) {
-    if (code3 === 40) {
+  function pathInside(code4) {
+    if (code4 === 40) {
       sizeOpen++;
-      effects.consume(code3);
+      effects.consume(code4);
       return pathInside;
     }
-    if (code3 === 41 && sizeClose < sizeOpen) {
-      return pathAtPunctuation(code3);
+    if (code4 === 41 && sizeClose < sizeOpen) {
+      return pathAtPunctuation(code4);
     }
-    if (code3 === 33 || code3 === 34 || code3 === 38 || code3 === 39 || code3 === 41 || code3 === 42 || code3 === 44 || code3 === 46 || code3 === 58 || code3 === 59 || code3 === 60 || code3 === 63 || code3 === 93 || code3 === 95 || code3 === 126) {
-      return effects.check(trail, ok3, pathAtPunctuation)(code3);
+    if (code4 === 33 || code4 === 34 || code4 === 38 || code4 === 39 || code4 === 41 || code4 === 42 || code4 === 44 || code4 === 46 || code4 === 58 || code4 === 59 || code4 === 60 || code4 === 63 || code4 === 93 || code4 === 95 || code4 === 126) {
+      return effects.check(trail, ok3, pathAtPunctuation)(code4);
     }
-    if (code3 === null || markdownLineEndingOrSpace(code3) || unicodeWhitespace(code3)) {
-      return ok3(code3);
+    if (code4 === null || markdownLineEndingOrSpace(code4) || unicodeWhitespace(code4)) {
+      return ok3(code4);
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return pathInside;
   }
-  function pathAtPunctuation(code3) {
-    if (code3 === 41) {
+  function pathAtPunctuation(code4) {
+    if (code4 === 41) {
       sizeClose++;
     }
-    effects.consume(code3);
+    effects.consume(code4);
     return pathInside;
   }
 }
 function tokenizeTrail(effects, ok3, nok) {
   return trail2;
-  function trail2(code3) {
-    if (code3 === 33 || code3 === 34 || code3 === 39 || code3 === 41 || code3 === 42 || code3 === 44 || code3 === 46 || code3 === 58 || code3 === 59 || code3 === 63 || code3 === 95 || code3 === 126) {
-      effects.consume(code3);
+  function trail2(code4) {
+    if (code4 === 33 || code4 === 34 || code4 === 39 || code4 === 41 || code4 === 42 || code4 === 44 || code4 === 46 || code4 === 58 || code4 === 59 || code4 === 63 || code4 === 95 || code4 === 126) {
+      effects.consume(code4);
       return trail2;
     }
-    if (code3 === 38) {
-      effects.consume(code3);
+    if (code4 === 38) {
+      effects.consume(code4);
       return trailCharacterReferenceStart;
     }
-    if (code3 === 93) {
-      effects.consume(code3);
+    if (code4 === 93) {
+      effects.consume(code4);
       return trailBracketAfter;
     }
     if (
       // `<` is an end.
-      code3 === 60 || // So is whitespace.
-      code3 === null || markdownLineEndingOrSpace(code3) || unicodeWhitespace(code3)
+      code4 === 60 || // So is whitespace.
+      code4 === null || markdownLineEndingOrSpace(code4) || unicodeWhitespace(code4)
     ) {
-      return ok3(code3);
+      return ok3(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function trailBracketAfter(code3) {
-    if (code3 === null || code3 === 40 || code3 === 91 || markdownLineEndingOrSpace(code3) || unicodeWhitespace(code3)) {
-      return ok3(code3);
+  function trailBracketAfter(code4) {
+    if (code4 === null || code4 === 40 || code4 === 91 || markdownLineEndingOrSpace(code4) || unicodeWhitespace(code4)) {
+      return ok3(code4);
     }
-    return trail2(code3);
+    return trail2(code4);
   }
-  function trailCharacterReferenceStart(code3) {
-    return asciiAlpha(code3) ? trailCharacterReferenceInside(code3) : nok(code3);
+  function trailCharacterReferenceStart(code4) {
+    return asciiAlpha(code4) ? trailCharacterReferenceInside(code4) : nok(code4);
   }
-  function trailCharacterReferenceInside(code3) {
-    if (code3 === 59) {
-      effects.consume(code3);
+  function trailCharacterReferenceInside(code4) {
+    if (code4 === 59) {
+      effects.consume(code4);
       return trail2;
     }
-    if (asciiAlpha(code3)) {
-      effects.consume(code3);
+    if (asciiAlpha(code4)) {
+      effects.consume(code4);
       return trailCharacterReferenceInside;
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 function tokenizeEmailDomainDotTrail(effects, ok3, nok) {
   return start;
-  function start(code3) {
-    effects.consume(code3);
+  function start(code4) {
+    effects.consume(code4);
     return after;
   }
-  function after(code3) {
-    return asciiAlphanumeric(code3) ? nok(code3) : ok3(code3);
+  function after(code4) {
+    return asciiAlphanumeric(code4) ? nok(code4) : ok3(code4);
   }
 }
-function previousWww(code3) {
-  return code3 === null || code3 === 40 || code3 === 42 || code3 === 95 || code3 === 91 || code3 === 93 || code3 === 126 || markdownLineEndingOrSpace(code3);
+function previousWww(code4) {
+  return code4 === null || code4 === 40 || code4 === 42 || code4 === 95 || code4 === 91 || code4 === 93 || code4 === 126 || markdownLineEndingOrSpace(code4);
 }
-function previousProtocol(code3) {
-  return !asciiAlpha(code3);
+function previousProtocol(code4) {
+  return !asciiAlpha(code4);
 }
-function previousEmail(code3) {
-  return !(code3 === 47 || gfmAtext(code3));
+function previousEmail(code4) {
+  return !(code4 === 47 || gfmAtext(code4));
 }
-function gfmAtext(code3) {
-  return code3 === 43 || code3 === 45 || code3 === 46 || code3 === 95 || asciiAlphanumeric(code3);
+function gfmAtext(code4) {
+  return code4 === 43 || code4 === 45 || code4 === 46 || code4 === 95 || asciiAlphanumeric(code4);
 }
 function previousUnbalanced(events) {
   let index2 = events.length;
@@ -10835,21 +10835,21 @@ function tokenizePotentialGfmFootnoteCall(effects, ok3, nok) {
     }
   }
   return start;
-  function start(code3) {
+  function start(code4) {
     if (!labelStart || !labelStart._balanced) {
-      return nok(code3);
+      return nok(code4);
     }
     const id = normalizeIdentifier(self.sliceSerialize({
       start: labelStart.end,
       end: self.now()
     }));
     if (id.codePointAt(0) !== 94 || !defined.includes(id.slice(1))) {
-      return nok(code3);
+      return nok(code4);
     }
     effects.enter("gfmFootnoteCallLabelMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("gfmFootnoteCallLabelMarker");
-    return ok3(code3);
+    return ok3(code4);
   }
 }
 function resolveToPotentialGfmFootnoteCall(events, context) {
@@ -10917,59 +10917,59 @@ function tokenizeGfmFootnoteCall(effects, ok3, nok) {
   let size = 0;
   let data;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("gfmFootnoteCall");
     effects.enter("gfmFootnoteCallLabelMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("gfmFootnoteCallLabelMarker");
     return callStart;
   }
-  function callStart(code3) {
-    if (code3 !== 94)
-      return nok(code3);
+  function callStart(code4) {
+    if (code4 !== 94)
+      return nok(code4);
     effects.enter("gfmFootnoteCallMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("gfmFootnoteCallMarker");
     effects.enter("gfmFootnoteCallString");
     effects.enter("chunkString").contentType = "string";
     return callData;
   }
-  function callData(code3) {
+  function callData(code4) {
     if (
       // Too long.
       size > 999 || // Closing brace with nothing.
-      code3 === 93 && !data || // Space or tab is not supported by GFM for some reason.
+      code4 === 93 && !data || // Space or tab is not supported by GFM for some reason.
       // `\n` and `[` not being supported makes sense.
-      code3 === null || code3 === 91 || markdownLineEndingOrSpace(code3)
+      code4 === null || code4 === 91 || markdownLineEndingOrSpace(code4)
     ) {
-      return nok(code3);
+      return nok(code4);
     }
-    if (code3 === 93) {
+    if (code4 === 93) {
       effects.exit("chunkString");
       const token = effects.exit("gfmFootnoteCallString");
       if (!defined.includes(normalizeIdentifier(self.sliceSerialize(token)))) {
-        return nok(code3);
+        return nok(code4);
       }
       effects.enter("gfmFootnoteCallLabelMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("gfmFootnoteCallLabelMarker");
       effects.exit("gfmFootnoteCall");
       return ok3;
     }
-    if (!markdownLineEndingOrSpace(code3)) {
+    if (!markdownLineEndingOrSpace(code4)) {
       data = true;
     }
     size++;
-    effects.consume(code3);
-    return code3 === 92 ? callEscape : callData;
+    effects.consume(code4);
+    return code4 === 92 ? callEscape : callData;
   }
-  function callEscape(code3) {
-    if (code3 === 91 || code3 === 92 || code3 === 93) {
-      effects.consume(code3);
+  function callEscape(code4) {
+    if (code4 === 91 || code4 === 92 || code4 === 93) {
+      effects.consume(code4);
       size++;
       return callData;
     }
-    return callData(code3);
+    return callData(code4);
   }
 }
 function tokenizeDefinitionStart(effects, ok3, nok) {
@@ -10979,74 +10979,74 @@ function tokenizeDefinitionStart(effects, ok3, nok) {
   let size = 0;
   let data;
   return start;
-  function start(code3) {
+  function start(code4) {
     effects.enter("gfmFootnoteDefinition")._container = true;
     effects.enter("gfmFootnoteDefinitionLabel");
     effects.enter("gfmFootnoteDefinitionLabelMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("gfmFootnoteDefinitionLabelMarker");
     return labelAtMarker;
   }
-  function labelAtMarker(code3) {
-    if (code3 === 94) {
+  function labelAtMarker(code4) {
+    if (code4 === 94) {
       effects.enter("gfmFootnoteDefinitionMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("gfmFootnoteDefinitionMarker");
       effects.enter("gfmFootnoteDefinitionLabelString");
       effects.enter("chunkString").contentType = "string";
       return labelInside;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function labelInside(code3) {
+  function labelInside(code4) {
     if (
       // Too long.
       size > 999 || // Closing brace with nothing.
-      code3 === 93 && !data || // Space or tab is not supported by GFM for some reason.
+      code4 === 93 && !data || // Space or tab is not supported by GFM for some reason.
       // `\n` and `[` not being supported makes sense.
-      code3 === null || code3 === 91 || markdownLineEndingOrSpace(code3)
+      code4 === null || code4 === 91 || markdownLineEndingOrSpace(code4)
     ) {
-      return nok(code3);
+      return nok(code4);
     }
-    if (code3 === 93) {
+    if (code4 === 93) {
       effects.exit("chunkString");
       const token = effects.exit("gfmFootnoteDefinitionLabelString");
       identifier = normalizeIdentifier(self.sliceSerialize(token));
       effects.enter("gfmFootnoteDefinitionLabelMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("gfmFootnoteDefinitionLabelMarker");
       effects.exit("gfmFootnoteDefinitionLabel");
       return labelAfter;
     }
-    if (!markdownLineEndingOrSpace(code3)) {
+    if (!markdownLineEndingOrSpace(code4)) {
       data = true;
     }
     size++;
-    effects.consume(code3);
-    return code3 === 92 ? labelEscape : labelInside;
+    effects.consume(code4);
+    return code4 === 92 ? labelEscape : labelInside;
   }
-  function labelEscape(code3) {
-    if (code3 === 91 || code3 === 92 || code3 === 93) {
-      effects.consume(code3);
+  function labelEscape(code4) {
+    if (code4 === 91 || code4 === 92 || code4 === 93) {
+      effects.consume(code4);
       size++;
       return labelInside;
     }
-    return labelInside(code3);
+    return labelInside(code4);
   }
-  function labelAfter(code3) {
-    if (code3 === 58) {
+  function labelAfter(code4) {
+    if (code4 === 58) {
       effects.enter("definitionMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("definitionMarker");
       if (!defined.includes(identifier)) {
         defined.push(identifier);
       }
       return factorySpace(effects, whitespaceAfter, "gfmFootnoteDefinitionWhitespace");
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function whitespaceAfter(code3) {
-    return ok3(code3);
+  function whitespaceAfter(code4) {
+    return ok3(code4);
   }
 }
 function tokenizeDefinitionContinuation(effects, ok3, nok) {
@@ -11058,9 +11058,9 @@ function gfmFootnoteDefinitionEnd(effects) {
 function tokenizeIndent2(effects, ok3, nok) {
   const self = this;
   return factorySpace(effects, afterPrefix, "gfmFootnoteDefinitionIndent", 4 + 1);
-  function afterPrefix(code3) {
+  function afterPrefix(code4) {
     const tail = self.events[self.events.length - 1];
-    return tail && tail[1].type === "gfmFootnoteDefinitionIndent" && tail[2].sliceSerialize(tail[1], true).length === 4 ? ok3(code3) : nok(code3);
+    return tail && tail[1].type === "gfmFootnoteDefinitionIndent" && tail[2].sliceSerialize(tail[1], true).length === 4 ? ok3(code4) : nok(code4);
   }
 }
 
@@ -11102,17 +11102,17 @@ function gfmStrikethrough(options) {
               start: Object.assign({}, events[open2][1].start),
               end: Object.assign({}, events[index2][1].end)
             };
-            const text5 = {
+            const text6 = {
               type: "strikethroughText",
               start: Object.assign({}, events[open2][1].end),
               end: Object.assign({}, events[index2][1].start)
             };
-            const nextEvents = [["enter", strikethrough, context], ["enter", events[open2][1], context], ["exit", events[open2][1], context], ["enter", text5, context]];
+            const nextEvents = [["enter", strikethrough, context], ["enter", events[open2][1], context], ["exit", events[open2][1], context], ["enter", text6, context]];
             const insideSpan2 = context.parser.constructs.insideSpan.null;
             if (insideSpan2) {
               splice(nextEvents, nextEvents.length, 0, resolveAll(insideSpan2, events.slice(open2 + 1, index2), context));
             }
-            splice(nextEvents, nextEvents.length, 0, [["exit", text5, context], ["enter", events[index2][1], context], ["exit", events[index2][1], context], ["exit", strikethrough, context]]);
+            splice(nextEvents, nextEvents.length, 0, [["exit", text6, context], ["enter", events[index2][1], context], ["exit", events[index2][1], context], ["exit", strikethrough, context]]);
             splice(events, open2 - 1, index2 - open2 + 3, nextEvents);
             index2 = open2 + nextEvents.length - 2;
             break;
@@ -11133,29 +11133,29 @@ function gfmStrikethrough(options) {
     const events = this.events;
     let size = 0;
     return start;
-    function start(code3) {
+    function start(code4) {
       if (previous3 === 126 && events[events.length - 1][1].type !== "characterEscape") {
-        return nok(code3);
+        return nok(code4);
       }
       effects.enter("strikethroughSequenceTemporary");
-      return more(code3);
+      return more(code4);
     }
-    function more(code3) {
+    function more(code4) {
       const before = classifyCharacter(previous3);
-      if (code3 === 126) {
+      if (code4 === 126) {
         if (size > 1)
-          return nok(code3);
-        effects.consume(code3);
+          return nok(code4);
+        effects.consume(code4);
         size++;
         return more;
       }
       if (size < 2 && !single)
-        return nok(code3);
+        return nok(code4);
       const token = effects.exit("strikethroughSequenceTemporary");
-      const after = classifyCharacter(code3);
+      const after = classifyCharacter(code4);
       token._open = !after || after === 2 && Boolean(before);
       token._close = !before || before === 2 && Boolean(after);
-      return ok3(code3);
+      return ok3(code4);
     }
   }
 }
@@ -11284,7 +11284,7 @@ function tokenizeTable(effects, ok3, nok) {
   let sizeB = 0;
   let seen;
   return start;
-  function start(code3) {
+  function start(code4) {
     let index2 = self.events.length - 1;
     while (index2 > -1) {
       const type = self.events[index2][1].type;
@@ -11297,202 +11297,202 @@ function tokenizeTable(effects, ok3, nok) {
     const tail = index2 > -1 ? self.events[index2][1].type : null;
     const next = tail === "tableHead" || tail === "tableRow" ? bodyRowStart : headRowBefore;
     if (next === bodyRowStart && self.parser.lazy[self.now().line]) {
-      return nok(code3);
+      return nok(code4);
     }
-    return next(code3);
+    return next(code4);
   }
-  function headRowBefore(code3) {
+  function headRowBefore(code4) {
     effects.enter("tableHead");
     effects.enter("tableRow");
-    return headRowStart(code3);
+    return headRowStart(code4);
   }
-  function headRowStart(code3) {
-    if (code3 === 124) {
-      return headRowBreak(code3);
+  function headRowStart(code4) {
+    if (code4 === 124) {
+      return headRowBreak(code4);
     }
     seen = true;
     sizeB += 1;
-    return headRowBreak(code3);
+    return headRowBreak(code4);
   }
-  function headRowBreak(code3) {
-    if (code3 === null) {
-      return nok(code3);
+  function headRowBreak(code4) {
+    if (code4 === null) {
+      return nok(code4);
     }
-    if (markdownLineEnding(code3)) {
+    if (markdownLineEnding(code4)) {
       if (sizeB > 1) {
         sizeB = 0;
         self.interrupt = true;
         effects.exit("tableRow");
         effects.enter("lineEnding");
-        effects.consume(code3);
+        effects.consume(code4);
         effects.exit("lineEnding");
         return headDelimiterStart;
       }
-      return nok(code3);
+      return nok(code4);
     }
-    if (markdownSpace(code3)) {
-      return factorySpace(effects, headRowBreak, "whitespace")(code3);
+    if (markdownSpace(code4)) {
+      return factorySpace(effects, headRowBreak, "whitespace")(code4);
     }
     sizeB += 1;
     if (seen) {
       seen = false;
       size += 1;
     }
-    if (code3 === 124) {
+    if (code4 === 124) {
       effects.enter("tableCellDivider");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("tableCellDivider");
       seen = true;
       return headRowBreak;
     }
     effects.enter("data");
-    return headRowData(code3);
+    return headRowData(code4);
   }
-  function headRowData(code3) {
-    if (code3 === null || code3 === 124 || markdownLineEndingOrSpace(code3)) {
+  function headRowData(code4) {
+    if (code4 === null || code4 === 124 || markdownLineEndingOrSpace(code4)) {
       effects.exit("data");
-      return headRowBreak(code3);
+      return headRowBreak(code4);
     }
-    effects.consume(code3);
-    return code3 === 92 ? headRowEscape : headRowData;
+    effects.consume(code4);
+    return code4 === 92 ? headRowEscape : headRowData;
   }
-  function headRowEscape(code3) {
-    if (code3 === 92 || code3 === 124) {
-      effects.consume(code3);
+  function headRowEscape(code4) {
+    if (code4 === 92 || code4 === 124) {
+      effects.consume(code4);
       return headRowData;
     }
-    return headRowData(code3);
+    return headRowData(code4);
   }
-  function headDelimiterStart(code3) {
+  function headDelimiterStart(code4) {
     self.interrupt = false;
     if (self.parser.lazy[self.now().line]) {
-      return nok(code3);
+      return nok(code4);
     }
     effects.enter("tableDelimiterRow");
     seen = false;
-    if (markdownSpace(code3)) {
-      return factorySpace(effects, headDelimiterBefore, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code3);
+    if (markdownSpace(code4)) {
+      return factorySpace(effects, headDelimiterBefore, "linePrefix", self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code4);
     }
-    return headDelimiterBefore(code3);
+    return headDelimiterBefore(code4);
   }
-  function headDelimiterBefore(code3) {
-    if (code3 === 45 || code3 === 58) {
-      return headDelimiterValueBefore(code3);
+  function headDelimiterBefore(code4) {
+    if (code4 === 45 || code4 === 58) {
+      return headDelimiterValueBefore(code4);
     }
-    if (code3 === 124) {
+    if (code4 === 124) {
       seen = true;
       effects.enter("tableCellDivider");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("tableCellDivider");
       return headDelimiterCellBefore;
     }
-    return headDelimiterNok(code3);
+    return headDelimiterNok(code4);
   }
-  function headDelimiterCellBefore(code3) {
-    if (markdownSpace(code3)) {
-      return factorySpace(effects, headDelimiterValueBefore, "whitespace")(code3);
+  function headDelimiterCellBefore(code4) {
+    if (markdownSpace(code4)) {
+      return factorySpace(effects, headDelimiterValueBefore, "whitespace")(code4);
     }
-    return headDelimiterValueBefore(code3);
+    return headDelimiterValueBefore(code4);
   }
-  function headDelimiterValueBefore(code3) {
-    if (code3 === 58) {
+  function headDelimiterValueBefore(code4) {
+    if (code4 === 58) {
       sizeB += 1;
       seen = true;
       effects.enter("tableDelimiterMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("tableDelimiterMarker");
       return headDelimiterLeftAlignmentAfter;
     }
-    if (code3 === 45) {
+    if (code4 === 45) {
       sizeB += 1;
-      return headDelimiterLeftAlignmentAfter(code3);
+      return headDelimiterLeftAlignmentAfter(code4);
     }
-    if (code3 === null || markdownLineEnding(code3)) {
-      return headDelimiterCellAfter(code3);
+    if (code4 === null || markdownLineEnding(code4)) {
+      return headDelimiterCellAfter(code4);
     }
-    return headDelimiterNok(code3);
+    return headDelimiterNok(code4);
   }
-  function headDelimiterLeftAlignmentAfter(code3) {
-    if (code3 === 45) {
+  function headDelimiterLeftAlignmentAfter(code4) {
+    if (code4 === 45) {
       effects.enter("tableDelimiterFiller");
-      return headDelimiterFiller(code3);
+      return headDelimiterFiller(code4);
     }
-    return headDelimiterNok(code3);
+    return headDelimiterNok(code4);
   }
-  function headDelimiterFiller(code3) {
-    if (code3 === 45) {
-      effects.consume(code3);
+  function headDelimiterFiller(code4) {
+    if (code4 === 45) {
+      effects.consume(code4);
       return headDelimiterFiller;
     }
-    if (code3 === 58) {
+    if (code4 === 58) {
       seen = true;
       effects.exit("tableDelimiterFiller");
       effects.enter("tableDelimiterMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("tableDelimiterMarker");
       return headDelimiterRightAlignmentAfter;
     }
     effects.exit("tableDelimiterFiller");
-    return headDelimiterRightAlignmentAfter(code3);
+    return headDelimiterRightAlignmentAfter(code4);
   }
-  function headDelimiterRightAlignmentAfter(code3) {
-    if (markdownSpace(code3)) {
-      return factorySpace(effects, headDelimiterCellAfter, "whitespace")(code3);
+  function headDelimiterRightAlignmentAfter(code4) {
+    if (markdownSpace(code4)) {
+      return factorySpace(effects, headDelimiterCellAfter, "whitespace")(code4);
     }
-    return headDelimiterCellAfter(code3);
+    return headDelimiterCellAfter(code4);
   }
-  function headDelimiterCellAfter(code3) {
-    if (code3 === 124) {
-      return headDelimiterBefore(code3);
+  function headDelimiterCellAfter(code4) {
+    if (code4 === 124) {
+      return headDelimiterBefore(code4);
     }
-    if (code3 === null || markdownLineEnding(code3)) {
+    if (code4 === null || markdownLineEnding(code4)) {
       if (!seen || size !== sizeB) {
-        return headDelimiterNok(code3);
+        return headDelimiterNok(code4);
       }
       effects.exit("tableDelimiterRow");
       effects.exit("tableHead");
-      return ok3(code3);
+      return ok3(code4);
     }
-    return headDelimiterNok(code3);
+    return headDelimiterNok(code4);
   }
-  function headDelimiterNok(code3) {
-    return nok(code3);
+  function headDelimiterNok(code4) {
+    return nok(code4);
   }
-  function bodyRowStart(code3) {
+  function bodyRowStart(code4) {
     effects.enter("tableRow");
-    return bodyRowBreak(code3);
+    return bodyRowBreak(code4);
   }
-  function bodyRowBreak(code3) {
-    if (code3 === 124) {
+  function bodyRowBreak(code4) {
+    if (code4 === 124) {
       effects.enter("tableCellDivider");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("tableCellDivider");
       return bodyRowBreak;
     }
-    if (code3 === null || markdownLineEnding(code3)) {
+    if (code4 === null || markdownLineEnding(code4)) {
       effects.exit("tableRow");
-      return ok3(code3);
+      return ok3(code4);
     }
-    if (markdownSpace(code3)) {
-      return factorySpace(effects, bodyRowBreak, "whitespace")(code3);
+    if (markdownSpace(code4)) {
+      return factorySpace(effects, bodyRowBreak, "whitespace")(code4);
     }
     effects.enter("data");
-    return bodyRowData(code3);
+    return bodyRowData(code4);
   }
-  function bodyRowData(code3) {
-    if (code3 === null || code3 === 124 || markdownLineEndingOrSpace(code3)) {
+  function bodyRowData(code4) {
+    if (code4 === null || code4 === 124 || markdownLineEndingOrSpace(code4)) {
       effects.exit("data");
-      return bodyRowBreak(code3);
+      return bodyRowBreak(code4);
     }
-    effects.consume(code3);
-    return code3 === 92 ? bodyRowEscape : bodyRowData;
+    effects.consume(code4);
+    return code4 === 92 ? bodyRowEscape : bodyRowData;
   }
-  function bodyRowEscape(code3) {
-    if (code3 === 92 || code3 === 124) {
-      effects.consume(code3);
+  function bodyRowEscape(code4) {
+    if (code4 === 92 || code4 === 124) {
+      effects.consume(code4);
       return bodyRowData;
     }
-    return bodyRowData(code3);
+    return bodyRowData(code4);
   }
 }
 function resolveTable(events, context) {
@@ -11637,15 +11637,15 @@ function flushCell(map3, context, range, rowKind, rowEnd, previousCell) {
   }
   return previousCell;
 }
-function flushTableEnd(map3, context, index2, table, tableBody) {
+function flushTableEnd(map3, context, index2, table2, tableBody) {
   const exits = [];
   const related = getPoint(context.events, index2);
   if (tableBody) {
     tableBody.end = Object.assign({}, related);
     exits.push(["exit", tableBody, context]);
   }
-  table.end = Object.assign({}, related);
-  exits.push(["exit", table, context]);
+  table2.end = Object.assign({}, related);
+  exits.push(["exit", table2, context]);
   map3.add(index2 + 1, 0, exits);
 }
 function getPoint(events, index2) {
@@ -11669,62 +11669,62 @@ function gfmTaskListItem() {
 function tokenizeTasklistCheck(effects, ok3, nok) {
   const self = this;
   return open2;
-  function open2(code3) {
+  function open2(code4) {
     if (
       // Exit if there’s stuff before.
       self.previous !== null || // Exit if not in the first content that is the first child of a list
       // item.
       !self._gfmTasklistFirstContentOfListItem
     ) {
-      return nok(code3);
+      return nok(code4);
     }
     effects.enter("taskListCheck");
     effects.enter("taskListCheckMarker");
-    effects.consume(code3);
+    effects.consume(code4);
     effects.exit("taskListCheckMarker");
     return inside;
   }
-  function inside(code3) {
-    if (markdownLineEndingOrSpace(code3)) {
+  function inside(code4) {
+    if (markdownLineEndingOrSpace(code4)) {
       effects.enter("taskListCheckValueUnchecked");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("taskListCheckValueUnchecked");
       return close;
     }
-    if (code3 === 88 || code3 === 120) {
+    if (code4 === 88 || code4 === 120) {
       effects.enter("taskListCheckValueChecked");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("taskListCheckValueChecked");
       return close;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function close(code3) {
-    if (code3 === 93) {
+  function close(code4) {
+    if (code4 === 93) {
       effects.enter("taskListCheckMarker");
-      effects.consume(code3);
+      effects.consume(code4);
       effects.exit("taskListCheckMarker");
       effects.exit("taskListCheck");
       return after;
     }
-    return nok(code3);
+    return nok(code4);
   }
-  function after(code3) {
-    if (markdownLineEnding(code3)) {
-      return ok3(code3);
+  function after(code4) {
+    if (markdownLineEnding(code4)) {
+      return ok3(code4);
     }
-    if (markdownSpace(code3)) {
+    if (markdownSpace(code4)) {
       return effects.check({
         tokenize: spaceThenNonSpace
-      }, ok3, nok)(code3);
+      }, ok3, nok)(code4);
     }
-    return nok(code3);
+    return nok(code4);
   }
 }
 function spaceThenNonSpace(effects, ok3, nok) {
   return factorySpace(effects, after, "whitespace");
-  function after(code3) {
-    return code3 === null ? nok(code3) : ok3(code3);
+  function after(code4) {
+    return code4 === null ? nok(code4) : ok3(code4);
   }
 }
 
@@ -11756,347 +11756,178 @@ function remarkGfm(options) {
   toMarkdownExtensions.push(gfmToMarkdown(settings));
 }
 
-// packages/core/src/renderer/html-renderer.ts
-function renderNode(node2, context) {
-  if (node2 == null)
-    return "";
-  switch (node2.type) {
-    case "button":
-      return renderButton(node2, context);
-    case "input":
-      return renderInput(node2, context);
-    case "textarea":
-      return renderTextarea(node2, context);
-    case "select":
-      return renderSelect(node2, context);
-    case "checkbox":
-      return renderCheckbox(node2, context);
-    case "radio":
-      return renderRadio(node2, context);
-    case "radio-group":
-      return renderRadioGroup(node2, context);
-    case "icon":
-      return renderIcon(node2, context);
-    case "badge":
-      return renderBadge(node2, context);
-    case "container":
-      return renderContainer(node2, context);
-    case "nav":
-      return renderNav(node2, context);
-    case "nav-item":
-      return renderNavItem(node2, context);
-    case "brand":
-      return renderBrand(node2, context);
-    case "grid":
-      return renderGrid(node2, context);
-    case "grid-item":
-      return renderGridItem(node2, context);
-    case "row":
-      return renderRow(node2, context);
-    case "heading":
-      return renderHeading(node2, context);
-    case "paragraph":
-      return renderParagraph(node2, context);
-    case "text":
-      return renderText(node2, context);
-    case "image":
-      return renderImage(node2, context);
-    case "link":
-      return renderLink(node2, context);
-    case "list":
-      return renderList(node2, context);
-    case "list-item":
-      return renderListItem(node2, context);
-    case "table":
-      return renderTable(node2, context);
-    case "table-header":
-      return renderTableHeader(node2, context);
-    case "table-row":
-      return renderTableRow(node2, context);
-    case "table-cell":
-      return renderTableCell(node2, context);
-    case "blockquote":
-      return renderBlockquote(node2, context);
-    case "code":
-      return renderCode(node2, context);
-    case "separator":
-      return renderSeparator(node2, context);
-    case "tabs":
-      return renderTabs(node2, context);
-    case "tab":
-      return renderTab(node2, context);
-    case "breadcrumbs":
-      return renderBreadcrumbs(node2, context);
-    case "demo":
-      return renderDemo(node2, context);
-    case "comment":
-      return renderComment(node2, context);
-    default:
-      return `<!-- Unknown node type: ${node2.type} -->`;
-  }
-}
-function renderChildrenList(children, context) {
+// packages/core/src/nodes/button/html.ts
+function renderButtonHTML(node2, context) {
   const { classPrefix: prefix } = context;
-  let result = "";
-  const parentNextCommentId = context._nextCommentId ?? null;
-  context._nextCommentId = null;
-  for (const node2 of children) {
-    if (node2.type === "comment") {
-      if (context.showComments && context._comments != null) {
-        const text5 = node2.text;
-        if (context._nextCommentId != null) {
-          const thread = context._comments.find((c) => c.id === context._nextCommentId);
-          if (thread)
-            thread.texts.push(text5);
-        } else {
-          const id = context._comments.length + 1;
-          context._comments.push({ id, texts: [text5] });
-          context._nextCommentId = id;
-        }
-      }
-      continue;
-    }
-    const html2 = renderNode(node2, context);
-    if (context.showComments && context._comments != null && context._nextCommentId != null) {
-      const id = context._nextCommentId;
-      context._nextCommentId = null;
-      result += `<div class="${prefix}annotated" id="wmd-ann-${id}"><span class="${prefix}comment-badge">${id}</span>${html2}</div>
-`;
-    } else {
-      result += html2 + "\n";
-    }
-  }
-  context._nextCommentId = parentNextCommentId;
-  return result.trim();
-}
-function renderCommentsPanel(comments, prefix) {
-  const items = comments.map((c) => {
-    const messages = c.texts.map((text5, i) => {
-      const divider = i < c.texts.length - 1 ? `<div class="${prefix}comment-msg-divider"></div>` : "";
-      return `<div class="${prefix}comment-msg">${escapeHtml(text5)}</div>${divider}`;
-    }).join("");
-    return `<div class="${prefix}comment-card"><div class="${prefix}comment-card-badge">${c.id}</div><div class="${prefix}comment-card-body">${messages}</div></div>`;
-  }).join("\n  ");
-  return `<aside class="${prefix}comments-panel">
-  <div class="${prefix}comments-panel-header">
-    <span>\u{1F4AC} Comments</span>
-    <span class="${prefix}comments-panel-count">${comments.length}</span>
-  </div>
-  ${items}
-</aside>`;
-}
-function renderButton(node2, context) {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, "button", node2.props);
-  const disabled = node2.props.state === "disabled" ? " disabled" : "";
-  const loading = node2.props.state === "loading" ? ` ${prefix}loading` : "";
-  const contentHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.content);
-  const href = node2.href || node2.props?.href;
+  const props = node2.props;
+  const classes = buildClasses(prefix, "button", props);
+  const isDisabled = props.state === "disabled" || props.disabled;
+  const isLoading = props.state === "loading" || props.loading;
+  const disabled = isDisabled ? " disabled" : "";
+  const loading = isLoading ? ` ${prefix}loading` : "";
+  const contentHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.content ?? "");
+  const href = node2.href || props.href;
   if (href) {
     return `<a href="${escapeHtml(href)}" class="${classes}${loading}"${sourceLine(node2)}>${contentHTML}</a>`;
   }
   return `<button class="${classes}${loading}"${disabled}${sourceLine(node2)}>${contentHTML}</button>`;
 }
-function renderBadge(node2, context) {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, "badge", node2.props);
-  return `<span class="${classes}">${escapeHtml(node2.content)}</span>`;
-}
-function renderInput(node2, context) {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, "input", node2.props);
-  const type = node2.props.inputType || node2.props.type || "text";
-  const required = node2.props.required ? " required" : "";
-  const disabled = node2.props.disabled ? " disabled" : "";
-  const placeholder = node2.props.placeholder ? ` placeholder="${escapeHtml(node2.props.placeholder)}"` : "";
-  const value = node2.props.value ? ` value="${escapeHtml(node2.props.value)}"` : "";
-  const style = node2.props.width ? ` style="width: ${node2.props.width}ch; max-width: ${node2.props.width}ch;"` : "";
-  return `<input type="${type}" class="${classes}"${placeholder}${value}${required}${disabled}${style} />`;
-}
-function renderTextarea(node2, context) {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, "textarea", node2.props);
-  const rows = node2.props.rows || 4;
-  const required = node2.props.required ? " required" : "";
-  const disabled = node2.props.disabled ? " disabled" : "";
-  const placeholder = node2.props.placeholder ? ` placeholder="${escapeHtml(node2.props.placeholder)}"` : "";
-  const value = node2.props.value || "";
-  return `<textarea class="${classes}" rows="${rows}"${placeholder}${required}${disabled}>${escapeHtml(value)}</textarea>`;
-}
-function renderSelect(node2, context) {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, "select", node2.props);
-  const required = node2.props.required ? " required" : "";
-  const disabled = node2.props.disabled ? " disabled" : "";
-  const multiple = node2.props.multiple ? " multiple" : "";
-  const optionsHTML = (node2.options || []).map((opt) => {
-    const selected = opt.selected ? " selected" : "";
-    return `<option value="${escapeHtml(opt.value)}"${selected}>${escapeHtml(opt.label)}</option>`;
-  }).join("\n    ");
-  const placeholder = node2.props.placeholder;
-  const placeholderOption = placeholder ? `<option value="" disabled selected>${escapeHtml(placeholder)}</option>
-    ` : "";
-  return `<select class="${classes}"${required}${disabled}${multiple}>
-    ${placeholderOption}${optionsHTML}
-  </select>`;
-}
-function renderCheckbox(node2, context) {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, "checkbox", node2.props);
-  const checked = node2.checked ? " checked" : "";
-  const disabled = node2.props.disabled ? " disabled" : "";
-  const value = node2.props.value ? ` value="${escapeHtml(node2.props.value)}"` : "";
-  let labelHTML = escapeHtml(node2.label || "");
-  let nestedHTML = "";
-  if (node2.children) {
-    const inlineChildren = [];
-    const nestedChildren = [];
-    for (const child of node2.children) {
-      if (child.type === "list") {
-        nestedChildren.push(child);
-      } else {
-        inlineChildren.push(child);
-      }
-    }
-    if (inlineChildren.length > 0) {
-      labelHTML = inlineChildren.map((child) => renderNode(child, context)).join("");
-    }
-    if (nestedChildren.length > 0) {
-      nestedHTML = nestedChildren.map((child) => renderNode(child, context)).join("");
-    }
+
+// packages/core/src/renderer/react-renderer.ts
+function nextRadioGroupName(context) {
+  if (!context._radioGroupCounter) {
+    context._radioGroupCounter = { value: 0 };
   }
-  return `<label class="${classes}">
-    <input type="checkbox"${checked}${disabled}${value} />
-    <span>${labelHTML}</span>
-  </label>${nestedHTML}`;
+  context._radioGroupCounter.value += 1;
+  return `radio-group-${context._radioGroupCounter.value}`;
 }
-function renderRadio(node2, context) {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, "radio", node2.props);
-  const checked = node2.selected ? " checked" : "";
-  const disabled = node2.props.disabled ? " disabled" : "";
-  const name = node2.props.name ? ` name="${escapeHtml(node2.props.name)}"` : "";
-  const value = node2.props.value ? ` value="${escapeHtml(node2.props.value)}"` : "";
-  const labelHTML = escapeHtml(node2.label);
-  const childrenHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : "";
-  return `<label class="${classes}">
-    <input type="radio"${checked}${disabled}${name}${value} />
-    <span>${labelHTML}</span>
-  </label>${childrenHTML}`;
+function applyRadioGroupName(children, context) {
+  if (!children || children.length === 0)
+    return children;
+  const hasRadio = children.some((c) => c && c.type === "radio");
+  if (!hasRadio)
+    return children;
+  const name = nextRadioGroupName(context);
+  return children.map((c) => {
+    if (!c || c.type !== "radio")
+      return c;
+    if (c.props && c.props.name)
+      return c;
+    return { ...c, props: { ...c.props || {}, name } };
+  });
 }
-function renderRadioGroup(node2, context) {
-  const { classPrefix: prefix } = context;
-  const isInline = node2.props?.inline;
-  const classes = buildClasses(prefix, "radio-group", node2.props);
-  const inlineClass = isInline ? ` ${prefix}radio-group-inline` : "";
-  const groupName = `radio-${Math.random().toString(36).substr(2, 9)}`;
-  const radios = (node2.children || []).map((child) => {
-    if (child.type === "radio") {
-      const modifiedChild = { ...child, props: { ...child.props, name: groupName } };
-      return renderNode(modifiedChild, context);
-    }
-    return renderNode(child, context);
-  }).join("\n    ");
-  return `<div class="${classes}${inlineClass}">
-    ${radios}
-</div>`;
-}
-function renderIcon(node2, context) {
-  const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, "icon", node2.props);
-  const iconName = node2.props.name || "default";
-  const iconMap = {
-    // Social media
-    "twitter": "\u{1D54F}",
-    // Twitter/X logo approximation
-    "github": "\u2299",
-    // GitHub-like symbol
-    "linkedin": "in",
-    // LinkedIn text representation
-    "facebook": "f",
-    "instagram": "\u25C9",
-    "youtube": "\u25B6",
-    // Common UI icons
-    "home": "\u{1F3E0}",
-    "user": "\u{1F464}",
-    "settings": "\u2699\uFE0F",
-    "search": "\u{1F50D}",
-    "star": "\u2B50",
-    "heart": "\u2764\uFE0F",
-    "mail": "\u2709\uFE0F",
-    "phone": "\u{1F4DE}",
-    "calendar": "\u{1F4C5}",
-    "clock": "\u{1F550}",
-    "location": "\u{1F4CD}",
-    "link": "\u{1F517}",
-    "download": "\u2B07\uFE0F",
-    "upload": "\u2B06\uFE0F",
-    "edit": "\u270F\uFE0F",
-    "delete": "\u{1F5D1}\uFE0F",
-    "plus": "\u2795",
-    "minus": "\u2796",
-    "check": "\u2713",
-    "close": "\u2715",
-    "menu": "\u2630",
-    "more": "\u22EF",
-    "info": "\u2139\uFE0F",
-    "warning": "\u26A0\uFE0F",
-    "error": "\u274C",
-    "success": "\u2705",
-    // Arrows
-    "arrow-up": "\u2191",
-    "arrow-down": "\u2193",
-    "arrow-left": "\u2190",
-    "arrow-right": "\u2192",
-    // Business/Finance
-    "chart": "\u{1F4CA}",
-    "dollar": "$",
-    "euro": "\u20AC",
-    "pound": "\xA3",
-    // Tech
-    "code": "</>",
-    "database": "\u{1F5C4}\uFE0F",
-    "cloud": "\u2601\uFE0F",
-    "wifi": "\u{1F4F6}",
-    // Communication
-    "chat": "\u{1F4AC}",
-    "video": "\u{1F3A5}",
-    "microphone": "\u{1F3A4}",
-    "bell": "\u{1F514}",
-    // Files
-    "file": "\u{1F4C4}",
-    "folder": "\u{1F4C1}",
-    "image": "\u{1F5BC}\uFE0F",
-    "document": "\u{1F4C3}",
-    "pdf": "\u{1F4D1}",
-    // Brand placeholders
-    "logo": "\u25C8",
-    "brand": "\u25C6",
-    // Activities
-    "rocket": "\u{1F680}",
-    "bulb": "\u{1F4A1}",
-    "shield": "\u{1F6E1}\uFE0F",
-    "lock": "\u{1F512}",
-    "unlock": "\u{1F513}",
-    "key": "\u{1F511}",
-    "gift": "\u{1F381}",
-    "trophy": "\u{1F3C6}",
-    "flag": "\u{1F6A9}",
-    "bookmark": "\u{1F516}",
-    "tag": "\u{1F3F7}\uFE0F",
-    "cart": "\u{1F6D2}",
-    "credit-card": "\u{1F4B3}",
-    // Default
-    "default": "\u25CF"
-  };
-  const iconContent = iconMap[iconName] || iconMap["default"];
-  const socialIcons = ["twitter", "github", "linkedin", "facebook", "instagram", "youtube"];
-  if (socialIcons.includes(iconName)) {
-    return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}" style="font-family: monospace; font-weight: bold; font-style: normal;">${iconContent}</span>`;
+function repeatString(str, count) {
+  let result = "";
+  for (let i = 0; i < count; i++) {
+    result += str;
   }
-  return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}">${iconContent}</span>`;
+  return result;
 }
-function renderContainer(node2, context) {
+function renderNode2(node2, context, indent2 = 0) {
+  if (node2 == null)
+    return "";
+  const def = getNodeDefinition(node2.type);
+  if (def?.render?.react) {
+    return def.render.react(node2, context, indent2);
+  }
+  const indentStr = repeatString("  ", indent2);
+  return `${indentStr}{/* Unknown node type: ${node2.type} */}`;
+}
+function buildClasses2(prefix, baseClass, props) {
+  const classes = [`${prefix}${baseClass}`];
+  if (props.classes && Array.isArray(props.classes)) {
+    props.classes.forEach((cls) => {
+      classes.push(`${prefix}${cls}`);
+    });
+  }
+  if (props.variant) {
+    classes.push(`${prefix}${baseClass}-${props.variant}`);
+  }
+  if (props.state) {
+    classes.push(`${prefix}state-${props.state}`);
+  }
+  return classes.join(" ");
+}
+function escapeJSX(text6) {
+  if (!text6)
+    return "";
+  return text6.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;").replace(/{/g, "&#123;").replace(/}/g, "&#125;");
+}
+
+// packages/core/src/nodes/button/react.ts
+function renderButtonReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses2(prefix, "button", props);
+  const disabled = props.state === "disabled" || props.disabled;
+  const classAttr = context.useClassName ? "className" : "class";
+  const contentJSX = node2.children ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.content ?? "");
+  return `${indentStr}<button ${classAttr}="${classes}"${disabled ? " disabled" : ""}>
+${indentStr}  ${contentJSX}
+${indentStr}</button>`;
+}
+
+// packages/core/src/renderer/tailwind-renderer.ts
+function nextRadioGroupName2(context) {
+  if (!context._radioGroupCounter) {
+    context._radioGroupCounter = { value: 0 };
+  }
+  context._radioGroupCounter.value += 1;
+  return `radio-group-${context._radioGroupCounter.value}`;
+}
+function applyRadioGroupName2(children, context) {
+  if (!children || children.length === 0)
+    return children;
+  const hasRadio = children.some((c) => c && c.type === "radio");
+  if (!hasRadio)
+    return children;
+  const name = nextRadioGroupName2(context);
+  return children.map((c) => {
+    if (!c || c.type !== "radio")
+      return c;
+    if (c.props && c.props.name)
+      return c;
+    return { ...c, props: { ...c.props || {}, name } };
+  });
+}
+function renderNode3(node2, context) {
+  if (node2 == null)
+    return "";
+  const def = getNodeDefinition(node2.type);
+  if (def?.render?.tailwind) {
+    return def.render.tailwind(node2, context);
+  }
+  return `<!-- Unknown node type: ${node2.type} -->`;
+}
+function escapeHtml2(text6) {
+  if (!text6)
+    return "";
+  return text6.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+// packages/core/src/nodes/button/tailwind.ts
+function renderButtonTailwind(node2, context) {
+  let classes = "px-4 py-2 rounded-md font-medium transition-colors";
+  const props = node2.props;
+  const variant = props.variant;
+  const nodeClasses = props.classes || [];
+  const isPrimary = variant === "primary" || nodeClasses.includes("primary");
+  const isSecondary = variant === "secondary" || nodeClasses.includes("secondary");
+  const isDanger = variant === "danger" || nodeClasses.includes("danger");
+  if (isPrimary) {
+    classes += " bg-indigo-600 text-white hover:bg-indigo-700";
+  } else if (isSecondary) {
+    classes += " bg-gray-200 text-gray-900 hover:bg-gray-300";
+  } else if (isDanger) {
+    classes += " bg-red-600 text-white hover:bg-red-700";
+  } else {
+    classes += " bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-300";
+  }
+  const isDisabled = props.state === "disabled" || props.disabled;
+  const isLoading = props.state === "loading" || props.loading;
+  if (isDisabled) {
+    classes += " opacity-50 cursor-not-allowed";
+  } else if (isLoading) {
+    classes += " opacity-75 cursor-wait";
+  }
+  const disabled = isDisabled ? " disabled" : "";
+  const contentHTML = node2.children ? node2.children.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.content ?? "");
+  return `<button class="${classes}"${disabled}>${contentHTML}</button>`;
+}
+
+// packages/core/src/nodes/button/index.ts
+var button = {
+  type: "button",
+  render: {
+    html: renderButtonHTML,
+    react: renderButtonReact,
+    tailwind: renderButtonTailwind
+  }
+};
+
+// packages/core/src/nodes/container/html.ts
+function renderContainerHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, `container-${node2.containerType}`, node2.props);
   const nodeClasses = node2.props?.classes || [];
@@ -12117,7 +11948,10 @@ function renderSidebarMainLayout(node2, context, classes) {
     if (child.type === "container" && (child.containerType === "sidebar" || child.containerType === "main")) {
       if (current)
         sections.push(current);
-      sections.push({ name: child.containerType, nodes: child.children || [] });
+      sections.push({
+        name: child.containerType,
+        nodes: child.children || []
+      });
       current = null;
     } else {
       const childClasses = child.props?.classes || [];
@@ -12142,7 +11976,77 @@ function renderSidebarMainLayout(node2, context, classes) {
 ${sectionsHTML}
 </div>`;
 }
-function renderNav(node2, context) {
+
+// packages/core/src/nodes/container/react.ts
+function renderContainerReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, `container-${node2.containerType}`, node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = (node2.children || []).map((child) => renderNode2(child, context, indent2 + 1)).join("\n");
+  return `${indentStr}<div ${classAttr}="${classes}">
+${childrenJSX}
+${indentStr}</div>`;
+}
+
+// packages/core/src/nodes/container/tailwind.ts
+function renderContainerTailwind(node2, context) {
+  let classes = "";
+  switch (node2.containerType) {
+    case "hero":
+      classes = "bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg p-12 text-center my-8 shadow-lg";
+      break;
+    case "card":
+      classes = "bg-white rounded-lg p-6 shadow-md border border-gray-200 my-4";
+      break;
+    case "modal":
+      classes = "bg-white rounded-lg p-8 shadow-2xl max-w-md mx-auto my-8";
+      break;
+    case "footer":
+      classes = "bg-gray-900 text-gray-300 p-8 rounded-lg mt-12";
+      break;
+    case "alert":
+      classes = "border-l-4 p-4 my-4 rounded";
+      if (node2.props.state === "error") {
+        classes += " bg-red-50 border-red-500 text-red-900";
+      } else if (node2.props.state === "success") {
+        classes += " bg-green-50 border-green-500 text-green-900";
+      } else if (node2.props.state === "warning") {
+        classes += " bg-yellow-50 border-yellow-500 text-yellow-900";
+      } else {
+        classes += " bg-blue-50 border-blue-500 text-blue-900";
+      }
+      break;
+    case "section":
+      classes = "py-6 border-b border-gray-200 last:border-b-0";
+      break;
+    case "form-group":
+      classes = "mb-4";
+      break;
+    case "button-group":
+      classes = "flex flex-wrap gap-2 my-4";
+      break;
+    default:
+      classes = "p-4 my-4";
+  }
+  const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n  ");
+  return `<div class="${classes}">
+  ${childrenHTML}
+</div>`;
+}
+
+// packages/core/src/nodes/container/index.ts
+var container = {
+  type: "container",
+  render: {
+    html: renderContainerHTML,
+    react: renderContainerReact,
+    tailwind: renderContainerTailwind
+  }
+};
+
+// packages/core/src/nodes/nav/html.ts
+function renderNavHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "nav", node2.props);
   const childrenHTML = (node2.children || []).map((child) => renderNode(child, context)).join("\n    ");
@@ -12152,34 +12056,118 @@ function renderNav(node2, context) {
   </div>
 </nav>`;
 }
-function renderNavItem(node2, context) {
+
+// packages/core/src/nodes/nav/react.ts
+function renderNavReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
   const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "nav", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = (node2.children || []).map((child) => renderNode2(child, context, indent2 + 2)).join("\n");
+  return `${indentStr}<nav ${classAttr}="${classes}">
+${indentStr}  <div ${classAttr}="${prefix}nav-content">
+${childrenJSX}
+${indentStr}  </div>
+${indentStr}</nav>`;
+}
+
+// packages/core/src/nodes/nav/tailwind.ts
+function renderNavTailwind(node2, context) {
+  const classes = "bg-white shadow-sm rounded-lg p-4 mb-8";
+  const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n    ");
+  return `<nav class="${classes}">
+  <div class="flex items-center gap-6 flex-wrap">
+    ${childrenHTML}
+  </div>
+</nav>`;
+}
+
+// packages/core/src/nodes/nav/index.ts
+var nav = {
+  type: "nav",
+  render: { html: renderNavHTML, react: renderNavReact, tailwind: renderNavTailwind }
+};
+
+// packages/core/src/nodes/nav-item/html.ts
+function renderNavItemHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
   const href = node2.href || "#";
-  const contentHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.content);
-  if (node2.props?.variant === "primary") {
-    const classes2 = `${buildClasses(prefix, "button", node2.props)} ${prefix}button-primary`;
-    return `<a href="${href}" class="${classes2.trim()}" style="text-decoration:none;color:inherit;">${contentHTML}</a>`;
+  const isActive = Array.isArray(props.classes) && props.classes.includes("active");
+  const ariaCurrent = isActive ? ' aria-current="page"' : "";
+  const contentHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.content ?? "");
+  if (props.variant === "primary") {
+    const classes2 = `${buildClasses(prefix, "button", props)} ${prefix}button-primary`;
+    return `<a href="${href}"${ariaCurrent} class="${classes2.trim()}" style="text-decoration:none;color:inherit;">${contentHTML}</a>`;
   }
-  const classes = buildClasses(prefix, "nav-item", node2.props);
-  return `<a href="${href}" class="${classes}">${contentHTML}</a>`;
+  const classes = buildClasses(prefix, "nav-item", props);
+  return `<a href="${href}"${ariaCurrent} class="${classes}">${contentHTML}</a>`;
 }
-function renderBreadcrumbs(node2, context) {
+
+// packages/core/src/nodes/nav-item/react.ts
+function renderNavItemReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
   const { classPrefix: prefix } = context;
-  const items = node2.children || [];
-  const crumbsHTML = items.map((crumb, i) => {
-    const isLast = i === items.length - 1;
-    const label = escapeHtml(crumb.content || "");
-    return isLast ? `<span class="${prefix}breadcrumb-item ${prefix}breadcrumb-current" aria-current="page">${label}</span>` : `<span class="${prefix}breadcrumb-item"><a href="#">${label}</a></span><span class="${prefix}breadcrumb-sep" aria-hidden="true">\u203A</span>`;
-  }).join("");
-  return `<nav class="${prefix}breadcrumbs"${sourceLine(node2)} aria-label="breadcrumb">${crumbsHTML}</nav>`;
+  const props = node2.props;
+  const classes = buildClasses2(prefix, "nav-item", props);
+  const href = node2.href || "#";
+  const classAttr = context.useClassName ? "className" : "class";
+  const isActive = Array.isArray(props.classes) && props.classes.includes("active");
+  const ariaCurrent = isActive ? ' aria-current="page"' : "";
+  const contentJSX = node2.children ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.content ?? "");
+  return `${indentStr}<a href="${href}"${ariaCurrent} ${classAttr}="${classes}">${contentJSX}</a>`;
 }
-function renderBrand(node2, context) {
+
+// packages/core/src/nodes/nav-item/tailwind.ts
+function renderNavItemTailwind(node2, context) {
+  const props = node2.props;
+  const classes = "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors font-medium";
+  const href = node2.href || "#";
+  const isActive = Array.isArray(props.classes) && props.classes.includes("active");
+  const ariaCurrent = isActive ? ' aria-current="page"' : "";
+  const contentHTML = node2.children ? node2.children.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.content ?? "");
+  return `<a href="${href}"${ariaCurrent} class="${classes}">${contentHTML}</a>`;
+}
+
+// packages/core/src/nodes/nav-item/index.ts
+var navItem = {
+  type: "nav-item",
+  render: { html: renderNavItemHTML, react: renderNavItemReact, tailwind: renderNavItemTailwind }
+};
+
+// packages/core/src/nodes/brand/html.ts
+function renderBrandHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "brand", node2.props);
   const childrenHTML = (node2.children || []).map((child) => renderNode(child, context)).join("");
   return `<div class="${classes}">${childrenHTML}</div>`;
 }
-function renderGrid(node2, context) {
+
+// packages/core/src/nodes/brand/react.ts
+function renderBrandReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "brand", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = (node2.children || []).map((child) => renderNode2(child, context, 0)).join("");
+  return `${indentStr}<div ${classAttr}="${classes}">${childrenJSX}</div>`;
+}
+
+// packages/core/src/nodes/brand/tailwind.ts
+function renderBrandTailwind(node2, context) {
+  const classes = "font-bold text-xl text-gray-900 mr-auto flex items-center gap-2";
+  const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("");
+  return `<div class="${classes}">${childrenHTML}</div>`;
+}
+
+// packages/core/src/nodes/brand/index.ts
+var brand = {
+  type: "brand",
+  render: { html: renderBrandHTML, react: renderBrandReact, tailwind: renderBrandTailwind }
+};
+
+// packages/core/src/nodes/grid/html.ts
+function renderGridHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "grid", node2.props);
   const columns = node2.columns || 3;
@@ -12189,10 +12177,52 @@ function renderGrid(node2, context) {
   ${childrenHTML}
 </div>`;
 }
-function renderGridItem(node2, context, isCard = false) {
+
+// packages/core/src/nodes/grid/react.ts
+function renderGridReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
   const { classPrefix: prefix } = context;
-  const hasCard = isCard || (node2.props?.classes || []).includes("card");
-  const extraClasses = hasCard ? [...node2.props?.classes || [], "grid-item-card"] : node2.props?.classes || [];
+  const classes = buildClasses2(prefix, "grid", node2.props);
+  const columns = node2.columns || 3;
+  const gridClass = `${classes} ${prefix}grid-${columns}`;
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = (node2.children || []).map((child) => renderNode2(child, context, indent2 + 1)).join("\n");
+  return `${indentStr}<div ${classAttr}="${gridClass}" style={{ '--grid-columns': ${columns} }${context.typescript ? " as React.CSSProperties" : ""}}>
+${childrenJSX}
+${indentStr}</div>`;
+}
+
+// packages/core/src/nodes/grid/tailwind.ts
+function renderGridTailwind(node2, context) {
+  const columns = node2.columns || 3;
+  let gridClasses = "grid gap-6 my-8";
+  if (columns === 2) {
+    gridClasses += " grid-cols-1 md:grid-cols-2";
+  } else if (columns === 3) {
+    gridClasses += " grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+  } else if (columns === 4) {
+    gridClasses += " grid-cols-1 md:grid-cols-2 lg:grid-cols-4";
+  } else {
+    gridClasses += ` grid-cols-1 md:grid-cols-${Math.min(columns, 4)}`;
+  }
+  const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n  ");
+  return `<div class="${gridClasses}">
+  ${childrenHTML}
+</div>`;
+}
+
+// packages/core/src/nodes/grid/index.ts
+var grid = {
+  type: "grid",
+  render: { html: renderGridHTML, react: renderGridReact, tailwind: renderGridTailwind }
+};
+
+// packages/core/src/nodes/grid-item/html.ts
+function renderGridItemHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const propsClasses = node2.props?.classes || [];
+  const hasCard = propsClasses.includes("card");
+  const extraClasses = hasCard ? [...propsClasses, "grid-item-card"] : propsClasses;
   const itemProps = { ...node2.props, classes: extraClasses };
   const classes = buildClasses(prefix, "grid-item", itemProps);
   const childrenHTML = renderChildrenList(node2.children || [], context);
@@ -12200,7 +12230,40 @@ function renderGridItem(node2, context, isCard = false) {
     ${childrenHTML}
   </div>`;
 }
-function renderRow(node2, context) {
+
+// packages/core/src/nodes/grid-item/react.ts
+function renderGridItemReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "grid-item", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = (node2.children || []).map((child) => renderNode2(child, context, indent2 + 1)).join("\n");
+  return `${indentStr}<div ${classAttr}="${classes}">
+${childrenJSX}
+${indentStr}</div>`;
+}
+
+// packages/core/src/nodes/grid-item/tailwind.ts
+function renderGridItemTailwind(node2, context) {
+  const classes = "bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow";
+  const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n    ");
+  return `<div class="${classes}">
+    ${childrenHTML}
+  </div>`;
+}
+
+// packages/core/src/nodes/grid-item/index.ts
+var gridItem = {
+  type: "grid-item",
+  render: {
+    html: renderGridItemHTML,
+    react: renderGridItemReact,
+    tailwind: renderGridItemTailwind
+  }
+};
+
+// packages/core/src/nodes/row/html.ts
+function renderRowHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "row", node2.props);
   const childrenHTML = renderChildrenList(node2.children || [], context);
@@ -12208,7 +12271,37 @@ function renderRow(node2, context) {
   ${childrenHTML}
 </div>`;
 }
-function renderHeading(node2, context) {
+
+// packages/core/src/nodes/row/react.ts
+function renderRowReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "row", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = (node2.children || []).map((child) => renderNode2(child, context, indent2 + 1)).join("\n");
+  return `${indentStr}<div ${classAttr}="${classes}">
+${childrenJSX}
+${indentStr}</div>`;
+}
+
+// packages/core/src/nodes/row/tailwind.ts
+function renderRowTailwind(node2, context) {
+  const propsClasses = node2.props?.classes || [];
+  const classes = propsClasses.includes("right") ? "flex items-center gap-3 flex-wrap justify-end" : propsClasses.includes("center") ? "flex items-center gap-3 flex-wrap justify-center" : "flex items-center gap-3 flex-wrap";
+  const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n  ");
+  return `<div class="${classes}">
+  ${childrenHTML}
+</div>`;
+}
+
+// packages/core/src/nodes/row/index.ts
+var row = {
+  type: "row",
+  render: { html: renderRowHTML, react: renderRowReact, tailwind: renderRowTailwind }
+};
+
+// packages/core/src/nodes/heading/html.ts
+function renderHeadingHTML(node2, context) {
   if (!node2.content && !node2.children?.length)
     return "";
   const { classPrefix: prefix } = context;
@@ -12218,7 +12311,55 @@ function renderHeading(node2, context) {
   const childrenHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : escapeHtml(content3);
   return `<h${level} class="${classes}"${sourceLine(node2)}>${childrenHTML}</h${level}>`;
 }
-function renderParagraph(node2, context) {
+
+// packages/core/src/nodes/heading/react.ts
+function renderHeadingReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const level = node2.level || 1;
+  const classes = buildClasses2(prefix, `h${level}`, node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = node2.children ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.content || "");
+  const tag = `h${level}`;
+  return `${indentStr}<${tag} ${classAttr}="${classes}">${childrenJSX}</${tag}>`;
+}
+
+// packages/core/src/nodes/heading/tailwind.ts
+function renderHeadingTailwind(node2, context) {
+  const level = node2.level || 1;
+  let classes = "font-bold text-gray-900 my-4";
+  switch (level) {
+    case 1:
+      classes = "text-4xl font-extrabold text-gray-900 mb-4 mt-8";
+      break;
+    case 2:
+      classes = "text-3xl font-bold text-gray-900 mb-3 mt-6";
+      break;
+    case 3:
+      classes = "text-2xl font-semibold text-gray-900 mb-2 mt-4";
+      break;
+    case 4:
+      classes = "text-xl font-semibold text-gray-800 mb-2 mt-4";
+      break;
+    case 5:
+      classes = "text-lg font-medium text-gray-800 mb-2 mt-3";
+      break;
+    case 6:
+      classes = "text-base font-medium text-gray-700 mb-2 mt-2";
+      break;
+  }
+  const childrenHTML = node2.children ? node2.children.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.content || "");
+  return `<h${level} class="${classes}">${childrenHTML}</h${level}>`;
+}
+
+// packages/core/src/nodes/heading/index.ts
+var heading2 = {
+  type: "heading",
+  render: { html: renderHeadingHTML, react: renderHeadingReact, tailwind: renderHeadingTailwind }
+};
+
+// packages/core/src/nodes/paragraph/html.ts
+function renderParagraphHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "paragraph", node2.props);
   let childrenHTML;
@@ -12232,12 +12373,59 @@ function renderParagraph(node2, context) {
   }
   return `<p class="${classes}"${sourceLine(node2)}>${childrenHTML}</p>`;
 }
-function renderText(node2, _context) {
+
+// packages/core/src/nodes/paragraph/react.ts
+function renderParagraphReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "paragraph", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = node2.children ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : node2.content ? escapeJSX(node2.content) : "";
+  return `${indentStr}<p ${classAttr}="${classes}">${childrenJSX}</p>`;
+}
+
+// packages/core/src/nodes/paragraph/tailwind.ts
+function renderParagraphTailwind(node2, context) {
+  const classes = "text-gray-700 my-3";
+  const childrenHTML = node2.children ? node2.children.map((child) => renderNode3(child, context)).join("") : node2.content ? escapeHtml2(node2.content) : "";
+  return `<p class="${classes}">${childrenHTML}</p>`;
+}
+
+// packages/core/src/nodes/paragraph/index.ts
+var paragraph2 = {
+  type: "paragraph",
+  render: {
+    html: renderParagraphHTML,
+    react: renderParagraphReact,
+    tailwind: renderParagraphTailwind
+  }
+};
+
+// packages/core/src/nodes/text/html.ts
+function renderTextHTML(node2, _context) {
   const content3 = node2.content || "";
   const hasHtmlTags = /<[^>]+>/.test(content3);
   return hasHtmlTags ? content3 : escapeHtml(content3);
 }
-function renderImage(node2, context) {
+
+// packages/core/src/nodes/text/react.ts
+function renderTextReact(node2, _context, _indent = 0) {
+  return escapeJSX(node2.content || "");
+}
+
+// packages/core/src/nodes/text/tailwind.ts
+function renderTextTailwind(node2, _context) {
+  return escapeHtml2(node2.content || "");
+}
+
+// packages/core/src/nodes/text/index.ts
+var text5 = {
+  type: "text",
+  render: { html: renderTextHTML, react: renderTextReact, tailwind: renderTextTailwind }
+};
+
+// packages/core/src/nodes/image/html.ts
+function renderImageHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "image", node2.props);
   const src = node2.src || "";
@@ -12246,7 +12434,180 @@ function renderImage(node2, context) {
   const height = node2.props.height ? ` height="${node2.props.height}"` : "";
   return `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" class="${classes}"${width}${height} />`;
 }
-function renderLink(node2, context) {
+
+// packages/core/src/nodes/image/react.ts
+function renderImageReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "image", node2.props);
+  const src = node2.src || "";
+  const alt = node2.alt || "";
+  const classAttr = context.useClassName ? "className" : "class";
+  const attrs = [];
+  if (node2.props.width)
+    attrs.push(`width="${node2.props.width}"`);
+  if (node2.props.height)
+    attrs.push(`height="${node2.props.height}"`);
+  return `${indentStr}<img src="${escapeJSX(src)}" alt="${escapeJSX(alt)}" ${classAttr}="${classes}" ${attrs.join(" ")} />`;
+}
+
+// packages/core/src/nodes/image/tailwind.ts
+function renderImageTailwind(node2, _context) {
+  const classes = "max-w-full h-auto rounded-lg shadow-md";
+  const src = node2.src || "";
+  const alt = node2.alt || "";
+  const attrs = [];
+  if (node2.props.width)
+    attrs.push(`width="${node2.props.width}"`);
+  if (node2.props.height)
+    attrs.push(`height="${node2.props.height}"`);
+  return `<img src="${escapeHtml2(src)}" alt="${escapeHtml2(alt)}" class="${classes}" ${attrs.join(" ")} />`;
+}
+
+// packages/core/src/nodes/image/index.ts
+var image2 = {
+  type: "image",
+  render: { html: renderImageHTML, react: renderImageReact, tailwind: renderImageTailwind }
+};
+
+// packages/core/src/nodes/icon/_iconmap.ts
+var ICON_MAP_FULL = {
+  // Social media
+  twitter: "\u{1D54F}",
+  github: "\u2299",
+  linkedin: "in",
+  facebook: "f",
+  instagram: "\u25C9",
+  youtube: "\u25B6",
+  // Common UI icons
+  home: "\u{1F3E0}",
+  user: "\u{1F464}",
+  settings: "\u2699\uFE0F",
+  search: "\u{1F50D}",
+  star: "\u2B50",
+  heart: "\u2764\uFE0F",
+  mail: "\u2709\uFE0F",
+  phone: "\u{1F4DE}",
+  calendar: "\u{1F4C5}",
+  clock: "\u{1F550}",
+  location: "\u{1F4CD}",
+  link: "\u{1F517}",
+  download: "\u2B07\uFE0F",
+  upload: "\u2B06\uFE0F",
+  edit: "\u270F\uFE0F",
+  delete: "\u{1F5D1}\uFE0F",
+  plus: "\u2795",
+  minus: "\u2796",
+  check: "\u2713",
+  close: "\u2715",
+  menu: "\u2630",
+  more: "\u22EF",
+  info: "\u2139\uFE0F",
+  warning: "\u26A0\uFE0F",
+  error: "\u274C",
+  success: "\u2705",
+  // Arrows
+  "arrow-up": "\u2191",
+  "arrow-down": "\u2193",
+  "arrow-left": "\u2190",
+  "arrow-right": "\u2192",
+  // Business/Finance
+  chart: "\u{1F4CA}",
+  dollar: "$",
+  euro: "\u20AC",
+  pound: "\xA3",
+  // Tech
+  code: "</>",
+  database: "\u{1F5C4}\uFE0F",
+  cloud: "\u2601\uFE0F",
+  wifi: "\u{1F4F6}",
+  // Communication
+  chat: "\u{1F4AC}",
+  video: "\u{1F3A5}",
+  microphone: "\u{1F3A4}",
+  bell: "\u{1F514}",
+  // Files
+  file: "\u{1F4C4}",
+  folder: "\u{1F4C1}",
+  image: "\u{1F5BC}\uFE0F",
+  document: "\u{1F4C3}",
+  pdf: "\u{1F4D1}",
+  // Brand placeholders
+  logo: "\u25C8",
+  brand: "\u25C6",
+  // Activities
+  rocket: "\u{1F680}",
+  bulb: "\u{1F4A1}",
+  shield: "\u{1F6E1}\uFE0F",
+  lock: "\u{1F512}",
+  unlock: "\u{1F513}",
+  key: "\u{1F511}",
+  gift: "\u{1F381}",
+  trophy: "\u{1F3C6}",
+  flag: "\u{1F6A9}",
+  bookmark: "\u{1F516}",
+  tag: "\u{1F3F7}\uFE0F",
+  cart: "\u{1F6D2}",
+  "credit-card": "\u{1F4B3}",
+  // Default
+  default: "\u25CF"
+};
+var ICON_MAP_SMALL = {
+  home: "\u{1F3E0}",
+  user: "\u{1F464}",
+  settings: "\u2699\uFE0F",
+  search: "\u{1F50D}",
+  star: "\u2B50",
+  heart: "\u2764\uFE0F",
+  mail: "\u2709\uFE0F",
+  phone: "\u{1F4DE}",
+  check: "\u2713",
+  close: "\u2715",
+  menu: "\u2630",
+  more: "\u22EF",
+  default: "\u25CF"
+};
+var SOCIAL_ICONS = ["twitter", "github", "linkedin", "facebook", "instagram", "youtube"];
+
+// packages/core/src/nodes/icon/html.ts
+function renderIconHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, "icon", node2.props);
+  const iconName = node2.props.name || "default";
+  const iconContent = ICON_MAP_FULL[iconName] || ICON_MAP_FULL["default"];
+  if (SOCIAL_ICONS.includes(iconName)) {
+    return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}" style="font-family: monospace; font-weight: bold; font-style: normal;">${iconContent}</span>`;
+  }
+  return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}">${iconContent}</span>`;
+}
+
+// packages/core/src/nodes/icon/react.ts
+function renderIconReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "icon", node2.props);
+  const iconName = node2.props.name || "default";
+  const classAttr = context.useClassName ? "className" : "class";
+  const iconContent = ICON_MAP_SMALL[iconName] || ICON_MAP_SMALL["default"];
+  return `${indentStr}<span ${classAttr}="${classes}" data-icon="${iconName}" aria-label="${iconName}">${iconContent}</span>`;
+}
+
+// packages/core/src/nodes/icon/tailwind.ts
+function renderIconTailwind(node2, _context) {
+  const classes = "inline-block align-middle";
+  const iconName = node2.props.name || "default";
+  const iconContent = ICON_MAP_SMALL[iconName] || ICON_MAP_SMALL["default"];
+  return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}">${iconContent}</span>`;
+}
+
+// packages/core/src/nodes/icon/index.ts
+var icon = {
+  type: "icon",
+  render: { html: renderIconHTML, react: renderIconReact, tailwind: renderIconTailwind }
+};
+
+// packages/core/src/nodes/link/html.ts
+function renderLinkHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "link", node2.props);
   const href = node2.href || "#";
@@ -12254,16 +12615,82 @@ function renderLink(node2, context) {
   const childrenHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.content || "");
   return `<a href="${escapeHtml(href)}" class="${classes}"${title}>${childrenHTML}</a>`;
 }
-function renderList(node2, context) {
+
+// packages/core/src/nodes/link/react.ts
+function renderLinkReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "link", node2.props);
+  const href = node2.href || "#";
+  const classAttr = context.useClassName ? "className" : "class";
+  const attrs = [];
+  if (node2.title)
+    attrs.push(`title="${escapeJSX(node2.title)}"`);
+  const childrenJSX = node2.children ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.content || "");
+  return `${indentStr}<a href="${escapeJSX(href)}" ${classAttr}="${classes}" ${attrs.join(" ")}>${childrenJSX}</a>`;
+}
+
+// packages/core/src/nodes/link/tailwind.ts
+function renderLinkTailwind(node2, context) {
+  const classes = "text-indigo-600 hover:text-indigo-800 underline";
+  const href = node2.href || "#";
+  const title = node2.title ? ` title="${escapeHtml2(node2.title)}"` : "";
+  const childrenHTML = node2.children ? node2.children.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.content || "");
+  return `<a href="${escapeHtml2(href)}" class="${classes}"${title}>${childrenHTML}</a>`;
+}
+
+// packages/core/src/nodes/link/index.ts
+var link2 = {
+  type: "link",
+  render: { html: renderLinkHTML, react: renderLinkReact, tailwind: renderLinkTailwind }
+};
+
+// packages/core/src/nodes/list/html.ts
+function renderListHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "list", node2.props);
   const tag = node2.ordered ? "ol" : "ul";
-  const childrenHTML = (node2.children || []).map((child) => renderNode(child, context)).join("\n  ");
+  const children = applyRadioGroupName3(node2.children || [], context);
+  const childrenHTML = children.map((child) => renderNode(child, context)).join("\n  ");
   return `<${tag} class="${classes}"${sourceLine(node2)}>
   ${childrenHTML}
 </${tag}>`;
 }
-function renderListItem(node2, context) {
+
+// packages/core/src/nodes/list/react.ts
+function renderListReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "list", node2.props);
+  const tag = node2.ordered ? "ol" : "ul";
+  const classAttr = context.useClassName ? "className" : "class";
+  const children = applyRadioGroupName(node2.children || [], context);
+  const childrenJSX = children.map((child) => renderNode2(child, context, indent2 + 1)).join("\n");
+  return `${indentStr}<${tag} ${classAttr}="${classes}">
+${childrenJSX}
+${indentStr}</${tag}>`;
+}
+
+// packages/core/src/nodes/list/tailwind.ts
+function renderListTailwind(node2, context) {
+  const classes = "my-4 pl-6 space-y-2";
+  const tag = node2.ordered ? "ol" : "ul";
+  const listStyle = node2.ordered ? " list-decimal" : " list-disc";
+  const children = applyRadioGroupName2(node2.children || [], context);
+  const childrenHTML = children.map((child) => renderNode3(child, context)).join("\n  ");
+  return `<${tag} class="${classes}${listStyle}">
+  ${childrenHTML}
+</${tag}>`;
+}
+
+// packages/core/src/nodes/list/index.ts
+var list3 = {
+  type: "list",
+  render: { html: renderListHTML, react: renderListReact, tailwind: renderListTailwind }
+};
+
+// packages/core/src/nodes/list-item/html.ts
+function renderListItemHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "list-item", node2.props);
   let html2 = "";
@@ -12271,12 +12698,40 @@ function renderListItem(node2, context) {
     html2 = escapeHtml(node2.content);
   }
   if (node2.children) {
-    const childrenHTML = node2.children.map((child) => renderNode(child, context)).join("");
-    html2 += childrenHTML;
+    html2 += node2.children.map((child) => renderNode(child, context)).join("");
   }
   return `<li class="${classes}">${html2}</li>`;
 }
-function renderTable(node2, context) {
+
+// packages/core/src/nodes/list-item/react.ts
+function renderListItemReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "list-item", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = node2.children ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.content || "");
+  return `${indentStr}<li ${classAttr}="${classes}">${childrenJSX}</li>`;
+}
+
+// packages/core/src/nodes/list-item/tailwind.ts
+function renderListItemTailwind(node2, context) {
+  const classes = "text-gray-700";
+  const childrenHTML = node2.children ? node2.children.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.content || "");
+  return `<li class="${classes}">${childrenHTML}</li>`;
+}
+
+// packages/core/src/nodes/list-item/index.ts
+var listItem2 = {
+  type: "list-item",
+  render: {
+    html: renderListItemHTML,
+    react: renderListItemReact,
+    tailwind: renderListItemTailwind
+  }
+};
+
+// packages/core/src/nodes/table/html.ts
+function renderTableHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "table", node2.props);
   const headerNode = node2.children?.find((child) => child.type === "table-header");
@@ -12291,7 +12746,50 @@ function renderTable(node2, context) {
   ${headerHTML}${bodyHTML}
 </table>`;
 }
-function renderTableHeader(node2, context) {
+
+// packages/core/src/nodes/table/react.ts
+function renderTableReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "table", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const headerNode = node2.children?.find((child) => child.type === "table-header");
+  const rowNodes = node2.children?.filter((child) => child.type === "table-row") || [];
+  const headerJSX = headerNode ? renderNode2(headerNode, context, indent2 + 1) : "";
+  const rowsJSX = rowNodes.map((child) => renderNode2(child, context, indent2 + 2)).join("\n");
+  const bodyJSX = rowsJSX ? `
+${indentStr}  <tbody>
+${rowsJSX}
+${indentStr}  </tbody>` : "";
+  return `${indentStr}<table ${classAttr}="${classes}">
+${headerJSX}${bodyJSX}
+${indentStr}</table>`;
+}
+
+// packages/core/src/nodes/table/tailwind.ts
+function renderTableTailwind(node2, context) {
+  const classes = "min-w-full bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden my-6";
+  const headerNode = node2.children?.find((child) => child.type === "table-header");
+  const rowNodes = node2.children?.filter((child) => child.type === "table-row") || [];
+  const headerHTML = headerNode ? renderNode3(headerNode, context) : "";
+  const rowsHTML = rowNodes.map((child) => renderNode3(child, context)).join("\n    ");
+  const bodyHTML = rowsHTML ? `
+  <tbody class="divide-y divide-gray-200">
+    ${rowsHTML}
+  </tbody>` : "";
+  return `<table class="${classes}">
+  ${headerHTML}${bodyHTML}
+</table>`;
+}
+
+// packages/core/src/nodes/table/index.ts
+var table = {
+  type: "table",
+  render: { html: renderTableHTML, react: renderTableReact, tailwind: renderTableTailwind }
+};
+
+// packages/core/src/nodes/table-header/html.ts
+function renderTableHeaderHTML(node2, context) {
   const cellsHTML = (node2.children || []).map((child) => renderNode(child, context)).join("\n    ");
   return `<thead>
     <tr>
@@ -12299,13 +12797,75 @@ function renderTableHeader(node2, context) {
     </tr>
   </thead>`;
 }
-function renderTableRow(node2, context) {
+
+// packages/core/src/nodes/table-header/react.ts
+function renderTableHeaderReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const cellsJSX = (node2.children || []).map((child) => renderNode2(child, context, indent2 + 2)).join("\n");
+  return `${indentStr}  <thead>
+${indentStr}    <tr>
+${cellsJSX}
+${indentStr}    </tr>
+${indentStr}  </thead>`;
+}
+
+// packages/core/src/nodes/table-header/tailwind.ts
+function renderTableHeaderTailwind(node2, context) {
+  const cellsHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n    ");
+  return `<thead class="bg-gray-50">
+    <tr>
+      ${cellsHTML}
+    </tr>
+  </thead>`;
+}
+
+// packages/core/src/nodes/table-header/index.ts
+var tableHeader = {
+  type: "table-header",
+  render: {
+    html: renderTableHeaderHTML,
+    react: renderTableHeaderReact,
+    tailwind: renderTableHeaderTailwind
+  }
+};
+
+// packages/core/src/nodes/table-row/html.ts
+function renderTableRowHTML(node2, context) {
   const cellsHTML = (node2.children || []).map((child) => renderNode(child, context)).join("\n    ");
   return `<tr>
     ${cellsHTML}
   </tr>`;
 }
-function renderTableCell(node2, context) {
+
+// packages/core/src/nodes/table-row/react.ts
+function renderTableRowReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const cellsJSX = (node2.children || []).map((child) => renderNode2(child, context, indent2 + 1)).join("\n");
+  return `${indentStr}    <tr>
+${cellsJSX}
+${indentStr}    </tr>`;
+}
+
+// packages/core/src/nodes/table-row/tailwind.ts
+function renderTableRowTailwind(node2, context) {
+  const cellsHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n    ");
+  return `<tr class="hover:bg-gray-50">
+    ${cellsHTML}
+  </tr>`;
+}
+
+// packages/core/src/nodes/table-row/index.ts
+var tableRow = {
+  type: "table-row",
+  render: {
+    html: renderTableRowHTML,
+    react: renderTableRowReact,
+    tailwind: renderTableRowTailwind
+  }
+};
+
+// packages/core/src/nodes/table-cell/html.ts
+function renderTableCellHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const tag = node2.header ? "th" : "td";
   const align = node2.align || "left";
@@ -12313,7 +12873,48 @@ function renderTableCell(node2, context) {
   const contentHTML = node2.children && node2.children.length > 0 ? node2.children.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.content || "");
   return `<${tag} class="${classes}">${contentHTML}</${tag}>`;
 }
-function renderBlockquote(node2, context) {
+
+// packages/core/src/nodes/table-cell/react.ts
+function renderTableCellReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const tag = node2.header ? "th" : "td";
+  const align = node2.align || "left";
+  const classes = buildClasses2(prefix, `table-cell ${prefix}align-${align}`, {});
+  const classAttr = context.useClassName ? "className" : "class";
+  const contentJSX = node2.children && node2.children.length > 0 ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.content || "");
+  return `${indentStr}      <${tag} ${classAttr}="${classes}">${contentJSX}</${tag}>`;
+}
+
+// packages/core/src/nodes/table-cell/tailwind.ts
+function renderTableCellTailwind(node2, context) {
+  const tag = node2.header ? "th" : "td";
+  const align = node2.align || "left";
+  let classes = "px-6 py-3 text-gray-900";
+  if (node2.header) {
+    classes = "px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider";
+  } else {
+    if (align === "center")
+      classes += " text-center";
+    if (align === "right")
+      classes += " text-right";
+  }
+  const contentHTML = node2.children && node2.children.length > 0 ? node2.children.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.content || "");
+  return `<${tag} class="${classes}">${contentHTML}</${tag}>`;
+}
+
+// packages/core/src/nodes/table-cell/index.ts
+var tableCell = {
+  type: "table-cell",
+  render: {
+    html: renderTableCellHTML,
+    react: renderTableCellReact,
+    tailwind: renderTableCellTailwind
+  }
+};
+
+// packages/core/src/nodes/blockquote/html.ts
+function renderBlockquoteHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "blockquote", node2.props);
   const childrenHTML = (node2.children || []).map((child) => renderNode(child, context)).join("\n  ");
@@ -12321,32 +12922,617 @@ function renderBlockquote(node2, context) {
   ${childrenHTML}
 </blockquote>`;
 }
-function renderCode(node2, context) {
+
+// packages/core/src/nodes/blockquote/react.ts
+function renderBlockquoteReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "blockquote", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const childrenJSX = (node2.children || []).map((child) => renderNode2(child, context, indent2 + 1)).join("\n");
+  return `${indentStr}<blockquote ${classAttr}="${classes}">
+${childrenJSX}
+${indentStr}</blockquote>`;
+}
+
+// packages/core/src/nodes/blockquote/tailwind.ts
+function renderBlockquoteTailwind(node2, context) {
+  const classes = "border-l-4 border-indigo-500 pl-4 my-4 text-gray-700 italic";
+  const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n  ");
+  return `<blockquote class="${classes}">
+  ${childrenHTML}
+</blockquote>`;
+}
+
+// packages/core/src/nodes/blockquote/index.ts
+var blockquote2 = {
+  type: "blockquote",
+  render: {
+    html: renderBlockquoteHTML,
+    react: renderBlockquoteReact,
+    tailwind: renderBlockquoteTailwind
+  }
+};
+
+// packages/core/src/nodes/code/html.ts
+function renderCodeHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const inline = node2.inline !== false;
   if (inline) {
-    const classes = buildClasses(prefix, "code-inline", {});
-    return `<code class="${classes}">${escapeHtml(node2.value)}</code>`;
-  } else {
-    const classes = buildClasses(prefix, "code-block", {});
-    const lang = node2.lang ? ` data-lang="${escapeHtml(node2.lang)}"` : "";
-    return `<pre class="${classes}"><code${lang}>${escapeHtml(node2.value)}</code></pre>`;
+    const classes2 = buildClasses(prefix, "code-inline", {});
+    return `<code class="${classes2}">${escapeHtml(node2.value)}</code>`;
   }
+  const classes = buildClasses(prefix, "code-block", {});
+  const lang = node2.lang ? ` data-lang="${escapeHtml(node2.lang)}"` : "";
+  return `<pre class="${classes}"><code${lang}>${escapeHtml(node2.value)}</code></pre>`;
 }
-function renderSeparator(node2, context) {
+
+// packages/core/src/nodes/code/react.ts
+function renderCodeReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const inline = node2.inline !== false;
+  const classAttr = context.useClassName ? "className" : "class";
+  if (inline) {
+    const classes2 = buildClasses2(prefix, "code-inline", {});
+    return `${indentStr}<code ${classAttr}="${classes2}">${escapeJSX(node2.value)}</code>`;
+  }
+  const classes = buildClasses2(prefix, "code-block", {});
+  const dataLang = node2.lang ? ` data-lang="${escapeJSX(node2.lang)}"` : "";
+  return `${indentStr}<pre ${classAttr}="${classes}"><code${dataLang}>${escapeJSX(node2.value)}</code></pre>`;
+}
+
+// packages/core/src/nodes/code/tailwind.ts
+function renderCodeTailwind(node2, _context) {
+  const inline = node2.inline !== false;
+  if (inline) {
+    const classes2 = "bg-gray-100 text-indigo-600 rounded px-2 py-1 font-mono text-sm";
+    return `<code class="${classes2}">${escapeHtml2(node2.value)}</code>`;
+  }
+  const classes = "bg-gray-900 text-gray-100 rounded-lg p-4 my-4 overflow-x-auto";
+  const dataLang = node2.lang ? ` data-lang="${escapeHtml2(node2.lang)}"` : "";
+  return `<pre class="${classes}"><code class="font-mono text-sm"${dataLang}>${escapeHtml2(node2.value)}</code></pre>`;
+}
+
+// packages/core/src/nodes/code/index.ts
+var code3 = {
+  type: "code",
+  render: { html: renderCodeHTML, react: renderCodeReact, tailwind: renderCodeTailwind }
+};
+
+// packages/core/src/nodes/input/html.ts
+function renderInputHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses(prefix, "input", props);
+  const type = props.inputType || props.type || "text";
+  const required = props.required ? " required" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const placeholder = props.placeholder ? ` placeholder="${escapeHtml(props.placeholder)}"` : "";
+  const value = props.value ? ` value="${escapeHtml(props.value)}"` : "";
+  const style = props.width ? ` style="width: ${props.width}ch; max-width: ${props.width}ch;"` : "";
+  return `<input type="${type}" class="${classes}"${placeholder}${value}${required}${disabled}${style} />`;
+}
+
+// packages/core/src/nodes/input/react.ts
+function renderInputReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses2(prefix, "input", props);
+  const type = props.inputType || props.type || "text";
+  const classAttr = context.useClassName ? "className" : "class";
+  const attrs = [];
+  if (props.placeholder)
+    attrs.push(`placeholder="${escapeJSX(props.placeholder)}"`);
+  if (props.value)
+    attrs.push(`defaultValue="${escapeJSX(props.value)}"`);
+  if (props.required)
+    attrs.push("required");
+  if (props.disabled)
+    attrs.push("disabled");
+  return `${indentStr}<input type="${type}" ${classAttr}="${classes}" ${attrs.join(" ")} />`;
+}
+
+// packages/core/src/nodes/input/tailwind.ts
+function renderInputTailwind(node2, _context) {
+  const props = node2.props;
+  const classes = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent";
+  const type = props.inputType || props.type || "text";
+  const required = props.required ? " required" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const placeholder = props.placeholder ? ` placeholder="${escapeHtml2(props.placeholder)}"` : "";
+  const value = props.value ? ` value="${escapeHtml2(props.value)}"` : "";
+  return `<input type="${type}" class="${classes}"${placeholder}${value}${required}${disabled} />`;
+}
+
+// packages/core/src/nodes/input/index.ts
+var input = {
+  type: "input",
+  render: { html: renderInputHTML, react: renderInputReact, tailwind: renderInputTailwind }
+};
+
+// packages/core/src/nodes/textarea/html.ts
+function renderTextareaHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses(prefix, "textarea", props);
+  const rows = props.rows || 4;
+  const required = props.required ? " required" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const placeholder = props.placeholder ? ` placeholder="${escapeHtml(props.placeholder)}"` : "";
+  const value = props.value || "";
+  return `<textarea class="${classes}" rows="${rows}"${placeholder}${required}${disabled}>${escapeHtml(value)}</textarea>`;
+}
+
+// packages/core/src/nodes/textarea/react.ts
+function renderTextareaReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses2(prefix, "textarea", props);
+  const rows = props.rows || 4;
+  const classAttr = context.useClassName ? "className" : "class";
+  const attrs = [];
+  if (props.placeholder)
+    attrs.push(`placeholder="${escapeJSX(props.placeholder)}"`);
+  if (props.required)
+    attrs.push("required");
+  if (props.disabled)
+    attrs.push("disabled");
+  const value = props.value || "";
+  return `${indentStr}<textarea ${classAttr}="${classes}" rows={${rows}} ${attrs.join(" ")}>
+${indentStr}  ${escapeJSX(value)}
+${indentStr}</textarea>`;
+}
+
+// packages/core/src/nodes/textarea/tailwind.ts
+function renderTextareaTailwind(node2, _context) {
+  const props = node2.props;
+  const classes = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-vertical";
+  const rows = props.rows || 4;
+  const required = props.required ? " required" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const placeholder = props.placeholder ? ` placeholder="${escapeHtml2(props.placeholder)}"` : "";
+  const value = props.value || "";
+  return `<textarea class="${classes}" rows="${rows}"${placeholder}${required}${disabled}>${escapeHtml2(value)}</textarea>`;
+}
+
+// packages/core/src/nodes/textarea/index.ts
+var textarea = {
+  type: "textarea",
+  render: {
+    html: renderTextareaHTML,
+    react: renderTextareaReact,
+    tailwind: renderTextareaTailwind
+  }
+};
+
+// packages/core/src/nodes/select/html.ts
+function renderSelectHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses(prefix, "select", props);
+  const required = props.required ? " required" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const multiple = props.multiple ? " multiple" : "";
+  const optionsHTML = (node2.options || []).map((opt) => {
+    const selected = opt.selected ? " selected" : "";
+    return `<option value="${escapeHtml(opt.value)}"${selected}>${escapeHtml(opt.label)}</option>`;
+  }).join("\n    ");
+  const placeholder = props.placeholder;
+  const placeholderOption = placeholder ? `<option value="" disabled selected>${escapeHtml(placeholder)}</option>
+    ` : "";
+  return `<select class="${classes}"${required}${disabled}${multiple}>
+    ${placeholderOption}${optionsHTML}
+  </select>`;
+}
+
+// packages/core/src/nodes/select/react.ts
+function renderSelectReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses2(prefix, "select", props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const attrs = [];
+  if (props.required)
+    attrs.push("required");
+  if (props.disabled)
+    attrs.push("disabled");
+  if (props.multiple)
+    attrs.push("multiple");
+  const optionsJSX = (node2.options || []).map((opt) => {
+    const selected = opt.selected ? " defaultSelected" : "";
+    return `    <option value="${escapeJSX(opt.value)}"${selected}>${escapeJSX(opt.label)}</option>`;
+  }).join("\n");
+  const placeholder = props.placeholder;
+  const placeholderOption = placeholder ? `    <option value="" disabled defaultSelected>${escapeJSX(placeholder)}</option>
+` : "";
+  return `${indentStr}<select ${classAttr}="${classes}" ${attrs.join(" ")}>
+${placeholderOption}${optionsJSX}
+${indentStr}</select>`;
+}
+
+// packages/core/src/nodes/select/tailwind.ts
+function renderSelectTailwind(node2, _context) {
+  const props = node2.props;
+  const classes = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent";
+  const required = props.required ? " required" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const multiple = props.multiple ? " multiple" : "";
+  const optionsHTML = (node2.options || []).map((opt) => {
+    const selected = opt.selected ? " selected" : "";
+    return `<option value="${escapeHtml2(opt.value)}"${selected}>${escapeHtml2(opt.label)}</option>`;
+  }).join("\n    ");
+  const placeholder = props.placeholder;
+  const placeholderOption = placeholder ? `<option value="" disabled selected>${escapeHtml2(placeholder)}</option>
+    ` : "";
+  return `<select class="${classes}"${required}${disabled}${multiple}>
+    ${placeholderOption}${optionsHTML}
+  </select>`;
+}
+
+// packages/core/src/nodes/select/index.ts
+var select = {
+  type: "select",
+  render: { html: renderSelectHTML, react: renderSelectReact, tailwind: renderSelectTailwind }
+};
+
+// packages/core/src/nodes/checkbox/html.ts
+function renderCheckboxHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses(prefix, "checkbox", props);
+  const checked = node2.checked ? " checked" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const value = props.value ? ` value="${escapeHtml(props.value)}"` : "";
+  let labelHTML = escapeHtml(node2.label || "");
+  let nestedHTML = "";
+  if (node2.children) {
+    const inlineChildren = [];
+    const nestedChildren = [];
+    for (const child of node2.children) {
+      if (child.type === "list") {
+        nestedChildren.push(child);
+      } else {
+        inlineChildren.push(child);
+      }
+    }
+    if (inlineChildren.length > 0) {
+      labelHTML = inlineChildren.map((child) => renderNode(child, context)).join("");
+    }
+    if (nestedChildren.length > 0) {
+      nestedHTML = nestedChildren.map((child) => renderNode(child, context)).join("");
+    }
+  }
+  return `<label class="${classes}">
+    <input type="checkbox"${checked}${disabled}${value} />
+    <span>${labelHTML}</span>
+  </label>${nestedHTML}`;
+}
+
+// packages/core/src/nodes/checkbox/react.ts
+function renderCheckboxReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses2(prefix, "checkbox", props);
+  const checked = node2.checked;
+  const classAttr = context.useClassName ? "className" : "class";
+  const attrs = [];
+  if (props.value)
+    attrs.push(`value="${escapeJSX(props.value)}"`);
+  if (props.disabled)
+    attrs.push("disabled");
+  const labelJSX = node2.children ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.label || "");
+  return `${indentStr}<label ${classAttr}="${classes}">
+${indentStr}  <input type="checkbox"${checked ? " defaultChecked" : ""} ${attrs.join(" ")} />
+${indentStr}  <span>${labelJSX}</span>
+${indentStr}</label>`;
+}
+
+// packages/core/src/nodes/checkbox/tailwind.ts
+function renderCheckboxTailwind(node2, context) {
+  const props = node2.props;
+  const classes = "flex items-center gap-2 cursor-pointer";
+  const checked = node2.checked ? " checked" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const value = props.value ? ` value="${escapeHtml2(props.value)}"` : "";
+  const labelHTML = node2.children ? node2.children.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.label || "");
+  return `<label class="${classes}">
+    <input type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"${checked}${disabled}${value} />
+    <span class="text-gray-900">${labelHTML}</span>
+  </label>`;
+}
+
+// packages/core/src/nodes/checkbox/index.ts
+var checkbox = {
+  type: "checkbox",
+  render: {
+    html: renderCheckboxHTML,
+    react: renderCheckboxReact,
+    tailwind: renderCheckboxTailwind
+  }
+};
+
+// packages/core/src/nodes/radio/html.ts
+function renderRadioHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses(prefix, "radio", props);
+  const checked = node2.selected ? " checked" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const name = props.name ? ` name="${escapeHtml(props.name)}"` : "";
+  const value = props.value ? ` value="${escapeHtml(props.value)}"` : "";
+  const labelHTML = escapeHtml(node2.label);
+  const childrenHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : "";
+  return `<label class="${classes}">
+    <input type="radio"${checked}${disabled}${name}${value} />
+    <span>${labelHTML}</span>
+  </label>${childrenHTML}`;
+}
+
+// packages/core/src/nodes/radio/react.ts
+function renderRadioReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses2(prefix, "radio", props);
+  const checked = node2.selected;
+  const classAttr = context.useClassName ? "className" : "class";
+  const attrs = [];
+  if (props.name)
+    attrs.push(`name="${escapeJSX(props.name)}"`);
+  if (props.value)
+    attrs.push(`value="${escapeJSX(props.value)}"`);
+  if (props.disabled)
+    attrs.push("disabled");
+  return `${indentStr}<label ${classAttr}="${classes}">
+${indentStr}  <input type="radio"${checked ? " defaultChecked" : ""} ${attrs.join(" ")} />
+${indentStr}  <span>${escapeJSX(node2.label)}</span>
+${indentStr}</label>`;
+}
+
+// packages/core/src/nodes/radio/tailwind.ts
+function renderRadioTailwind(node2, _context) {
+  const props = node2.props;
+  const classes = "flex items-center gap-2 cursor-pointer";
+  const checked = node2.selected ? " checked" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const name = props.name ? ` name="${escapeHtml2(props.name)}"` : "";
+  const value = props.value ? ` value="${escapeHtml2(props.value)}"` : "";
+  return `<label class="${classes}">
+    <input type="radio" class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"${checked}${disabled}${name}${value} />
+    <span class="text-gray-900">${escapeHtml2(node2.label)}</span>
+  </label>`;
+}
+
+// packages/core/src/nodes/radio/index.ts
+var radio = {
+  type: "radio",
+  render: { html: renderRadioHTML, react: renderRadioReact, tailwind: renderRadioTailwind }
+};
+
+// packages/core/src/nodes/radio-group/html.ts
+function renderRadioGroupHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const isInline = props.inline;
+  const classes = buildClasses(prefix, "radio-group", props);
+  const inlineClass = isInline ? ` ${prefix}radio-group-inline` : "";
+  const groupName = node2.name || nextRadioGroupName3(context);
+  const radios = (node2.children || []).map((child) => {
+    if (child.type === "radio") {
+      const childProps = child.props;
+      if (childProps?.name)
+        return renderNode(child, context);
+      const modifiedChild = {
+        ...child,
+        props: { ...childProps || {}, name: groupName }
+      };
+      return renderNode(modifiedChild, context);
+    }
+    return renderNode(child, context);
+  }).join("\n    ");
+  return `<div class="${classes}${inlineClass}">
+    ${radios}
+</div>`;
+}
+
+// packages/core/src/nodes/radio-group/react.ts
+function renderRadioGroupReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const isInline = props.inline;
+  const classes = buildClasses2(prefix, "radio-group", props);
+  const inlineClass = isInline ? ` ${prefix}radio-group-inline` : "";
+  const classAttr = context.useClassName ? "className" : "class";
+  const groupName = node2.name || nextRadioGroupName(context);
+  const radios = (node2.children || []).map((child) => {
+    if (child.type === "radio") {
+      const childProps = child.props;
+      if (childProps?.name)
+        return renderNode2(child, context, indent2 + 1);
+      const modifiedChild = {
+        ...child,
+        props: { ...childProps || {}, name: groupName }
+      };
+      return renderNode2(modifiedChild, context, indent2 + 1);
+    }
+    return renderNode2(child, context, indent2 + 1);
+  }).join("\n");
+  return `${indentStr}<div ${classAttr}="${classes}${inlineClass}">
+${radios}
+${indentStr}</div>`;
+}
+
+// packages/core/src/nodes/radio-group/tailwind.ts
+function renderRadioGroupTailwind(node2, context) {
+  const props = node2.props;
+  const isInline = props.inline;
+  const classes = isInline ? "flex flex-wrap gap-4" : "flex flex-col gap-2";
+  const groupName = node2.name || nextRadioGroupName2(context);
+  const radios = (node2.children || []).map((child) => {
+    if (child.type === "radio") {
+      const childProps = child.props;
+      if (childProps?.name)
+        return renderNode3(child, context);
+      const modifiedChild = {
+        ...child,
+        props: { ...childProps || {}, name: groupName }
+      };
+      return renderNode3(modifiedChild, context);
+    }
+    return renderNode3(child, context);
+  }).join("\n    ");
+  return `<div class="${classes}">
+    ${radios}
+</div>`;
+}
+
+// packages/core/src/nodes/radio-group/index.ts
+var radioGroup = {
+  type: "radio-group",
+  render: {
+    html: renderRadioGroupHTML,
+    react: renderRadioGroupReact,
+    tailwind: renderRadioGroupTailwind
+  }
+};
+
+// packages/core/src/nodes/badge/html.ts
+function renderBadgeHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, "badge", node2.props);
+  return `<span class="${classes}">${escapeHtml(node2.content)}</span>`;
+}
+
+// packages/core/src/nodes/badge/react.ts
+function renderBadgeReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "badge", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  return `${indentStr}<span ${classAttr}="${classes}">${escapeJSX(node2.content)}</span>`;
+}
+
+// packages/core/src/nodes/badge/tailwind.ts
+function renderBadgeTailwind(node2, _context) {
+  const props = node2.props;
+  const variant = props.variant;
+  const nodeClasses = props.classes || [];
+  let classes = "inline-block px-2.5 py-0.5 rounded-full text-xs font-medium";
+  if (variant === "primary" || nodeClasses.includes("primary")) {
+    classes += " bg-blue-100 text-blue-800";
+  } else if (variant === "success" || nodeClasses.includes("success")) {
+    classes += " bg-green-100 text-green-800";
+  } else if (variant === "warning" || nodeClasses.includes("warning")) {
+    classes += " bg-yellow-100 text-yellow-800";
+  } else if (variant === "error" || nodeClasses.includes("error")) {
+    classes += " bg-red-100 text-red-800";
+  } else {
+    classes += " bg-gray-100 text-gray-800";
+  }
+  return `<span class="${classes}">${escapeHtml2(node2.content)}</span>`;
+}
+
+// packages/core/src/nodes/badge/index.ts
+var badge = {
+  type: "badge",
+  render: { html: renderBadgeHTML, react: renderBadgeReact, tailwind: renderBadgeTailwind }
+};
+
+// packages/core/src/nodes/separator/html.ts
+function renderSeparatorHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "separator", node2.props);
   return `<hr class="${classes}" />`;
 }
-function renderTabs(node2, context) {
+
+// packages/core/src/nodes/separator/react.ts
+function renderSeparatorReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses2(prefix, "separator", node2.props);
+  const classAttr = context.useClassName ? "className" : "class";
+  return `${indentStr}<hr ${classAttr}="${classes}" />`;
+}
+
+// packages/core/src/nodes/separator/tailwind.ts
+function renderSeparatorTailwind(_node, _context) {
+  const classes = "border-t border-gray-300 my-8";
+  return `<hr class="${classes}" />`;
+}
+
+// packages/core/src/nodes/separator/index.ts
+var separator = {
+  type: "separator",
+  render: {
+    html: renderSeparatorHTML,
+    react: renderSeparatorReact,
+    tailwind: renderSeparatorTailwind
+  }
+};
+
+// packages/core/src/nodes/comment/html.ts
+function renderCommentHTML(node2, context) {
+  if (!context.showComments)
+    return "";
+  if (context._comments != null)
+    return "";
+  return `<span class="${context.classPrefix}comment">${escapeHtml(node2.text)}</span>`;
+}
+
+// packages/core/src/nodes/comment/react.ts
+function renderCommentReact(_node, _context, _indent = 0) {
+  return "";
+}
+
+// packages/core/src/nodes/comment/tailwind.ts
+function renderCommentTailwind(_node, _context) {
+  return "";
+}
+
+// packages/core/src/nodes/comment/index.ts
+var comment = {
+  type: "comment",
+  render: {
+    html: renderCommentHTML,
+    react: renderCommentReact,
+    tailwind: renderCommentTailwind
+  }
+};
+
+// packages/core/src/nodes/breadcrumbs/html.ts
+function renderBreadcrumbsHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const items = node2.children || [];
+  const crumbsHTML = items.map((crumb, i) => {
+    const isLast = i === items.length - 1;
+    const label = escapeHtml(crumb.content || "");
+    return isLast ? `<span class="${prefix}breadcrumb-item ${prefix}breadcrumb-current" aria-current="page">${label}</span>` : `<span class="${prefix}breadcrumb-item"><a href="#">${label}</a></span><span class="${prefix}breadcrumb-sep" aria-hidden="true">\u203A</span>`;
+  }).join("");
+  return `<nav class="${prefix}breadcrumbs"${sourceLine(node2)} aria-label="breadcrumb">${crumbsHTML}</nav>`;
+}
+
+// packages/core/src/nodes/breadcrumbs/index.ts
+var breadcrumbs = {
+  type: "breadcrumbs",
+  render: { html: renderBreadcrumbsHTML }
+};
+
+// packages/core/src/nodes/tabs/html.ts
+function renderTabsHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "tabs", node2.props);
-  const tabs = node2.children || [];
-  const renderedPanels = tabs.map((tab, i) => {
+  const tabs2 = node2.children || [];
+  const renderedPanels = tabs2.map((tab2, i) => {
     const commentsBefore = context._comments?.length ?? 0;
-    const panelChildren = renderChildrenList(tab.children || [], context);
+    const panelChildren = renderChildrenList(tab2.children || [], context);
     const hasAnnotations = context.showComments && (context._comments?.length ?? 0) > commentsBefore;
-    const hidden = tab.active ? "" : " hidden";
+    const hidden = tab2.active ? "" : " hidden";
     return {
       html: `<div class="${prefix}tab-panel" role="tabpanel" data-wmd-tab-panel="${i}"${hidden}>
     ${panelChildren}
@@ -12354,10 +13540,10 @@ function renderTabs(node2, context) {
       hasAnnotations
     };
   });
-  const headers = tabs.map((tab, i) => {
-    const activeClass = tab.active ? ` ${prefix}active` : "";
+  const headers = tabs2.map((tab2, i) => {
+    const activeClass = tab2.active ? ` ${prefix}active` : "";
     const annotatedClass = renderedPanels[i].hasAnnotations ? ` ${prefix}tab-header-annotated` : "";
-    return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}${annotatedClass}" data-wmd-tab="${i}">${escapeHtml(tab.label || "")}</button>`;
+    return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}${annotatedClass}" data-wmd-tab="${i}">${escapeHtml(tab2.label || "")}</button>`;
   }).join("");
   const panels = renderedPanels.map((r) => r.html).join("\n  ");
   return `<div class="${classes}"${sourceLine(node2)} data-wmd-tabs>
@@ -12367,14 +13553,175 @@ function renderTabs(node2, context) {
   </div>
 </div>${getTabsScript(prefix)}`;
 }
-function renderTab(node2, context) {
+function getTabsScript(prefix) {
+  return `<script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.${prefix}tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.${prefix}tab-header').forEach(function(b){b.classList.toggle('${prefix}active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>`;
+}
+
+// packages/core/src/nodes/tabs/index.ts
+var tabs = {
+  type: "tabs",
+  render: { html: renderTabsHTML }
+};
+
+// packages/core/src/nodes/tab/html.ts
+function renderTabHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const hidden = node2.active ? "" : " hidden";
   const childrenHTML = (node2.children || []).map((c) => renderNode(c, context)).join("");
   return `<div class="${prefix}tab-panel" role="tabpanel"${hidden}>${childrenHTML}</div>`;
 }
-function getTabsScript(prefix) {
-  return `<script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.${prefix}tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.${prefix}tab-header').forEach(function(b){b.classList.toggle('${prefix}active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>`;
+
+// packages/core/src/nodes/tab/index.ts
+var tab = {
+  type: "tab",
+  render: { html: renderTabHTML }
+};
+
+// packages/core/src/nodes/demo/html.ts
+function renderDemoHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const previewHTML = (node2.children || []).map((child) => renderNode(child, context)).join("\n");
+  const codeHTML = escapeHtml(node2.raw || "");
+  return `<div class="${prefix}demo">
+  <div class="${prefix}demo-preview">${previewHTML}</div>
+  <div class="${prefix}demo-code">
+    <div class="${prefix}demo-code-toolbar">
+      <button class="${prefix}demo-copy" onclick="(function(btn){var code=btn.closest('.${prefix}demo-code').querySelector('code');navigator.clipboard.writeText(code.textContent).then(function(){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy'},1500)})})(this)">Copy</button>
+    </div>
+    <pre><code>${codeHTML}</code></pre>
+  </div>
+</div>`;
+}
+
+// packages/core/src/nodes/demo/index.ts
+var demo = {
+  type: "demo",
+  render: { html: renderDemoHTML }
+};
+
+// packages/core/src/nodes/_registry.ts
+var registry = {
+  button,
+  container,
+  nav,
+  "nav-item": navItem,
+  brand,
+  grid,
+  "grid-item": gridItem,
+  row,
+  heading: heading2,
+  paragraph: paragraph2,
+  text: text5,
+  image: image2,
+  icon,
+  link: link2,
+  list: list3,
+  "list-item": listItem2,
+  table,
+  "table-header": tableHeader,
+  "table-row": tableRow,
+  "table-cell": tableCell,
+  blockquote: blockquote2,
+  code: code3,
+  input,
+  textarea,
+  select,
+  checkbox,
+  radio,
+  "radio-group": radioGroup,
+  badge,
+  separator,
+  comment,
+  breadcrumbs,
+  tabs,
+  tab,
+  demo
+};
+function getNodeDefinition(type) {
+  return registry[type];
+}
+
+// packages/core/src/renderer/html-renderer.ts
+function nextRadioGroupName3(context) {
+  if (!context._radioGroupCounter) {
+    context._radioGroupCounter = { value: 0 };
+  }
+  context._radioGroupCounter.value += 1;
+  return `radio-group-${context._radioGroupCounter.value}`;
+}
+function applyRadioGroupName3(children, context) {
+  if (!children || children.length === 0)
+    return children;
+  const hasRadio = children.some((c) => c && c.type === "radio");
+  if (!hasRadio)
+    return children;
+  const name = nextRadioGroupName3(context);
+  return children.map((c) => {
+    if (!c || c.type !== "radio")
+      return c;
+    if (c.props && c.props.name)
+      return c;
+    return { ...c, props: { ...c.props || {}, name } };
+  });
+}
+function renderNode(node2, context) {
+  if (node2 == null)
+    return "";
+  const def = getNodeDefinition(node2.type);
+  if (def?.render?.html) {
+    return def.render.html(node2, context);
+  }
+  return `<!-- Unknown node type: ${node2.type} -->`;
+}
+function renderChildrenList(children, context) {
+  const { classPrefix: prefix } = context;
+  let result = "";
+  const parentNextCommentId = context._nextCommentId ?? null;
+  context._nextCommentId = null;
+  for (const node2 of children) {
+    if (node2.type === "comment") {
+      if (context.showComments && context._comments != null) {
+        const text6 = node2.text;
+        if (context._nextCommentId != null) {
+          const thread = context._comments.find((c) => c.id === context._nextCommentId);
+          if (thread)
+            thread.texts.push(text6);
+        } else {
+          const id = context._comments.length + 1;
+          context._comments.push({ id, texts: [text6] });
+          context._nextCommentId = id;
+        }
+      }
+      continue;
+    }
+    const html2 = renderNode(node2, context);
+    if (context.showComments && context._comments != null && context._nextCommentId != null) {
+      const id = context._nextCommentId;
+      context._nextCommentId = null;
+      result += `<div class="${prefix}annotated" id="wmd-ann-${id}"><span class="${prefix}comment-badge">${id}</span>${html2}</div>
+`;
+    } else {
+      result += html2 + "\n";
+    }
+  }
+  context._nextCommentId = parentNextCommentId;
+  return result.trim();
+}
+function renderCommentsPanel(comments, prefix) {
+  const items = comments.map((c) => {
+    const messages = c.texts.map((text6, i) => {
+      const divider = i < c.texts.length - 1 ? `<div class="${prefix}comment-msg-divider"></div>` : "";
+      return `<div class="${prefix}comment-msg">${escapeHtml(text6)}</div>${divider}`;
+    }).join("");
+    return `<div class="${prefix}comment-card"><div class="${prefix}comment-card-badge">${c.id}</div><div class="${prefix}comment-card-body">${messages}</div></div>`;
+  }).join("\n  ");
+  return `<aside class="${prefix}comments-panel">
+  <div class="${prefix}comments-panel-header">
+    <span>\u{1F4AC} Comments</span>
+    <span class="${prefix}comments-panel-count">${comments.length}</span>
+  </div>
+  ${items}
+</aside>`;
 }
 function sourceLine(node2) {
   const line = node2?.position?.start?.line;
@@ -12395,35 +13742,14 @@ function buildClasses(prefix, baseClass, props) {
   }
   return classes.join(" ");
 }
-function renderDemo(node2, context) {
-  const { classPrefix: prefix } = context;
-  const previewHTML = (node2.children || []).map((child) => renderNode(child, context)).join("\n");
-  const codeHTML = escapeHtml(node2.raw || "");
-  return `<div class="${prefix}demo">
-  <div class="${prefix}demo-preview">${previewHTML}</div>
-  <div class="${prefix}demo-code">
-    <div class="${prefix}demo-code-toolbar">
-      <button class="${prefix}demo-copy" onclick="(function(btn){var code=btn.closest('.${prefix}demo-code').querySelector('code');navigator.clipboard.writeText(code.textContent).then(function(){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy'},1500)})})(this)">Copy</button>
-    </div>
-    <pre><code>${codeHTML}</code></pre>
-  </div>
-</div>`;
-}
-function renderComment(node2, context) {
-  if (!context.showComments)
+function escapeHtml(text6) {
+  if (!text6)
     return "";
-  if (context._comments != null)
-    return "";
-  return `<span class="${context.classPrefix}comment">${escapeHtml(node2.text)}</span>`;
-}
-function escapeHtml(text5) {
-  if (!text5)
-    return "";
-  return text5.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  return text6.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-// packages/core/src/renderer/styles.ts
-function getStyleCSS(style, prefix) {
+// packages/core/src/renderer/styles/_structural.ts
+function getStructuralCSS(prefix) {
   const linkButtonReset = `a.${prefix}button { text-decoration: none; color: inherit; }
 `;
   const tabsStructural = `
@@ -12475,32 +13801,6 @@ function getStyleCSS(style, prefix) {
 }
 .${prefix}comment::before { content: '\u{1F4AC} '; font-style: normal; }
 `;
-  let themeCSS;
-  switch (style) {
-    case "sketch":
-      themeCSS = getSketchStyle(prefix);
-      break;
-    case "clean":
-      themeCSS = getCleanStyle(prefix);
-      break;
-    case "wireframe":
-      themeCSS = getWireframeStyle(prefix);
-      break;
-    case "none":
-      themeCSS = getNoneStyle(prefix);
-      break;
-    case "tailwind":
-      themeCSS = getTailwindStyle(prefix);
-      break;
-    case "material":
-      themeCSS = getMaterialStyle(prefix);
-      break;
-    case "brutal":
-      themeCSS = getBrutalStyle(prefix);
-      break;
-    default:
-      themeCSS = getSketchStyle(prefix);
-  }
   const commentPanelStructural = `
 .${prefix}annotated { position: relative; outline: 2px solid #f9a825; outline-offset: 3px; border-radius: 3px; }
 .${prefix}tab-header-annotated { position: relative; }
@@ -12552,8 +13852,10 @@ body.${prefix}root.${prefix}has-comments { padding-right: 276px; }
 .${prefix}comment-msg { font-size: 0.82em; color: #5d4037; line-height: 1.45; font-style: italic; }
 .${prefix}comment-msg-divider { height: 1px; background: #f0c040; margin: 6px 0; opacity: 0.6; }
 `;
-  return linkButtonReset + tabsStructural + rowStructural + demoStructural + commentStructural + commentPanelStructural + themeCSS;
+  return linkButtonReset + tabsStructural + rowStructural + demoStructural + commentStructural + commentPanelStructural;
 }
+
+// packages/core/src/renderer/styles/sketch.ts
 function getSketchStyle(prefix) {
   return `
 /* wiremd Sketch Style - Balsamiq-inspired hand-drawn mockups */
@@ -13105,6 +14407,8 @@ body.${prefix}root {
 .${prefix}tab-header.${prefix}active { border-bottom-color: #000; color: #000; }
 `;
 }
+
+// packages/core/src/renderer/styles/clean.ts
 function getCleanStyle(prefix) {
   return `
 /* wiremd Clean Style - Minimal modern wireframes */
@@ -13367,6 +14671,8 @@ body.${prefix}root {
   background: #343a40;
   color: #fff;
   border-color: #343a40;
+  pointer-events: none;
+  cursor: default;
 }
 
 .${prefix}breadcrumbs {
@@ -13441,6 +14747,14 @@ body.${prefix}root {
 .${prefix}col-span-2 { grid-column: span 2; }
 .${prefix}col-span-3 { grid-column: span 3; }
 .${prefix}col-span-4 { grid-column: span 4; }
+.${prefix}col-span-5 { grid-column: span 5; }
+.${prefix}col-span-6 { grid-column: span 6; }
+.${prefix}col-span-7 { grid-column: span 7; }
+.${prefix}col-span-8 { grid-column: span 8; }
+.${prefix}col-span-9 { grid-column: span 9; }
+.${prefix}col-span-10 { grid-column: span 10; }
+.${prefix}col-span-11 { grid-column: span 11; }
+.${prefix}col-span-12 { grid-column: span 12; }
 
 .${prefix}grid-item-card {
   background: #fff;
@@ -13563,6 +14877,51 @@ body.${prefix}root {
   margin-bottom: 20px;
 }
 
+/* Required input indicator */
+.${prefix}input[required], .${prefix}textarea[required], .${prefix}select[required] {
+  border-left: 2px solid #f59e0b;
+}
+
+/* Table-cell alignment (scoped so flex margin: auto rules don't apply) */
+td.${prefix}align-left, th.${prefix}align-left { text-align: left; }
+td.${prefix}align-center, th.${prefix}align-center { text-align: center; }
+td.${prefix}align-right, th.${prefix}align-right { text-align: right; }
+
+/* Alert containers */
+.${prefix}container-alert {
+  border-left: 3px solid #3b82f6;
+  background: #eff6ff;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  color: #1e3a8a;
+}
+.${prefix}container-alert.${prefix}success {
+  border-left-color: #10b981;
+  background: #d1fae5;
+  color: #065f46;
+}
+.${prefix}container-alert.${prefix}warning {
+  border-left-color: #f59e0b;
+  background: #fef3c7;
+  color: #92400e;
+}
+.${prefix}container-alert.${prefix}error {
+  border-left-color: #ef4444;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Button size variants */
+.${prefix}button.${prefix}small { padding: 4px 10px; font-size: 0.875rem; }
+.${prefix}button.${prefix}large { padding: 12px 24px; font-size: 1.125rem; }
+
+/* Error state on inputs and other elements */
+.${prefix}state-error {
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   body.${prefix}root {
@@ -13592,6 +14951,8 @@ body.${prefix}root {
 }
 `;
 }
+
+// packages/core/src/renderer/styles/wireframe.ts
 function getWireframeStyle(prefix) {
   return `
 /* wiremd Wireframe Style - Traditional grayscale wireframes */
@@ -14044,6 +15405,8 @@ body.${prefix}root {
 }
 `;
 }
+
+// packages/core/src/renderer/styles/none.ts
 function getNoneStyle(prefix) {
   return `
 /* wiremd None Style - Minimal semantic styling */
@@ -14179,6 +15542,8 @@ body.${prefix}root {
 }
 `;
 }
+
+// packages/core/src/renderer/styles/tailwind.ts
 function getTailwindStyle(prefix) {
   return `
 /* Tailwind-Inspired Style */
@@ -14454,13 +15819,13 @@ body {
   color: #92400e;
 }
 
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   background: #fee2e2;
   border-left-color: #ef4444;
   color: #991b1b;
 }
 
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   background: #d1fae5;
   border-left-color: #10b981;
   color: #065f46;
@@ -14803,6 +16168,8 @@ body {
 }
 `;
 }
+
+// packages/core/src/renderer/styles/material.ts
 function getMaterialStyle(prefix) {
   return `
 /* Material Design Inspired Style */
@@ -15128,12 +16495,12 @@ body {
   color: #e65100;
 }
 
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   background: #ffebee;
   color: #c62828;
 }
 
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   background: #e8f5e9;
   color: #2e7d32;
 }
@@ -15503,6 +16870,8 @@ body {
 }
 `;
 }
+
+// packages/core/src/renderer/styles/brutal.ts
 function getBrutalStyle(prefix) {
   return `
 /* Neo-Brutalism Style */
@@ -15818,12 +17187,12 @@ body {
   color: #000000;
 }
 
-.${prefix}container-alert.${prefix}state-error {
+.${prefix}container-alert.${prefix}error {
   background: #ff6b6b;
   color: #000000;
 }
 
-.${prefix}container-alert.${prefix}state-success {
+.${prefix}container-alert.${prefix}success {
   background: #6bcf7f;
   color: #000000;
 }
@@ -16233,6 +17602,37 @@ body {
 `;
 }
 
+// packages/core/src/renderer/styles/index.ts
+function getStyleCSS(style, prefix) {
+  let themeCSS;
+  switch (style) {
+    case "sketch":
+      themeCSS = getSketchStyle(prefix);
+      break;
+    case "clean":
+      themeCSS = getCleanStyle(prefix);
+      break;
+    case "wireframe":
+      themeCSS = getWireframeStyle(prefix);
+      break;
+    case "none":
+      themeCSS = getNoneStyle(prefix);
+      break;
+    case "tailwind":
+      themeCSS = getTailwindStyle(prefix);
+      break;
+    case "material":
+      themeCSS = getMaterialStyle(prefix);
+      break;
+    case "brutal":
+      themeCSS = getBrutalStyle(prefix);
+      break;
+    default:
+      themeCSS = getSketchStyle(prefix);
+  }
+  return getStructuralCSS(prefix) + themeCSS;
+}
+
 // packages/core/src/renderer/index.ts
 function renderToHTML(ast, options = {}) {
   const {
@@ -16251,7 +17651,8 @@ function renderToHTML(ast, options = {}) {
     pretty,
     showComments,
     _comments: showComments ? collectedComments : void 0,
-    _nextCommentId: null
+    _nextCommentId: null,
+    _radioGroupCounter: { value: 0 }
   };
   const childrenHTML = renderChildrenList(ast.children, context);
   const panelHTML = showComments && collectedComments.length > 0 ? renderCommentsPanel(collectedComments, classPrefix) : "";
@@ -16560,7 +17961,7 @@ function transformContainer(node2, options) {
   if (containerType === "tabs") {
     const processed = processNodeList(node2.children || [], options);
     const pending = [];
-    const tabs = [];
+    const tabs2 = [];
     for (const n of processed) {
       if (n.type === "comment") {
         pending.push(n);
@@ -16569,13 +17970,13 @@ function transformContainer(node2, options) {
           n.children = [...pending, ...n.children || []];
           pending.length = 0;
         }
-        tabs.push(n);
+        tabs2.push(n);
       }
     }
-    if (tabs.length > 0 && !tabs.some((t) => t.active)) {
-      tabs[0].active = true;
+    if (tabs2.length > 0 && !tabs2.some((t) => t.active)) {
+      tabs2[0].active = true;
     }
-    return { type: "tabs", props, children: tabs };
+    return { type: "tabs", props, children: tabs2 };
   }
   if (containerType === "tab") {
     const firstChild = node2.children[0];
@@ -16673,13 +18074,13 @@ function transformInlineContainer(node2, _options) {
     const iconTextMatch = trimmed.match(/^:([a-z-]+):\s*(.+)$/);
     if (iconTextMatch) {
       const iconName = iconTextMatch[1];
-      const text5 = iconTextMatch[2];
+      const text6 = iconTextMatch[2];
       const nodeType = iconName === "logo" ? "brand" : "nav-item";
       children.push({
         type: nodeType,
         children: [
           { type: "icon", props: { name: iconName } },
-          { type: "text", content: text5 }
+          { type: "text", content: text6 }
         ],
         props: {}
       });
@@ -16784,8 +18185,8 @@ function tryParseButtonLinkSequence(children) {
 function serializeMdastChildren(children) {
   return (children || []).map((child) => {
     if (child.type === "link") {
-      const text5 = (child.children || []).map((c) => c.value || "").join("");
-      return `[${text5}](${child.url})`;
+      const text6 = (child.children || []).map((c) => c.value || "").join("");
+      return `[${text6}](${child.url})`;
     }
     if (child.type === "strong")
       return `**${serializeMdastChildren(child.children)}**`;
@@ -16875,7 +18276,7 @@ function transformParagraph(node2, _options, nextNode) {
             flushText();
             const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
             if (pillMatch) {
-              const [, text5, attrs] = pillMatch;
+              const [, text6, attrs] = pillMatch;
               const props = parseAttributes(attrs || "");
               const validVariants = ["default", "primary", "success", "warning", "error"];
               const variantClass = props.classes?.find((c) => validVariants.includes(c));
@@ -16883,7 +18284,7 @@ function transformParagraph(node2, _options, nextNode) {
                 props.variant = variantClass;
                 props.classes = props.classes.filter((c) => c !== variantClass);
               }
-              processedChildren.push({ type: "badge", content: text5.trim(), props });
+              processedChildren.push({ type: "badge", content: text6.trim(), props });
             }
           } else if (part) {
             currentText += part;
@@ -17062,11 +18463,11 @@ function transformParagraph(node2, _options, nextNode) {
         while ((match = buttonPattern.exec(line.trim())) !== null) {
           if (/^\[[_*]+\]/.test(match[0]))
             continue;
-          const [, text5, isPrimary, attrs] = match;
+          const [, text6, isPrimary, attrs] = match;
           const props = parseAttributes(attrs || "");
           if (isPrimary)
             props.variant = "primary";
-          buttons.push({ type: "button", content: text5, props });
+          buttons.push({ type: "button", content: text6, props });
         }
       }
       if (buttons.length > 1) {
@@ -17099,17 +18500,17 @@ function transformParagraph(node2, _options, nextNode) {
         let m;
         btnPat.lastIndex = 0;
         while ((m = btnPat.exec(line.trim())) !== null) {
-          const [, text5, isPrimary, attrs] = m;
+          const [, text6, isPrimary, attrs] = m;
           const p = parseAttributes(attrs || "");
-          if (isInputText(text5)) {
-            const placeholderMatch = text5.match(/^([^_*]+)_{3,}$/);
+          if (isInputText(text6)) {
+            const placeholderMatch = text6.match(/^([^_*]+)_{3,}$/);
             if (placeholderMatch)
               p.placeholder = placeholderMatch[1].trim();
             nodes.push({ type: "input", props: p });
           } else {
             if (isPrimary)
               p.variant = "primary";
-            nodes.push({ type: "button", content: text5, props: p });
+            nodes.push({ type: "button", content: text6, props: p });
           }
         }
       }
@@ -17117,7 +18518,7 @@ function transformParagraph(node2, _options, nextNode) {
     };
     const dropdownMatch2 = lastLine.match(/^\[([^\]]+)v\](?:\s*(\{[^}]+\}))?$/);
     if (dropdownMatch2) {
-      const [, text5, attrs] = dropdownMatch2;
+      const [, text6, attrs] = dropdownMatch2;
       const props = parseAttributes(attrs || "");
       const options = [];
       if (nextNode && nextNode.type === "list") {
@@ -17138,7 +18539,7 @@ function transformParagraph(node2, _options, nextNode) {
           props: {},
           children: [...parseLabelAsButtons(), {
             type: "select",
-            props: { ...props, placeholder: text5.replace(/[_\s]+$/, "").trim() || void 0 },
+            props: { ...props, placeholder: text6.replace(/[_\s]+$/, "").trim() || void 0 },
             options
           }]
         };
@@ -17153,7 +18554,7 @@ function transformParagraph(node2, _options, nextNode) {
             type: "select",
             props: {
               ...props,
-              placeholder: text5.replace(/[_\s]+$/, "").trim() || void 0
+              placeholder: text6.replace(/[_\s]+$/, "").trim() || void 0
             },
             options
           }
@@ -17244,13 +18645,13 @@ function transformParagraph(node2, _options, nextNode) {
       let match;
       const isInputTextMulti = (t) => /^[_*]+$/.test(t) || /_{3,}$/.test(t);
       while ((match = buttonPattern.exec(lastLine)) !== null) {
-        const [, text5, isPrimary, attrs] = match;
+        const [, text6, isPrimary, attrs] = match;
         const props = parseAttributes(attrs || "");
-        if (isInputTextMulti(text5) || "rows" in props)
+        if (isInputTextMulti(text6) || "rows" in props)
           continue;
         if (isPrimary)
           props.variant = "primary";
-        buttons.push({ type: "button", content: text5, props });
+        buttons.push({ type: "button", content: text6, props });
       }
       if (buttons.length > 0) {
         if (labelLinesAreButtons) {
@@ -17286,7 +18687,7 @@ function transformParagraph(node2, _options, nextNode) {
   }
   const dropdownMatch = content3.match(/^\[([^\]]+)v\](?:\s*(\{[^}]+\}))?$/);
   if (dropdownMatch) {
-    const [, text5, attrs] = dropdownMatch;
+    const [, text6, attrs] = dropdownMatch;
     const props = parseAttributes(attrs || "");
     const options = [];
     if (nextNode && nextNode.type === "list") {
@@ -17304,7 +18705,7 @@ function transformParagraph(node2, _options, nextNode) {
       type: "select",
       props: {
         ...props,
-        placeholder: text5.replace(/[_\s]+$/, "").trim() || void 0
+        placeholder: text6.replace(/[_\s]+$/, "").trim() || void 0
       },
       options
     };
@@ -17347,14 +18748,14 @@ function transformParagraph(node2, _options, nextNode) {
     for (const part of textParts) {
       const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
       if (pillMatch) {
-        const [, text5, attrs] = pillMatch;
+        const [, text6, attrs] = pillMatch;
         const props = parseAttributes(attrs || "");
         const variantClass = props.classes?.find((c) => validVariants.includes(c));
         if (variantClass) {
           props.variant = variantClass;
           props.classes = props.classes.filter((c) => c !== variantClass);
         }
-        children.push({ type: "badge", content: text5.trim(), props });
+        children.push({ type: "badge", content: text6.trim(), props });
       } else if (part.trim()) {
         children.push({ type: "text", content: part, props: {} });
       }
@@ -17377,17 +18778,17 @@ function transformParagraph(node2, _options, nextNode) {
     const isInputText = (t) => /^[_*]+$/.test(t) || /_{3,}$/.test(t);
     const isSelectText = (t) => /_{1,}v$/.test(t);
     while ((match = buttonPattern.exec(content3)) !== null) {
-      const [, text5, isPrimary, attrs] = match;
+      const [, text6, isPrimary, attrs] = match;
       const props = parseAttributes(attrs || "");
-      if (isSelectText(text5)) {
-        const placeholder = text5.replace(/_{1,}v$/, "").trim() || void 0;
+      if (isSelectText(text6)) {
+        const placeholder = text6.replace(/_{1,}v$/, "").trim() || void 0;
         if (placeholder)
           props.placeholder = placeholder;
         elements.push({ type: "select", props, options: [] });
         continue;
       }
-      if (isInputText(text5)) {
-        const placeholderMatch = text5.match(/^([^_*]+)_{3,}$/);
+      if (isInputText(text6)) {
+        const placeholderMatch = text6.match(/^([^_*]+)_{3,}$/);
         if (placeholderMatch)
           props.placeholder = placeholderMatch[1].trim();
         elements.push({ type: "input", props });
@@ -17397,9 +18798,9 @@ function transformParagraph(node2, _options, nextNode) {
         continue;
       if (isPrimary)
         props.variant = "primary";
-      if (/:([a-z-]+):/.test(text5)) {
+      if (/:([a-z-]+):/.test(text6)) {
         const iconPattern = /:([a-z-]+):/g;
-        const parts = text5.split(iconPattern);
+        const parts = text6.split(iconPattern);
         const children = [];
         for (let i = 0; i < parts.length; i++) {
           if (i % 2 === 0) {
@@ -17412,7 +18813,7 @@ function transformParagraph(node2, _options, nextNode) {
         }
         elements.push({ type: "button", content: "", children, props });
       } else {
-        elements.push({ type: "button", content: text5, props });
+        elements.push({ type: "button", content: text6, props });
       }
     }
     const buttons = elements.filter((e) => e.type === "button");
@@ -17658,11 +19059,11 @@ function transformTable(node2, options) {
   const children = [];
   const align = node2.align || [];
   for (let rowIndex = 0; rowIndex < node2.children.length; rowIndex++) {
-    const row = node2.children[rowIndex];
+    const row2 = node2.children[rowIndex];
     const isHeader = rowIndex === 0;
     const cells = [];
-    for (let cellIndex = 0; cellIndex < row.children.length; cellIndex++) {
-      const cell = row.children[cellIndex];
+    for (let cellIndex = 0; cellIndex < row2.children.length; cellIndex++) {
+      const cell = row2.children[cellIndex];
       const cellAlign = align[cellIndex] || "left";
       const cellChildren = [];
       for (const child of cell.children || []) {
@@ -18000,7 +19401,7 @@ function mdastNodesToText(nodes) {
         }).join("\n");
       case "table": {
         const rows = node2.children.map(
-          (row) => row.children.map((cell) => mdastInlinesToText(cell.children || []))
+          (row2) => row2.children.map((cell) => mdastInlinesToText(cell.children || []))
         );
         if (!rows.length)
           return "";
@@ -18008,8 +19409,8 @@ function mdastNodesToText(nodes) {
           (_, ci) => Math.max(...rows.map((r) => (r[ci] || "").length), 3)
         );
         const formatRow = (cells) => "| " + cells.map((c, i) => c.padEnd(colWidths[i])).join(" | ") + " |";
-        const separator = "| " + colWidths.map((w) => "-".repeat(w)).join(" | ") + " |";
-        return [formatRow(rows[0]), separator, ...rows.slice(1).map(formatRow)].join("\n");
+        const separator2 = "| " + colWidths.map((w) => "-".repeat(w)).join(" | ") + " |";
+        return [formatRow(rows[0]), separator2, ...rows.slice(1).map(formatRow)].join("\n");
       }
       case "code":
         return "```" + (node2.lang || "") + "\n" + node2.value + "\n```";
@@ -18058,8 +19459,8 @@ var remarkWiremdContainers = () => {
 // packages/core/src/parser/remark-inline-containers.ts
 function serializeChild(c) {
   if (c.type === "link") {
-    const text5 = (c.children || []).map((cc) => cc.value || "").join("");
-    return `[${text5}](${c.url})`;
+    const text6 = (c.children || []).map((cc) => cc.value || "").join("");
+    return `[${text6}](${c.url})`;
   }
   if (c.type === "strong")
     return `**${(c.children || []).map(serializeChild).join("")}**`;
@@ -18072,8 +19473,8 @@ var remarkWiremdInlineContainers = () => {
     const newChildren = [];
     for (const node2 of tree.children) {
       if (node2.type === "paragraph" && node2.children && node2.children.length > 0) {
-        const text5 = node2.children.map(serializeChild).join("");
-        const match = text5.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?$/);
+        const text6 = node2.children.map(serializeChild).join("");
+        const match = text6.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?$/);
         if (match) {
           const content3 = match[1];
           const attrs = match[2] || "";
@@ -18122,9 +19523,9 @@ function resolveIncludes(markdown, basePath) {
     });
   }).join("");
 }
-function parse2(input, options = {}) {
+function parse2(input2, options = {}) {
   const processor = unified().use(remarkParse).use(remarkGfm).use(remarkWiremdInlineContainers).use(remarkWiremdContainers);
-  const mdast = processor.parse(input);
+  const mdast = processor.parse(input2);
   const processed = processor.runSync(mdast);
   const wiremdAST = transformToWiremdAST(processed, options);
   return wiremdAST;
@@ -19236,11 +20637,11 @@ var foreach = (val, fn) => {
   }
 };
 var addAndConvert = (main2, prop, item) => {
-  let container = main2[prop];
-  if (!(container instanceof Set)) {
-    main2[prop] = container = /* @__PURE__ */ new Set([container]);
+  let container2 = main2[prop];
+  if (!(container2 instanceof Set)) {
+    main2[prop] = container2 = /* @__PURE__ */ new Set([container2]);
   }
-  container.add(item);
+  container2.add(item);
 };
 var clearItem = (cont) => (key) => {
   const set = cont[key];
@@ -19251,10 +20652,10 @@ var clearItem = (cont) => (key) => {
   }
 };
 var delFromSet = (main2, prop, item) => {
-  const container = main2[prop];
-  if (container instanceof Set) {
-    container.delete(item);
-  } else if (container === item) {
+  const container2 = main2[prop];
+  if (container2 instanceof Set) {
+    container2.delete(item);
+  } else if (container2 === item) {
     delete main2[prop];
   }
 };
@@ -20159,8 +21560,8 @@ var FSWatcher = class extends import_events.EventEmitter {
    * @returns The error if defined, otherwise the value of the FSWatcher instance's `closed` flag
    */
   _handleError(error) {
-    const code3 = error && error.code;
-    if (error && code3 !== "ENOENT" && code3 !== "ENOTDIR" && (!this.options.ignorePermissionErrors || code3 !== "EPERM" && code3 !== "EACCES")) {
+    const code4 = error && error.code;
+    if (error && code4 !== "ENOENT" && code4 !== "ENOTDIR" && (!this.options.ignorePermissionErrors || code4 !== "EPERM" && code4 !== "EACCES")) {
       this.emit(EVENTS.ERROR, error);
     }
     return error || this.closed;
@@ -20266,8 +21667,8 @@ var FSWatcher = class extends import_events.EventEmitter {
       const ign = this.options.ignored;
       const ignored = (ign || []).map(normalizeIgnored(cwd));
       const ignoredPaths = [...this._ignoredPaths];
-      const list3 = [...ignoredPaths.map(normalizeIgnored(cwd)), ...ignored];
-      this._userIgnored = anymatch(list3, void 0);
+      const list4 = [...ignoredPaths.map(normalizeIgnored(cwd)), ...ignored];
+      this._userIgnored = anymatch(list4, void 0);
     }
     return this._userIgnored(path2, stats);
   }
@@ -20364,12 +21765,12 @@ var FSWatcher = class extends import_events.EventEmitter {
   _addPathCloser(path2, closer) {
     if (!closer)
       return;
-    let list3 = this._closers.get(path2);
-    if (!list3) {
-      list3 = [];
-      this._closers.set(path2, list3);
+    let list4 = this._closers.get(path2);
+    if (!list4) {
+      list4 = [];
+      this._closers.set(path2, list4);
     }
-    list3.push(closer);
+    list4.push(closer);
   }
   _readdirp(root2, opts) {
     if (this.closed)
@@ -20398,8 +21799,8 @@ var esm_default = { watch, FSWatcher };
 
 // node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/ansi-styles/index.js
 var ANSI_BACKGROUND_OFFSET = 10;
-var wrapAnsi16 = (offset = 0) => (code3) => `\x1B[${code3 + offset}m`;
-var wrapAnsi256 = (offset = 0) => (code3) => `\x1B[${38 + offset};5;${code3}m`;
+var wrapAnsi16 = (offset = 0) => (code4) => `\x1B[${code4 + offset}m`;
+var wrapAnsi256 = (offset = 0) => (code4) => `\x1B[${38 + offset};5;${code4}m`;
 var wrapAnsi16m = (offset = 0) => (red, green, blue) => `\x1B[${38 + offset};2;${red};${green};${blue}m`;
 var styles = {
   modifier: {
@@ -20535,24 +21936,24 @@ function assembleStyles() {
       enumerable: false
     },
     ansi256ToAnsi: {
-      value(code3) {
-        if (code3 < 8) {
-          return 30 + code3;
+      value(code4) {
+        if (code4 < 8) {
+          return 30 + code4;
         }
-        if (code3 < 16) {
-          return 90 + (code3 - 8);
+        if (code4 < 16) {
+          return 90 + (code4 - 8);
         }
         let red;
         let green;
         let blue;
-        if (code3 >= 232) {
-          red = ((code3 - 232) * 10 + 8) / 255;
+        if (code4 >= 232) {
+          red = ((code4 - 232) * 10 + 8) / 255;
           green = red;
           blue = red;
         } else {
-          code3 -= 16;
-          const remainder = code3 % 36;
-          red = Math.floor(code3 / 36) / 5;
+          code4 -= 16;
+          const remainder = code4 % 36;
+          red = Math.floor(code4 / 36) / 5;
           green = Math.floor(remainder / 6) / 5;
           blue = remainder % 6 / 5;
         }
@@ -21062,13 +22463,13 @@ function checkFileSize(filePath) {
   }
 }
 function generateOutput(options) {
-  const { input, format, style, pretty, showComments } = options;
-  if (!(0, import_fs5.existsSync)(input)) {
-    throw new Error(`File not found: ${input}`);
+  const { input: input2, format, style, pretty, showComments } = options;
+  if (!(0, import_fs5.existsSync)(input2)) {
+    throw new Error(`File not found: ${input2}`);
   }
-  checkFileSize(input);
-  const raw = (0, import_fs5.readFileSync)(input, "utf-8");
-  const markdown = resolveIncludes(raw, (0, import_path3.resolve)(input));
+  checkFileSize(input2);
+  const raw = (0, import_fs5.readFileSync)(input2, "utf-8");
+  const markdown = resolveIncludes(raw, (0, import_path3.resolve)(input2));
   const ast = parse2(markdown);
   if (format === "json") {
     return renderToJSON(ast, { pretty });
