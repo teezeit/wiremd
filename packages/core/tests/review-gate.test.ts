@@ -44,10 +44,8 @@ const KNOWN_FAILURES = new Set<string>([
   'fixture-regression-formatting-inline-nav-needs-blank-line',
   'fixture-regression-formatting-siblings-no-blank-between',
   'fixture-regression-grid-text-after-opener-flag',
-  'fixture-regression-inline-text-after-button',
   'fixture-docs-inputs-with-placeholder',
   'fixture-docs-badges-in-a-table',
-  'fixture-docs-cards-card',
   'fixture-docs-tables-with-badges',
   'fixture-docs-tables-data-table-with-actions',
   // Button .small/.large size rules only landed in clean during Phase A;

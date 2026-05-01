@@ -5,8 +5,8 @@ export const WiremdComponent: React.FC = () => {
     <div className="wmd-root">
   <div className="wmd-container-card">
     <h3 className="wmd-h3">Getting Started</h3>
-    <div className="wmd-container-form-group">
-Everything you need to build your first wireframe in minutes.
+    <p className="wmd-paragraph">Everything you need to build your first wireframe in minutes.</p>
+    <div className="wmd-container-button-group">
       <button className="wmd-button">
         Read the guide
       </button>
