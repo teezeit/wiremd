@@ -17,7 +17,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [❌ text-before-nested-opener][6] — inner is underneath
 
 ### Formatting (regressions/formatting)
-- [❌ closer-with-trailing-space][7] — text after closer does not display
+- [✅ closer-with-trailing-space][7]
 - [✅ crlf-line-endings][8]
 - [❌ icon-needs-blank-line][9] — render issue
 - [❌ inline-nav-needs-blank-line][10]
@@ -25,7 +25,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [✅ multiple-blanks-between][12]
 - [✅ opener-no-blank-after][13]
 - [❌ siblings-no-blank-between][14]
-- [❌ trailing-whitespace-opener][15]
+- [✅ trailing-whitespace-opener][15]
 
 ### Grid (regressions/grid)
 - [✅ col-span-large][16]
@@ -120,8 +120,8 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 ### Page Layouts (apps/docs/components/page-layouts.md)
 - [✅ top-nav-layout][78]
 - [✅ top-nav-with-right-aligned-actions][79]
-- [❌ sidebar-layout][80]
-- [❌ sidebar-with-sections][81]
+- [✅ sidebar-layout][80]
+- [✅ sidebar-with-sections][81]
 - [✅ navbar-sidebar-layout][82]
 
 ### Navigation (apps/docs/components/navigation.md)

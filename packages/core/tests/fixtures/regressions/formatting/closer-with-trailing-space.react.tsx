@@ -6,6 +6,7 @@ export const WiremdComponent: React.FC = () => {
   <div className="wmd-container-card">
     <p className="wmd-paragraph">inside</p>
   </div>
+  <p className="wmd-paragraph">text after the (broken) closer</p>
     </div>
   );
 };

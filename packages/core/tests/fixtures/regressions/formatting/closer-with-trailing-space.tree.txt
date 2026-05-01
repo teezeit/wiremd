@@ -1,3 +1,4 @@
 Document
-  └─ container[card]
-     └─ paragraph "inside"
+  ├─ container[card]
+  │  └─ paragraph "inside"
+  └─ paragraph "text after the (broken) closer"
