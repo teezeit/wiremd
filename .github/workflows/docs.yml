@@ -55,7 +55,10 @@ jobs:
         run: cp -r apps/landing/dist/. apps/docs/.vitepress/dist/
 
       - name: Build editor
-        run: VITE_BASE=/wiremd/editor/ pnpm --filter wiremd-editor run build
+        run: pnpm --filter wiremd-editor run build
+        env:
+          VITE_BASE: /wiremd/editor/
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
 
       - name: Copy editor into docs dist
         run: |
