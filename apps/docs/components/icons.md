@@ -16,118 +16,182 @@ Use `:name:` inline anywhere — in headings, buttons, nav bars, or plain text.
 
 ## Available Icons
 
-### UI
+Icons render as inline Tabler SVGs. Existing names remain supported as aliases.
 
-| Name | Renders as |
-|------|------------|
-| `:home:` | 🏠 |
-| `:user:` | 👤 |
-| `:settings:` | ⚙️ |
-| `:search:` | 🔍 |
-| `:star:` | ⭐ |
-| `:heart:` | ❤️ |
-| `:mail:` | ✉️ |
-| `:phone:` | 📞 |
-| `:calendar:` | 📅 |
-| `:clock:` | 🕐 |
-| `:location:` | 📍 |
-| `:link:` | 🔗 |
-| `:download:` | ⬇️ |
-| `:upload:` | ⬆️ |
-| `:edit:` | ✏️ |
-| `:delete:` | 🗑️ |
-| `:plus:` | ➕ |
-| `:minus:` | ➖ |
-| `:check:` | ✓ |
-| `:close:` | ✕ |
-| `:menu:` | ☰ |
-| `:more:` | ⋯ |
-| `:info:` | ℹ️ |
-| `:warning:` | ⚠️ |
-| `:error:` | ❌ |
-| `:success:` | ✅ |
+### UI & Actions
 
-### Arrows
+::: row
+:activity: Activity
+:bell: Bell
+:bookmark: Bookmark
+:calendar: Calendar
+:check: Check
+:circle-check: Circle check
+:clock: Clock
+:copy: Copy
+:download: Download
+:edit: Edit
+:external-link: External link
+:filter: Filter
+:heart: Heart
+:home: Home
+:info-circle: Info
+:link: Link
+:login: Login
+:logout: Logout
+:menu-2: Menu
+:minus: Minus
+:plus: Plus
+:refresh: Refresh
+:search: Search
+:send: Send
+:settings: Settings
+:star: Star
+:trash: Trash
+:upload: Upload
+:user: User
+:users: Users
+:x: X
+:::
 
-| Name | Renders as |
-|------|------------|
-| `:arrow-up:` | ↑ |
-| `:arrow-down:` | ↓ |
-| `:arrow-left:` | ← |
-| `:arrow-right:` | → |
+### Navigation
 
-### Communication
+::: row
+:arrow-up: Arrow up
+:arrow-down: Arrow down
+:arrow-left: Arrow left
+:arrow-right: Arrow right
+:chevron-up: Chevron up
+:chevron-down: Chevron down
+:chevron-left: Chevron left
+:chevron-right: Chevron right
+:dots: More
+:::
 
-| Name | Renders as |
-|------|------------|
-| `:chat:` | 💬 |
-| `:video:` | 🎥 |
-| `:microphone:` | 🎤 |
-| `:bell:` | 🔔 |
+### Status
 
-### Files
+::: row
+:alert-circle: Error
+:alert-triangle: Warning
+:circle-check: Success
+:eye: Visible
+:eye-off: Hidden
+:lock: Locked
+:lock-open: Unlocked
+:shield: Shield
+:::
 
-| Name | Renders as |
-|------|------------|
-| `:file:` | 📄 |
-| `:folder:` | 📁 |
-| `:image:` | 🖼️ |
-| `:document:` | 📃 |
-| `:pdf:` | 📑 |
+### Communication & Media
+
+::: row
+:mail: Mail
+:message-circle: Chat
+:microphone: Microphone
+:phone: Phone
+:player-play: Play
+:player-pause: Pause
+:player-stop: Stop
+:video: Video
+:::
+
+### Files & Content
+
+::: row
+:clipboard-list: Clipboard
+:file: File
+:file-text: Document
+:file-type-pdf: PDF
+:folder: Folder
+:photo: Image
+:::
 
 ### Business & Finance
 
-| Name | Renders as |
-|------|------------|
-| `:chart:` | 📊 |
-| `:dollar:` | $ |
-| `:euro:` | € |
-| `:pound:` | £ |
-| `:cart:` | 🛒 |
-| `:credit-card:` | 💳 |
-| `:tag:` | 🏷️ |
+::: row
+:briefcase: Briefcase
+:building: Building
+:cash: Cash
+:chart-bar: Bar chart
+:chart-line: Line chart
+:chart-pie: Pie chart
+:coin: Coin
+:credit-card: Credit card
+:currency-dollar: Dollar
+:currency-euro: Euro
+:currency-pound: Pound
+:shopping-cart: Cart
+:tag: Tag
+:wallet: Wallet
+:::
 
-### Tech
+### Tech, Map & Logistics
 
-| Name | Renders as |
-|------|------------|
-| `:code:` | </> |
-| `:database:` | 🗄️ |
-| `:cloud:` | ☁️ |
-| `:wifi:` | 📶 |
+::: row
+:cloud: Cloud
+:code: Code
+:database: Database
+:device-desktop: Desktop
+:device-mobile: Mobile
+:layout-dashboard: Dashboard
+:map: Map
+:map-pin: Location
+:package: Package
+:server: Server
+:truck: Truck
+:wifi: Wifi
+:world: World
+:::
 
-### Activities
+### Activities & Objects
 
-| Name | Renders as |
-|------|------------|
-| `:rocket:` | 🚀 |
-| `:bulb:` | 💡 |
-| `:shield:` | 🛡️ |
-| `:lock:` | 🔒 |
-| `:unlock:` | 🔓 |
-| `:key:` | 🔑 |
-| `:gift:` | 🎁 |
-| `:trophy:` | 🏆 |
-| `:flag:` | 🚩 |
-| `:bookmark:` | 🔖 |
-
-### Brand / Logo Placeholders
-
-| Name | Renders as |
-|------|------------|
-| `:logo:` | ◈ |
-| `:brand:` | ◆ |
+::: row
+:bulb: Idea
+:diamond: Logo
+:flag: Flag
+:gift: Gift
+:key: Key
+:rocket: Rocket
+:trophy: Trophy
+:::
 
 ### Social Media
 
-| Name | Renders as |
-|------|------------|
-| `:github:` | ⊙ |
-| `:twitter:` | 𝕏 |
-| `:linkedin:` | in |
-| `:facebook:` | f |
-| `:instagram:` | ◉ |
-| `:youtube:` | ▶ |
+::: row
+:brand-github: GitHub
+:brand-x: X
+:brand-linkedin: LinkedIn
+:brand-facebook: Facebook
+:brand-instagram: Instagram
+:brand-youtube: YouTube
+:::
+
+### Compatibility Aliases
+
+| Alias | Uses |
+|------|------|
+| `:brand:` | `:diamond:` |
+| `:cart:` | `:shopping-cart:` |
+| `:chart:` | `:chart-bar:` |
+| `:chat:` | `:message-circle:` |
+| `:close:` | `:x:` |
+| `:delete:` | `:trash:` |
+| `:document:` | `:file-text:` |
+| `:dollar:` | `:currency-dollar:` |
+| `:error:` | `:alert-circle:` |
+| `:euro:` | `:currency-euro:` |
+| `:github:` | `:brand-github:` |
+| `:image:` | `:photo:` |
+| `:info:` | `:info-circle:` |
+| `:location:` | `:map-pin:` |
+| `:logo:` | `:diamond:` |
+| `:menu:` | `:menu-2:` |
+| `:more:` | `:dots:` |
+| `:pdf:` | `:file-type-pdf:` |
+| `:pound:` | `:currency-pound:` |
+| `:success:` | `:circle-check:` |
+| `:twitter:` | `:brand-x:` |
+| `:unlock:` | `:lock-open:` |
+| `:warning:` | `:alert-triangle:` |
 
 ## Syntax
 
@@ -138,4 +202,4 @@ Use `:name:` inline anywhere — in headings, buttons, nav bars, or plain text.
 [[ :logo: Brand | ... ]]  icon in navbar brand
 ```
 
-Unknown icon names fall back to `●`.
+Unknown icon names fall back to `:circle:`.

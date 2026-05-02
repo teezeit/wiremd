@@ -49,6 +49,7 @@
     "review:refresh": "pnpm run review:log && pnpm run test -- tests/fixtures.test.ts -u && pnpm run review:flag --snapshot-changes"
   },
   "dependencies": {
+    "@tabler/icons": "^3.41.1",
     "chalk": "^5.6.2",
     "chokidar": "^4.0.3",
     "mdast-util-from-markdown": "^2.0.0",

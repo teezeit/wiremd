@@ -27,7 +27,7 @@ const BADGE_TOKEN_SPLIT = new RegExp(`(${BADGE_TOKEN_PATTERN.source})`);
 const BADGE_TOKEN_SPLIT_GLOBAL = new RegExp(`(${BADGE_TOKEN_PATTERN.source})`, 'g');
 const BADGE_TOKEN_EXACT = /^(?:\(\(([^()\n]+)\)\)|\|([^|\n]+)\|)(?:\s*(\{[^}]*\}))?$/;
 const INLINE_TEXT_TOKEN_SPLIT = new RegExp(
-  `(\\[[^\\]]+\\](?:\\*)?(?:\\s*\\{[^}]*\\})?|:[a-z-]+:|${BADGE_TOKEN_PATTERN.source})`,
+  `(\\[[^\\]]+\\](?:\\*)?(?:\\s*\\{[^}]*\\})?|:[a-z0-9-]+:|${BADGE_TOKEN_PATTERN.source})`,
 );
 
 /**
@@ -673,7 +673,7 @@ function transformInlineContainer(node: any, _ctx: TransformContext): WiremdNode
     }
 
     // Check if it's an icon: :icon:
-    const iconMatch = trimmed.match(/^:([a-z-]+):$/);
+    const iconMatch = trimmed.match(/^:([a-z0-9-]+):$/);
     if (iconMatch) {
       children.push({
         type: 'icon',
@@ -683,7 +683,7 @@ function transformInlineContainer(node: any, _ctx: TransformContext): WiremdNode
     }
 
     // Check if it starts with icon: :icon: Text
-    const iconTextMatch = trimmed.match(/^:([a-z-]+):\s*(.+)$/);
+    const iconTextMatch = trimmed.match(/^:([a-z0-9-]+):\s*(.+)$/);
     if (iconTextMatch) {
       const iconName = iconTextMatch[1];
       const text = iconTextMatch[2];
@@ -744,8 +744,8 @@ function transformHeading(node: any, _ctx: TransformContext): WiremdNode {
   }
 
   // Parse icons in heading text
-  if (/:([a-z-]+):/.test(headingText)) {
-    const iconPattern = /:([a-z-]+):/g;
+  if (/:([a-z0-9-]+):/.test(headingText)) {
+    const iconPattern = /:([a-z0-9-]+):/g;
     const parts = headingText.split(iconPattern);
     const children: WiremdNode[] = [];
 
@@ -947,8 +947,8 @@ function parseBracketControlsFromLine(line: string): WiremdNode[] | null {
 
     if (isPrimary) props.variant = 'primary';
 
-    if (/:([a-z-]+):/.test(text)) {
-      const iconPattern = /:([a-z-]+):/g;
+    if (/:([a-z0-9-]+):/.test(text)) {
+      const iconPattern = /:([a-z0-9-]+):/g;
       const parts = text.split(iconPattern);
       const children: WiremdNode[] = [];
 
@@ -1067,10 +1067,10 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
                 variant: buttonMatch[2] ? 'primary' : undefined,
               },
             });
-          } else if (part.match(/^:([a-z-]+):$/)) {
+          } else if (part.match(/^:([a-z0-9-]+):$/)) {
             // It's an icon
             flushText();
-            const iconMatch = part.match(/^:([a-z-]+):$/);
+            const iconMatch = part.match(/^:([a-z0-9-]+):$/);
             if (iconMatch) {
               processedChildren.push({
                 type: 'icon',
@@ -1288,13 +1288,13 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
   // If we have multiple lines, check if ALL lines are buttons/form elements
   if (lines.length > 1) {
     // Check if all lines have icon patterns (e.g., ":star: Star Icon")
-    const allWithIcons = lines.every(line => /:([a-z-]+):/.test(line.trim()));
+    const allWithIcons = lines.every(line => /:([a-z0-9-]+):/.test(line.trim()));
 
     if (allWithIcons) {
       const iconLines: WiremdNode[] = [];
       for (const line of lines) {
         const trimmed = line.trim();
-        const iconPattern = /:([a-z-]+):/g;
+        const iconPattern = /:([a-z0-9-]+):/g;
         const parts = trimmed.split(iconPattern);
         const lineChildren: WiremdNode[] = [];
 
@@ -1783,8 +1783,8 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
       if (isPrimary) props.variant = 'primary';
 
       // Parse icons in button text
-      if (/:([a-z-]+):/.test(text)) {
-        const iconPattern = /:([a-z-]+):/g;
+      if (/:([a-z0-9-]+):/.test(text)) {
+        const iconPattern = /:([a-z0-9-]+):/g;
         const parts = text.split(iconPattern);
         const children: WiremdNode[] = [];
 
@@ -1853,8 +1853,8 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
   }
 
   // Check for icons in content (after button check to avoid conflicts)
-  if (/:([a-z-]+):/.test(content)) {
-    const iconPattern = /:([a-z-]+):/g;
+  if (/:([a-z0-9-]+):/.test(content)) {
+    const iconPattern = /:([a-z0-9-]+):/g;
     const textParts = content.split(iconPattern);
     const children: WiremdNode[] = [];
 
@@ -1917,7 +1917,7 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
   }
 
   // Check for standalone icon syntax: :icon-name:
-  const iconMatch = content.match(/^:([a-z-]+):$/);
+  const iconMatch = content.match(/^:([a-z0-9-]+):$/);
   if (iconMatch) {
     return {
       type: 'icon',
@@ -1996,8 +1996,8 @@ function transformListItem(node: any, ctx: TransformContext): WiremdNode {
     }
 
     // Parse icons in checkbox label
-    if (/:([a-z-]+):/.test(label)) {
-      const iconPattern = /:([a-z-]+):/g;
+    if (/:([a-z0-9-]+):/.test(label)) {
+      const iconPattern = /:([a-z0-9-]+):/g;
       const parts = label.split(iconPattern);
       const children: WiremdNode[] = [];
 
@@ -2065,8 +2065,8 @@ function transformListItem(node: any, ctx: TransformContext): WiremdNode {
   }
 
   // Parse icons in regular list items
-  if (/:([a-z-]+):/.test(content)) {
-    const iconPattern = /:([a-z-]+):/g;
+  if (/:([a-z0-9-]+):/.test(content)) {
+    const iconPattern = /:([a-z0-9-]+):/g;
     const parts = content.split(iconPattern);
     const children: WiremdNode[] = [];
 
@@ -2132,7 +2132,7 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
         // Mirrors the rich-paragraph splitter so table cells render badges as
         // proper nodes instead of leaking literal badge syntax to the
         // rendered HTML.
-        const parts = value.split(new RegExp(`(${BADGE_TOKEN_PATTERN.source}|:[a-z-]+:)`, 'g'));
+        const parts = value.split(new RegExp(`(${BADGE_TOKEN_PATTERN.source}|:[a-z0-9-]+:)`, 'g'));
         for (const part of parts) {
           if (!part) continue;
           const badge = parseBadgeToken(part);
@@ -2140,7 +2140,7 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
             cellChildren.push(badge);
             continue;
           }
-          const iconOnly = part.match(/^:([a-z-]+):$/);
+          const iconOnly = part.match(/^:([a-z0-9-]+):$/);
           if (iconOnly) {
             cellChildren.push({ type: 'icon', props: { name: iconOnly[1] } });
             continue;
@@ -2152,7 +2152,7 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
       };
       for (const child of cell.children || []) {
         if (child.type === 'text') {
-          const iconMatch = /^:([a-z-]+):\s*([\s\S]*)$/.exec(child.value);
+          const iconMatch = /^:([a-z0-9-]+):\s*([\s\S]*)$/.exec(child.value);
           if (iconMatch) {
             cellChildren.push({
               type: 'icon',
@@ -2335,7 +2335,7 @@ function parseInlineToNodes(content: string): WiremdNode[] {
       nodes.push(badge);
       continue;
     }
-    const iconSplit = part.split(/:([a-z-]+):/);
+    const iconSplit = part.split(/:([a-z0-9-]+):/);
     for (let i = 0; i < iconSplit.length; i++) {
       if (i % 2 === 0) {
         if (iconSplit[i]) nodes.push({ type: 'text', content: iconSplit[i], props: {} });

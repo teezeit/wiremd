@@ -342,8 +342,8 @@ Email
 
       expect(html).toContain('data-icon="home"');
       expect(html).toContain('data-icon="user"');
-      expect(html).toContain('🏠');
-      expect(html).toContain('👤');
+      expect(html).toContain('<svg class="inline-block align-middle"');
+      expect(html).toContain('stroke-width="2"');
     });
   });
 

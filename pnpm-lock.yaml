@@ -181,6 +181,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@tabler/icons':
+        specifier: ^3.41.1
+        version: 3.41.1
       chalk:
         specifier: ^5.6.2
         version: 5.6.2
@@ -1659,6 +1662,9 @@ packages:
   '@sindresorhus/merge-streams@2.3.0':
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
     engines: {node: '>=18'}
+
+  '@tabler/icons@3.41.1':
+    resolution: {integrity: sha512-OaRnVbRmH2nHtFeg+RmMJ/7m2oBIF9XCJAUD5gQnMrpK9f05ydj8MZrAf3NZQqOXyxGN1UBL0D5IKLLEUfr74Q==}
 
   '@textlint/ast-node-types@15.6.0':
     resolution: {integrity: sha512-CxZHFbYAU7J0A4izz31wV2ZZfySR6aVj2OSR6/3tppZm7VV6hM7nA7sutsLwIiBL/v4lsB1RM79l4Dc/VrH4qw==}
@@ -5395,6 +5401,8 @@ snapshots:
   '@sinclair/typebox@0.27.10': {}
 
   '@sindresorhus/merge-streams@2.3.0': {}
+
+  '@tabler/icons@3.41.1': {}
 
   '@textlint/ast-node-types@15.6.0': {}
 
