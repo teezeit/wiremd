@@ -24,7 +24,6 @@ This is a basic card with title and content.
 ```
 
 **Rendered:**
-
 ::: card
 ### Card Title
 This is a basic card with title and content.
@@ -48,7 +47,6 @@ Cards can include images, text, and buttons for rich content presentation.
 ```
 
 **Rendered:**
-
 ::: card
 ![Feature Image](https://via.placeholder.com/400x200)
 
@@ -81,12 +79,10 @@ Enterprise-grade security with encryption, backups, and compliance certification
 Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-3 card
 
 ### :rocket: Fast Performance
@@ -103,7 +99,6 @@ Enterprise-grade security with encryption, backups, and compliance certification
 Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
-
 :::
 
 ---
@@ -154,12 +149,10 @@ For large organizations
 - SLA Guarantee
 
 [Contact Sales]*
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-3 card
 
 ### Starter
@@ -201,7 +194,6 @@ For large organizations
 - SLA Guarantee
 
 [Contact Sales]*
-
 :::
 
 ---
@@ -248,12 +240,10 @@ For large organizations
 :star::star::star::star: (156 reviews)
 
 [Add to Cart]*
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-4 card
 
 ### Wireless Headphones
@@ -291,7 +281,6 @@ For large organizations
 :star::star::star::star: (156 reviews)
 
 [Add to Cart]*
-
 :::
 
 ---
@@ -338,12 +327,10 @@ For large organizations
 "Building scalable solutions"
 
 [LinkedIn] [GitHub] [[email protected]]
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-4 card
 
 ### Sarah Johnson
@@ -381,7 +368,6 @@ For large organizations
 "Building scalable solutions"
 
 [LinkedIn] [GitHub] [[email protected]]
-
 :::
 
 ---
@@ -419,12 +405,10 @@ Make your designs inclusive and accessible to all users with these proven techni
 **Accessibility** • 6 min read • Mar 10, 2025
 
 [Read More →]
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-3 card
 
 ### Getting Started with Wireframing
@@ -453,7 +437,6 @@ Make your designs inclusive and accessible to all users with these proven techni
 **Accessibility** • 6 min read • Mar 10, 2025
 
 [Read More →]
-
 :::
 
 ---
@@ -482,12 +465,10 @@ CTO, DataCorp
 
 **Emily Rodriguez**
 Operations Director
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-3 card
 
 ### :star::star::star::star::star:
@@ -507,7 +488,6 @@ CTO, DataCorp
 
 **Emily Rodriguez**
 Operations Director
-
 :::
 
 ---
@@ -534,12 +514,10 @@ Operations Director
 ### Customer Satisfaction
 **4.8** / 5.0
 :star::star::star::star::star:
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-4 card
 
 ### Total Users
@@ -557,7 +535,6 @@ Operations Director
 ### Customer Satisfaction
 **4.8** / 5.0
 :star::star::star::star::star:
-
 :::
 
 ---
@@ -584,12 +561,10 @@ This card has special emphasis
 
 [Primary Action]*
 :::
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-2 card
 
 ### Normal Card
@@ -607,7 +582,6 @@ This card has special emphasis
 
 [Primary Action]*
 :::
-
 :::
 
 ---
@@ -648,7 +622,6 @@ This card has special emphasis
 ```
 
 **Rendered:**
-
 ::: card
 ### Project Dashboard Card
 
@@ -700,7 +673,6 @@ Expected Delivery: Mar 20, 2025
 ```
 
 **Rendered:**
-
 ::: card
 **Order #12345** | Status: Shipped | Total: $129.99
 
@@ -737,12 +709,10 @@ Subject
 [_____________________________]{required}
 
 [Send Message]*
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-2
 
 ### Your Details
@@ -757,7 +727,6 @@ Subject
 [_____________________________]{required}
 
 [Send Message]*
-
 :::
 
 ---
@@ -777,12 +746,10 @@ Enterprise-grade by default.
 
 ### :gear: Flexible
 Works with any stack.
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-3 card
 
 ### :rocket: Fast
@@ -793,7 +760,6 @@ Enterprise-grade by default.
 
 ### :gear: Flexible
 Works with any stack.
-
 :::
 
 ---
@@ -810,12 +776,10 @@ $9/month — up to 3 projects.
 
 ### Pro {.col-span-2}
 $29/month — unlimited projects, priority support, spans two columns.
-
 :::
 ```
 
 **Rendered:**
-
 ::: grid-3 card
 
 ### Starter
@@ -823,13 +787,11 @@ $9/month — up to 3 projects.
 
 ### Pro {.col-span-2}
 $29/month — unlimited projects, priority support, spans two columns.
-
 :::
 
 ---
 
 ## Best Practices
-
 ::: card
 
 ### Card Design Guidelines
@@ -858,7 +820,6 @@ $29/month — unlimited projects, priority support, spans two columns.
    - Don't overcrowd cards
    - Use whitespace effectively
    - Maintain alignment
-
 :::
 
 ---

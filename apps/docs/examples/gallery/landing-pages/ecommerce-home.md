@@ -3,19 +3,16 @@
 > **Use Case:** Online store homepage with product categories, featured items, and promotions.
 >
 > **Key Features:** Product grids, search, categories, cart, promotions, newsletter signup
-
 ::: demo
 
 [[ :logo: ShopHub | Categories | Deals | New Arrivals | [Search...___________] | :user: Account | :cart: Cart (3) ]]
 
 ---
-
 ::: alert success
 🎉 **Black Friday Sale!** Up to 70% off on selected items • Free shipping on orders over $50 • [Shop Now →]
 :::
 
 ---
-
 ::: hero
 # Summer Collection 2025
 
@@ -24,11 +21,9 @@ Discover our latest styles for the season
 [Shop Women] [Shop Men] [Shop Kids]
 
 ![Hero Banner](https://via.placeholder.com/1200x500)
-
 :::
 
 ---
-
 ::: grid-6 card
 
 ### :tshirt: Clothing
@@ -47,11 +42,9 @@ Discover our latest styles for the season
 
 ### :glasses: Eyewear
 280 items
-
 :::
 
 ---
-
 ::: grid-4 card
 
 ### Summer Dress
@@ -89,7 +82,6 @@ Discover our latest styles for the season
 :star::star::star::star: (156)
 
 [Add to Cart]*
-
 :::
 
 [View All Deals →]
@@ -97,7 +89,6 @@ Discover our latest styles for the season
 ---
 
 ## New Arrivals
-
 ::: grid-3 card
 
 ### Designer Handbag
@@ -132,7 +123,6 @@ Fitness tracking & notifications
 :star::star::star::star::star: (234)
 
 [Quick View] [Add to Cart]*
-
 :::
 
 [See All New Items →]
@@ -144,7 +134,6 @@ Fitness tracking & notifications
 [[ :brand: Nike | :brand: Adidas | :brand: Zara | :brand: H&M | :brand: Levi's | :brand: Puma | [View All Brands →] ]]
 
 ---
-
 ::: grid-4 card
 
 ### :truck: Free Shipping
@@ -158,13 +147,11 @@ SSL encrypted payment
 
 ### :support: 24/7 Support
 Always here to help
-
 :::
 
 ---
 
 ## Customer Reviews
-
 ::: grid-3 card
 
 ### :star::star::star::star::star:
@@ -184,7 +171,6 @@ Verified Buyer
 
 **Sarah K.**
 Verified Buyer
-
 :::
 
 ---
@@ -203,7 +189,6 @@ Verified Buyer
 ---
 
 ## Special Offers
-
 ::: grid-2 card
 
 ### :gift: Summer Sale
@@ -223,13 +208,11 @@ Shop seasonal favorites at unbeatable prices
 Sign up and get instant discount code
 
 [Sign Up Now]*
-
 :::
 
 ---
 
 ## Join Our Newsletter
-
 ::: card
 
 ### Get Exclusive Deals & Updates
@@ -244,7 +227,6 @@ Email Address
 - [ ] Yes, send me promotional emails
 
 ✨ Get **15% off** your first order when you subscribe!
-
 :::
 
 ---
@@ -260,7 +242,6 @@ Stay connected for daily inspiration
 ---
 
 ## Shop by Price
-
 ::: grid-4 card
 
 ### Under $25
@@ -278,13 +259,11 @@ Stay connected for daily inspiration
 ### Over $100
 890 items
 [Shop →]
-
 :::
 
 ---
 
 ## Customer Service
-
 ::: card
 
 ### Need Help?
@@ -301,13 +280,10 @@ Stay connected for daily inspiration
 - [Contact Us](https://example.com/contact)
 
 [Visit Help Center →]
-
 :::
 
 ---
-
 ::: footer
-
 ::: grid-5 card
 
 ### Shop
@@ -344,7 +320,6 @@ Stay connected for daily inspiration
 - Accessibility
 - Cookie Policy
 - Sitemap
-
 :::
 
 ---
@@ -356,9 +331,7 @@ Stay connected for daily inspiration
 ---
 
 © 2025 ShopHub Inc. All rights reserved. • Made with ❤️ for shoppers worldwide
-
 :::
-
 :::
 
 ---

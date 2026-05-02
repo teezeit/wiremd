@@ -1,20 +1,17 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Inputs
 
 Underscores inside brackets create a text input. A label above the input binds to it as a form group.
 
 ## Basic
-
 ::: demo
 Name
 [_____________________________]
 :::
 
 ## Required
-
 ::: demo
 Email
 [_____________________________]{required}
@@ -25,7 +22,6 @@ Email
 > **Critical:** label text must be on the line **directly above** the input — no blank line between them. A blank line breaks the association and the text renders as a paragraph instead.
 
 ## Input Types
-
 ::: demo
 Email
 [_____________________________]{type:email}
@@ -59,42 +55,36 @@ Color
 :::
 
 ## With Placeholder
-
 ::: demo
 Search
 [_____________________________]{placeholder:"Search components..."}
 :::
 
 ## Error state
-
 ::: demo
 Email
 [_____________________________]{type:email state:error}
 :::
 
 ## Number constraints
-
 ::: demo
 Quantity
 [_____________________________]{type:number min:1 max:100}
 :::
 
 ## Textarea columns
-
 ::: demo
 Notes
 [_____________________________]{rows:5 cols:40}
 :::
 
 ## Disabled
-
 ::: demo
 Username
 [_____________________________]{disabled}
 :::
 
 ## Full Form Example
-
 ::: demo
 ## Create Account
 
@@ -111,7 +101,6 @@ Password
 [_____________________________]{type:password required}
 
 [Create Account]* [Cancel]
-
 :::
 
 ## Syntax
@@ -124,7 +113,5 @@ Password
 [_____________________________]{placeholder:"hint text"}
 [_____________________________]{disabled}
 ```
-
 :::
-
 :::

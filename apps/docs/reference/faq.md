@@ -95,15 +95,12 @@ Yes. Use `::: tabs` with `::: tab Label` children:
 
 ```markdown
 ::: tabs
-
 ::: tab Overview
 Content for first tab.
 :::
-
 ::: tab Settings
 Content for second tab.
 :::
-
 :::
 ```
 
@@ -173,7 +170,6 @@ Use the `{.classname}` attribute syntax on any element. Multiple classes can be 
 
 ```markdown
 [Button]{.btn .btn-lg .custom}
-
 ::: card {.highlight-card}
 Content
 :::
@@ -254,6 +250,5 @@ Content
 
 ### Column 2
 Content
-
 :::
 ```

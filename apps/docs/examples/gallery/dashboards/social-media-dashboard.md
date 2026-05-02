@@ -3,7 +3,6 @@
 > **Use Case:** Social media management and analytics dashboard for managing multiple platforms.
 >
 > **Key Features:** Post scheduling, engagement metrics, audience analytics, content calendar
-
 ::: demo
 
 [[ :logo: SocialHub | *Dashboard* | Posts | Analytics | Messages | Schedule | Settings | :bell: (24) | :user: Social Manager ]]
@@ -23,7 +22,6 @@
 [[ :facebook: Facebook | :twitter: Twitter | :instagram: Instagram | :linkedin: LinkedIn | :youtube: YouTube | :tiktok: TikTok | [+ Connect Account] ]]
 
 ---
-
 ::: grid-5 card
 
 ### Total Followers
@@ -45,11 +43,9 @@
 ### Engagement Rate
 **3.8%**
 :chart: +0.5% vs last month
-
 :::
 
 ---
-
 ::: grid-3 card
 
 ### :instagram: Instagram
@@ -84,13 +80,11 @@
 - Best Post: 3.4K reactions
 
 [View Details →]
-
 :::
 
 ---
 
 ## Recent Posts
-
 ::: card
 
 ### Latest Published Content
@@ -104,13 +98,11 @@
 | :youtube: | "Product Tutorial: Getting Started" | 2d ago | 4.5K 👍 234 💬 | [View] [Promote] |
 
 [View All Posts →] [Schedule New Post →]*
-
 :::
 
 ---
 
 ## Content Calendar
-
 ::: grid-7 card
 
 ### Mon, Mar 17
@@ -172,7 +164,6 @@ Lifestyle shot
 
 :twitter: 4:00 PM
 Weekly recap
-
 :::
 
 [+ Schedule Post]* [View Full Calendar →]
@@ -180,7 +171,6 @@ Weekly recap
 ---
 
 ## Engagement Analytics
-
 ::: grid-2 card
 
 ### Engagement Over Time
@@ -202,11 +192,9 @@ Weekly recap
 | Comments | 18,234 | 21% |
 | Shares/Retweets | 10,456 | 12% |
 | Saves | 4,088 | 4% |
-
 :::
 
 ---
-
 ::: grid-3 card
 
 ### Demographics
@@ -251,13 +239,11 @@ Weekly recap
 - Friday: 2 PM
 
 ![Heatmap](https://via.placeholder.com/350x200)
-
 :::
 
 ---
 
 ## Top Performing Content
-
 ::: card
 
 ### Best Posts This Month
@@ -292,7 +278,6 @@ Weekly recap
 - Posted: Mar 10 at 9:00 AM
 
 [View Post →] [Boost Post →]*
-
 :::
 
 ---
@@ -315,7 +300,6 @@ Weekly recap
 ---
 
 ## Messages & Mentions
-
 ::: grid-4 card
 
 ### Unread Messages
@@ -341,13 +325,11 @@ Last 24 hours
 Auto-filtered
 
 [Review →]
-
 :::
 
 ---
 
 ## Recent Messages
-
 ::: card
 
 | Platform | From | Message | Time | Action |
@@ -358,13 +340,11 @@ Auto-filtered
 | :linkedin: | Sarah Smith | "Interested in partnership" | 1h ago | [Reply] |
 
 [View All Messages →] [Auto-Reply Settings →]
-
 :::
 
 ---
 
 ## Hashtag Performance
-
 ::: card
 
 ### Top Hashtags This Month
@@ -383,13 +363,11 @@ Auto-filtered
 - #industryevent (Relevant now)
 
 [Discover Hashtags →]
-
 :::
 
 ---
 
 ## Competitor Analysis
-
 ::: grid-3 card
 
 ### Competitor A
@@ -418,13 +396,11 @@ Auto-filtered
 **Best Content:** Product photos
 
 [Analyze →]
-
 :::
 
 ---
 
 ## Influencer Partnerships
-
 ::: card
 
 ### Active Collaborations
@@ -436,13 +412,11 @@ Auto-filtered
 | @influencer3 | TikTok | 189K | Tutorial Series | In Review |
 
 [Manage Influencers →] [Find New Partners →]
-
 :::
 
 ---
 
 ## Schedule Post
-
 ::: card
 
 ### Create New Post
@@ -501,13 +475,11 @@ First Comment (Instagram)
 ---
 
 [Schedule Post]* [Save as Draft] [Preview] [Cancel]
-
 :::
 
 ---
 
 ## Reports & Insights
-
 ::: card
 
 ### Generate Custom Report
@@ -544,15 +516,12 @@ Export Format
 - ( ) CSV
 
 [Generate Report]* [Schedule Recurring]
-
 :::
 
 ---
-
 ::: footer
 **Last Sync:** 2 minutes ago • **Next Scheduled Post:** Today at 3:00 PM • [Refresh] • [Help] • [Keyboard Shortcuts]
 :::
-
 :::
 
 ---

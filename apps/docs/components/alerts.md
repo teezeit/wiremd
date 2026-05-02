@@ -1,6 +1,5 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Alerts
 
@@ -9,49 +8,38 @@
 `::: alert` renders a highlighted message block. Add a variant class to control the tone.
 
 ## Default
-
 ::: demo
 ::: alert
 Your session will expire in 10 minutes.
 :::
-
 :::
 
 ## Variants
-
 ::: demo
 ::: alert {.success}
 Profile updated successfully.
 :::
-
 :::
-
 ::: demo
 ::: alert {.warning}
 You are approaching your storage limit.
 :::
-
 :::
-
 ::: demo
 ::: alert {.error}
 Payment failed. Please check your card details.
 :::
-
 :::
 
 ## With Inline Content on Opener
 
 Place content directly on the opener line to use it as a title/heading.
-
 ::: demo
 ::: alert {.warning} Storage limit reached
 Upgrade your plan to continue uploading files.
 
 [Upgrade Now]* [Dismiss]
-
 :::
-
 :::
 
 ## Syntax
@@ -60,16 +48,12 @@ Upgrade your plan to continue uploading files.
 ::: alert
 Message text.
 :::
-
 ::: alert {.success}
 ::: alert {.warning}
 ::: alert {.error}
-
 ::: alert {.warning} Title text
 Body content.
 :::
 ```
-
 :::
-
 :::

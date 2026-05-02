@@ -1,23 +1,19 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Checkboxes & Radio
 
 ## Checkboxes
 
 Standard Markdown task list syntax renders as checkboxes.
-
 ::: demo
 - [ ] Email notifications
 - [x] SMS alerts
 - [ ] Weekly digest
 - [x] Product updates
-
 :::
 
 ## In a Form
-
 ::: demo
 ## Preferences
 
@@ -27,31 +23,26 @@ Standard Markdown task list syntax renders as checkboxes.
 - [ ] Make my profile public
 
 [Save Preferences]*
-
 :::
 
 ## Radio Buttons
 
 Use `( )` and `(x)` for radio groups.
-
 ::: demo
 Subscription plan
 
 - ( ) Free — 1 user, 5 projects
 - (x) Pro — 10 users, unlimited projects
 - ( ) Enterprise — unlimited everything
-
 :::
 
 ## Inline Options
-
 ::: demo
 Notify me via
 
 - (x) Email
 - ( ) SMS
 - ( ) Push notification
-
 :::
 
 ## Syntax
@@ -63,7 +54,5 @@ Notify me via
 - ( ) Unselected radio
 - (x) Selected radio
 ```
-
 :::
-
 :::

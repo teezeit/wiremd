@@ -1,9 +1,7 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # wiremd Components
-
 ::: demo
 ## Sign In
 
@@ -16,7 +14,6 @@ Password
 - [ ] Remember me
 
 [Sign In]* [Forgot password?]
-
 :::
 
 wiremd converts Markdown with extended syntax into visual wireframes. Use these components to prototype UIs directly in your editor.
@@ -54,7 +51,5 @@ wiremd extends this with UI components — nothing above is broken or overridden
 ## Full syntax reference
 
 Need all components, attributes, and patterns on one page? See the [Syntax Reference](/reference/syntax).
-
 :::
-
 :::

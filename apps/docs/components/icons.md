@@ -1,21 +1,17 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Icons
 
 Use `:name:` inline anywhere — in headings, buttons, nav bars, or plain text.
 
 ## Basic Usage
-
 ::: demo
 :home: Home  :user: Profile  :settings: Settings
 :::
-
 ::: demo
 [:search: Search]*  [:edit: Edit]  [:delete: Delete]{variant:danger}
 :::
-
 ::: demo
 [[ :logo: MyApp | :home: Home | :bell: Alerts | :user: Account ]]
 :::
@@ -145,7 +141,5 @@ Use `:name:` inline anywhere — in headings, buttons, nav bars, or plain text.
 ```
 
 Unknown icon names fall back to `●`.
-
 :::
-
 :::

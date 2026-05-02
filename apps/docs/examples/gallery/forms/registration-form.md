@@ -3,7 +3,6 @@
 > **Use Case:** New user signup for SaaS products, e-commerce sites, or community platforms.
 >
 > **Key Features:** Multi-column layout, input validation, password strength, plan selection, terms agreement
-
 ::: demo
 
 [[ :logo: Platform | Features | Pricing | About | [Sign In] ]]
@@ -15,7 +14,6 @@
 Join thousands of users already enjoying our platform
 
 ---
-
 ::: grid-2
 
 ### Account Details
@@ -40,11 +38,9 @@ Last Name
 
 Phone Number
 [_____________________________] {type:tel}
-
 :::
 
 ---
-
 ::: grid-3 card
 
 ### Free
@@ -76,11 +72,9 @@ Phone Number
 - SLA Guarantee
 
 - ( ) Select Enterprise
-
 :::
 
 ---
-
 ::: card
 
 ### Additional Information
@@ -110,17 +104,14 @@ Referral Code (Optional)
 - [ ] I'm signing up on behalf of a company
 
 [Create Account]* [Cancel]
-
 :::
 
 ---
 
 Already have an account? [Sign in here](https://example.com/login)
-
 ::: footer
 Secure registration • 256-bit SSL encryption
 :::
-
 :::
 
 ---

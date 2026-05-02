@@ -19,9 +19,8 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'es2022',
-    outDir: 'dist',
     target: 'esnext',
+    outDir: 'dist',
     // Monaco remains the primary editor dependency. We budget its isolated chunk
     // explicitly instead of relying on Vite's generic 500 kB warning.
     chunkSizeWarningLimit: 3900,

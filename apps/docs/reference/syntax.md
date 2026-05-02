@@ -161,15 +161,12 @@ The list items directly following a dropdown become its options.
 
 ```markdown
 ::: tabs
-
 ::: tab Overview
 Content for overview tab
 :::
-
 ::: tab Details
 Content for details tab
 :::
-
 :::
 ```
 
@@ -188,21 +185,18 @@ For a simple button-group style switcher without panels, use `*` to mark the act
 ### Card Title
 Content here
 :::
-
 ::: hero
 ## Big Headline
 Supporting text
 
 [Get Started]*  [Learn More]
 :::
-
 ::: modal
 ## Confirm Delete
 Are you sure you want to delete this item?
 
 [Delete]{variant:danger}  [Cancel]
 :::
-
 ::: sidebar
 #### Section
 
@@ -210,7 +204,6 @@ Are you sure you want to delete this item?
 [[Settings](#)]
 [[Logout](#)]
 :::
-
 ::: footer
 © 2025 Company · [Privacy](#) · [Terms](#)
 :::
@@ -224,19 +217,15 @@ Are you sure you want to delete this item?
 ::: alert
 Your session will expire in 10 minutes.
 :::
-
 ::: alert {.success}
 Changes saved successfully.
 :::
-
 ::: alert {.warning}
 This action cannot be undone.
 :::
-
 ::: alert {.error}
 Something went wrong.
 :::
-
 ::: alert {.warning} Storage limit reached
 Upgrade your plan to continue uploading.
 
@@ -250,7 +239,6 @@ Containers can be nested — the parser handles them recursively:
 
 ```markdown
 ::: card
-
 ::: grid-2
 
 ### Sprint: Q2 Onboarding
@@ -258,11 +246,9 @@ Containers can be nested — the parser handles them recursively:
 ### {.right}
 
 Started: Apr 1 · |Due: Apr 30|{.warning}
-
 :::
 
 Before you can pitch to a decision maker, you need to get past the gatekeeper.
-
 :::
 ```
 
@@ -276,19 +262,16 @@ Two-column layout with a fixed 200px sidebar and fluid main area:
 
 ```markdown
 ::: layout {.sidebar-main}
-
 ::: sidebar
 [[Dashboard](#)]
 [[Sessions](#)]
 [[Settings](#)]
 :::
-
 ::: main
 ### Page Title
 
 Content for the main area.
 :::
-
 :::
 ```
 
@@ -339,7 +322,6 @@ Supported widths: `grid-2`, `grid-3`, `grid-4`, `grid-5`.
 ### Conversion
 **4.2%**
 ↓ 0.3% vs last period
-
 :::
 ```
 
@@ -356,7 +338,6 @@ Supported widths: `grid-2`, `grid-3`, `grid-4`, `grid-5`.
 
 ### :bell: Email
 **27%** of traffic
-
 :::
 ```
 
@@ -372,7 +353,6 @@ The most common `grid-2` pattern — title left, button right:
 ### {.right}
 
 [View All]*
-
 :::
 ```
 
@@ -481,7 +461,6 @@ HTML comments create a **fixed side panel** — the annotated element gets a yel
 ### Free Plan
 [Get Started]
 :::
-
 ::: card
 <!-- Comment INSIDE annotates the specific child that follows -->
 [Learn more]

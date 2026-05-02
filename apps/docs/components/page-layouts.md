@@ -70,7 +70,6 @@ Use a `::: row` with `{.right}` to push actions to the right inside a card or se
 [Settings]
 
 :::
-
 ::: main
 ## Dashboard
 
@@ -104,7 +103,6 @@ Welcome back! Here's what's happening.
 [Logout]
 
 :::
-
 ::: main
 ## Overview
 
@@ -151,7 +149,6 @@ The most common dashboard pattern: combine a top navbar with a `::: layout {.sid
 [Logout]
 
 :::
-
 ::: main
 ## Dashboard
 

@@ -1,20 +1,17 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Textarea & Select
 
 ## Textarea
 
 Use `{rows:N}` to create a multi-line text area.
-
 ::: demo
 Message
 [Write your message here...]{rows:4}
 :::
 
 ## Textarea — Required
-
 ::: demo
 Bio
 [Tell us about yourself...]{rows:3 required}
@@ -23,7 +20,6 @@ Bio
 ## Select / Dropdown
 
 A bracket line followed by a list creates a dropdown. The bracket content is the placeholder label.
-
 ::: demo
 Country
 [Select country            v]
@@ -31,22 +27,18 @@ Country
 - United Kingdom
 - Germany
 - France
-
 :::
 
 ## Select — Required
-
 ::: demo
 Role
 [Select a role             v]{required}
 - Admin
 - Editor
 - Viewer
-
 :::
 
 ## Combined Example
-
 ::: demo
 ## Feedback
 
@@ -60,7 +52,6 @@ Description
 [Describe the issue...]{rows:5 required}
 
 [Submit Feedback]* [Cancel]
-
 :::
 
 ## Syntax
@@ -73,7 +64,5 @@ Description
 - Option 1                         followed by list
 - Option 2
 ```
-
 :::
-
 :::

@@ -3,13 +3,11 @@
 > **Use Case:** Team collaboration and project tracking dashboard similar to Jira, Asana, or Trello.
 >
 > **Key Features:** Task boards, sprint tracking, team activity, timeline views, file management
-
 ::: demo
 
 [[ :logo: TaskFlow | *Projects* | Tasks | Team | Calendar | Reports | :search: | :bell: (12) | :user: Jane Doe ]]
 
 ---
-
 ::: sidebar
 ### Workspaces
 - **⭐ My Tasks**
@@ -43,13 +41,11 @@
 [[ Projects > Mobile App v2.0 > Sprint 12 ]]
 
 ---
-
 ::: alert info
 ℹ️ **Sprint 12** ends in 3 days • [View Sprint Report →]
 :::
 
 ---
-
 ::: grid-4 card
 
 ### Total Tasks
@@ -70,13 +66,11 @@ Sprint 12
 **4** tasks
 
 Needs attention
-
 :::
 
 ---
 
 ## Sprint Burndown
-
 ::: card
 
 ![Burndown Chart](https://via.placeholder.com/700x300)
@@ -88,7 +82,6 @@ Needs attention
 - Trend: On track ✅
 
 [View Detailed Analytics →]
-
 :::
 
 ---
@@ -99,7 +92,6 @@ Needs attention
 
 ### Backlog (24)
 **Priority tasks for upcoming sprints**
-
 ::: card
 **[TASK-145]** Implement user authentication
 - Assigned: @john
@@ -108,7 +100,6 @@ Needs attention
 
 [View Details →]
 :::
-
 ::: card
 **[TASK-146]** Design settings page
 - Assigned: @sarah
@@ -124,7 +115,6 @@ Needs attention
 
 ### To Do (12)
 **Ready to start**
-
 ::: card
 **[TASK-147]** API endpoint for profile update
 - Assigned: @mike
@@ -134,7 +124,6 @@ Needs attention
 
 [Start Task →]
 :::
-
 ::: card
 **[TASK-148]** Fix login redirect bug
 - Assigned: @emma
@@ -151,7 +140,6 @@ Needs attention
 
 ### In Progress (8)
 **Currently being worked on**
-
 ::: card
 **[TASK-149]** Dashboard performance optimization
 - Assigned: @alex
@@ -163,7 +151,6 @@ Needs attention
 
 [View Progress →]
 :::
-
 ::: card
 **[TASK-150]** Mobile responsive layout
 - Assigned: @lisa
@@ -178,7 +165,6 @@ Needs attention
 
 ### In Review (5)
 **Awaiting review**
-
 ::: card
 **[TASK-151]** User profile component
 - Assigned: @tom
@@ -195,7 +181,6 @@ Needs attention
 
 ### Done (32)
 **Completed this sprint**
-
 ::: card
 **[TASK-152]** Login page redesign ✅
 - Completed: 2h ago
@@ -210,7 +195,6 @@ Needs attention
 ---
 
 ## Team Activity
-
 ::: card
 
 ### Recent Updates (Last Hour)
@@ -224,11 +208,9 @@ Needs attention
 | 25m ago | @lisa | Updated | [TASK-150] Added screenshots |
 
 [View All Activity →]
-
 :::
 
 ---
-
 ::: grid-3 card
 
 ### Task Completion
@@ -263,13 +245,11 @@ Needs attention
 - Sprint 12: 46 pts (projected)
 
 **Trend:** Improving ⬆️
-
 :::
 
 ---
 
 ## Task Details
-
 ::: card
 
 ### [TASK-149] Dashboard Performance Optimization
@@ -338,13 +318,11 @@ I can help with the Redis setup if needed.
 ---
 
 [Edit Task] [Clone Task] [Delete Task] [Move to Sprint ▼]
-
 :::
 
 ---
 
 ## Milestones & Deadlines
-
 ::: grid-3 card
 
 ### Milestone 1: Alpha Release ✅
@@ -373,13 +351,11 @@ I can help with the Redis setup if needed.
 - Deployment
 
 **Progress:** [####__________] 25%
-
 :::
 
 ---
 
 ## Files & Documents
-
 ::: card
 
 ### Project Files
@@ -404,13 +380,11 @@ I can help with the Redis setup if needed.
 - [Design Files (Figma)](https://figma.com/file/xxx)
 - [Repository (GitHub)](https://github.com/xxx)
 - [Deployment Dashboard](https://example.com/deploy)
-
 :::
 
 ---
 
 ## Calendar View
-
 ::: card
 
 ### This Week's Schedule
@@ -436,13 +410,11 @@ I can help with the Redis setup if needed.
 - 2:00 PM - Team Social
 
 [View Full Calendar →]
-
 :::
 
 ---
 
 ## Team Members
-
 ::: grid-5 card
 
 ### Jane Doe
@@ -484,13 +456,11 @@ I can help with the Redis setup if needed.
 4 tasks active
 
 [:email:] [:chat:]
-
 :::
 
 ---
 
 ## Reports & Analytics
-
 ::: grid-4 card
 
 ### Completed Story Points
@@ -512,27 +482,22 @@ Target: 8 hours
 **95%**
 
 Same sprint resolution
-
 :::
 
 ---
 
 ## Quick Actions
-
 ::: card
 
 [+ Create Task]* [+ Create Sprint] [Schedule Meeting] [Generate Report]
 
 [Import from Jira] [Export to CSV] [Clone Project] [Archive Completed]
-
 :::
 
 ---
-
 ::: footer
 **Project:** Mobile App v2.0 • **Sprint 12** • Last updated: 2 minutes ago • [Help] • [Keyboard Shortcuts] • [Settings]
 :::
-
 :::
 
 ---

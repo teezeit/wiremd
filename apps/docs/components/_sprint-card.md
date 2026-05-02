@@ -3,5 +3,4 @@
 |In Progress|{.warning} 8 tasks · due Friday
 
 [View Sprint]* [Edit]
-
 :::

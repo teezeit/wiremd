@@ -268,12 +268,10 @@ Department: [All Departments...v] | Role: [All Roles...v] | Status: [All...v]
 **Showing 1-4 of 156 employees**
 
 [← Previous] [1] [2] [3] ... [39] [Next →]
-
 :::
 ```
 
 **Rendered:**
-
 ::: card
 
 ### Employee Directory
@@ -295,7 +293,6 @@ Department: [All Departments...v] | Role: [All Roles...v] | Status: [All...v]
 **Showing 1-4 of 156 employees**
 
 [← Previous] [1] [2] [3] ... [39] [Next →]
-
 :::
 
 ---
@@ -315,12 +312,10 @@ Department: [All Departments...v] | Role: [All Roles...v] | Status: [All...v]
 | Diana Evans | [email protected] | User | Active | Mar 5, 2025 |
 
 *Sorted by: Joined Date (Descending)*
-
 :::
 ```
 
 **Rendered:**
-
 ::: card
 
 | Name ↕ | Email ↕ | Role ↕ | Status ↕ | Joined ↓ |
@@ -331,7 +326,6 @@ Department: [All Departments...v] | Role: [All Roles...v] | Status: [All...v]
 | Diana Evans | [email protected] | User | Active | Mar 5, 2025 |
 
 *Sorted by: Joined Date (Descending)*
-
 :::
 
 ---
@@ -389,12 +383,10 @@ Department: [All Departments...v] | Role: [All Roles...v] | Status: [All...v]
 **2 items selected**
 
 [Delete Selected] [Export Selected] [Update Stock]
-
 :::
 ```
 
 **Rendered:**
-
 ::: card
 
 **Bulk Actions:** [Select action...v] [Apply to Selected]
@@ -411,13 +403,11 @@ Department: [All Departments...v] | Role: [All Roles...v] | Status: [All...v]
 **2 items selected**
 
 [Delete Selected] [Export Selected] [Update Stock]
-
 :::
 
 ---
 
 ## Best Practices
-
 ::: card
 
 ### Table Design Guidelines
@@ -457,7 +447,6 @@ Department: [All Departments...v] | Role: [All Roles...v] | Status: [All...v]
    - Hide less important columns on small screens
    - Use horizontal scrolling when needed
    - Provide compact view options
-
 :::
 
 ---

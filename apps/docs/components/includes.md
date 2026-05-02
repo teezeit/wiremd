@@ -1,6 +1,5 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Reuse Components
 
@@ -18,7 +17,6 @@ Define a card or list item in its own file, then include it multiple times to si
 [In Progress]{.warning} 8 tasks · due Friday
 
 [View Sprint]* [Edit]
-
 :::
 ```
 
@@ -30,14 +28,12 @@ Define a card or list item in its own file, then include it multiple times to si
 ```
 
 This renders three identical sprint cards — a realistic list without repeating markup. Here it is live:
-
 ::: demo
 ![[_sprint-card.md]]
 
 ![[_sprint-card.md]]
 
 ![[_sprint-card.md]]
-
 :::
 
 ## Shared Navigation
@@ -68,16 +64,13 @@ All projects listed here.
 ```
 
 Here it is live — the same nav component on two different pages:
-
 ::: demo
 ![[_demo-topnav.md]]
 
 ### Dashboard
 
 Welcome back. Here's what's happening today.
-
 :::
-
 ::: demo
 ![[_demo-topnav.md]]
 
@@ -87,7 +80,6 @@ Welcome back. Here's what's happening today.
 |------|--------|-------|
 | Alpha | Active | Alice |
 | Beta | Draft | Bob |
-
 :::
 
 ## Multi-page Prototypes
@@ -115,16 +107,13 @@ Combine includes with button links to wire up a full clickable prototype. Each p
 ```
 
 Here it is live — a two-screen prototype with shared nav and navigation buttons:
-
 ::: demo
 ![[_demo-topnav.md]]
 
 ### Dashboard
 
 [[View Projects](./button-links.md)]* [[Settings](./button-links.md)]
-
 :::
-
 ::: demo
 ![[_demo-topnav.md]]
 
@@ -133,7 +122,6 @@ Here it is live — a two-screen prototype with shared nav and navigation button
 [[+ New Project](./button-links.md)]*
 
 [[Back to Dashboard](./button-links.md)]
-
 :::
 
 ## Missing File
@@ -150,7 +138,5 @@ If the referenced file doesn't exist, a warning is rendered and the rest of the 
 ```
 
 > **Note:** Paths resolve relative to the including file, not the project root.
-
 :::
-
 :::

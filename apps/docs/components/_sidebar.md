@@ -1,4 +1,3 @@
-
 ::: sidebar
 [[wiremd](./index.md)]*
 
@@ -39,5 +38,4 @@
 
 #### Troubleshooting
 [[FAQ](../reference/faq.md)]
-
 :::

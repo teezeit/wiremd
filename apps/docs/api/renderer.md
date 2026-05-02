@@ -36,7 +36,6 @@ For HTML and Tailwind renderers, you can choose from 7 visual styles:
 | **brutal** | Neo-brutalism bold colors | Artistic designs, statements | High |
 | **tailwind** | Tailwind CSS styling | Tailwind-based projects | High |
 | **none** | Semantic HTML only | Custom styling, frameworks | N/A |
-
 ::: tip Choosing a Style
 - **Early design phase**: Use `sketch` for quick, low-fidelity wireframes
 - **Client presentations**: Use `clean` or `material` for polished mockups

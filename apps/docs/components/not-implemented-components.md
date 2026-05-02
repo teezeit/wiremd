@@ -1,13 +1,11 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Not Implemented Components
 
 Components not yet in wiremd, with proposed syntax aligned to wiremd's design principles. All proposals follow the existing patterns: `{key:value}` attributes for progressive enhancement, `:::` containers for block components, and visually intuitive ASCII-like syntax.
 
 > **Already supported but easy to miss:** file upload (`[_____]{type:file}`), color input (`[_____]{type:color}`).
-
 ::: grid-3 card
 ### UI Components
 Accordion
@@ -32,13 +30,11 @@ Avatar, Chip, Timeline, DataGrid
 ### Surfaces
 Paper, Speed Dial
 [[Jump →](#surfaces)]
-
 :::
 
 ---
 
 ## UI Components
-
 ::: grid-2
 ### Accordion
 
@@ -57,13 +53,11 @@ Answer text here.
 ```
 
 Each `###` heading inside `::: accordion` would become a collapsible item.
-
 :::
 
 ---
 
 ## Inputs
-
 ::: grid-2
 ### Switch / Toggle
 
@@ -132,13 +126,11 @@ Extends the badge `|...|` syntax — chips are badges with a `×` and the traili
 ```
 |Design ×|{.chip} |React ×|{.chip} [_____]
 ```
-
 :::
 
 ---
 
 ## Feedback
-
 ::: grid-2
 ### Snackbar / Toast
 
@@ -150,7 +142,6 @@ New container type — follows the same `{.variant}` pattern as `::: alert`:
 ::: snackbar {.success}
 Changes saved
 :::
-
 ::: snackbar {.error}
 Something went wrong. [Retry]
 :::
@@ -209,13 +200,11 @@ Are you sure?
 :::
 :::
 ```
-
 :::
 
 ---
 
 ## Navigation
-
 ::: grid-2
 ### Drawer
 
@@ -300,13 +289,11 @@ Container wrapping native Markdown nested lists — no new syntax for content, j
 - package.json
 :::
 ```
-
 :::
 
 ---
 
 ## Data Display
-
 ::: grid-2
 ### Avatar / AvatarGroup
 
@@ -362,13 +349,11 @@ Extends native Markdown table syntax — sort arrows and checkboxes are rendered
 | ☑ | Alice  | |Active|{.success} |
 | ☐ | Bob    | |Pending|{.warning} |
 ```
-
 :::
 
 ---
 
 ## Surfaces
-
 ::: grid-2
 ### Paper
 
@@ -396,9 +381,6 @@ Container with a primary button trigger and a list of action buttons — mirrors
 - [:delete: Delete]{.danger}
 :::
 ```
-
 :::
-
 :::
-
 :::

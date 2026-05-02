@@ -25,7 +25,6 @@ Thanks for signing up. Let's get you started with a quick tour of the features.
 ```
 
 **Rendered:**
-
 ::: modal
 ### Welcome to Our Platform!
 
@@ -55,7 +54,6 @@ Are you sure you want to delete this item? This action cannot be undone.
 ```
 
 **Rendered:**
-
 ::: modal
 ### Confirm Delete
 
@@ -90,7 +88,6 @@ Archiving this project will hide it from your active projects list. You can rest
 ```
 
 **Rendered:**
-
 ::: modal
 ### Archive Project?
 
@@ -139,7 +136,6 @@ Team Members
 ```
 
 **Rendered:**
-
 ::: modal
 ### Create New Project
 
@@ -208,7 +204,6 @@ Social Links
 ```
 
 **Rendered:**
-
 ::: modal
 ### Edit Profile
 
@@ -265,7 +260,6 @@ Your changes have been saved successfully.
 ```
 
 **Rendered:**
-
 ::: modal
 ::: alert success
 ✅ **Success!**
@@ -293,7 +287,6 @@ You have unsaved changes. Are you sure you want to leave this page?
 ```
 
 **Rendered:**
-
 ::: modal
 ::: alert warning
 ⚠️ **Warning: Unsaved Changes**
@@ -324,7 +317,6 @@ Unable to upload file. Please check your connection and try again.
 ```
 
 **Rendered:**
-
 ::: modal
 ::: alert error
 ❌ **Error: Upload Failed**
@@ -376,7 +368,6 @@ Time Zone
 ```
 
 **Rendered:**
-
 ::: modal
 ### Setup Wizard - Step 2 of 4
 
@@ -427,7 +418,6 @@ Image 1 of 5 | [← Previous] [Next →]
 ```
 
 **Rendered:**
-
 ::: modal
 ![Product Image](https://via.placeholder.com/800x600)
 
@@ -459,7 +449,6 @@ Image 1 of 5 | [← Previous] [Next →]
 ```
 
 **Rendered:**
-
 ::: modal
 ### Product Demo Video
 
@@ -500,7 +489,6 @@ Image 1 of 5 | [← Previous] [Next →]
 ```
 
 **Rendered:**
-
 ::: modal
 ### Select Date Range
 
@@ -549,7 +537,6 @@ Drag and drop files here or click to browse
 ```
 
 **Rendered:**
-
 ::: modal
 ### Upload Files
 
@@ -618,7 +605,6 @@ Date Format
 ```
 
 **Rendered:**
-
 ::: modal
 ### Account Settings
 
@@ -706,7 +692,6 @@ Permission Level
 ```
 
 **Rendered:**
-
 ::: modal
 ### Share This Project
 
@@ -787,12 +772,10 @@ You agree not to misuse our services...
 - [ ] I have read and agree to the Terms of Service
 
 [Accept & Continue]* [Decline]
-
 :::
 ```
 
 **Rendered:**
-
 ::: modal
 ### Terms of Service
 
@@ -813,13 +796,11 @@ You are responsible for maintaining the security of your account...
 - [ ] I have read and agree to the Terms of Service
 
 [Accept & Continue]* [Decline]
-
 :::
 
 ---
 
 ## Best Practices
-
 ::: card
 
 ### Modal Design Guidelines
@@ -859,7 +840,6 @@ You are responsible for maintaining the security of your account...
    - Ensure touch targets are large enough
    - Consider bottom sheets alternative
    - Test scrolling behavior
-
 :::
 
 ---

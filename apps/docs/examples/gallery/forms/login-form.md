@@ -3,18 +3,15 @@
 > **Use Case:** User authentication page for web applications, admin panels, or member areas.
 >
 > **Key Features:** Password field, remember me checkbox, links, social login buttons, responsive layout
-
 ::: demo
 
 [[ :logo: MyApp | Home | Features | Pricing ]]
 
 ---
-
 ::: hero
 # Welcome Back
 Sign in to your account to continue
 :::
-
 ::: card
 
 ### Sign In
@@ -40,14 +37,11 @@ Password
 ---
 
 Don't have an account? [Create one here](https://example.com/signup)
-
 :::
-
 ::: footer
 [[ Privacy Policy | Terms of Service | Contact Support ]]
 © 2025 MyApp Inc.
 :::
-
 :::
 
 ---
