@@ -27,6 +27,14 @@ Country
 - France
 :::
 
+Select behavior depends on the option syntax:
+
+| Option syntax | Rendered pattern | Use for |
+|---------------|------------------|---------|
+| `- Admin` | Plain select | Choosing a value |
+| `- [Jira](./jira.md)` | Navigation select | App, workspace, project, or page switching |
+| `- [Archive]` | Action select | Compact action menus in wireframes |
+
 ## Select — Required
 ::: demo
 Role
@@ -34,6 +42,30 @@ Role
 - Admin
 - Editor
 - Viewer
+:::
+
+## Navigation Select
+
+Use Markdown links for options when the select should navigate. This keeps the component modeled as a `select`, while each option carries its destination.
+::: demo
+Workspace
+[Workspace                 v]
+- [Acme Inc](./acme.md)
+- [Personal](./personal.md)
+- [Create workspace](./new-workspace.md)
+:::
+
+This pattern is useful for app switchers, workspace switchers, project switchers, and compact page navigation.
+
+## Action Select
+
+Use button-style options when the select represents commands rather than values or links. Renderers expose these as action options for prototyping.
+::: demo
+Project actions
+[Actions                   v]
+- [Duplicate]
+- [Archive]
+- [Delete]
 :::
 
 ## Combined Example
@@ -61,4 +93,12 @@ Description
 [Select label              v]      dropdown opener
 - Option 1                         followed by list
 - Option 2
+
+[Workspace                 v]      navigation select
+- [Acme Inc](./acme.md)            linked options
+- [Personal](./personal.md)
+
+[Actions                   v]      action select
+- [Duplicate]                      action options
+- [Archive]
 ```

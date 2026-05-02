@@ -25,6 +25,20 @@ describe('transformParagraph — dropdown lookahead', () => {
     expect(cursor).toBe(1); // consumed the list sibling
   });
 
+  it('preserves links on dropdown options', () => {
+    const mdast = mdastFor('[Switch app___v]\n- [Jira](./jira.md)\n- [Confluence](./confluence.md)\n');
+    const [paragraph, list] = mdast.children;
+    const { node, cursor } = runTransform(paragraph, [paragraph, list]);
+
+    expect(node).not.toBeNull();
+    expect(node!.type).toBe('select');
+    expect((node as any).options).toEqual([
+      { type: 'option', value: './jira.md', label: 'Jira', selected: false, href: './jira.md' },
+      { type: 'option', value: './confluence.md', label: 'Confluence', selected: false, href: './confluence.md' },
+    ]);
+    expect(cursor).toBe(1);
+  });
+
   it('does not consume when the dropdown has no following list', () => {
     const mdast = mdastFor('[Choose option___v]\n');
     const [paragraph] = mdast.children;

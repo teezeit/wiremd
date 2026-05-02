@@ -612,6 +612,40 @@ Nested content
       });
     });
 
+    it('should parse dropdown options written as Markdown links', () => {
+      const input = `
+[Switch app___________v]
+- [Jira](./jira.md)
+- [Confluence](./confluence.md)
+- [Bitbucket](./bitbucket.md)
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0].type).toBe('select');
+      expect(result.children[0].options).toEqual([
+        { type: 'option', value: './jira.md', label: 'Jira', selected: false, href: './jira.md' },
+        { type: 'option', value: './confluence.md', label: 'Confluence', selected: false, href: './confluence.md' },
+        { type: 'option', value: './bitbucket.md', label: 'Bitbucket', selected: false, href: './bitbucket.md' },
+      ]);
+    });
+
+    it('should parse dropdown options written as actions', () => {
+      const input = `
+[Actions___________v]
+- [Duplicate]
+- [Archive]
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0].type).toBe('select');
+      expect(result.children[0].options).toEqual([
+        { type: 'option', value: 'Duplicate', label: 'Duplicate', selected: false, action: 'Duplicate' },
+        { type: 'option', value: 'Archive', label: 'Archive', selected: false, action: 'Archive' },
+      ]);
+    });
+
     it('should parse dropdown with attributes', () => {
       const input = `[Select___v]{required}`;
 

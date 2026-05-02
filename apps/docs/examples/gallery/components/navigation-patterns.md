@@ -33,7 +33,60 @@
 
 ---
 
-## 2. Breadcrumb Navigation
+## 2. App Switcher Navigation
+
+### Product Suite Switcher
+::: demo
+::: columns-2
+::: column
+**Acme Cloud** ((Enterprise)){.primary}
+
+[Switch app                v]
+- [Dashboard](./dashboard.md)
+- [Projects](./projects.md)
+- [Docs](./docs.md)
+- [Analytics](./analytics.md)
+- [Admin Console](./admin.md)
+
+:::
+::: column .right
+[Search________________]{type:search}
+
+:bell: ((8)){.warning} :user: Maya Chen
+
+[Invite] [+ New Project]*
+:::
+:::
+
+[[ *Overview* | Roadmap | Teams | Billing | Settings ]]
+
+---
+
+## Dashboard
+
+Welcome back, Maya. You are viewing **Acme Cloud Dashboard**.
+
+::: columns-3 card
+::: column
+### Active projects
+24
+:::
+::: column
+### Open tasks
+138
+:::
+::: column
+### Deployments
+12
+:::
+:::
+:::
+
+Use this pattern when the navigation target is a peer application or workspace, not just a form value.
+
+---
+
+## 3. Breadcrumb Navigation
 
 ### Simple Breadcrumbs
 ::: demo
@@ -52,7 +105,7 @@
 
 ---
 
-## 3. Sidebar Navigation
+## 4. Sidebar Navigation
 
 ### Basic Sidebar
 ::: demo
@@ -112,7 +165,7 @@
 
 ---
 
-## 4. Tab-Style Navigation
+## 5. Tab-Style Navigation
 
 ### Horizontal Tab Nav
 ::: demo
@@ -138,7 +191,7 @@ Email
 
 ---
 
-## 5. Footer Navigation
+## 6. Footer Navigation
 
 ### Simple Footer
 ::: demo
@@ -191,7 +244,7 @@ Email
 
 ---
 
-## 6. Mobile Navigation
+## 7. Mobile Navigation
 
 ### Mobile Menu Structure
 ::: demo
@@ -213,7 +266,7 @@ Email
 
 ---
 
-## 7. Pagination Navigation
+## 8. Pagination Navigation
 
 ### Basic Pagination
 ::: demo
@@ -233,7 +286,7 @@ Jump to page: [___] [Go]
 
 ---
 
-## 8. Step Navigation (Wizard)
+## 9. Step Navigation (Wizard)
 
 ### Progress Steps
 ::: demo
@@ -248,7 +301,7 @@ Currently on: **Personal Information**
 
 ---
 
-## 9. Context Menu / Action Menu
+## 10. Context Menu / Action Menu
 
 ### Action Menu
 ::: demo
@@ -262,7 +315,7 @@ Actions:
 
 ---
 
-## 10. Tag / Filter Navigation
+## 11. Tag / Filter Navigation
 
 ### Tag Cloud
 ::: demo

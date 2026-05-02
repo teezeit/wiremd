@@ -437,6 +437,8 @@ interface OptionNode {
   value: string;
   label: string;
   selected?: boolean;
+  href?: string;
+  action?: string;
   position?: Location;
 }
 ```
