@@ -782,6 +782,20 @@ function controlsAsNode(children: WiremdNode[], forceRow = false): WiremdNode | 
   return makeImplicitRow(children);
 }
 
+function switchNodeFromParts(text: string, attrs?: string): WiremdNode | null {
+  const props = parseAttributes(attrs || '');
+  if (!props.switch) return null;
+  const checked = Boolean(props.checked);
+  delete props.switch;
+  delete props.checked;
+  return {
+    type: 'switch',
+    label: text.trim(),
+    checked,
+    props,
+  };
+}
+
 function parseBracketControlsFromLine(line: string): WiremdNode[] | null {
   const trimmed = line.trim();
   if (!trimmed || !/\[/.test(trimmed)) return null;
@@ -792,6 +806,12 @@ function parseBracketControlsFromLine(line: string): WiremdNode[] | null {
 
   while ((match = controlPattern.exec(trimmed)) !== null) {
     const [, text, isPrimary, attrs] = match;
+    const switchNode = switchNodeFromParts(text, attrs);
+    if (switchNode) {
+      controls.push(switchNode);
+      continue;
+    }
+
     const props = parseAttributes(attrs || '');
 
     if ('rows' in props) return null;
@@ -881,6 +901,9 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
     // Still check for button patterns first
     const buttonMatch = content.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
     if (buttonMatch) {
+      const switchNode = switchNodeFromParts(buttonMatch[1], buttonMatch[3]);
+      if (switchNode) return switchNode;
+
       const attrs = buttonMatch[3] ? parseAttributes(buttonMatch[3]) : {};
       return {
         type: 'button',
@@ -916,8 +939,13 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
           // Check for button
           const buttonMatch = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
           if (buttonMatch && !/^\[[_*]+\]/.test(part)) {
-            // It's a button
+            // It's a button or switch
             flushText();
+            const switchNode = switchNodeFromParts(buttonMatch[1], buttonMatch[3]);
+            if (switchNode) {
+              processedChildren.push(switchNode);
+              continue;
+            }
             const attrs = buttonMatch[3] ? parseAttributes(buttonMatch[3]) : {};
             processedChildren.push({
               type: 'button',
@@ -1062,6 +1090,12 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
     };
   }
 
+  const standaloneSwitchMatch = content.match(/^\[([^\]]+)\](?:\s*(\{[^}]*\}))$/);
+  if (standaloneSwitchMatch) {
+    const switchNode = switchNodeFromParts(standaloneSwitchMatch[1], standaloneSwitchMatch[2]);
+    if (switchNode) return switchNode;
+  }
+
   // Check for inline radio buttons: (*) Option1 ( ) Option2 ( ) Option3
   // Must have at least 2 radio button patterns on the same line
   const radioPattern = /\(([*•x ])\)\s+([^(]+?)(?=\s*\(|$)/g;
@@ -1188,7 +1222,7 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
       }
     }
 
-    // Check if all lines consist entirely of buttons (one or more per line)
+    // Check if all lines consist entirely of bracket controls (one or more per line)
     const isInputLike = (s: string) => /\[[^\]]*_{3,}[^\]]*\]/.test(s) || /\[[_*]+\]/.test(s);
     const lineIsAllButtons = (line: string) => {
       const trimmed = line.trim();
@@ -1202,8 +1236,10 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
     if (allButtons) {
       const out: WiremdNode[] = [];
       for (const line of lines) {
-        const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === 'button') || [];
-        const node = controlsAsNode(controls, lines.length > 1);
+        const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === 'button' || child.type === 'switch') || [];
+        const node = controls.length === 1 && controls[0].type === 'switch'
+          ? controls[0]
+          : controlsAsNode(controls, lines.length > 1);
         if (node) out.push(node);
       }
       if (out.length === 1) return out[0];
@@ -1253,8 +1289,10 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
       for (const group of groups) {
         if (group.kind === 'buttons') {
           for (const line of group.lines) {
-            const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === 'button') || [];
-            const node = controlsAsNode(controls, group.lines.length > 1);
+            const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === 'button' || child.type === 'switch') || [];
+            const node = controls.length === 1 && controls[0].type === 'switch'
+              ? controls[0]
+              : controlsAsNode(controls, group.lines.length > 1);
             if (node) out.push(node);
           }
         } else if (group.kind === 'nav') {
@@ -1465,6 +1503,12 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
 
       while ((match = buttonPattern.exec(lastLine)) !== null) {
         const [, text, isPrimary, attrs] = match;
+        const switchNode = switchNodeFromParts(text, attrs);
+        if (switchNode) {
+          buttons.push(switchNode);
+          continue;
+        }
+
         const props = parseAttributes(attrs || '');
         if (isInputTextMulti(text) || 'rows' in props) continue;
         if (isPrimary) props.variant = 'primary';
@@ -1609,6 +1653,12 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
 
     while ((match = buttonPattern.exec(content)) !== null) {
       const [, text, isPrimary, attrs] = match;
+      const switchNode = switchNodeFromParts(text, attrs);
+      if (switchNode) {
+        elements.push(switchNode);
+        continue;
+      }
+
       const props = parseAttributes(attrs || '');
 
       if (isSelectText(text)) {
@@ -1668,7 +1718,7 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
       } else if (!remainingText && elements.length === 1) {
         return elements[0];
       } else if (remainingText) {
-        // Button(s) with text - create paragraph with mixed content
+        // Bracket control(s) with text - create paragraph with mixed content
         const children: WiremdNode[] = [];
         let lastIndex = 0;
         const buttonMatches = Array.from(content.matchAll(/\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g));
@@ -1680,8 +1730,8 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
             children.push({ type: 'text', content: textBefore, props: {} });
           }
 
-          // Add button
-          children.push(buttons[idx]);
+          // Add bracket control in source order.
+          children.push(elements[idx]);
 
           lastIndex = match.index! + match[0].length;
         });

@@ -47,6 +47,16 @@ describe('HTML Renderer', () => {
       expect(html).toContain('Checked item');
     });
 
+    it('should render a switch', () => {
+      const ast = parse('[Dark mode]{switch checked}');
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('class="wmd-switch');
+      expect(html).toContain('role="switch"');
+      expect(html).toContain('checked');
+      expect(html).toContain('Dark mode');
+    });
+
     it('should render a radio button', () => {
       const ast = parse('- (•) Selected option');
       const html = renderToHTML(ast, { style: 'sketch' });

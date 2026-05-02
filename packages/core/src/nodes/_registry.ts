@@ -36,6 +36,7 @@ import { input } from './input/index.js';
 import { textarea } from './textarea/index.js';
 import { select } from './select/index.js';
 import { checkbox } from './checkbox/index.js';
+import { switchNode } from './switch/index.js';
 import { radio } from './radio/index.js';
 import { radioGroup } from './radio-group/index.js';
 import { badge } from './badge/index.js';
@@ -73,6 +74,7 @@ export const registry: Partial<Record<string, AnyNodeDefinition>> = {
   textarea: textarea as AnyNodeDefinition,
   select: select as AnyNodeDefinition,
   checkbox: checkbox as AnyNodeDefinition,
+  switch: switchNode as AnyNodeDefinition,
   radio: radio as AnyNodeDefinition,
   'radio-group': radioGroup as AnyNodeDefinition,
   badge: badge as AnyNodeDefinition,

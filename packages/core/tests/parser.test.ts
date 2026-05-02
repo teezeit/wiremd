@@ -199,6 +199,51 @@ describe('Parser', () => {
     });
   });
 
+  describe('Switch Syntax', () => {
+    it('should parse an unchecked switch', () => {
+      const result = parse('[Notifications]{switch}');
+      expect(result.children[0]).toMatchObject({
+        type: 'switch',
+        label: 'Notifications',
+        checked: false,
+        props: {},
+      });
+    });
+
+    it('should parse a checked switch', () => {
+      const result = parse('[Dark mode]{switch checked}');
+      expect(result.children[0]).toMatchObject({
+        type: 'switch',
+        label: 'Dark mode',
+        checked: true,
+      });
+    });
+
+    it('should parse a disabled switch', () => {
+      const result = parse('[Auto-save]{switch disabled}');
+      expect(result.children[0]).toMatchObject({
+        type: 'switch',
+        label: 'Auto-save',
+        checked: false,
+        props: {
+          disabled: true,
+        },
+      });
+    });
+
+    it('should parse switches in compact rows', () => {
+      const result = parse('Dark mode [Dark mode]{switch checked}');
+      expect(result.children[0]).toMatchObject({
+        type: 'paragraph',
+      });
+      expect(result.children[0].children).toHaveLength(2);
+      expect(result.children[0].children[1]).toMatchObject({
+        type: 'switch',
+        checked: true,
+      });
+    });
+  });
+
   describe('Radio Button Syntax', () => {
     it('should parse unselected radio button', () => {
       const result = parse('- ( ) Option 1');

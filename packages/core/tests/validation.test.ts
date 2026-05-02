@@ -265,6 +265,25 @@ This is a paragraph.
       });
     });
 
+    describe('Switch', () => {
+      it('should validate switch with checked property', () => {
+        const ast = parse('[Dark mode]{switch checked}');
+        const errors = validate(ast);
+        expect(errors).toEqual([]);
+      });
+
+      it('should reject switch without checked property', () => {
+        const ast = parse('');
+        ast.children.push({
+          type: 'switch',
+          label: 'Test',
+          props: {},
+        } as any);
+        const errors = validate(ast);
+        expect(errors.some(e => e.code === 'MISSING_CHECKED')).toBe(true);
+      });
+    });
+
     describe('Radio', () => {
       it('should validate radio with required properties', () => {
         const ast = parse('- (x) Selected');

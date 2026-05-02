@@ -12,6 +12,7 @@ How the parser decides what `[...]` is:
 
 ```
 [Text](url)      → Link       (has a URL)
+[Text]{switch}   → Switch     (explicit switch attribute)
 [Text]           → Button     (no URL, no underscores)
 [Text___v]       → Dropdown   (underscores + trailing v)
 [___]            → Text input (underscores, no v)
@@ -127,6 +128,10 @@ The list items directly following a dropdown become its options.
 ```markdown
 - [ ] Unchecked option
 - [x] Checked option
+
+[Notifications]{switch}
+[Dark mode]{switch checked}
+[Auto-save]{switch disabled}
 
 - ( ) Radio option A
 - (*) Radio option B (selected)
@@ -515,6 +520,7 @@ All standard Markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 | `<Textarea rows={4}>` | `[Placeholder...]{rows:4}` |
 | `<Select>` / `<Combobox>` | `[Option___________v]` + list items |
 | `<Checkbox>` | `- [ ] Label` / `- [x] Label` |
+| `<Switch>` | `[Label]{switch}` / `[Label]{switch checked}` |
 | `<RadioGroup>` | `- ( ) Option` / `- (*) Selected` |
 | `<Table>` | markdown table |
 | `<Card>` | `::: card` block |

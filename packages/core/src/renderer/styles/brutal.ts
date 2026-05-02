@@ -213,6 +213,60 @@ body {
   accent-color: #ffd93d;
 }
 
+.${prefix}switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.${prefix}switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.${prefix}switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 42px;
+  height: 22px;
+  flex: 0 0 42px;
+  align-items: center;
+  border: 3px solid #000;
+  border-radius: 0;
+  background: #fff;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.${prefix}switch-thumb {
+  position: absolute;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border: 3px solid #000;
+  border-radius: 0;
+  background: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track {
+  background: #ffd93d;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track .${prefix}switch-thumb {
+  left: 19px;
+  background: #000;
+}
+
+.${prefix}switch input[type="checkbox"]:disabled + .${prefix}switch-track,
+.${prefix}switch:has(input[type="checkbox"]:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 /* Brutal Cards and Containers */
 .${prefix}container-card {
   background: #ffffff;
