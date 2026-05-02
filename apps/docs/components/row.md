@@ -26,14 +26,16 @@ Page 1 of 12   [← Prev] [Next →]
 
 ## Split Layouts
 
-Use a grid when one side needs to stay left while another side aligns right.
+Use columns when one side needs to stay left while another side aligns right.
 ::: demo
-::: grid-2
-###
+::: columns-2
+::: column
 [All]* [Active] [Archived]
 
-### {.right}
+:::
+::: column .right
 [+ New Item]*
+:::
 :::
 :::
 
@@ -71,14 +73,16 @@ John Doe ((Admin)){.warning}
 
 ## Toolbar Pattern
 
-Use a row for a simple toolbar. For a title on the left and actions on the right, use `::: grid-2` with an aligned grid item.
+Use a row for a simple toolbar. For a title on the left and actions on the right, use `::: columns-2` with an aligned column item.
 ::: demo
-::: grid-2
-###
+::: columns-2
+::: column
 **Projects** ((12)){.primary}
 
-### {.right}
+:::
+::: column .right
 [Filter] [Sort] [+ New Project]*
+:::
 :::
 :::
 
@@ -91,10 +95,12 @@ Use a row for a simple toolbar. For a title on the left and actions on the right
 ::: row {.right}      right-align all content
 ::: row {.center}     center all content
 
-::: grid-2           split left/right content into columns
-###
+::: columns-2           split left/right content into columns
+::: column
 [A] [B] [C]
-### {.right}
+:::
+::: column .right
 [Save]*
+:::
 :::
 ```

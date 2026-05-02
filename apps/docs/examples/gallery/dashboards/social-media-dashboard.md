@@ -22,33 +22,36 @@
 [[ :facebook: Facebook | :twitter: Twitter | :instagram: Instagram | :linkedin: LinkedIn | :youtube: YouTube | :tiktok: TikTok | [+ Connect Account] ]]
 
 ---
-::: grid-5 card
-
-### Total Followers
+::: columns-5 card
+::: column Total Followers
 **458,234**
 :chart: +8,234 (+1.8%) this month
 
-### Total Engagement
+:::
+::: column Total Engagement
 **89,567**
 :chart: +12,345 (+16%) this month
 
-### Posts Published
+:::
+::: column Posts Published
 **124**
 :chart: +23 (+23%) vs last month
 
-### Reach
+:::
+::: column Reach
 **2.4M**
 :chart: +340K (+16.5%) this month
 
-### Engagement Rate
+:::
+::: column Engagement Rate
 **3.8%**
 :chart: +0.5% vs last month
 :::
+:::
 
 ---
-::: grid-3 card
-
-### :instagram: Instagram
+::: columns-3 card
+::: column :instagram: Instagram
 **Followers:** 234,567 (+2,345)
 
 **This Month:**
@@ -59,7 +62,8 @@
 
 [View Details →]
 
-### :twitter: Twitter
+:::
+::: column :twitter: Twitter
 **Followers:** 123,456 (+1,234)
 
 **This Month:**
@@ -70,7 +74,8 @@
 
 [View Details →]
 
-### :facebook: Facebook
+:::
+::: column :facebook: Facebook
 **Followers:** 89,234 (+890)
 
 **This Month:**
@@ -80,6 +85,7 @@
 - Best Post: 3.4K reactions
 
 [View Details →]
+:::
 :::
 
 ---
@@ -103,9 +109,8 @@
 ---
 
 ## Content Calendar
-::: grid-7 card
-
-### Mon, Mar 17
+::: columns-7 card
+::: column Mon, Mar 17
 **2 posts**
 
 :instagram: 9:00 AM
@@ -114,7 +119,8 @@ Product feature
 :twitter: 3:00 PM
 Industry news
 
-### Tue, Mar 18
+:::
+::: column Tue, Mar 18
 **3 posts**
 
 :facebook: 10:00 AM
@@ -126,13 +132,15 @@ User testimonial
 :linkedin: 4:00 PM
 Blog post
 
-### Wed, Mar 19
+:::
+::: column Wed, Mar 19
 **1 post**
 
 :twitter: 11:00 AM
 Poll question
 
-### Thu, Mar 20
+:::
+::: column Thu, Mar 20
 **3 posts**
 
 :instagram: 9:00 AM
@@ -144,7 +152,8 @@ Product demo
 :twitter: 5:00 PM
 Quick tip
 
-### Fri, Mar 21
+:::
+::: column Fri, Mar 21
 **2 posts**
 
 :facebook: 10:00 AM
@@ -153,17 +162,20 @@ Weekend sale
 :instagram: 6:00 PM
 User content
 
-### Sat, Mar 22
+:::
+::: column Sat, Mar 22
 **1 post**
 
 :instagram: 12:00 PM
 Lifestyle shot
 
-### Sun, Mar 23
+:::
+::: column Sun, Mar 23
 **1 post**
 
 :twitter: 4:00 PM
 Weekly recap
+:::
 :::
 
 [+ Schedule Post]* [View Full Calendar →]
@@ -171,9 +183,8 @@ Weekly recap
 ---
 
 ## Engagement Analytics
-::: grid-2 card
-
-### Engagement Over Time
+::: columns-2 card
+::: column Engagement Over Time
 
 ![Line Chart](https://via.placeholder.com/600x300)
 
@@ -182,7 +193,8 @@ Weekly recap
 - Average: 2,985/day
 - Growth: +16% vs previous period
 
-### Engagement by Type
+:::
+::: column Engagement by Type
 
 ![Pie Chart](https://via.placeholder.com/600x300)
 
@@ -193,11 +205,11 @@ Weekly recap
 | Shares/Retweets | 10,456 | 12% |
 | Saves | 4,088 | 4% |
 :::
+:::
 
 ---
-::: grid-3 card
-
-### Demographics
+::: columns-3 card
+::: column Demographics
 
 **Age Groups:**
 - 18-24: 23%
@@ -211,7 +223,8 @@ Weekly recap
 - Male: 40%
 - Other: 2%
 
-### Top Locations
+:::
+::: column Top Locations
 
 **Countries:**
 1. 🇺🇸 United States (45%)
@@ -227,7 +240,8 @@ Weekly recap
 4. Toronto
 5. Sydney
 
-### Active Times
+:::
+::: column Active Times
 
 **Best Times to Post:**
 - Weekdays: 9-11 AM, 2-4 PM
@@ -239,6 +253,7 @@ Weekly recap
 - Friday: 2 PM
 
 ![Heatmap](https://via.placeholder.com/350x200)
+:::
 :::
 
 ---
@@ -300,31 +315,34 @@ Weekly recap
 ---
 
 ## Messages & Mentions
-::: grid-4 card
-
-### Unread Messages
+::: columns-4 card
+::: column Unread Messages
 **45**
 Across all platforms
 
 [View Inbox →]*
 
-### Pending Comments
+:::
+::: column Pending Comments
 **23**
 Awaiting response
 
 [Respond →]
 
-### New Mentions
+:::
+::: column New Mentions
 **89**
 Last 24 hours
 
 [Review →]
 
-### Spam Filtered
+:::
+::: column Spam Filtered
 **234**
 Auto-filtered
 
 [Review →]
+:::
 :::
 
 ---
@@ -368,9 +386,8 @@ Auto-filtered
 ---
 
 ## Competitor Analysis
-::: grid-3 card
-
-### Competitor A
+::: columns-3 card
+::: column Competitor A
 **Followers:** 567K
 
 **Engagement Rate:** 4.2%
@@ -379,7 +396,8 @@ Auto-filtered
 
 [Analyze →]
 
-### Competitor B
+:::
+::: column Competitor B
 **Followers:** 423K
 
 **Engagement Rate:** 3.5%
@@ -388,7 +406,8 @@ Auto-filtered
 
 [Analyze →]
 
-### Competitor C
+:::
+::: column Competitor C
 **Followers:** 389K
 
 **Engagement Rate:** 3.9%
@@ -396,6 +415,7 @@ Auto-filtered
 **Best Content:** Product photos
 
 [Analyze →]
+:::
 :::
 
 ---

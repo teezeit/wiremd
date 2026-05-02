@@ -14,16 +14,16 @@ Over 1 million items ready to ship
 :::
 
 ---
-::: grid-4
-
-### Main Search
+::: columns-4
+::: column Main Search
 
 Search products
 [Enter keywords...___________] {type:search}
 
 [Search]*
 
-### Category
+:::
+::: column Category
 
 Product Type
 [All Categories...v]
@@ -34,7 +34,8 @@ Product Type
 - Books & Media
 - Toys & Games
 
-### Price Range
+:::
+::: column Price Range
 
 Min Price
 [$___] {type:number min:0}
@@ -44,7 +45,8 @@ Max Price
 
 [Apply]
 
-### More Filters
+:::
+::: column More Filters
 
 Condition
 - [x] New
@@ -60,6 +62,7 @@ Shipping
 Rating
 - [x] 4+ Stars
 - [ ] 3+ Stars
+:::
 :::
 
 ---

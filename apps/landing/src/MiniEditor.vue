@@ -24,25 +24,28 @@ The universal grammar that humans, designers, and AI all speak.
 [Install in Claude Design] [OpenEditor]*
 :::
 
-::: grid-3 card
+::: columns-3 card
 
-## For Product
+::: column For Product
 |The Spec Layer|{.success}
 
 Write wireframes in your PRD. Your PM writes it, your LLM reads it, Claude Design consumes it.
+:::
 
-## For Design
+::: column For Design
 |The Bridge|
 
 Lo-fi spec → Claude Design → hi-fi output. No translation layer. No lost intent.
+:::
 
 <!-- Should this say "For Developers" instead? @sara -->
 <!-- "Engineering" is more precise — it's the team that owns the pipeline. @tobias -->
 <!-- +1, keeping it. @mike -->
-## For Engineering
+::: column For Engineering
 |The Pipeline|{.warning}
 
 Use wiremd directly in your tickets, render in your IDE.
+:::
 
 :::`,
   },
@@ -50,22 +53,25 @@ Use wiremd directly in your tickets, render in your IDE.
     label: 'Dashboard',
     code: `## Dashboard
 
-::: grid-3 card
+::: columns-3 card
 
-### 12,480
+::: column 12,480
 Users · ↑ 8%
+:::
 
-### $48,200
+::: column $48,200
 Revenue · ↑ 12%
+:::
 
-### 94.2%
+::: column 94.2%
 Uptime · ↓ 1%
+:::
 
 :::
 
-::: grid-2 card
+::: columns-2 card
 
-### Revenue
+::: column Revenue
 
 \`\`\`
 Jan  ***********           $22k
@@ -75,8 +81,9 @@ Apr  ********************  $40k
 May  **************        $29k
 Jun  *****************     $36k
 \`\`\`
+:::
 
-### Visitors
+::: column Visitors
 
 \`\`\`
      |              *
@@ -86,6 +93,7 @@ Jun  *****************     $36k
      +----+----+----+----+----
       Jan  Feb  Mar  Apr  May
 \`\`\`
+:::
 
 :::
 

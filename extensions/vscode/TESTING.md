@@ -35,15 +35,18 @@ Create a markdown file in any folder open in the dev VS Code window:
 > [Get Started] [Learn More]{.outline}
 :::
 
-::: grid-3
-### Fast
+::: columns-3
+::: column Fast
 ⚡ Lightning quick performance
+:::
 
-### Secure
+::: column Secure
 🔒 Bank-level security
+:::
 
-### Simple
+::: column Simple
 ✨ Easy to use interface
+:::
 :::
 
 ## Contact Form
@@ -71,7 +74,7 @@ Message
 ### Basic preview
 - [ ] Preview opens
 - [ ] Content renders in the default `sketch` style
-- [ ] Layout looks correct (grid, hero, form)
+- [ ] Layout looks correct (columns, hero, form)
 
 ### Live refresh
 - [ ] Editing the markdown updates the preview within `wiremd.refreshDelay` ms

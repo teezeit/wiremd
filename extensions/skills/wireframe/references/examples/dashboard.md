@@ -4,11 +4,11 @@
 
 ![[_sidebar-nav.md]]
 
-::: grid-2
+::: columns-2
+::: column Monthly Reports
 
-### Monthly Reports
-
-### {.right}
+:::
+::: column .right
 
 ::: row {.right}
 [Export CSV] [Summary]* [Details]
@@ -22,53 +22,58 @@ Data last updated 2 hours ago. [Refresh Now]
 
 ---
 
-::: grid-3
-
-### Total Revenue
+::: columns-3
+::: column Total Revenue
 **$124,500**
 ↑ 8% vs last period
 
-### Active Users
+:::
+::: column Active Users
 **3,842**
 ↑ 12% vs last period
 
-### Conversion Rate
+:::
+::: column Conversion Rate
 **4.2%**
 ↓ 0.3% vs last period
 
 :::
+:::
 
 ---
 
-::: grid-3 card
-
-### :rocket: Organic Search
+::: columns-3 card
+::: column :rocket: Organic Search
 **42%** of traffic
 
 `+12%` vs last month
 
-### :chart: Paid Ads
+:::
+::: column :chart: Paid Ads
 **31%** of traffic
 
 `-3%` vs last month
 
-### :bell: Email
+:::
+::: column :bell: Email
 **27%** of traffic
 
 `+8%` vs last month
 
 :::
+:::
 
 ---
 
-::: grid-2
+::: columns-2
+::: column Recent Transactions
 
-### Recent Transactions
-
-### {.right}
+:::
+::: column .right
 
 [View All Transactions]*
 
+:::
 :::
 
 | Date   | Customer        | Amount  | Status  | Actions       |
@@ -78,6 +83,7 @@ Data last updated 2 hours ago. [Refresh Now]
 | Jan 13 | Initech         | $3,100  | ((Paid)){.success}    | [View]        |
 | Jan 12 | Umbrella Co     | $920    | ((Failed)){.error}    | [Retry]       |
 
+:::
 :::
 
 ---

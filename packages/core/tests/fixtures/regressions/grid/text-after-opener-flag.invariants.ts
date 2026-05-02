@@ -1,5 +1,5 @@
 /**
- * Free text after the `card` flag on a `::: grid-N card` opener should
+ * Free text after the `card` flag on a `::: columns-N card` opener should
  * either be ignored or rejected — but it should NOT silently consume the
  * `card` flag. Currently the grid renders without card chrome.
  */

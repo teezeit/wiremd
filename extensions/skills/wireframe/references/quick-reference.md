@@ -38,20 +38,21 @@
 
 | Layout | Syntax | Notes |
 |--------|--------|-------|
-| **Grid (layout only)** | `::: grid-3` … `:::` | Equal columns, no styling on items |
-| **Grid (card chrome)** | `::: grid-3 card` … `:::` | Items rendered as styled cards |
-| **2-Column Grid** | `::: grid-2` | |
-| **3-Column Grid** | `::: grid-3` | |
-| **4-Column Grid** | `::: grid-4` | |
+| **Columns (layout only)** | `::: columns-3` with `::: column` children | Equal columns, no styling on items |
+| **Columns (card chrome)** | `::: columns-3 card` with `::: column` children | Items rendered as styled cards |
+| **2 Columns** | `::: columns-2` | |
+| **3 Columns** | `::: columns-3` | |
+| **4 Columns** | `::: columns-4` | |
 | **Row** | `::: row` … `:::` | Horizontal flex row, children auto-wrapped |
 | **Row (aligned)** | `::: row {.right}` … `:::` | Right-aligned row |
 | **Tabs** | `::: tabs` with `::: tab Label` children | Tabbed panels |
-| **Col span** | `### Item {.col-span-2}` | Item spans 2 columns |
-| **Grid item alignment** | `### {.right}` / `### {.left}` / `### {.center}` inside `::: grid-N` | Aligns that grid item |
+| **Column title** | `::: column Billing address` | Renders a heading at the top of the column |
+| **Col span** | `::: column .span-2` | Item spans 2 columns |
+| **Column alignment** | `::: column .right` / `::: column .left` / `::: column .center` inside `::: columns-N` | Aligns that column |
 
-Grid items are defined by `###` headings inside the `::: grid-N` container.
+Columns are defined by explicit `::: column` child containers inside the `::: columns-N` container.
 
-`::: grid-N` is pure layout — use it for form columns, multi-column text, etc. Add `card` when items should have card chrome (features, pricing, team members).
+`::: columns-N` is pure layout — use it for form columns, multi-column text, etc. Add `card` when items should have card chrome (features, pricing, team members).
 
 ## Attributes
 
@@ -149,20 +150,22 @@ When running `wiremd --serve`, clicking a button link navigates to and renders t
 
 The dev server (`--serve <port>`) redirects `/` to the entry file and renders any `.md` on demand — no build step needed between page navigations.
 
-## Grid Pattern
+## Columns Pattern
 
 ```markdown
-::: grid-3 card
-
-### Feature 1
+::: columns-3 card
+::: column Feature 1
 Description here
 
-### Feature 2
+:::
+::: column Feature 2
 Description here
 
-### Feature 3
+:::
+::: column Feature 3
 Description here
 
+:::
 :::
 ```
 
@@ -201,22 +204,25 @@ Password
 :::
 ```
 
-### Stats Grid
+### Stats Columns
 ```markdown
-::: grid-4 card
-
-### Users
+::: columns-4 card
+::: column Users
 10,000+
 
-### Revenue
+:::
+::: column Revenue
 $45,231
 
-### Orders
+:::
+::: column Orders
 1,234
 
-### Growth
+:::
+::: column Growth
 +12.5%
 
+:::
 :::
 ```
 
@@ -251,7 +257,7 @@ wiremd supports **all standard Markdown** syntax:
 2. **Placeholder text**: Put text before underscores: `[Email___________]`
 3. **Button groups**: Put on same line: `[Save] [Cancel] [Reset]`
 4. **Icons in text**: Use anywhere: `### :rocket: Fast Performance`
-5. **Grid items**: Each `###` heading inside `::: grid-N` is a grid item
+5. **Columns**: Use explicit `::: column` blocks inside `::: columns-N`
 6. **Nested containers**: Containers can be nested inside each other
 
 ## Quick Troubleshooting
@@ -260,6 +266,6 @@ wiremd supports **all standard Markdown** syntax:
 |---------|----------|
 | Input has no label | Put label text directly above (no blank line) |
 | Dropdown has no options | Add list items directly after dropdown |
-| Grid not working | Use `###` for grid items inside `::: grid-N` |
+| Columns not working | Use `::: column` child blocks inside `::: columns-N` |
 | Button looks wrong | Check for `(url)` - that makes it a link |
 | Attributes ignored | Put `{...}` immediately after element (space OK) |

@@ -24,30 +24,34 @@ Discover our latest styles for the season
 :::
 
 ---
-::: grid-6 card
-
-### :tshirt: Clothing
+::: columns-6 card
+::: column :tshirt: Clothing
 2,450 items
 
-### :shoe: Footwear
+:::
+::: column :shoe: Footwear
 890 items
 
-### :gem: Accessories
+:::
+::: column :gem: Accessories
 1,230 items
 
-### :watch: Watches
+:::
+::: column :watch: Watches
 
-### :briefcase: Bags
+:::
+::: column :briefcase: Bags
 560 items
 
-### :glasses: Eyewear
+:::
+::: column :glasses: Eyewear
 280 items
+:::
 :::
 
 ---
-::: grid-4 card
-
-### Summer Dress
+::: columns-4 card
+::: column Summer Dress
 ![Product](https://via.placeholder.com/250x300)
 
 ~~$89.99~~ **$59.99**
@@ -56,7 +60,8 @@ Discover our latest styles for the season
 
 [Add to Cart]*
 
-### Running Shoes
+:::
+::: column Running Shoes
 ![Product](https://via.placeholder.com/250x300)
 
 ~~$129.99~~ **$89.99**
@@ -65,7 +70,8 @@ Discover our latest styles for the season
 
 [Add to Cart]*
 
-### Leather Wallet
+:::
+::: column Leather Wallet
 ![Product](https://via.placeholder.com/250x300)
 
 ~~$49.99~~ **$29.99**
@@ -74,7 +80,8 @@ Discover our latest styles for the season
 
 [Add to Cart]*
 
-### Sunglasses
+:::
+::: column Sunglasses
 ![Product](https://via.placeholder.com/250x300)
 
 ~~$79.99~~ **$49.99**
@@ -83,15 +90,15 @@ Discover our latest styles for the season
 
 [Add to Cart]*
 :::
+:::
 
 [View All Deals →]
 
 ---
 
 ## New Arrivals
-::: grid-3 card
-
-### Designer Handbag
+::: columns-3 card
+::: column Designer Handbag
 ![Product](https://via.placeholder.com/300x350)
 
 **$199.99**
@@ -102,7 +109,8 @@ Premium leather with gold hardware
 
 [Quick View] [Add to Cart]*
 
-### Casual Sneakers
+:::
+::: column Casual Sneakers
 ![Product](https://via.placeholder.com/300x350)
 
 **$79.99**
@@ -113,7 +121,8 @@ Comfortable all-day wear
 
 [Quick View] [Add to Cart]*
 
-### Smart Watch
+:::
+::: column Smart Watch
 ![Product](https://via.placeholder.com/300x350)
 
 **$299.99**
@@ -123,6 +132,7 @@ Fitness tracking & notifications
 :star::star::star::star::star: (234)
 
 [Quick View] [Add to Cart]*
+:::
 :::
 
 [See All New Items →]
@@ -134,43 +144,48 @@ Fitness tracking & notifications
 [[ :brand: Nike | :brand: Adidas | :brand: Zara | :brand: H&M | :brand: Levi's | :brand: Puma | [View All Brands →] ]]
 
 ---
-::: grid-4 card
-
-### :truck: Free Shipping
+::: columns-4 card
+::: column :truck: Free Shipping
 On orders over $50
 
-### :return: Easy Returns
+:::
+::: column :return: Easy Returns
 30-day return policy
 
-### :shield: Secure Checkout
+:::
+::: column :shield: Secure Checkout
 SSL encrypted payment
 
-### :support: 24/7 Support
+:::
+::: column :support: 24/7 Support
 Always here to help
+:::
 :::
 
 ---
 
 ## Customer Reviews
-::: grid-3 card
-
-### :star::star::star::star::star:
+::: columns-3 card
+::: column :star::star::star::star::star:
 *"Best online shopping experience! Fast shipping and quality products."*
 
 **Jennifer L.**
 Verified Buyer
 
-### :star::star::star::star::star:
+:::
+::: column :star::star::star::star::star:
 *"Great prices and amazing customer service. Highly recommended!"*
 
 **Michael T.**
 Verified Buyer
 
-### :star::star::star::star::star:
+:::
+::: column :star::star::star::star::star:
 *"Love the variety and ease of returns. My go-to store now."*
 
 **Sarah K.**
 Verified Buyer
+:::
 :::
 
 ---
@@ -189,9 +204,8 @@ Verified Buyer
 ---
 
 ## Special Offers
-::: grid-2 card
-
-### :gift: Summer Sale
+::: columns-2 card
+::: column :gift: Summer Sale
 **Up to 50% Off**
 
 ![Promo Banner](https://via.placeholder.com/500x300)
@@ -200,7 +214,8 @@ Shop seasonal favorites at unbeatable prices
 
 [Shop Sale]*
 
-### :email: New Customer Offer
+:::
+::: column :email: New Customer Offer
 **15% Off First Order**
 
 ![Promo Banner](https://via.placeholder.com/500x300)
@@ -208,6 +223,7 @@ Shop seasonal favorites at unbeatable prices
 Sign up and get instant discount code
 
 [Sign Up Now]*
+:::
 :::
 
 ---
@@ -242,23 +258,26 @@ Stay connected for daily inspiration
 ---
 
 ## Shop by Price
-::: grid-4 card
-
-### Under $25
+::: columns-4 card
+::: column Under $25
 1,234 items
 [Shop →]
 
-### $25 - $50
+:::
+::: column $25 - $50
 2,456 items
 [Shop →]
 
-### $50 - $100
+:::
+::: column $50 - $100
 1,890 items
 [Shop →]
 
-### Over $100
+:::
+::: column Over $100
 890 items
 [Shop →]
+:::
 :::
 
 ---
@@ -284,42 +303,46 @@ Stay connected for daily inspiration
 
 ---
 ::: footer
-::: grid-5 card
-
-### Shop
+::: columns-5 card
+::: column Shop
 - Women
 - Men
 - Kids
 - Sale
 - New Arrivals
 
-### Customer Care
+:::
+::: column Customer Care
 - Contact Us
 - Track Order
 - Returns
 - Shipping Info
 - Size Guide
 
-### About
+:::
+::: column About
 - Our Story
 - Careers
 - Press
 - Sustainability
 - Store Locator
 
-### Account
+:::
+::: column Account
 - Sign In
 - Register
 - Order History
 - Wishlist
 - Gift Cards
 
-### Legal
+:::
+::: column Legal
 - Privacy Policy
 - Terms of Service
 - Accessibility
 - Cookie Policy
 - Sitemap
+:::
 :::
 
 ---

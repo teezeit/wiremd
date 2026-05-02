@@ -39,13 +39,14 @@ Separate lines stack vertically:
 ::: demo
 ::: tabs
 ::: tab General
-::: grid-2
-
-###
+::: columns-2
+::: column
 [Name_____________________________]{required}
 
-### {.right}
+:::
+::: column .right
 [Save Changes]*
+:::
 :::
 
 | Name | Role | Status |

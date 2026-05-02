@@ -8,9 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- Replaced author-facing grid syntax with explicit columns syntax: use `::: columns-N` with child `::: column` blocks, optional opener titles like `::: column Billing address`, `::: columns-N card` for card chrome, and `::: column .span-N .left/.right/.center` or `::: column Title {.span-N .right}` for per-column modifiers.
+- Removed `::: grid-N` plus `###` heading-delimited grid items from the parser syntax. Internally, renderers may still emit grid AST nodes and CSS classes.
 - Badge/pill syntax now uses `((Label))` / `((Label)){.variant}` as the primary notation; legacy pipe-delimited pills remain accepted as a migration alias.
 - Sidebar layouts now use standalone `::: sidebar` followed by page content; `::: layout {.sidebar-main}` / `::: main` remains supported for compatibility but is no longer documented as the preferred pattern.
-- `### {.left}` / `### {.center}` / `### {.right}` inside `::: row` are now ignored; use `::: row {.right}` or `::: row {.center}` for whole-row alignment, and `::: grid-N` for split left/right layouts.
+- `### {.left}` / `### {.center}` / `### {.right}` inside `::: row` are now ignored; use `::: row {.right}` or `::: row {.center}` for whole-row alignment, and `::: columns-N` for split left/right layouts.
 
 ## [0.2.1] - 2026-04-30
 

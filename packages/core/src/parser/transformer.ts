@@ -191,7 +191,7 @@ function transformNode(
 /**
  * Process a list of MDAST nodes into wiremd nodes.
  * Shared by both the top-level document pass and container children.
- * Layout containers (grid, row, tabs) are now handled via ::: syntax in transformContainer.
+ * Layout containers (columns, row, tabs) are handled via ::: syntax in transformContainer.
  */
 function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode[] {
   const result: WiremdNode[] = [];
@@ -225,64 +225,107 @@ function isHtmlCommentNode(node: any): boolean {
   return node.type === 'html' && typeof node.value === 'string' && /^<!--[\s\S]*-->$/.test(node.value.trim());
 }
 
-/**
- * Collect ### headings inside a ::: grid-N container as grid-item nodes.
- * The first heading depth encountered defines the item boundary level.
- */
-function collectGridItemsFromContainer(
+function mapColumnClasses(classes: string[] = []): string[] {
+  const mapped: string[] = [];
+  for (const className of classes) {
+    const span = className.match(/^span-(\d+)$/);
+    if (span) {
+      mapped.push(`col-span-${span[1]}`);
+    } else if (['left', 'center', 'right'].includes(className)) {
+      mapped.push(`align-${className}`);
+    } else {
+      mapped.push(className);
+    }
+  }
+  return mapped;
+}
+
+function parseBareColumnProps(value: string): any | null {
+  const trimmed = value.trim();
+  if (!trimmed || !trimmed.split(/\s+/).every((part) => part.startsWith('.'))) {
+    return null;
+  }
+  return parseAttributes(`{${trimmed}}`);
+}
+
+function parseColumnInline(value: string): { title: string; props: any } {
+  const trimmed = value.trim();
+  const bareProps = parseBareColumnProps(trimmed);
+  if (bareProps) {
+    return { title: '', props: bareProps };
+  }
+
+  const attrMatch = trimmed.match(/^(.*?)(?:\s+(\{[^}]+\}))?$/);
+  return {
+    title: attrMatch?.[1]?.trim() || trimmed,
+    props: attrMatch?.[2] ? parseAttributes(attrMatch[2]) : { classes: [] },
+  };
+}
+
+function transformColumnContainer(
+  node: any,
+  ctx: TransformContext,
+  isCard = false,
+): WiremdNode {
+  const props = parseAttributes(node.attributes || '');
+  const contentChildren = [...(node.children || [])];
+  const inlineParts =
+    typeof node.inline === 'string' ? parseColumnInline(node.inline) : null;
+  const title = inlineParts?.title || '';
+
+  if (inlineParts) {
+    props.classes = [...(props.classes || []), ...(inlineParts.props.classes || [])];
+    if (
+      contentChildren[0]?.type === 'paragraph' &&
+      extractTextContent(contentChildren[0]).trim() === node.inline.trim()
+    ) {
+      contentChildren.shift();
+    }
+  } else if (contentChildren[0]?.type === 'paragraph') {
+    const firstText = extractTextContent(contentChildren[0]);
+    const firstParagraphProps = parseBareColumnProps(firstText);
+    if (firstParagraphProps) {
+      props.classes = [...(props.classes || []), ...(firstParagraphProps.classes || [])];
+      contentChildren.shift();
+    }
+  }
+
+  const classes = mapColumnClasses(props.classes || []);
+  if (isCard) classes.unshift('card');
+  const children = ctx.transformChildren(contentChildren) as any;
+  if (title) {
+    children.unshift({
+      type: 'heading',
+      level: 3,
+      content: title,
+      props: { classes: [] },
+    });
+  }
+
+  return {
+    type: 'grid-item',
+    props: { ...props, classes },
+    children,
+  };
+}
+
+function collectColumnItemsFromContainer(
   children: any[],
   ctx: TransformContext,
   isCard: boolean,
 ): WiremdNode[] {
-  const gridItems: WiremdNode[] = [];
-  const firstHeading = children.find((n: any) => n.type === 'heading');
-  if (!firstHeading) return gridItems;
-  const itemDepth = firstHeading.depth;
-
-  let pending: any[] = []; // HTML comment nodes to carry forward to the next cell
-
-  let i = 0;
-  while (i < children.length) {
-    const child = children[i];
-    if (child.type === 'heading' && child.depth === itemDepth) {
-      // Flush pending comment nodes as siblings BEFORE this grid-item so the
-      // annotation wraps the whole grid-item div rather than the heading inside.
-      for (const c of pending) {
-        const m = (c.value as string).match(/^<!--([\s\S]*?)-->$/);
-        if (m) gridItems.push({ type: 'comment', text: m[1].trim() } as any);
-      }
-      pending = [];
-      const rawItemNodes: any[] = [child];
-      i++;
-      while (i < children.length) {
-        const next = children[i];
-        if (next.type === 'heading' && next.depth <= itemDepth) break;
-        rawItemNodes.push(next);
-        i++;
-      }
-      // Peel trailing HTML comments off to carry them into the next cell
-      if (i < children.length) {
-        let split = rawItemNodes.length;
-        while (split > 0 && isHtmlCommentNode(rawItemNodes[split - 1])) split--;
-        if (split < rawItemNodes.length) pending = rawItemNodes.splice(split);
-      }
-      const headingContent = extractTextContent(child);
-      const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
-      const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
-      const itemProps: any = { classes: [] };
-      if (isCard) itemProps.classes.push('card');
-      if (colSpanMatch) itemProps.classes.push(`col-span-${colSpanMatch[1]}`);
-      if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
-      gridItems.push({
-        type: 'grid-item',
-        props: itemProps,
-        children: ctx.transformChildren(rawItemNodes) as any,
-      });
-    } else {
-      i++;
+  const items: WiremdNode[] = [];
+  for (const child of children) {
+    if (isHtmlCommentNode(child)) {
+      const m = (child.value as string).match(/^<!--([\s\S]*?)-->$/);
+      if (m) items.push({ type: 'comment', text: m[1].trim() } as any);
+      continue;
+    }
+    if (child.type === 'wiremdContainer' && child.containerType === 'column') {
+      items.push(transformColumnContainer(child, ctx, isCard));
     }
   }
-  return gridItems;
+  return items;
 }
 
 /**
@@ -350,17 +393,17 @@ function transformContainer(node: any, ctx: TransformContext): WiremdNode {
   const props = parseAttributes(node.attributes || '');
   const containerType: string = (node.containerType || '').trim();
 
-  // ::: grid-N  /  ::: grid-N card
-  const gridMatch = containerType.match(/^grid-(\d+)$/);
-  if (gridMatch) {
-    const columns = parseInt(gridMatch[1], 10);
+  // ::: columns-N  /  ::: columns-N card
+  const columnsMatch = containerType.match(/^columns-(\d+)$/);
+  if (columnsMatch) {
+    const columns = parseInt(columnsMatch[1], 10);
     const firstChild = node.children[0];
     const firstChildText: string =
       firstChild?.type === 'paragraph' && firstChild.children?.[0]?.type === 'text'
         ? (firstChild.children[0].value as string)
         : '';
     // Accept `card` as the FIRST WORD on the opener-inline line, ignoring any
-    // free trailing text — `::: grid-3 card extra ignored` still flags the grid.
+    // free trailing text — `::: columns-3 card extra ignored` still flags it.
     const firstWord = firstChildText.trim().split(/\s+/)[0];
     const hasCard =
       firstWord === 'card' ||
@@ -370,8 +413,13 @@ function transformContainer(node: any, ctx: TransformContext): WiremdNode {
       type: 'grid',
       columns,
       props: { ...props, card: hasCard, classes: (props.classes || []).filter((c: string) => c !== 'card') },
-      children: collectGridItemsFromContainer(contentChildren, ctx, hasCard) as any,
+      children: collectColumnItemsFromContainer(contentChildren, ctx, hasCard) as any,
     };
+  }
+
+  // ::: column
+  if (containerType === 'column') {
+    return transformColumnContainer(node, ctx);
   }
 
   // ::: row

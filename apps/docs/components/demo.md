@@ -19,20 +19,23 @@ Password
 [Sign In]* [Forgot password?]
 :::
 
-## With a Grid
+## With Columns
 ::: demo
-::: grid-3 card
-### Free
+::: columns-3 card
+::: column Free
 $0/mo
 [Get Started]
 
-### Pro
+:::
+::: column Pro
 $12/mo
 [Start Trial]*
 
-### Enterprise
+:::
+::: column Enterprise
 Custom
 [Contact Sales]
+:::
 :::
 :::
 
@@ -44,6 +47,6 @@ Custom
 :::
 ```
 
-Works with any wiremd component: buttons, inputs, grids, tabs, badges, navigation, cards. The source pane always shows exactly what you typed.
+Works with any wiremd component: buttons, inputs, columns, tabs, badges, navigation, cards. The source pane always shows exactly what you typed.
 
 > **Note:** `::: demo` is rendered by the wiremd CLI and VS Code extension. It is not rendered by VitePress — this page itself is served via `wiremd --serve`.

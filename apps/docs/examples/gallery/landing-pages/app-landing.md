@@ -27,34 +27,42 @@ Stay organized, focused, and on top of your tasks with the #1 rated productivity
 [[ :apple: App Store Featured | :android: Google Play Editors' Choice | :producthunt: Product Hunt #1 | :techcrunch: TechCrunch | :verge: The Verge ]]
 
 ---
-::: grid-3 card
-
-### :check: Smart Task Management
+::: columns-3 card
+::: column :check: Smart Task Management
 Create, organize, and prioritize tasks with intelligent categorization and due dates.
 
-### :calendar: Calendar Integration
+:::
+::: column :calendar: Calendar Integration
 Sync with Google Calendar, Outlook, and Apple Calendar seamlessly.
 
-### :bell: Smart Reminders
+:::
+::: column :bell: Smart Reminders
 Location-based and time-based reminders ensure you never miss a deadline.
 
-### :repeat: Recurring Tasks
+:::
+::: column :repeat: Recurring Tasks
 Set up daily, weekly, or custom recurring tasks with flexible schedules.
 
-### :users: Team Collaboration
+:::
+::: column :users: Team Collaboration
 Share lists, assign tasks, and collaborate with your team in real-time.
 
-### :cloud: Cloud Sync
+:::
+::: column :cloud: Cloud Sync
 Access your tasks anywhere with automatic sync across all devices.
 
-### :chart: Progress Tracking
+:::
+::: column :chart: Progress Tracking
 Visualize your productivity with charts, streaks, and achievement badges.
 
-### :shield: Secure & Private
+:::
+::: column :shield: Secure & Private
 End-to-end encryption keeps your data safe and private.
 
-### :palette: Customizable
+:::
+::: column :palette: Customizable
 Themes, tags, and custom views let you personalize your experience.
+:::
 :::
 
 ---
@@ -81,53 +89,58 @@ TaskMaster combines elegant design with powerful productivity features. Manage y
 ---
 
 ## Loved by Millions
-::: grid-2 card
-
-### :star::star::star::star::star:
+::: columns-2 card
+::: column :star::star::star::star::star:
 *"This app changed my life. I've never been this organized. The natural language input is a game changer!"*
 
 **Alex Martinez** • Entrepreneur
 *App Store Review*
 
-### :star::star::star::star::star:
+:::
+::: column :star::star::star::star::star:
 *"I've tried every task app out there. TaskMaster is the only one that stuck. Simple, fast, and actually helps me get things done."*
 
 **Sarah Chen** • Product Manager
 *Google Play Review*
 
-### :star::star::star::star::star:
+:::
+::: column :star::star::star::star::star:
 *"The team collaboration features are fantastic. Our entire company uses it now. Highly recommended!"*
 
 **David Kim** • Startup Founder
 *ProductHunt Review*
 
-### :star::star::star::star::star:
+:::
+::: column :star::star::star::star::star:
 *"Beautiful interface, powerful features. The recurring tasks and reminders are exactly what I needed."*
 
 **Emma Johnson** • Designer
 *Twitter*
 :::
-
----
-::: grid-4 card
-
-### 5M+
-Downloads
-
-### 4.9★
-Average Rating
-
-### 150+
-Countries
-
-### 99.9%
-Uptime
 :::
 
 ---
-::: grid-3 card
+::: columns-4 card
+::: column 5M+
+Downloads
 
-### Free
+:::
+::: column 4.9★
+Average Rating
+
+:::
+::: column 150+
+Countries
+
+:::
+::: column 99.9%
+Uptime
+:::
+:::
+
+---
+::: columns-3 card
+::: column Free
 **$0** forever
 
 Perfect to get started
@@ -140,7 +153,8 @@ Perfect to get started
 
 [Download Free]*
 
-### Pro
+:::
+::: column Pro
 **$4.99** /month
 
 For power users
@@ -155,7 +169,8 @@ For power users
 
 [Start 30-Day Trial]*
 
-### Teams
+:::
+::: column Teams
 **$8.99** /user/month
 
 For businesses
@@ -169,6 +184,7 @@ For businesses
 - SLA guarantee
 
 [Contact Sales]*
+:::
 :::
 
 ---
@@ -231,35 +247,38 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 
 ---
 ::: footer
-::: grid-4 card
-
-### Product
+::: columns-4 card
+::: column Product
 - Features
 - Pricing
 - Download
 - Roadmap
 - What's New
 
-### Support
+:::
+::: column Support
 - Help Center
 - Contact Us
 - System Status
 - Report Bug
 - Feature Request
 
-### Company
+:::
+::: column Company
 - About
 - Blog
 - Careers
 - Press Kit
 - Affiliate Program
 
-### Legal
+:::
+::: column Legal
 - Privacy
 - Terms
 - Security
 - Licenses
 - Cookies
+:::
 :::
 
 ---

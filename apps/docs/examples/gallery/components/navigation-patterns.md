@@ -151,31 +151,34 @@ Email
 ### Multi-Column Footer
 ::: demo
 ::: footer
-::: grid-4 card
-
-### Product
+::: columns-4 card
+::: column Product
 - Features
 - Pricing
 - Changelog
 - Roadmap
 
-### Resources
+:::
+::: column Resources
 - Documentation
 - Tutorials
 - Blog
 - API Reference
 
-### Company
+:::
+::: column Company
 - About
 - Careers
 - Press
 - Partners
 
-### Legal
+:::
+::: column Legal
 - Privacy Policy
 - Terms of Service
 - Cookie Policy
 - GDPR
+:::
 :::
 
 ---

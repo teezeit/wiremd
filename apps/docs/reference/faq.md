@@ -138,9 +138,9 @@ Yes, using the `state` attribute:
 
 ## Layout & Styling
 
-### What grid sizes are available?
+### What column sizes are available?
 
-`grid-2` through `grid-5` (2, 3, 4, or 5 equal columns). Add `card` to get card chrome on each cell. On small viewports the columns collapse to a single column via CSS media queries.
+`columns-2` through `columns-5` (2, 3, 4, or 5 equal columns). Add `card` to get card chrome on each column item. On small viewports the columns collapse to a single column via CSS media queries.
 
 ### Can containers be nested?
 
@@ -238,17 +238,18 @@ Username              ✗ blank line breaks association
 [_____________________________]
 ```
 
-### Grid columns not appearing
+### Columns not appearing
 
-Each column needs a `###` heading inside the container:
+Each column needs an explicit `::: column` child inside the `::: columns-N` container:
 
 ```markdown
-::: grid-3 card
-
-### Column 1
+::: columns-3 card
+::: column Column 1
 Content
 
-### Column 2
+:::
+::: column Column 2
 Content
+:::
 :::
 ```

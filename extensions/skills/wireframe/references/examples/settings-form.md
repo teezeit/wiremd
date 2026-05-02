@@ -15,14 +15,15 @@
 
 :::
 
-::: grid-2
+::: columns-2
+::: column Profile Settings
 
-### Profile Settings
-
-### {.right}
+:::
+::: column .right
 
 [Save Changes]* [Cancel]
 
+:::
 :::
 
 ::: card

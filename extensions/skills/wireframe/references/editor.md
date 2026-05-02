@@ -106,45 +106,54 @@ Role
 :::
 
 # Section header with right-aligned action — VERY COMMON PATTERN
-::: grid-2
-### Section Title
+::: columns-2
+::: column Section Title
 
-### {.right}
+:::
+::: column .right
 
 [+ Add Item]*
 
 :::
+:::
 
 # KPI metric card
-::: grid-3
-### Total Revenue
+::: columns-3
+::: column Total Revenue
 **$124,500**
 ↑ 8% vs last period
 
-### Active Users
+:::
+::: column Active Users
 **3,842**
 ↑ 12% vs last period
 
-### Conversion
+:::
+::: column Conversion
 **4.2%**
 ↓ 0.3% vs last period
 
 :::
-
-# Grid — layout only, equal columns, no card chrome
-::: grid-3
-### Revenue
-$124,500
-### Users
-3,842
-### Conversion
-4.2%
 :::
 
-# Grid of cards — each item gets card styling
-::: grid-3 card
-### :rocket: Organic
+# Columns — layout only, equal columns, no card chrome
+::: columns-3
+::: column Revenue
+$124,500
+:::
+::: column Users
+3,842
+:::
+::: column Conversion
+4.2%
+:::
+:::
+
+# Columns of cards — each item gets card styling
+::: columns-3 card
+::: column :rocket: Organic
 42% of traffic
+:::
 :::
 
 # Table
@@ -176,7 +185,7 @@ Changes saved.
 <!-- Agreed — align with marketing copy. @sara -->
 [Login]*
 
-# Comment ABOVE a container annotates the whole thing (card, grid column, tabs block)
+# Comment ABOVE a container annotates the whole thing (card, column, tabs block)
 <!-- Does this card need a footer action? -->
 ::: card
 ### Free Plan
@@ -212,7 +221,7 @@ Are you sure?
 
 ## Composite example
 
-A dashboard with sidebar, in-page tabs, a metrics grid, a grid of cards, and a data table.
+A dashboard with sidebar, in-page tabs, metrics columns, card columns, and a data table.
 See the renderable version at `${CLAUDE_PLUGIN_ROOT}/references/examples/dashboard.md`.
 
 ---

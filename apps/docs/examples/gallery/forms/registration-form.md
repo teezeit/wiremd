@@ -14,9 +14,8 @@
 Join thousands of users already enjoying our platform
 
 ---
-::: grid-2
-
-### Account Details
+::: columns-2
+::: column Account Details
 
 Email Address
 [_____________________________] {type:email required:true}
@@ -28,7 +27,8 @@ Password
 Confirm Password
 [********] {type:password required:true}
 
-### Profile Information
+:::
+::: column Profile Information
 
 First Name
 [_____________________________] {required:true}
@@ -39,11 +39,11 @@ Last Name
 Phone Number
 [_____________________________] {type:tel}
 :::
+:::
 
 ---
-::: grid-3 card
-
-### Free
+::: columns-3 card
+::: column Free
 **$0** /month
 
 - 5 Projects
@@ -53,7 +53,8 @@ Phone Number
 
 - ( ) Select Free
 
-### Pro
+:::
+::: column Pro
 **$19** /month
 
 - Unlimited Projects
@@ -63,7 +64,8 @@ Phone Number
 
 - (*) Select Pro
 
-### Enterprise
+:::
+::: column Enterprise
 **Custom** pricing
 
 - Unlimited Everything
@@ -72,6 +74,7 @@ Phone Number
 - SLA Guarantee
 
 - ( ) Select Enterprise
+:::
 :::
 
 ---

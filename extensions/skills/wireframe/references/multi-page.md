@@ -79,7 +79,7 @@ A minimal list → detail → back flow lives at
 `examples/multi-page/`:
 
 - `_nav.md` — `[[ :logo: MyApp | [Home](./index.md) | [Detail](./detail.md) ]]`
-- `index.md` — landing, card grid, activity table, CTA link to detail
+- `index.md` — landing, card columns, activity table, CTA link to detail
 - `detail.md` — breadcrumb, form, back link
 
 Render the whole folder:

@@ -2,7 +2,7 @@
 
 > **Use Case:** App shell with persistent sidebar navigation and main content area.
 >
-> **Key Features:** Sidebar nav with sections, main content area, button links, grid cards, table
+> **Key Features:** Sidebar nav with sections, main content area, button links, card columns, table
 ::: demo
 ::: sidebar
 
@@ -32,16 +32,18 @@
 ## Overview
 
 A summary of your workspace activity and open tasks.
-::: grid-3 card
-
-### :check: Tasks Done
+::: columns-3 card
+::: column :check: Tasks Done
 **48** this week
 
-### :clock: In Progress
+:::
+::: column :clock: In Progress
 **12** open
 
-### :bell: Upcoming
+:::
+::: column :bell: Upcoming
 **5** due today
+:::
 :::
 
 ## Recent Projects

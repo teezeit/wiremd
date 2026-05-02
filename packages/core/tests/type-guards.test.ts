@@ -221,12 +221,16 @@ describe('Type Guards', () => {
   describe('isGridNode()', () => {
     it('should identify grid nodes', () => {
       const ast = parse(`
-::: grid-3
-
+::: columns-3
+::: column
 ### Feature 1
+:::
+::: column
 ### Feature 2
+:::
+::: column
 ### Feature 3
-
+:::
 :::
       `);
       const node = ast.children[0];
@@ -249,8 +253,8 @@ describe('Type Guards', () => {
 
     it('should work with different column counts', () => {
       for (let cols = 2; cols <= 4; cols++) {
-        const items = Array(cols).fill(0).map((_, i) => `### Item ${i + 1}`).join('\n');
-        const ast = parse(`::: grid-${cols}\n\n${items}\n\n:::`);
+        const items = Array(cols).fill(0).map((_, i) => `::: column\n### Item ${i + 1}\n:::`).join('\n');
+        const ast = parse(`::: columns-${cols}\n${items}\n:::`);
         const node = ast.children[0];
 
         expect(isGridNode(node)).toBe(true);

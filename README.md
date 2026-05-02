@@ -48,22 +48,24 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 
 ![wiremd web editor screenshot](https://teezeit.github.io/wiremd/assets/guides/guide-screenshot-webeditor.png)
 
-### Grid Layout
+### Columns Layout
 
 Create a `features.md` file:
 
 ```markdown
-::: grid-3 card
-
-### :rocket: Fast
+::: columns-3 card
+::: column :rocket: Fast
 Lightning quick performance
 
-### :shield: Secure
+:::
+::: column :shield: Secure
 Bank-level security
 
-### :gear: Flexible
+:::
+::: column :gear: Flexible
 Fully customizable
 
+:::
 :::
 ```
 
@@ -73,13 +75,13 @@ Generate a wireframe:
 wiremd features.md --style sketch
 ```
 
-This creates a responsive 3-column grid layout with icons and descriptions.
+This creates a responsive 3-column layout with icons and descriptions.
 
 ## Features
 
 - ✅ **Markdown-first** - Valid markdown that degrades gracefully
 - ✅ **Full markdown support** - Headings, text formatting, lists, links, images, blockquotes, code blocks, tables
-- ✅ **Grid layouts** - Responsive multi-column grids (2, 3, 4, 5 columns) with simple `::: grid-N` syntax
+- ✅ **Columns layouts** - Responsive multi-column layouts (2, 3, 4, 5 columns) with explicit `::: columns-N` / `::: column` syntax
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed

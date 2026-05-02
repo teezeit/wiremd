@@ -67,27 +67,29 @@ Country
 
 ---
 
-## Cards (Grid)
+## Cards (Columns)
 ::: demo
-::: grid-3 card
-
-### Free
+::: columns-3 card
+::: column Free
 $0/mo
 - 1 user
 - 5 projects
 [Get Started]
 
-### Pro
+:::
+::: column Pro
 $12/mo
 - 10 users
 - Unlimited projects
 [Start Trial]*
 
-### Enterprise
+:::
+::: column Enterprise
 Custom
 - Unlimited users
 - SLA support
 [Contact Sales]
+:::
 :::
 :::
 

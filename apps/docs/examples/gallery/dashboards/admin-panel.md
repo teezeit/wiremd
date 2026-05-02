@@ -40,33 +40,36 @@
 :::
 
 ---
-::: grid-5 card
-
-### Total Users
+::: columns-5 card
+::: column Total Users
 **24,567**
 +234 this week
 
-### Active Sessions
+:::
+::: column Active Sessions
 **1,234**
 Current online
 
-### Total Revenue
+:::
+::: column Total Revenue
 **$458,234**
 +12% this month
 
-### Support Tickets
+:::
+::: column Support Tickets
 **89**
 23 pending
 
-### Server Load
+:::
+::: column Server Load
 **67%**
 Normal
 :::
+:::
 
 ---
-::: grid-2 card
-
-### Latest Users
+::: columns-2 card
+::: column Latest Users
 
 | User | Email | Role | Status | Joined |
 |------|-------|------|--------|--------|
@@ -78,7 +81,8 @@ Normal
 
 [Manage Users →]
 
-### Recent Orders
+:::
+::: column Recent Orders
 
 | Order | Customer | Amount | Status | Date |
 |-------|----------|--------|--------|------|
@@ -89,6 +93,7 @@ Normal
 | #12341 | Charlie Kim | $178.50 | Completed | 8h ago |
 
 [View All Orders →]
+:::
 :::
 
 ---
@@ -129,9 +134,8 @@ Showing 1-5 of 24,567 users
 [← Previous] [1] [2] [3] ... [4913] [Next →]
 
 ---
-::: grid-2 card
-
-### Published Content
+::: columns-2 card
+::: column Published Content
 
 | Type | Count | This Week |
 |------|-------|-----------|
@@ -142,13 +146,15 @@ Showing 1-5 of 24,567 users
 
 [Manage Content →]
 
-### Draft Content
+:::
+::: column Draft Content
 
 **Pending Review:** 45
 **Scheduled:** 12
 **Auto-saved:** 8
 
 [Review Drafts →]
+:::
 :::
 
 ---
@@ -249,9 +255,8 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 :::
 
 ---
-::: grid-2 card
-
-### Database Stats
+::: columns-2 card
+::: column Database Stats
 
 **Total Records:** 1,234,567
 **Size:** 2.4 GB
@@ -265,7 +270,8 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 [Backup Now] [Optimize Database]
 
-### Storage Usage
+:::
+::: column Storage Usage
 
 **Total Storage:** 100 GB
 **Used:** 67 GB (67%)
@@ -281,11 +287,11 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 [Cleanup Storage]
 :::
+:::
 
 ---
-::: grid-3 card
-
-### Open Tickets
+::: columns-3 card
+::: column Open Tickets
 **23** new
 
 Priority breakdown:
@@ -295,7 +301,8 @@ Priority breakdown:
 
 [View Tickets →]
 
-### In Progress
+:::
+::: column In Progress
 **45** active
 
 Average response time:
@@ -303,7 +310,8 @@ Average response time:
 
 [Assign Tickets →]
 
-### Resolved Today
+:::
+::: column Resolved Today
 **89** closed
 
 Customer satisfaction:
@@ -311,31 +319,35 @@ Customer satisfaction:
 
 [View Reports →]
 :::
+:::
 
 ---
 
 ## Quick Actions
-::: grid-4 card
-
-### :user: Create User
+::: columns-4 card
+::: column :user: Create User
 Add new user account
 
 [+ New User]*
 
-### :content: Add Content
+:::
+::: column :content: Add Content
 Create new post/page
 
 [+ New Content]*
 
-### :mail: Send Email
+:::
+::: column :mail: Send Email
 Broadcast to users
 
 [Compose]*
 
-### :download: Export Data
+:::
+::: column :download: Export Data
 Download reports
 
 [Export]*
+:::
 :::
 
 ---
