@@ -43,7 +43,7 @@
     "lint": "eslint src --ext .ts",
     "clean": "rm -rf dist node_modules",
     "publish:npm": "npm publish --access public",
-    "review": "tsx scripts/build-review-page.ts && open tests/fixtures/REVIEW.html",
+    "review": "node --loader ./scripts/svg-raw-loader.mjs --import tsx scripts/build-review-page.ts && open tests/fixtures/REVIEW.html",
     "review:log": "tsx scripts/build-review-log.ts",
     "review:flag": "tsx scripts/flag-review.ts",
     "review:refresh": "pnpm run review:log && pnpm run test -- tests/fixtures.test.ts -u && pnpm run review:flag --snapshot-changes"

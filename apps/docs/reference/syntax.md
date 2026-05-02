@@ -415,12 +415,14 @@ The most common `columns-2` pattern — title left, button right:
 
 ### Column alignment
 
-Add `right`, `left`, or `center` to a `::: column` opener to align that column's content:
+Add `right`, `left`, or `center` to a `::: column` opener to align that column's content horizontally. Add `top` or `bottom` for vertical alignment within the grid row:
 
 ```markdown
 ::: column {right}
 ::: column {left}
 ::: column {center}
+::: column {top}
+::: column {bottom}
 ```
 
 ### Column spans

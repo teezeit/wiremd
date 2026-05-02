@@ -373,6 +373,15 @@ Email
       // Should be mobile-first: 1 column on mobile, 2 on md, 3 on lg
       expect(html).toContain('grid-cols-1 md:grid-cols-2 lg:grid-cols-3');
     });
+
+    it('should render vertical alignment utilities for columns and rows', () => {
+      const ast = parse('::: columns-2\n::: column {top}\nA\n:::\n::: column {bottom}\nB\n:::\n:::\n\n::: row {bottom}\n[Save]*\n:::');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('self-start');
+      expect(html).toContain('self-end');
+      expect(html).toContain('items-end');
+    });
   });
 
   describe('Color System', () => {

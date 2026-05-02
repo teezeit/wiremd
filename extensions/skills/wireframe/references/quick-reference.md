@@ -44,11 +44,11 @@
 | **3 Columns** | `::: columns-3` | |
 | **4 Columns** | `::: columns-4` | |
 | **Row** | `::: row` … `:::` | Horizontal flex row, children auto-wrapped |
-| **Row (aligned)** | `::: row {right}` … `:::` | Right-aligned row |
+| **Row (aligned)** | `::: row {right}` / `::: row {bottom}` … `:::` | Horizontal or vertical row alignment |
 | **Tabs** | `::: tabs` with `::: tab Label` children | Tabbed panels |
 | **Column title** | `::: column Billing address` | Renders a heading at the top of the column |
 | **Col span** | `::: column {span-2}` | Item spans 2 columns |
-| **Column alignment** | `::: column {right}` / `::: column {left}` / `::: column {center}` inside `::: columns-N` | Aligns that column |
+| **Column alignment** | `::: column {right}` / `::: column {center}` / `::: column {top}` / `::: column {bottom}` inside `::: columns-N` | Aligns that column |
 
 Columns are defined by explicit `::: column` child containers inside the `::: columns-N` container.
 

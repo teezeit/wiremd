@@ -232,6 +232,7 @@ const BUTTON_VARIANT_TOKENS = ['primary', 'secondary', 'danger'] as const;
 const BUTTON_SIZE_TOKENS = ['small', 'large'] as const;
 const BUTTON_STATE_TOKENS = ['disabled', 'loading'] as const;
 const ALIGNMENT_TOKENS = ['left', 'center', 'right'] as const;
+const VERTICAL_ALIGNMENT_TOKENS = ['top', 'bottom'] as const;
 const STATUS_CLASS_TOKENS = ['primary', 'success', 'warning', 'error', 'danger'] as const;
 const FORM_STATE_TOKENS = ['error', 'success', 'warning'] as const;
 
@@ -280,6 +281,12 @@ function normalizeRowProps(props: any): void {
       ensureClass(props, token);
     }
   }
+
+  for (const token of VERTICAL_ALIGNMENT_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, `align-${token}`);
+    }
+  }
 }
 
 function normalizeContainerProps(props: any): void {
@@ -298,6 +305,14 @@ function normalizeFormControlProps(props: any): void {
   }
 }
 
+function normalizeVerticalAlignmentProps(props: any): void {
+  for (const token of VERTICAL_ALIGNMENT_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, `align-${token}`);
+    }
+  }
+}
+
 function normalizeGridItemProps(props: any): void {
   for (const key of Object.keys(props)) {
     const match = key.match(/^span-(\d+)$/);
@@ -312,12 +327,15 @@ function normalizeGridItemProps(props: any): void {
       ensureClass(props, `align-${token}`);
     }
   }
+
+  normalizeVerticalAlignmentProps(props);
 }
 
 function normalizeSemanticTokens(node: any): void {
   if (!node || typeof node !== 'object') return;
 
   if (node.props) {
+    normalizeVerticalAlignmentProps(node.props);
     if (node.type === 'button') normalizeButtonProps(node.props);
     if (node.type === 'badge') normalizeBadgeProps(node.props);
     if (node.type === 'container') normalizeContainerProps(node.props);
@@ -338,6 +356,8 @@ function mapColumnClasses(classes: string[] = []): string[] {
     if (span) {
       mapped.push(`col-span-${span[1]}`);
     } else if (['left', 'center', 'right'].includes(className)) {
+      mapped.push(`align-${className}`);
+    } else if (['top', 'bottom'].includes(className)) {
       mapped.push(`align-${className}`);
     } else {
       mapped.push(className);

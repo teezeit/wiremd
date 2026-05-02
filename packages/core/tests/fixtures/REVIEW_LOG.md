@@ -100,84 +100,86 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [✅ column-spanning][63]
 - [✅ two-column-layout][64]
 - [✅ alignment][65]
+- [✅ vertical-alignment][66]
 
 ### Row (apps/docs/components/row.md)
-- [✅ basic-row][66]
-- [✅ row-with-alignment][67]
-- [✅ row-with-alignment-2][68]
-- [✅ split-layouts][69]
-- [✅ mixed-content][70]
-- [✅ mixed-content-2][71]
-- [✅ mixed-content-3][72]
-- [✅ search-and-filters][73]
-- [✅ toolbar-pattern][74]
+- [✅ basic-row][67]
+- [✅ row-with-alignment][68]
+- [✅ row-with-alignment-2][69]
+- [✅ vertical-alignment][70]
+- [✅ split-layouts][71]
+- [✅ mixed-content][72]
+- [✅ mixed-content-2][73]
+- [✅ mixed-content-3][74]
+- [✅ search-and-filters][75]
+- [✅ toolbar-pattern][76]
 
 ### Cards (apps/docs/components/cards.md)
-- [✅ card][75]
-- [✅ card-columns][76]
-- [✅ hero][77]
-- [✅ modal][78]
-- [📝 section][79] — not sure what section is supposed to do
-- [📝 footer][80] — not sure what this component actually does
-- [✅ empty-state][81]
-- [✅ loading-state][82]
-- [✅ error-state][83]
+- [✅ card][77]
+- [✅ card-columns][78]
+- [✅ hero][79]
+- [✅ modal][80]
+- [📝 section][81] — not sure what section is supposed to do
+- [📝 footer][82] — not sure what this component actually does
+- [✅ empty-state][83]
+- [✅ loading-state][84]
+- [✅ error-state][85]
 
 ### Tabs (apps/docs/components/tabs.md)
-- [✅ basic-tabs][84]
-- [✅ settings-pattern][85]
+- [✅ basic-tabs][86]
+- [✅ settings-pattern][87]
 
 ### Page Layouts (apps/docs/components/page-layouts.md)
-- [✅ top-nav-layout][86]
-- [✅ top-nav-with-right-aligned-actions][87]
-- [✅ sidebar-layout][88]
-- [✅ sidebar-with-sections][89]
-- [✅ navbar-sidebar-layout][90]
+- [✅ top-nav-layout][88]
+- [✅ top-nav-with-right-aligned-actions][89]
+- [✅ sidebar-layout][90]
+- [✅ sidebar-with-sections][91]
+- [✅ navbar-sidebar-layout][92]
 
 ### Navigation (apps/docs/components/navigation.md)
-- [✅ navbar][91]
-- [✅ active-state][92]
-- [✅ with-icon-and-buttons][93]
-- [✅ navigation-select][94]
-- [✅ breadcrumbs][95]
-- [✅ sidebar-nav][96]
-- [✅ pagination][97]
+- [✅ navbar][93]
+- [✅ active-state][94]
+- [✅ with-icon-and-buttons][95]
+- [✅ navigation-select][96]
+- [✅ breadcrumbs][97]
+- [✅ sidebar-nav][98]
+- [✅ pagination][99]
 
 ### Tables (apps/docs/components/tables.md)
-- [✅ basic-table][98]
-- [✅ with-badges][99]
-- [✅ data-table-with-actions][100]
-- [✅ column-alignment][101]
+- [✅ basic-table][100]
+- [✅ with-badges][101]
+- [✅ data-table-with-actions][102]
+- [✅ column-alignment][103]
 
 ### Alerts (apps/docs/components/alerts.md)
-- [✅ default][102]
-- [✅ variants][103]
-- [✅ variants-2][104]
-- [✅ variants-3][105]
-- [✅ with-inline-content-on-opener][106]
+- [✅ default][104]
+- [✅ variants][105]
+- [✅ variants-2][106]
+- [✅ variants-3][107]
+- [✅ with-inline-content-on-opener][108]
 
 ### Comments (apps/docs/components/comments.md)
-- [✅ basic-usage][107]
-- [✅ threads-multiple-comments-on-one-element][108]
-- [✅ annotating-a-whole-card][109]
-- [✅ annotating-a-whole-card-2][110] — test should be called annotate item inside a card
-- [✅ annotating-a-whole-column][111]
-- [✅ comments-between-tabs][112]
-- [✅ multiline-comments][113]
+- [✅ basic-usage][109]
+- [✅ threads-multiple-comments-on-one-element][110]
+- [✅ annotating-a-whole-card][111]
+- [✅ annotating-a-whole-card-2][112] — test should be called annotate item inside a card
+- [✅ annotating-a-whole-column][113]
+- [✅ comments-between-tabs][114]
+- [✅ multiline-comments][115]
 
 ### Attributes (apps/docs/components/attributes.md)
-- [✅ semantic-modifiers][114]
-- [✅ key-value-attributes][115]
-- [✅ combining-classes-and-attributes][116]
-- [✅ on-column-items][117]
+- [✅ semantic-modifiers][116]
+- [✅ key-value-attributes][117]
+- [✅ combining-classes-and-attributes][118]
+- [✅ on-column-items][119]
 
 ### Demo (apps/docs/components/demo.md)
-- [✅ basic-usage][118]
-- [✅ with-a-form][119]
-- [✅ with-columns][120]
+- [✅ basic-usage][120]
+- [✅ with-a-form][121]
+- [✅ with-columns][122]
 
 ### Index (apps/docs/components/index.md)
-- [✅ demo][121]
+- [✅ demo][123]
 
 [1]: ./REVIEW.html#fixture-regression-columns-col-span-large
 [2]: ./REVIEW.html#fixture-regression-columns-text-after-opener-flag
@@ -244,59 +246,61 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 [63]: ./REVIEW.html#fixture-docs-columns-column-spanning
 [64]: ./REVIEW.html#fixture-docs-columns-two-column-layout
 [65]: ./REVIEW.html#fixture-docs-columns-alignment
-[66]: ./REVIEW.html#fixture-docs-row-basic-row
-[67]: ./REVIEW.html#fixture-docs-row-row-with-alignment
-[68]: ./REVIEW.html#fixture-docs-row-row-with-alignment-2
-[69]: ./REVIEW.html#fixture-docs-row-split-layouts
-[70]: ./REVIEW.html#fixture-docs-row-mixed-content
-[71]: ./REVIEW.html#fixture-docs-row-mixed-content-2
-[72]: ./REVIEW.html#fixture-docs-row-mixed-content-3
-[73]: ./REVIEW.html#fixture-docs-row-search-and-filters
-[74]: ./REVIEW.html#fixture-docs-row-toolbar-pattern
-[75]: ./REVIEW.html#fixture-docs-cards-card
-[76]: ./REVIEW.html#fixture-docs-cards-card-columns
-[77]: ./REVIEW.html#fixture-docs-cards-hero
-[78]: ./REVIEW.html#fixture-docs-cards-modal
-[79]: ./REVIEW.html#fixture-docs-cards-section
-[80]: ./REVIEW.html#fixture-docs-cards-footer
-[81]: ./REVIEW.html#fixture-docs-cards-empty-state
-[82]: ./REVIEW.html#fixture-docs-cards-loading-state
-[83]: ./REVIEW.html#fixture-docs-cards-error-state
-[84]: ./REVIEW.html#fixture-docs-tabs-basic-tabs
-[85]: ./REVIEW.html#fixture-docs-tabs-settings-pattern
-[86]: ./REVIEW.html#fixture-docs-page-layouts-top-nav-layout
-[87]: ./REVIEW.html#fixture-docs-page-layouts-top-nav-with-right-aligned-actions
-[88]: ./REVIEW.html#fixture-docs-page-layouts-sidebar-layout
-[89]: ./REVIEW.html#fixture-docs-page-layouts-sidebar-with-sections
-[90]: ./REVIEW.html#fixture-docs-page-layouts-navbar-sidebar-layout
-[91]: ./REVIEW.html#fixture-docs-navigation-navbar
-[92]: ./REVIEW.html#fixture-docs-navigation-active-state
-[93]: ./REVIEW.html#fixture-docs-navigation-with-icon-and-buttons
-[94]: ./REVIEW.html#fixture-docs-navigation-navigation-select
-[95]: ./REVIEW.html#fixture-docs-navigation-breadcrumbs
-[96]: ./REVIEW.html#fixture-docs-navigation-sidebar-nav
-[97]: ./REVIEW.html#fixture-docs-navigation-pagination
-[98]: ./REVIEW.html#fixture-docs-tables-basic-table
-[99]: ./REVIEW.html#fixture-docs-tables-with-badges
-[100]: ./REVIEW.html#fixture-docs-tables-data-table-with-actions
-[101]: ./REVIEW.html#fixture-docs-tables-column-alignment
-[102]: ./REVIEW.html#fixture-docs-alerts-default
-[103]: ./REVIEW.html#fixture-docs-alerts-variants
-[104]: ./REVIEW.html#fixture-docs-alerts-variants-2
-[105]: ./REVIEW.html#fixture-docs-alerts-variants-3
-[106]: ./REVIEW.html#fixture-docs-alerts-with-inline-content-on-opener
-[107]: ./REVIEW.html#fixture-docs-comments-basic-usage
-[108]: ./REVIEW.html#fixture-docs-comments-threads-multiple-comments-on-one-element
-[109]: ./REVIEW.html#fixture-docs-comments-annotating-a-whole-card
-[110]: ./REVIEW.html#fixture-docs-comments-annotating-a-whole-card-2
-[111]: ./REVIEW.html#fixture-docs-comments-annotating-a-whole-column
-[112]: ./REVIEW.html#fixture-docs-comments-comments-between-tabs
-[113]: ./REVIEW.html#fixture-docs-comments-multiline-comments
-[114]: ./REVIEW.html#fixture-docs-attributes-semantic-modifiers
-[115]: ./REVIEW.html#fixture-docs-attributes-key-value-attributes
-[116]: ./REVIEW.html#fixture-docs-attributes-combining-classes-and-attributes
-[117]: ./REVIEW.html#fixture-docs-attributes-on-column-items
-[118]: ./REVIEW.html#fixture-docs-demo-basic-usage
-[119]: ./REVIEW.html#fixture-docs-demo-with-a-form
-[120]: ./REVIEW.html#fixture-docs-demo-with-columns
-[121]: ./REVIEW.html#fixture-docs-index-demo
+[66]: ./REVIEW.html#fixture-docs-columns-vertical-alignment
+[67]: ./REVIEW.html#fixture-docs-row-basic-row
+[68]: ./REVIEW.html#fixture-docs-row-row-with-alignment
+[69]: ./REVIEW.html#fixture-docs-row-row-with-alignment-2
+[70]: ./REVIEW.html#fixture-docs-row-vertical-alignment
+[71]: ./REVIEW.html#fixture-docs-row-split-layouts
+[72]: ./REVIEW.html#fixture-docs-row-mixed-content
+[73]: ./REVIEW.html#fixture-docs-row-mixed-content-2
+[74]: ./REVIEW.html#fixture-docs-row-mixed-content-3
+[75]: ./REVIEW.html#fixture-docs-row-search-and-filters
+[76]: ./REVIEW.html#fixture-docs-row-toolbar-pattern
+[77]: ./REVIEW.html#fixture-docs-cards-card
+[78]: ./REVIEW.html#fixture-docs-cards-card-columns
+[79]: ./REVIEW.html#fixture-docs-cards-hero
+[80]: ./REVIEW.html#fixture-docs-cards-modal
+[81]: ./REVIEW.html#fixture-docs-cards-section
+[82]: ./REVIEW.html#fixture-docs-cards-footer
+[83]: ./REVIEW.html#fixture-docs-cards-empty-state
+[84]: ./REVIEW.html#fixture-docs-cards-loading-state
+[85]: ./REVIEW.html#fixture-docs-cards-error-state
+[86]: ./REVIEW.html#fixture-docs-tabs-basic-tabs
+[87]: ./REVIEW.html#fixture-docs-tabs-settings-pattern
+[88]: ./REVIEW.html#fixture-docs-page-layouts-top-nav-layout
+[89]: ./REVIEW.html#fixture-docs-page-layouts-top-nav-with-right-aligned-actions
+[90]: ./REVIEW.html#fixture-docs-page-layouts-sidebar-layout
+[91]: ./REVIEW.html#fixture-docs-page-layouts-sidebar-with-sections
+[92]: ./REVIEW.html#fixture-docs-page-layouts-navbar-sidebar-layout
+[93]: ./REVIEW.html#fixture-docs-navigation-navbar
+[94]: ./REVIEW.html#fixture-docs-navigation-active-state
+[95]: ./REVIEW.html#fixture-docs-navigation-with-icon-and-buttons
+[96]: ./REVIEW.html#fixture-docs-navigation-navigation-select
+[97]: ./REVIEW.html#fixture-docs-navigation-breadcrumbs
+[98]: ./REVIEW.html#fixture-docs-navigation-sidebar-nav
+[99]: ./REVIEW.html#fixture-docs-navigation-pagination
+[100]: ./REVIEW.html#fixture-docs-tables-basic-table
+[101]: ./REVIEW.html#fixture-docs-tables-with-badges
+[102]: ./REVIEW.html#fixture-docs-tables-data-table-with-actions
+[103]: ./REVIEW.html#fixture-docs-tables-column-alignment
+[104]: ./REVIEW.html#fixture-docs-alerts-default
+[105]: ./REVIEW.html#fixture-docs-alerts-variants
+[106]: ./REVIEW.html#fixture-docs-alerts-variants-2
+[107]: ./REVIEW.html#fixture-docs-alerts-variants-3
+[108]: ./REVIEW.html#fixture-docs-alerts-with-inline-content-on-opener
+[109]: ./REVIEW.html#fixture-docs-comments-basic-usage
+[110]: ./REVIEW.html#fixture-docs-comments-threads-multiple-comments-on-one-element
+[111]: ./REVIEW.html#fixture-docs-comments-annotating-a-whole-card
+[112]: ./REVIEW.html#fixture-docs-comments-annotating-a-whole-card-2
+[113]: ./REVIEW.html#fixture-docs-comments-annotating-a-whole-column
+[114]: ./REVIEW.html#fixture-docs-comments-comments-between-tabs
+[115]: ./REVIEW.html#fixture-docs-comments-multiline-comments
+[116]: ./REVIEW.html#fixture-docs-attributes-semantic-modifiers
+[117]: ./REVIEW.html#fixture-docs-attributes-key-value-attributes
+[118]: ./REVIEW.html#fixture-docs-attributes-combining-classes-and-attributes
+[119]: ./REVIEW.html#fixture-docs-attributes-on-column-items
+[120]: ./REVIEW.html#fixture-docs-demo-basic-usage
+[121]: ./REVIEW.html#fixture-docs-demo-with-a-form
+[122]: ./REVIEW.html#fixture-docs-demo-with-columns
+[123]: ./REVIEW.html#fixture-docs-index-demo

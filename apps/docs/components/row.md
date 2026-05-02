@@ -24,6 +24,17 @@ Page 1 of 12   [← Prev] [Next →]
 :::
 :::
 
+## Vertical Alignment
+
+Add `{top}` or `{bottom}` to align mixed-height row items on the cross axis.
+::: demo
+::: row {bottom}
+[Notes...]{rows:3}
+
+[Cancel] [Save]*
+:::
+:::
+
 ## Split Layouts
 
 Use columns when one side needs to stay left while another side aligns right.
@@ -94,6 +105,7 @@ Use a row for a simple toolbar. For a title on the left and actions on the right
 :::
 ::: row {right}       right-align all content
 ::: row {center}      center all content
+::: row {bottom}      bottom-align mixed-height items
 
 ::: columns-2           split left/right content into columns
 ::: column

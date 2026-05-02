@@ -31,6 +31,10 @@ export function getStructuralCSS(prefix: string): string {
 .${prefix}align-left { margin-right: auto; }
 .${prefix}align-right { margin-left: auto; }
 .${prefix}align-center { margin: auto; }
+.${prefix}align-top { align-self: start; }
+.${prefix}align-bottom { align-self: end; }
+.${prefix}row.${prefix}align-top { align-items: flex-start; }
+.${prefix}row.${prefix}align-bottom { align-items: flex-end; }
 .${prefix}container-hero .${prefix}row { justify-content: center; }
 .${prefix}container-sidebar .${prefix}row,
 .${prefix}layout-sidebar .${prefix}row { display: block; }
