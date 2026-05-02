@@ -221,6 +221,27 @@ function collectContainer(
 
   // === CASE 3: Multi-block container — collect until matching closer ::: ===
   const containerChildren: any[] = [];
+  let i = startIdx + 1;
+
+  // Helper: build the finished container node and (optionally) trailing siblings.
+  // Hoisted above the opener-content branches so early returns from those
+  // branches (e.g. rcSplit and the leading-`\n:::` paths) can call it.
+  const finishWithTrailing = (trailing?: any[]) => {
+    const finished = makeContainerNode(
+      opener.containerType,
+      opener.attrs,
+      containerChildren,
+      openerNode.position,
+    );
+    if (opener.inline) finished.inline = opener.inline;
+    if (opener.containerType === "demo")
+      finished.rawContent = mdastNodesToText(containerChildren);
+    return {
+      node: finished,
+      trailing: trailing && trailing.length > 0 ? trailing : undefined,
+      nextIndex: i,
+    };
+  };
 
   // Opener-content extraction: inline text on the same line as the opener
   if (opener.inline) {
@@ -331,8 +352,6 @@ function collectContainer(
     }
   }
 
-  let i = startIdx + 1;
-
   if (pendingAfterOpener) {
     // Build a virtual list so collectContainer can consume the nested opener
     // plus the real nodes that follow it.
@@ -348,24 +367,6 @@ function collectContainer(
     // real nodes start at startIdx+1, so advance i by (inner.nextIndex - 1).
     i = startIdx + inner.nextIndex;
   }
-
-  // Helper: build the finished container node and (optionally) trailing siblings.
-  const finishWithTrailing = (trailing?: any[]) => {
-    const finished = makeContainerNode(
-      opener.containerType,
-      opener.attrs,
-      containerChildren,
-      openerNode.position,
-    );
-    if (opener.inline) finished.inline = opener.inline;
-    if (opener.containerType === "demo")
-      finished.rawContent = mdastNodesToText(containerChildren);
-    return {
-      node: finished,
-      trailing: trailing && trailing.length > 0 ? trailing : undefined,
-      nextIndex: i,
-    };
-  };
 
   while (i < nodes.length) {
     const child = nodes[i];
