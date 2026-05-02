@@ -151,6 +151,28 @@ Role
 
 The list items directly following a dropdown become its options.
 
+Dropdown behavior depends on the option syntax:
+
+```markdown
+Plan
+[Select plan_________________v]
+- Free
+- Pro
+- Enterprise
+
+Workspace
+[Workspace___________________v]
+- [Acme Inc](./acme.md)
+- [Personal](./personal.md)
+
+Actions
+[Actions_____________________v]
+- [Duplicate]
+- [Archive]
+```
+
+Plain text options render as a normal select. Markdown link options render as a navigation select and carry `href` on each option. Button-style options render as an action select for command-menu wireframes.
+
 ### Checkboxes & radios
 
 ```markdown

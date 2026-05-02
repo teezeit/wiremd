@@ -84,6 +84,18 @@ describe('Tailwind Renderer', () => {
       expect(html).toContain('<option value="Option 1">Option 1</option>');
     });
 
+    it('should render a select with linked options', () => {
+      const markdown = `[Switch app___________v]
+- [Jira](./jira.md)
+- [Confluence](./confluence.md)`;
+      const ast = parse(markdown);
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('wmd-navigation-select');
+      expect(html).toContain('onchange="if (this.value) window.location.href = this.value"');
+      expect(html).toContain('<option value="./jira.md" data-href="./jira.md">Jira</option>');
+    });
+
     it('should render a checkbox', () => {
       const ast = parse('- [x] Accept terms');
       const html = renderToTailwind(ast);

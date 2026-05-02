@@ -120,6 +120,24 @@ Role
 
 The list items directly following a dropdown become its options.
 
+Option syntax changes the pattern:
+
+```markdown
+[Select plan_________________v]
+- Free
+- Pro
+
+[Workspace___________________v]
+- [Acme Inc](./acme.md)
+- [Personal](./personal.md)
+
+[Actions_____________________v]
+- [Duplicate]
+- [Archive]
+```
+
+Plain text options are normal select values. Linked options are navigation selects for app/workspace/page switching. Button-style options are action selects for command-menu wireframes.
+
 ### Checkboxes & Radios
 
 ```markdown

@@ -63,6 +63,18 @@ describe('React Renderer', () => {
       expect(jsx).toContain('</select>');
     });
 
+    it('should render a select with linked options', () => {
+      const markdown = `[Switch app___________v]
+- [Jira](./jira.md)
+- [Confluence](./confluence.md)`;
+      const ast = parse(markdown);
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('wmd-navigation-select');
+      expect(jsx).toContain('onChange={(event) => { const target = event.currentTarget; if (target.value) window.location.href = target.value; }}');
+      expect(jsx).toContain('<option value="./jira.md" data-href="./jira.md">Jira</option>');
+    });
+
     it('should render a checkbox', () => {
       const ast = parse('- [x] Accept terms');
       const jsx = renderToReact(ast);

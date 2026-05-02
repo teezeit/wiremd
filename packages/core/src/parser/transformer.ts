@@ -1475,13 +1475,7 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
       // Check if next node is a list - if so, use list items as options
       if (nextNode && nextNode.type === 'list') {
         for (const item of nextNode.children || []) {
-          const itemText = extractTextContent(item);
-          options.push({
-            type: 'option',
-            value: itemText,
-            label: itemText,
-            selected: false,
-          });
+          options.push(selectOptionFromListItem(item));
         }
         // Only consume when we actually absorbed options — matches the legacy
         // post-hoc rule which required `hasSelectWithOptions` for container shapes.
@@ -1663,13 +1657,7 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
     // Check if next node is a list - if so, use list items as options
     if (nextNode && nextNode.type === 'list') {
       for (const item of nextNode.children || []) {
-        const itemText = extractTextContent(item);
-        options.push({
-          type: 'option',
-          value: itemText,
-          label: itemText,
-          selected: false,
-        });
+        options.push(selectOptionFromListItem(item));
       }
       // Single-line dropdown always consumes when nextNode is a list — matches
       // the legacy post-hoc rule for `select` + `list` (which didn't gate on options length).
@@ -2270,6 +2258,46 @@ function extractTextContent(node: any): string {
   }
 
   return '';
+}
+
+function selectOptionFromListItem(item: any): Extract<WiremdNode, { type: 'option' }> {
+  const label = extractTextContent(item).trim();
+  const option: Extract<WiremdNode, { type: 'option' }> = {
+    type: 'option',
+    value: label,
+    label,
+    selected: false,
+  };
+
+  const paragraph = item?.children?.find((child: any) => child.type === 'paragraph') ?? item;
+  const inlineChildren = Array.isArray(paragraph?.children) ? paragraph.children : [];
+  const meaningfulChildren = inlineChildren.filter((child: any) =>
+    child.type !== 'text' || child.value.trim() !== ''
+  );
+
+  if (meaningfulChildren.length === 1) {
+    const onlyChild = meaningfulChildren[0];
+    if (onlyChild.type === 'link') {
+      return {
+        ...option,
+        value: onlyChild.url || '#',
+        label: extractTextContent(onlyChild).trim(),
+        href: onlyChild.url || '#',
+      };
+    }
+  }
+
+  const buttonMatch = label.match(/^\[([^\]]+)\](?:\*)?(?:\s*\{[^}]*\})?$/);
+  if (buttonMatch) {
+    return {
+      ...option,
+      value: buttonMatch[1].trim(),
+      label: buttonMatch[1].trim(),
+      action: buttonMatch[1].trim(),
+    };
+  }
+
+  return option;
 }
 
 function parseBadgeToken(token: string): WiremdNode | null {
