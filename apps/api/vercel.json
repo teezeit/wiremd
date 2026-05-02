@@ -4,10 +4,8 @@
   "outputDirectory": ".",
   "functions": {
     "api/[[...route]].ts": {
-      "maxDuration": 10
+      "maxDuration": 30
     }
   },
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/[[...route]]" }
-  ]
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/[[...route]]" }]
 }
