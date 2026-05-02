@@ -4,7 +4,7 @@
      recognized. The parser shouldn't depend on a paragraph break here. -->
 ::: row
 :user: 
-John Doe |Admin|{.warning}
+John Doe ((Admin)){.warning}
 [Edit] [Remove]{.danger}
 
 :::

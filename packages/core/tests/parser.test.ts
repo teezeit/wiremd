@@ -1425,7 +1425,7 @@ Text
 
   describe('Badge/Pill Syntax', () => {
     it('should parse a basic pill', () => {
-      const result = parse('|Active|');
+      const result = parse('((Active))');
       expect(result.children).toHaveLength(1);
       expect(result.children[0]).toMatchObject({
         type: 'badge',
@@ -1433,7 +1433,7 @@ Text
       });
     });
 
-    it('should parse a pill with success variant', () => {
+    it('should keep legacy pipe pills as an alias', () => {
       const result = parse('|Active|{.success}');
       expect(result.children[0]).toMatchObject({
         type: 'badge',
@@ -1442,8 +1442,17 @@ Text
       });
     });
 
+    it('should parse a pill with success variant', () => {
+      const result = parse('((Active)){.success}');
+      expect(result.children[0]).toMatchObject({
+        type: 'badge',
+        content: 'Active',
+        props: { variant: 'success' },
+      });
+    });
+
     it('should parse a pill with warning variant', () => {
-      const result = parse('|3|{.warning}');
+      const result = parse('((3)){.warning}');
       expect(result.children[0]).toMatchObject({
         type: 'badge',
         content: '3',
@@ -1452,7 +1461,7 @@ Text
     });
 
     it('should parse a pill with error variant', () => {
-      const result = parse('|Failed|{.error}');
+      const result = parse('((Failed)){.error}');
       expect(result.children[0]).toMatchObject({
         type: 'badge',
         content: 'Failed',
@@ -1461,7 +1470,7 @@ Text
     });
 
     it('should parse a pill with primary variant', () => {
-      const result = parse('|New|{.primary}');
+      const result = parse('((New)){.primary}');
       expect(result.children[0]).toMatchObject({
         type: 'badge',
         content: 'New',
@@ -1470,7 +1479,7 @@ Text
     });
 
     it('should parse multiple pills as paragraph with badge children', () => {
-      const result = parse('|Active| |Pending|');
+      const result = parse('((Active)) ((Pending))');
       expect(result.children[0].type).toBe('paragraph');
       const paragraph = result.children[0] as any;
       const badges = paragraph.children.filter((c: any) => c.type === 'badge');
@@ -1480,7 +1489,7 @@ Text
     });
 
     it('should parse a pill mixed with surrounding text', () => {
-      const result = parse('Status: |Active|{.success}');
+      const result = parse('Status: ((Active)){.success}');
       expect(result.children[0].type).toBe('paragraph');
       const paragraph = result.children[0] as any;
       const badge = paragraph.children.find((c: any) => c.type === 'badge');

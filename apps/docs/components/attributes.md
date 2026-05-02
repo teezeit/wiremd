@@ -114,11 +114,11 @@ $29/mo — spans two columns
 ### Badge vs. table cell
 
 ```
-|Active|{.success}   badge — pipe delimiters with no spaces
+((Active)){.success}   badge — double-parentheses delimiters
 | Active |            table cell — spaces and alignment dashes context
 ```
 
-Inside a table cell, escape badge pipes: `\|Active\|{.success}`
+Inside a table cell, use the same badge syntax: `((Active)){.success}`
 
 ### Container vs. raw HTML
 

@@ -121,10 +121,10 @@ A `::: row` with a class modifier — row already creates a flex button containe
 
 Multi-value input where each value renders as a removable chip. Used for tags, recipients, filters.
 
-Extends the badge `|...|` syntax — chips are badges with a `×` and the trailing input is a regular text input:
+Extends the badge `((...))` syntax — chips are badges with a `×` and the trailing input is a regular text input:
 
 ```
-|Design ×|{.chip} |React ×|{.chip} [_____]
+((Design ×)){.chip} ((React ×)){.chip} [_____]
 ```
 :::
 
@@ -311,11 +311,11 @@ Extends image syntax — `![alt](src)` already works; avatar is an image with a 
 
 Compact, optionally removable label. Distinct from badge — chips are interactive and can be dismissed. Used for tags, filters, selections.
 
-Extends badge `|...|` syntax — static chip is a badge with `.chip` class; removable adds `×`:
+Extends badge `((...))` syntax — static chip is a badge with `.chip` class; removable adds `×`:
 
 ```
-|React|{.chip}      <!-- static chip -->
-|Design ×|{.chip}   <!-- removable chip -->
+((React)){.chip}      <!-- static chip -->
+((Design ×)){.chip}   <!-- removable chip -->
 ```
 
 ### Timeline
@@ -346,8 +346,8 @@ Extends native Markdown table syntax — sort arrows and checkboxes are rendered
 ```
 | ☐ | Name ↑ | Status |
 |----|--------|--------|
-| ☑ | Alice  | |Active|{.success} |
-| ☐ | Bob    | |Pending|{.warning} |
+| ☑ | Alice  | ((Active)){.success} |
+| ☐ | Bob    | ((Pending)){.warning} |
 ```
 :::
 

@@ -48,8 +48,8 @@ Use a `::: row` with `{.right}` to push actions to the right inside a card or se
 
 | Name | Status | Updated |
 |------|--------|---------|
-| Alpha | |Active|{.success} | Today |
-| Beta | |Review|{.warning} | Yesterday |
+| Alpha | ((Active)){.success} | Today |
+| Beta | ((Review)){.warning} | Yesterday |
 | Gamma | |Draft|{} | 3 days ago |
 
 :::

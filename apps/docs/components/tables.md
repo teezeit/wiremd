@@ -16,24 +16,24 @@ Standard Markdown table syntax renders as a styled data table.
 
 ## With Badges
 
-Escape pipe characters inside cells with `\|`.
+Use `((Badge))` syntax inside cells without escaping table pipes.
 ::: demo
 | Feature | Basic | Pro | Enterprise |
 |---------|-------|-----|------------|
 | Users | 1 | 10 | Unlimited |
 | Storage | 1 GB | 50 GB | Custom |
-| Support | \|Community\| | \|Email\|{.warning} | \|SLA\|{.success} |
-| API Access | — | \|Yes\|{.success} | \|Yes\|{.success} |
+| Support | ((Community)) | ((Email)){.warning} | ((SLA)){.success} |
+| API Access | — | ((Yes)){.success} | ((Yes)){.success} |
 :::
 
 ## Data Table with Actions
 ::: demo
 | Project | Owner | Due | Status |
 |---------|-------|-----|--------|
-| Website redesign | Alice | Dec 15 | \|In Progress\|{.warning} |
-| Mobile app v2 | Bob | Jan 10 | \|In Progress\|{.warning} |
-| API migration | Clara | Dec 20 | \|Review\|{.primary} |
-| Design system | Dan | Feb 1 | \|Planning\| |
+| Website redesign | Alice | Dec 15 | ((In Progress)){.warning} |
+| Mobile app v2 | Bob | Jan 10 | ((In Progress)){.warning} |
+| API migration | Clara | Dec 20 | ((Review)){.primary} |
+| Design system | Dan | Feb 1 | ((Planning)) |
 
 [+ New Project]*
 :::
@@ -58,7 +58,7 @@ Use `:---`, `:---:`, and `---:` in the separator row.
 | Left  | Center | Right |
 |:------|:------:|------:|
 
-\|Badge\|{.success}   escaped badge inside cell
+((Badge)){.success}   badge inside cell
 ```
 :::
 :::

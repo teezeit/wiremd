@@ -44,21 +44,21 @@ Use `###` headings inside `::: row` to control each item's alignment independent
 Text, badges, icons, and buttons can be combined freely in a row.
 ::: demo
 ::: row
-Inbox |24|{.primary}
+Inbox ((24)){.primary}
 :::
 :::
 ::: demo
 ::: row
 :check:
 
-All systems operational |Live|{.success}
+All systems operational ((Live)){.success}
 :::
 :::
 ::: demo
 ::: row
 :user:
 
-John Doe |Admin|{.warning}
+John Doe ((Admin)){.warning}
 
 [Edit] [Remove]{.danger}
 :::
@@ -75,7 +75,7 @@ John Doe |Admin|{.warning}
 ::: demo
 ::: row
 ### {.left}
-**Projects** |12|{.primary}
+**Projects** ((12)){.primary}
 
 ### {.right}
 [Filter] [Sort] [+ New Project]*
