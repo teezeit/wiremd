@@ -313,7 +313,7 @@ The bug list is now machine-checkable. Pick a category and the test suite tells 
 
 **4. Quoted attribute values with spaces.** `docs/inputs/with-placeholder`. The attribute parser drops everything after the first space inside a quoted value.
 
-**5. Badge syntax in table cells.** `docs/badges/in-a-table` + `docs/tables/with-badges`. Badge syntax `|cell|{.warning}` isn't recognized inside `<td>`. Likely needs a transformer pass over table cells.
+**5. Badge syntax in table cells.** Closed: `((cell)){.warning}` works inside `<td>` without escaping table pipes. The legacy escaped pipe form remains covered as an alias.
 
 **6. Sidebar layout.** `docs/page-layouts/sidebar-layout` + `sidebar-with-sections`. Same family as the formatting bugs (no blank line after `::: sidebar`).
 
@@ -332,7 +332,7 @@ The bug list is now machine-checkable. Pick a category and the test suite tells 
 ### Pending decisions (not yet committed to)
 
 - **`inputs/textarea-columns`** — `[___]{rows:5 cols:40}` should probably emit a `textarea` node. Documented in `KNOWN_ISSUES.md`. No fix planned yet.
-- **`((pill content))` as badge syntax** — user suggested as cleaner than `|content|{.modifier}`. Backwards-incompatible. Documented in `badges/variants.notes.md`.
+- **Badge syntax migration** — `((pill content))` is the primary badge syntax. The legacy pipe-delimited form is still accepted as an alias during migration.
 - **`grid` should require `::: column` children?** Design suggestion to mirror tabs syntax. Backwards-incompatible. Documented in `grid/layout-grid-no-card-chrome.notes.md`.
 - **Alerts implementation** — AST exists; styles missing for all 7 visual styles. Likely substantial work.
 

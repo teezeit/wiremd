@@ -463,7 +463,7 @@ describe('Edge Cases', () => {
     });
 
     it('should parse a pill with spaces in the label', () => {
-      const ast = parse('|In Progress|{.warning}');
+      const ast = parse('((In Progress)){.warning}');
       expect(ast.children[0]).toMatchObject({
         type: 'badge',
         content: 'In Progress',
@@ -472,7 +472,7 @@ describe('Edge Cases', () => {
     });
 
     it('should treat an unknown variant class as a CSS class, not a variant', () => {
-      const ast = parse('|Beta|{.custom}');
+      const ast = parse('((Beta)){.custom}');
       expect(ast.children[0]).toMatchObject({ type: 'badge', content: 'Beta' });
       const badge = ast.children[0] as any;
       expect(badge.props.variant).toBeUndefined();
@@ -480,7 +480,7 @@ describe('Edge Cases', () => {
     });
 
     it('should parse multiple pills with different variants', () => {
-      const ast = parse('|Done|{.success} |Pending|{.warning} |Failed|{.error}');
+      const ast = parse('((Done)){.success} ((Pending)){.warning} ((Failed)){.error}');
       expect(ast.children[0].type).toBe('paragraph');
       const badges = (ast.children[0] as any).children.filter((c: any) => c.type === 'badge');
       expect(badges).toHaveLength(3);
@@ -490,7 +490,7 @@ describe('Edge Cases', () => {
     });
 
     it('should parse a pill with a long label', () => {
-      const ast = parse('|Awaiting Approval|{.warning}');
+      const ast = parse('((Awaiting Approval)){.warning}');
       expect(ast.children[0]).toMatchObject({
         type: 'badge',
         content: 'Awaiting Approval',
@@ -499,7 +499,7 @@ describe('Edge Cases', () => {
     });
 
     it('should render badge without crashing in all styles', () => {
-      const ast = parse('|Active|{.success}');
+      const ast = parse('((Active)){.success}');
       const styles = ['sketch', 'clean', 'wireframe', 'material', 'brutal', 'tailwind', 'none'] as const;
       for (const style of styles) {
         expect(() => renderToHTML(ast, { style })).not.toThrow();

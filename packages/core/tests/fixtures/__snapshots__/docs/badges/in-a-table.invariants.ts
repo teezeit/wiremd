@@ -1,7 +1,6 @@
 /**
- * Badge syntax `|cell|{.warning}` inside a table cell should render as a
- * badge node, not as raw text. Currently the parser doesn't recognize
- * the badge syntax inside table cells.
+ * Badge syntax `((cell)){.warning}` inside a table cell should render as a
+ * badge node, not as raw text.
  */
 
 import { expect } from 'vitest';

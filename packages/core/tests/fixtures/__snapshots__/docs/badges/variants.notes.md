@@ -1,10 +1,7 @@
-# Design suggestion: `((pill content))` as a clearer marker
+# Decision: `((pill content))` as the badge marker
 
-The current `{.modifier}` class-soup syntax for badges is functional but
-mixes badge content with arbitrary class hooks. The user suggested
-`((pill content))` as a more readable, dedicated badge syntax — visually
-the parens echo the rounded shape.
+`((pill content))` is now the primary badge syntax. It is more readable
+than pipe-delimited badges and avoids collisions with Markdown tables.
 
-**Type:** syntax design.
-**Action:** TBD. Discuss before changing — this is a backwards-
-incompatible syntax change.
+The legacy pipe-delimited form remains accepted as an alias during the
+migration window.

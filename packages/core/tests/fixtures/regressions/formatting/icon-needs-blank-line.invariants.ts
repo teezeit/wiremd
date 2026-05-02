@@ -5,7 +5,7 @@
  * paper cut.
  *
  * Note: this fixture also exercises the in-cell badge syntax bug
- * (|Admin|{.warning}); both are simultaneous gaps. The invariants below
+ * (`((Admin)){.warning}`); both are simultaneous gaps. The invariants below
  * focus on the icon since that's the headline concern.
  */
 

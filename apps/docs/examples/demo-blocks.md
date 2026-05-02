@@ -55,7 +55,7 @@ Country
 
 ## Badges & Status
 ::: demo
-|New|{.primary} |Beta|{.warning} |Deprecated|{.error} |Stable|{.success}
+((New)){.primary} ((Beta)){.warning} ((Deprecated)){.error} ((Stable)){.success}
 :::
 
 ---

@@ -3,56 +3,54 @@
 ::: main
 # Badges
 
-Pipe delimiters create inline badges. Add a variant class to control colour.
+Double parentheses create inline badges. Add a variant class to control colour.
 
 ## Variants
 ::: demo
-|Default| |Primary|{.primary} |Success|{.success} |Warning|{.warning} |Error|{.error}
+((Default)) ((Primary)){.primary} ((Success)){.success} ((Warning)){.warning} ((Error)){.error}
 :::
 
 ## Inline with Text
 ::: demo
-Status: |Active|{.success}
+Status: ((Active)){.success}
 
-Plan: |Pro|{.primary}
+Plan: ((Pro)){.primary}
 
-Build: |Failing|{.error}
+Build: ((Failing)){.error}
 
-Review: |Pending|{.warning}
+Review: ((Pending)){.warning}
 :::
 
 ## In a Table
 
-> **TODO:** badges inside table cells do not render — escaped `\|Label\|` syntax is not parsed within table cell content
-
-Escape pipes inside table cells with `\|`.
+The `((Label))` syntax works inside table cells without escaping.
 ::: demo
 | Feature | Status |
 |---------|--------|
-| Auth | \|Done\|{.success} |
-| API | \|In Progress\|{.warning} |
-| Docs | \|Planned\| |
+| Auth | ((Done)){.success} |
+| API | ((In Progress)){.warning} |
+| Docs | ((Planned)) |
 :::
 
 ## Count Badges
 ::: demo
-Inbox |12|{.primary}
+Inbox ((12)){.primary}
 
-Alerts |3|{.error}
+Alerts ((3)){.error}
 
-Updates |New|{.success}
+Updates ((New)){.success}
 :::
 
 ## Syntax
 
 ```
-|Label|               neutral grey
-|Label|{.primary}     blue
-|Label|{.success}     green
-|Label|{.warning}     yellow
-|Label|{.error}       red
+((Label))             neutral grey
+((Label)){.primary}     blue
+((Label)){.success}     green
+((Label)){.warning}     yellow
+((Label)){.error}       red
 
-\|Label\|{.success}   escaped inside table cell
+((Label)){.success}   inside table cell
 ```
 :::
 :::

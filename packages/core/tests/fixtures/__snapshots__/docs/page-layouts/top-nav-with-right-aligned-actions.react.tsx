@@ -42,16 +42,12 @@ export const WiremdComponent: React.FC = () => {
     <tbody>
           <tr>
               <td className="wmd-table-cell wmd-align-left">Alpha</td>
-              <td className="wmd-table-cell wmd-align-left"></td>
-              <td className="wmd-table-cell wmd-align-left">Active</td>
-              <td className="wmd-table-cell wmd-align-left">&#123;.success&#125;</td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge wmd-badge-success">Active</span></td>
               <td className="wmd-table-cell wmd-align-left">Today</td>
           </tr>
           <tr>
               <td className="wmd-table-cell wmd-align-left">Beta</td>
-              <td className="wmd-table-cell wmd-align-left"></td>
-              <td className="wmd-table-cell wmd-align-left">Review</td>
-              <td className="wmd-table-cell wmd-align-left">&#123;.warning&#125;</td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge wmd-badge-warning">Review</span></td>
               <td className="wmd-table-cell wmd-align-left">Yesterday</td>
           </tr>
           <tr>

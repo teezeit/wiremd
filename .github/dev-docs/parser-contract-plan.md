@@ -169,7 +169,7 @@ The user is planning syntax changes. They are **not part of this PR**, but they 
 
 The list, with the agent's pre-discussion takes:
 
-1. **`((pill))` instead of `|pill|`** — strong yes. Doubled delimiters are easier to scan, harder to typo, and don't collide with table syntax. Touches `parser/remark-inline-containers.ts`.
+1. **`((pill))` instead of `|pill|`** — landed in PR #92 as the primary badge syntax. Doubled delimiters are easier to scan, harder to typo, and work inside Markdown tables without escaping. Legacy pipe pills remain accepted as an alias during migration.
 
 2. **Consistent `{.classname}` over bare `{classname}` or modifier syntax** — yes. Standard pandoc/markdown-attr convention; already de facto used. Removes ambiguity in attribute parsing. Touches `parser/transformer.ts` (the `parseAttributes` helper).
 

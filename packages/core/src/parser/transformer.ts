@@ -21,6 +21,15 @@ import {
   makeContext,
 } from './_context.js';
 
+const BADGE_VARIANTS = ['default', 'primary', 'success', 'warning', 'error', 'danger'];
+const BADGE_TOKEN_PATTERN = /(?:\(\([^()\n]+\)\)|\|[^|\n]+\|)(?:\s*\{[^}]*\})?/;
+const BADGE_TOKEN_SPLIT = new RegExp(`(${BADGE_TOKEN_PATTERN.source})`);
+const BADGE_TOKEN_SPLIT_GLOBAL = new RegExp(`(${BADGE_TOKEN_PATTERN.source})`, 'g');
+const BADGE_TOKEN_EXACT = /^(?:\(\(([^()\n]+)\)\)|\|([^|\n]+)\|)(?:\s*(\{[^}]*\}))?$/;
+const INLINE_TEXT_TOKEN_SPLIT = new RegExp(
+  `(\\[[^\\]]+\\](?:\\*)?(?:\\s*\\{[^}]*\\})?|:[a-z-]+:|${BADGE_TOKEN_PATTERN.source})`,
+);
+
 /**
  * Transform MDAST to wiremd AST
  */
@@ -774,7 +783,7 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
       if (child.type === 'text') {
         // Check for buttons and icons in text
         // Split on both button patterns and icon patterns
-        const textParts = child.value.split(/(\[[^\]]+\](?:\*)?(?:\s*\{[^}]*\})?|:[a-z-]+:|\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+        const textParts = child.value.split(INLINE_TEXT_TOKEN_SPLIT);
         for (const part of textParts) {
           // Check for button
           const buttonMatch = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
@@ -800,21 +809,10 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
                 props: { name: iconMatch[1] },
               });
             }
-          } else if (part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/)) {
+          } else if (parseBadgeToken(part)) {
             // It's a pill/badge
             flushText();
-            const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
-            if (pillMatch) {
-              const [, text, attrs] = pillMatch;
-              const props = parseAttributes(attrs || '');
-              const validVariants = ['default', 'primary', 'success', 'warning', 'error'];
-              const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
-              if (variantClass) {
-                props.variant = variantClass;
-                props.classes = props.classes.filter((c: string) => c !== variantClass);
-              }
-              processedChildren.push({ type: 'badge', content: text.trim(), props });
-            }
+            processedChildren.push(parseBadgeToken(part)!);
           } else if (part) {
             currentText += part;
           }
@@ -1184,9 +1182,8 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
         } else {
           const text = group.lines.join('\n').trim();
           if (!text) continue;
-          // Run the text through the inline splitter so `:icon:` and
-          // `|badge|{.cls}` produce proper nodes instead of leaking as
-          // literal characters in `content`.
+          // Run the text through the inline splitter so `:icon:` and badge
+          // syntax produce proper nodes instead of leaking as literal text.
           const inlineNodes = parseInlineToNodes(text);
           if (inlineNodes.length === 1 && inlineNodes[0].type === 'text') {
             out.push({ type: 'paragraph', content: inlineNodes[0].content, props: {} });
@@ -1518,23 +1515,15 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
     };
   }
 
-  // Check for pills: |Label| or |Label|{.variant}
-  if (/\|([^|]+)\|/.test(content)) {
-    const textParts = content.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+  // Check for pills: ((Label)), ((Label)){.variant}, or legacy |Label|.
+  if (BADGE_TOKEN_SPLIT.test(content)) {
+    const textParts = content.split(BADGE_TOKEN_SPLIT_GLOBAL);
     const children: WiremdNode[] = [];
-    const validVariants = ['default', 'primary', 'success', 'warning', 'error'];
 
     for (const part of textParts) {
-      const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
-      if (pillMatch) {
-        const [, text, attrs] = pillMatch;
-        const props = parseAttributes(attrs || '');
-        const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
-        if (variantClass) {
-          props.variant = variantClass;
-          props.classes = props.classes.filter((c: string) => c !== variantClass);
-        }
-        children.push({ type: 'badge', content: text.trim(), props });
+      const badge = parseBadgeToken(part);
+      if (badge) {
+        children.push(badge);
       } else if (part.trim()) {
         children.push({ type: 'text', content: part, props: {} });
       }
@@ -1937,24 +1926,16 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
 
       // Transform cell content
       const pushCellTextWithInline = (value: string) => {
-        // Split text on inline patterns: badge `|text|{.cls}` and icon `:icon:`.
+        // Split text on inline patterns: badge `((text)){.cls}` and icon `:icon:`.
         // Mirrors the rich-paragraph splitter so table cells render badges as
-        // proper nodes instead of leaking literal `|...|{.cls}` to the
+        // proper nodes instead of leaking literal badge syntax to the
         // rendered HTML.
-        const parts = value.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?|:[a-z-]+:)/);
+        const parts = value.split(new RegExp(`(${BADGE_TOKEN_PATTERN.source}|:[a-z-]+:)`, 'g'));
         for (const part of parts) {
           if (!part) continue;
-          const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
-          if (pillMatch) {
-            const [, text, attrs] = pillMatch;
-            const props = parseAttributes(attrs || '') as any;
-            const validVariants = ['default', 'primary', 'success', 'warning', 'error', 'danger'];
-            const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
-            if (variantClass) {
-              props.variant = variantClass === 'danger' ? 'error' : variantClass;
-              props.classes = props.classes.filter((c: string) => c !== variantClass);
-            }
-            cellChildren.push({ type: 'badge', content: text.trim(), props });
+          const badge = parseBadgeToken(part);
+          if (badge) {
+            cellChildren.push(badge);
             continue;
           }
           const iconOnly = part.match(/^:([a-z-]+):$/);
@@ -1979,7 +1960,7 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
             if (remainder) {
               pushCellTextWithInline(remainder);
             }
-          } else if (/\|[^|]+\|/.test(child.value)) {
+          } else if (BADGE_TOKEN_SPLIT.test(child.value)) {
             // Cell text contains badge syntax — split into text + badge nodes.
             pushCellTextWithInline(child.value);
           } else {
@@ -2077,28 +2058,39 @@ function extractTextContent(node: any): string {
   return '';
 }
 
+function parseBadgeToken(token: string): WiremdNode | null {
+  const match = token.match(BADGE_TOKEN_EXACT);
+  if (!match) return null;
+
+  const [, parenContent, pipeContent, attrs] = match;
+  const props = parseAttributes(attrs || '') as any;
+  const variantClass = props.classes?.find((className: string) => BADGE_VARIANTS.includes(className));
+  if (variantClass) {
+    props.variant = variantClass === 'danger' ? 'error' : variantClass;
+    props.classes = props.classes.filter((className: string) => className !== variantClass);
+  }
+
+  return {
+    type: 'badge',
+    content: (parenContent ?? pipeContent).trim(),
+    props,
+  };
+}
+
 /**
  * Split a plain-text fragment into inline wiremd nodes — text, badges,
  * and icons. Used by both the multi-line paragraph splitter and the table
- * cell splitter. Pills (`|text|{.cls}`) are split first; each remaining
+ * cell splitter. Pills (`((text)){.cls}` or the legacy pipe form) are split first; each remaining
  * text segment is then split on `:icon:` patterns.
  */
 function parseInlineToNodes(content: string): WiremdNode[] {
   const nodes: WiremdNode[] = [];
-  const validVariants = ['default', 'primary', 'success', 'warning', 'error', 'danger'];
-  const pillSplit = content.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+  const pillSplit = content.split(BADGE_TOKEN_SPLIT_GLOBAL);
   for (const part of pillSplit) {
     if (!part) continue;
-    const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
-    if (pillMatch) {
-      const [, text, attrs] = pillMatch;
-      const props = parseAttributes(attrs || '') as any;
-      const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
-      if (variantClass) {
-        props.variant = variantClass === 'danger' ? 'error' : variantClass;
-        props.classes = props.classes.filter((c: string) => c !== variantClass);
-      }
-      nodes.push({ type: 'badge', content: text.trim(), props });
+    const badge = parseBadgeToken(part);
+    if (badge) {
+      nodes.push(badge);
       continue;
     }
     const iconSplit = part.split(/:([a-z-]+):/);

@@ -30,8 +30,8 @@ Swap styles with a single flag.
 
 | Item        | Status                 | Updated |
 |-------------|------------------------|---------|
-| Launch plan | |Draft|{.warning}     | 2h ago  |
-| Pricing     | |Approved|{.success}  | Yesterday |
-| Onboarding  | |Needs review|{.error}| 3d ago  |
+| Launch plan | ((Draft)){.warning}     | 2h ago  |
+| Pricing     | ((Approved)){.success}  | Yesterday |
+| Onboarding  | ((Needs review)){.error}| 3d ago  |
 
 [View details →](./detail.md)

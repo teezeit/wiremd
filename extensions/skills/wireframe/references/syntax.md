@@ -228,13 +228,13 @@ A common real-world pattern — card with a header row and content:
 
 ### {.right}
 
-Started: Apr 1 · |Due: Apr 30|{.warning}
+Started: Apr 1 · ((Due: Apr 30)){.warning}
 
 :::
 
 Before you can pitch to a decision maker, you need to get past the gatekeeper.
 
-|Prospecting and Outreach|
+((Prospecting and Outreach))
 
 :::
 ```
@@ -451,20 +451,20 @@ Common icons: `:home:` `:user:` `:gear:` `:chart:` `:bell:` `:shield:` `:rocket:
 
 ## Badges / Pills
 
-Pipe delimiters create inline status labels, counts, and tags:
+Double parentheses create inline status labels, counts, and tags:
 
 ```markdown
-|Active|
-|Active|{.success}
-|3|{.warning}
-|Failed|{.error}
-|New|{.primary}
-Status: |Active|{.success}
+((Active))
+((Active)){.success}
+((3)){.warning}
+((Failed)){.error}
+((New)){.primary}
+Status: ((Active)){.success}
 ```
 
 Variants: `success` · `warning` · `error` · `primary` · (none = neutral gray)
 
-> **Gotcha:** `|` conflicts with Markdown table syntax. Do not use `|Label|` inside a table cell — it will be parsed as extra columns.
+> `((Label))` works inside Markdown table cells without escaping.
 
 ---
 
@@ -510,7 +510,7 @@ Done    [##################] 100%
 | `<Card>` | `:::card` block |
 | `<Dialog>` / `<Modal>` | `:::modal` block at bottom of file |
 | `<Alert variant="success">` | `:::alert success` |
-| `<Badge>` / `<Chip>` / status pill | `\|Label\|{.variant}` |
+| `<Badge>` / `<Chip>` / status pill | `((Label)){.variant}` |
 | Flex row of cards | `::: grid-3 card` … `:::` |
 | Stats row (no card) | `::: grid-3` … `:::` |
 | Horizontal filter/toolbar | `::: row` … `:::` |

@@ -73,10 +73,15 @@ describe('parseAttributes — quoted values', () => {
 });
 
 describe('table cells — badge syntax', () => {
-  it('escaped \\|cell\\|{.warning} in a table cell renders as a badge node', () => {
-    // Markdown tables use `|` as the column separator, so badge syntax
-    // requires escaped pipes. After remark parses, the cell content is
-    // `|Admin|{.warning}` and the cell-text splitter emits a badge node.
+  it('((cell)){.warning} in a table cell renders as a badge node', () => {
+    const md = `| Name | Status |\n|------|--------|\n| Alice | ((Admin)){.warning} |\n`;
+    const ast = parse(md);
+    const badge = findFirst(ast.children, 'badge');
+    expect(badge).toBeDefined();
+    expect((badge as any).content).toBe('Admin');
+  });
+
+  it('keeps escaped legacy pipe badges as a table-cell alias', () => {
     const md = `| Name | Status |\n|------|--------|\n| Alice | \\|Admin\\|{.warning} |\n`;
     const ast = parse(md);
     const badge = findFirst(ast.children, 'badge');
@@ -87,7 +92,7 @@ describe('table cells — badge syntax', () => {
 
 describe('multi-line paragraph splitter — inline patterns', () => {
   it('icon line + text-with-badge produces icon + text + badge children', () => {
-    const ast = parse('::: row\n:user:\nJohn Doe |Admin|{.warning}\n[Edit]\n\n:::\n');
+    const ast = parse('::: row\n:user:\nJohn Doe ((Admin)){.warning}\n[Edit]\n\n:::\n');
     const icon = findFirst(ast.children, 'icon');
     expect(icon).toBeDefined();
     expect((icon as any).props.name).toBe('user');

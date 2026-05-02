@@ -21,6 +21,7 @@ function registerWiremdLanguage() {
         // Navigation bar [[ ... ]]
         [/\[\[.*?\]\]/, "string"],
         // Buttons [Text]* or [Text]
+        [/\(\([^()\n]+\)\)(\{[^}]*\})?/, "tag"],
         [/\[.*?\]\*/, "keyword.control"],
         [/\[.*?\](\{[^}]*\})?/, "variable"],
         // Input fields with underscores or asterisks
