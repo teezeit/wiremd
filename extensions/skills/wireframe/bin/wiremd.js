@@ -18018,7 +18018,9 @@ function transformContainer(node2, ctx) {
   if (gridMatch) {
     const columns = parseInt(gridMatch[1], 10);
     const firstChild = node2.children[0];
-    const hasCard = firstChild?.type === "paragraph" && firstChild.children?.[0]?.type === "text" && firstChild.children[0].value?.trim() === "card" || (props.classes || []).includes("card");
+    const firstChildText = firstChild?.type === "paragraph" && firstChild.children?.[0]?.type === "text" ? firstChild.children[0].value : "";
+    const firstWord = firstChildText.trim().split(/\s+/)[0];
+    const hasCard = firstWord === "card" || (props.classes || []).includes("card");
     const contentChildren = hasCard ? node2.children.slice(1) : node2.children;
     return {
       type: "grid",
@@ -18608,18 +18610,24 @@ function transformParagraph(node2, ctx) {
         return true;
       return false;
     };
+    const isInlineContainerLine = (line) => {
+      const trimmed = line.trim();
+      return /^\[\[[\s\S]+\]\](\s*\{[^}]+\})?$/.test(trimmed);
+    };
     const lineKinds = lines.map((line) => {
       const trimmed = line.trim();
       if (hasFormElement(trimmed))
         return "form";
+      if (isInlineContainerLine(trimmed))
+        return "nav";
       if (lineIsAllButtons(trimmed))
         return "buttons";
       return "text";
     });
-    const hasButtonLine = lineKinds.includes("buttons");
+    const hasNonTextBlock = lineKinds.some((k) => k === "buttons" || k === "nav");
     const hasTextLine = lineKinds.includes("text");
     const hasFormLine = lineKinds.includes("form");
-    if (hasButtonLine && hasTextLine && !hasFormLine) {
+    if (hasNonTextBlock && hasTextLine && !hasFormLine) {
       const groups = [];
       for (let i = 0; i < lines.length; i++) {
         const kind = lineKinds[i];
@@ -18657,10 +18665,33 @@ function transformParagraph(node2, ctx) {
               children: groupButtons
             });
           }
+        } else if (group.kind === "nav") {
+          for (const line of group.lines) {
+            const m = line.trim().match(/^\[\[\s*(.+?)\s*\]\](\s*\{[^}]+\})?$/);
+            if (m) {
+              const items = m[1].split("|").map((s) => s.trim());
+              const navNode = transformInlineContainer(
+                {
+                  type: "wiremdInlineContainer",
+                  content: m[1],
+                  items,
+                  attributes: (m[2] || "").trim()
+                },
+                ctx
+              );
+              out.push(navNode);
+            }
+          }
         } else {
           const text6 = group.lines.join("\n").trim();
-          if (text6)
-            out.push({ type: "paragraph", content: text6, props: {} });
+          if (!text6)
+            continue;
+          const inlineNodes = parseInlineToNodes(text6);
+          if (inlineNodes.length === 1 && inlineNodes[0].type === "text") {
+            out.push({ type: "paragraph", content: inlineNodes[0].content, props: {} });
+          } else if (inlineNodes.length > 0) {
+            out.push({ type: "paragraph", children: inlineNodes, props: {} });
+          }
         }
       }
       if (out.length === 1)
@@ -19253,6 +19284,34 @@ function transformTable(node2, ctx) {
       const cell = row2.children[cellIndex];
       const cellAlign = align[cellIndex] || "left";
       const cellChildren = [];
+      const pushCellTextWithInline = (value) => {
+        const parts = value.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?|:[a-z-]+:)/);
+        for (const part of parts) {
+          if (!part)
+            continue;
+          const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
+          if (pillMatch) {
+            const [, text6, attrs] = pillMatch;
+            const props = parseAttributes(attrs || "");
+            const validVariants = ["default", "primary", "success", "warning", "error", "danger"];
+            const variantClass = props.classes?.find((c) => validVariants.includes(c));
+            if (variantClass) {
+              props.variant = variantClass === "danger" ? "error" : variantClass;
+              props.classes = props.classes.filter((c) => c !== variantClass);
+            }
+            cellChildren.push({ type: "badge", content: text6.trim(), props });
+            continue;
+          }
+          const iconOnly = part.match(/^:([a-z-]+):$/);
+          if (iconOnly) {
+            cellChildren.push({ type: "icon", props: { name: iconOnly[1] } });
+            continue;
+          }
+          if (part.trim()) {
+            cellChildren.push({ type: "text", content: part, props: {} });
+          }
+        }
+      };
       for (const child of cell.children || []) {
         if (child.type === "text") {
           const iconMatch = /^:([a-z-]+):\s*([\s\S]*)$/.exec(child.value);
@@ -19263,12 +19322,10 @@ function transformTable(node2, ctx) {
             });
             const remainder = iconMatch[2].trim();
             if (remainder) {
-              cellChildren.push({
-                type: "text",
-                content: remainder,
-                props: {}
-              });
+              pushCellTextWithInline(remainder);
             }
+          } else if (/\|[^|]+\|/.test(child.value)) {
+            pushCellTextWithInline(child.value);
           } else {
             cellChildren.push({
               type: "text",
@@ -19347,6 +19404,63 @@ function extractTextContent(node2) {
   }
   return "";
 }
+function parseInlineToNodes(content3) {
+  const nodes = [];
+  const validVariants = ["default", "primary", "success", "warning", "error", "danger"];
+  const pillSplit = content3.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+  for (const part of pillSplit) {
+    if (!part)
+      continue;
+    const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
+    if (pillMatch) {
+      const [, text6, attrs] = pillMatch;
+      const props = parseAttributes(attrs || "");
+      const variantClass = props.classes?.find((c) => validVariants.includes(c));
+      if (variantClass) {
+        props.variant = variantClass === "danger" ? "error" : variantClass;
+        props.classes = props.classes.filter((c) => c !== variantClass);
+      }
+      nodes.push({ type: "badge", content: text6.trim(), props });
+      continue;
+    }
+    const iconSplit = part.split(/:([a-z-]+):/);
+    for (let i = 0; i < iconSplit.length; i++) {
+      if (i % 2 === 0) {
+        if (iconSplit[i])
+          nodes.push({ type: "text", content: iconSplit[i], props: {} });
+      } else {
+        nodes.push({ type: "icon", props: { name: iconSplit[i] } });
+      }
+    }
+  }
+  return nodes;
+}
+function tokenizeAttrBody(inner) {
+  const tokens = [];
+  let buf = "";
+  let quote = null;
+  for (let i = 0; i < inner.length; i++) {
+    const c = inner[i];
+    if (quote) {
+      buf += c;
+      if (c === quote)
+        quote = null;
+    } else if (c === '"' || c === "'") {
+      quote = c;
+      buf += c;
+    } else if (/\s/.test(c)) {
+      if (buf) {
+        tokens.push(buf);
+        buf = "";
+      }
+    } else {
+      buf += c;
+    }
+  }
+  if (buf)
+    tokens.push(buf);
+  return tokens;
+}
 function parseAttributes(attrString) {
   const props = {
     classes: []
@@ -19358,14 +19472,19 @@ function parseAttributes(attrString) {
   if (!inner) {
     return props;
   }
-  const parts = inner.split(/\s+/);
+  const parts = tokenizeAttrBody(inner);
   for (const part of parts) {
     if (part.startsWith(".")) {
       props.classes.push(part.slice(1));
-    } else if (part.startsWith(":")) {
+    } else if (part.startsWith(":") && !part.slice(1).includes(":")) {
       props.state = part.slice(1);
     } else if (part.includes(":")) {
-      const [key, value] = part.split(":", 2);
+      const colonIdx = part.indexOf(":");
+      const key = part.slice(0, colonIdx);
+      let value = part.slice(colonIdx + 1);
+      if (value.length >= 2 && (value[0] === '"' && value[value.length - 1] === '"' || value[0] === "'" && value[value.length - 1] === "'")) {
+        value = value.slice(1, -1);
+      }
       props[key] = value || true;
     } else {
       props[part] = true;
@@ -19540,11 +19659,78 @@ function collectContainer(nodes, startIdx) {
       containerChildren.push(...inner.trailing);
     i = startIdx + inner.nextIndex;
   }
+  const finishWithTrailing = (trailing) => {
+    const finished = makeContainerNode(opener.containerType, opener.attrs, containerChildren, openerNode.position);
+    if (opener.inline)
+      finished.inline = opener.inline;
+    if (opener.containerType === "demo")
+      finished.rawContent = mdastNodesToText(containerChildren);
+    return { node: finished, trailing: trailing && trailing.length > 0 ? trailing : void 0, nextIndex: i };
+  };
   while (i < nodes.length) {
     const child = nodes[i];
     if (isContainerCloser(child)) {
       i++;
       break;
+    }
+    if (child.type === "paragraph" && child.children?.length === 1 && child.children[0].type === "text") {
+      const value = child.children[0].value;
+      const lines = value.split("\n");
+      if (lines.length > 1 && lines[0].trim() === ":::") {
+        const after = lines.slice(1).join("\n");
+        i++;
+        return finishWithTrailing(after.trim() ? [{ type: "paragraph", children: [{ type: "text", value: after }] }] : void 0);
+      }
+    }
+    if (child.type === "list" && child.children?.length) {
+      const items = child.children;
+      const last = items[items.length - 1];
+      const para = last?.children?.[0];
+      if (para?.type === "paragraph" && para.children?.length) {
+        const lastTextChild = para.children[para.children.length - 1];
+        if (lastTextChild?.type === "text" && /\n:::\s*$/.test(lastTextChild.value)) {
+          const stripped = lastTextChild.value.replace(/\n:::\s*$/, "");
+          const newPara = {
+            ...para,
+            children: [
+              ...para.children.slice(0, -1),
+              { ...lastTextChild, value: stripped }
+            ]
+          };
+          const newLast = { ...last, children: [newPara, ...last.children?.slice(1) || []] };
+          const newList = { ...child, children: [...items.slice(0, -1), newLast] };
+          containerChildren.push(newList);
+          i++;
+          return finishWithTrailing();
+        }
+      }
+    }
+    if (child.type === "paragraph" && child.children?.length === 1 && child.children[0].type === "text") {
+      const value = child.children[0].value;
+      const lines = value.split("\n");
+      let nestedOpenerLine = -1;
+      for (let li = 1; li < lines.length; li++) {
+        const candidate = { type: "paragraph", children: [{ type: "text", value: lines[li] }] };
+        if (parseContainerOpener(candidate)) {
+          nestedOpenerLine = li;
+          break;
+        }
+      }
+      if (nestedOpenerLine > 0) {
+        const before = lines.slice(0, nestedOpenerLine).join("\n").trim();
+        if (before) {
+          containerChildren.push({ type: "paragraph", children: [{ type: "text", value: before }] });
+        }
+        const remainder = lines.slice(nestedOpenerLine).join("\n");
+        const syntheticOpener = { type: "paragraph", children: [{ type: "text", value: remainder }] };
+        const virtualNodes = [syntheticOpener, ...nodes.slice(i + 1)];
+        const inner = collectContainer(virtualNodes, 0);
+        containerChildren.push(inner.node);
+        if (inner.trailing)
+          containerChildren.push(...inner.trailing);
+        i = i + 1 + (inner.nextIndex - 1);
+        continue;
+      }
     }
     if (parseContainerOpener(child)) {
       const inner = collectContainer(nodes, i);
@@ -19556,30 +19742,35 @@ function collectContainer(nodes, startIdx) {
     }
     if (child.type === "paragraph" && child.children?.length) {
       const lastInline = child.children[child.children.length - 1];
-      if (lastInline?.type === "text" && lastInline.value.includes("\n:::")) {
-        const trimmed = lastInline.value.replace(/\n:::$/, "").trimEnd();
-        if (trimmed) {
-          containerChildren.push({
-            ...child,
-            children: [
-              ...child.children.slice(0, -1),
-              { ...lastInline, value: trimmed }
-            ]
-          });
-        } else if (child.children.length > 1) {
-          containerChildren.push({
-            ...child,
-            children: child.children.slice(0, -1)
-          });
+      if (lastInline?.type === "text") {
+        const value = lastInline.value;
+        const m = value.match(/^([\s\S]*?)\n:::[ \t]*(?:\n([\s\S]*))?$/);
+        if (m) {
+          const beforeText = m[1].trimEnd();
+          const afterText = (m[2] ?? "").replace(/^\n+/, "");
+          if (beforeText) {
+            containerChildren.push({
+              ...child,
+              children: [
+                ...child.children.slice(0, -1),
+                { ...lastInline, value: beforeText }
+              ]
+            });
+          } else if (child.children.length > 1) {
+            containerChildren.push({
+              ...child,
+              children: child.children.slice(0, -1)
+            });
+          }
+          i++;
+          return finishWithTrailing(afterText ? [{ type: "paragraph", children: [{ type: "text", value: afterText }] }] : void 0);
         }
-        i++;
-        break;
       }
     }
     containerChildren.push(child);
     i++;
   }
-  return finishContainer(opener.containerType, opener.attrs, opener.inline, containerChildren, i, openerNode.position);
+  return finishWithTrailing();
 }
 function mdastInlinesToText(children) {
   return (children || []).map((child) => {
@@ -19650,14 +19841,16 @@ function mdastNodesToText(nodes) {
 }
 function processNodes(nodes) {
   const result = [];
+  const queue = nodes.slice();
   let i = 0;
-  while (i < nodes.length) {
-    const node2 = nodes[i];
+  while (i < queue.length) {
+    const node2 = queue[i];
     if (parseContainerOpener(node2)) {
-      const { node: containerNode, trailing, nextIndex } = collectContainer(nodes, i);
+      const { node: containerNode, trailing, nextIndex } = collectContainer(queue, i);
       result.push(containerNode);
-      if (trailing)
-        result.push(...trailing);
+      if (trailing && trailing.length > 0) {
+        queue.splice(nextIndex, 0, ...trailing);
+      }
       i = nextIndex;
     } else {
       result.push(node2);
