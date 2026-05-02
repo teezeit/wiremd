@@ -1,4 +1,3 @@
-import { handle } from "hono/vercel";
 import { createApp } from "../src/app.js";
 import { createDb } from "../src/db/client.js";
 
@@ -9,6 +8,5 @@ if (!databaseUrl) {
   );
 }
 
-const app = createApp(createDb(databaseUrl));
+export default createApp(createDb(databaseUrl));
 
-export default handle(app);
