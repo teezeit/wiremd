@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Badge/pill syntax now uses `((Label))` / `((Label)){.variant}` as the primary notation; legacy pipe-delimited pills remain accepted as a migration alias.
+
 ## [0.2.1] - 2026-04-30
 
 ### Changed
