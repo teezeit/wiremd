@@ -25,6 +25,12 @@ export function renderGridItemTailwind(
     utilityClasses.push('mr-auto', 'text-left');
   }
 
+  if (propsClasses.includes('align-top')) {
+    utilityClasses.push('self-start');
+  } else if (propsClasses.includes('align-bottom')) {
+    utilityClasses.push('self-end');
+  }
+
   const classes = [
     'bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow',
     ...utilityClasses,

@@ -5,11 +5,21 @@ type RowNode = Extract<WiremdNode, { type: 'row' }>;
 
 export function renderRowTailwind(node: RowNode, context: TailwindRenderContext): string {
   const propsClasses = (node.props?.classes as string[] | undefined) || [];
-  const classes = propsClasses.includes('right')
-    ? 'flex items-center gap-3 flex-wrap justify-end'
-    : propsClasses.includes('center')
-      ? 'flex items-center gap-3 flex-wrap justify-center'
-      : 'flex items-center gap-3 flex-wrap';
+  const classes = [
+    'flex',
+    propsClasses.includes('align-top')
+      ? 'items-start'
+      : propsClasses.includes('align-bottom')
+        ? 'items-end'
+        : 'items-center',
+    'gap-3',
+    'flex-wrap',
+    propsClasses.includes('right')
+      ? 'justify-end'
+      : propsClasses.includes('center')
+        ? 'justify-center'
+        : '',
+  ].filter(Boolean).join(' ');
   const childrenHTML = (node.children || [])
     .map((child) => {
       if (child.type === 'grid-item') {

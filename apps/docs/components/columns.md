@@ -95,6 +95,25 @@ Add `left`, `right`, or `center` to a `::: column` opener to align that column. 
 :::
 :::
 
+## Vertical Alignment
+
+Add `top` or `bottom` to align a column item vertically against taller siblings.
+::: demo
+::: columns-3 card
+::: column {top}
+Pinned to top
+:::
+::: column
+This middle column is taller.
+
+[Notes...]{rows:4}
+:::
+::: column {bottom}
+Pinned to bottom
+:::
+:::
+:::
+
 ## Syntax
 
 ```
@@ -113,6 +132,10 @@ spans 2 columns
 ::: column {left}      push to left edge
 :::
 ::: column {center}    center
+:::
+::: column {top}       pin to top in the grid row
+:::
+::: column {bottom}    pin to bottom in the grid row
 :::
 ```
 

@@ -385,6 +385,25 @@ Spans two
       expect(html).toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-right/);
     });
 
+    it('should render vertical alignment classes on column items', () => {
+      const input = `
+::: columns-2
+::: column {top}
+Top
+:::
+::: column {.bottom}
+Bottom
+:::
+:::
+      `.trim();
+
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-top/);
+      expect(html).toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-bottom/);
+      expect(html).toContain('align-self: start');
+      expect(html).toContain('align-self: end');
+    });
+
     it('should render column opener titles as headings', () => {
       const input = `
 ::: columns-2
@@ -470,6 +489,21 @@ Two
       expect(html).toContain('display: flex');
     });
 
+    it('should render vertical alignment classes on rows', () => {
+      const input = `
+::: row {bottom}
+
+[Cancel]
+[Save]*
+
+:::
+      `.trim();
+
+      const html = renderToHTML(parse(input), { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-row[^"]*wmd-align-bottom/);
+      expect(html).toContain('align-items: flex-end');
+    });
+
     it('should not render align-left and align-right classes from headings inside rows', () => {
       const input = `
 ::: row
@@ -539,6 +573,13 @@ Centered
 
       const html = renderToHTML(parse(input), { style: 'sketch' });
       expect(html).not.toMatch(/class="[^"]*wmd-align-center/);
+    });
+  });
+
+  describe('Vertical alignment attributes', () => {
+    it('should render vertical alignment classes on headings', () => {
+      const html = renderToHTML(parse('### Metrics {top}'), { style: 'sketch' });
+      expect(html).toMatch(/<h3 class="[^"]*wmd-align-top[^"]*"[^>]*>Metrics<\/h3>/);
     });
   });
 
