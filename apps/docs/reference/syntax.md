@@ -245,7 +245,7 @@ Containers can be nested — the parser handles them recursively:
 
 ### {.right}
 
-Started: Apr 1 · |Due: Apr 30|{.warning}
+Started: Apr 1 · ((Due: Apr 30)){.warning}
 :::
 
 Before you can pitch to a decision maker, you need to get past the gatekeeper.
@@ -389,21 +389,21 @@ Use `:name:` anywhere — headings, nav, buttons, table cells, body text:
 
 ## Badges / Pills
 
-Pipe delimiters create inline status labels:
+Double parentheses create inline status labels:
 
 ```markdown
-|Active|
-|Active|{.success}
-|3|{.warning}
-|Failed|{.error}
-|New|{.primary}
+((Active))
+((Active)){.success}
+((3)){.warning}
+((Failed)){.error}
+((New)){.primary}
 
-Status: |Active|{.success}
+Status: ((Active)){.success}
 ```
 
 Variants: `success` · `warning` · `error` · `primary` · (none = neutral gray)
 
-> **⚠️ Gotcha:** `|Label|` conflicts with Markdown table syntax. Do not use inside a table cell.
+> `((Label))` works inside Markdown table cells without escaping.
 
 ---
 
@@ -511,7 +511,7 @@ All standard Markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 | `<Card>` | `::: card` block |
 | `<Dialog>` / `<Modal>` | `::: modal` at bottom of file |
 | `<Alert variant="success">` | `::: alert {.success}` |
-| `<Badge>` / `<Chip>` | `\|Label\|{.variant}` |
+| `<Badge>` / `<Chip>` | `((Label)){.variant}` |
 | Flex row of cards | `::: grid-3 card` |
 | Stats row (no card) | `::: grid-3` |
 | Horizontal toolbar | `::: row` |

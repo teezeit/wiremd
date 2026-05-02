@@ -1,7 +1,7 @@
 /**
- * Same family as `badges/in-a-table` — table cells using `|content|{.class}`
- * syntax should produce badge nodes, not render as raw `|...|{.class}`
- * text in the cell.
+ * Same family as `badges/in-a-table` — table cells using `((content)){.class}`
+ * syntax should produce badge nodes, not render parser sigils as raw text
+ * in the cell.
  */
 
 import { expect } from 'vitest';

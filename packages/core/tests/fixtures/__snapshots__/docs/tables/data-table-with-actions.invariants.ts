@@ -1,7 +1,7 @@
 /**
  * Sister of `tables/with-badges` and `badges/in-a-table` — table cells
- * using `|content|{.class}` syntax should produce badge nodes, not
- * render as raw `|...|{.class}` text. Action buttons in this fixture
+ * using `((content)){.class}` syntax should produce badge nodes, not
+ * render parser sigils as raw text. Action buttons in this fixture
  * already work; the badge cells are the failing case.
  */
 

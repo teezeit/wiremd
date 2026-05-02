@@ -55,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`:::` container syntax** — replaces `## {.grid}` / `## {.row}` heading-class layout syntax (breaking change); full nesting support via recursive parser rewrite
 - **`:::demo` container** — split preview/code showcase block for docs and examples
 - **Tabs component** — `:::tabs` with named panels
-- **Badge/pill component** — `|Label|{.variant}` inline syntax
+- **Badge/pill component** — `((Label)){.variant}` inline syntax
 - **`## {.row}` flex layout** — row primitive with alignment support
 - **`![[file.md]]` includes** — resolve and inline external wireframe files
 - **`:icon-name:` syntax** — icon rendering in table cells

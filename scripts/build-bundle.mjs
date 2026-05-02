@@ -17,6 +17,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const releasesDir = resolve(root, 'releases');
 const release    = resolve(releasesDir, 'wiremd.js');
 const pluginBin  = resolve(root, 'extensions/skills/wireframe/bin/wiremd.js');
+const pluginExec = resolve(root, 'extensions/skills/wireframe/bin/wiremd');
 const extDir     = resolve(root, 'extensions/vscode');
 
 mkdirSync(releasesDir, { recursive: true });
@@ -41,8 +42,10 @@ await build({
 });
 
 copyFileSync(release, pluginBin);
+copyFileSync(release, pluginExec);
 console.log(`CLI bundle    → ${release}`);
 console.log(`Plugin copy   → ${pluginBin}`);
+console.log(`Plugin exec   → ${pluginExec}`);
 
 // ── VS Code extension ──────────────────────────────────────────────────────
 console.log('Building VS Code extension...');

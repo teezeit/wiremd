@@ -490,7 +490,7 @@ describe('Edge Cases', () => {
     });
 
     it('should parse a pill with a long label', () => {
-      const ast = parse('|Awaiting Approval|{.warning}');
+      const ast = parse('((Awaiting Approval)){.warning}');
       expect(ast.children[0]).toMatchObject({
         type: 'badge',
         content: 'Awaiting Approval',
@@ -499,7 +499,7 @@ describe('Edge Cases', () => {
     });
 
     it('should render badge without crashing in all styles', () => {
-      const ast = parse('|Active|{.success}');
+      const ast = parse('((Active)){.success}');
       const styles = ['sketch', 'clean', 'wireframe', 'material', 'brutal', 'tailwind', 'none'] as const;
       for (const style of styles) {
         expect(() => renderToHTML(ast, { style })).not.toThrow();

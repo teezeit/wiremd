@@ -17750,6 +17750,14 @@ function makeIsolatedContext(options, deps) {
 }
 
 // packages/core/src/parser/transformer.ts
+var BADGE_VARIANTS = ["default", "primary", "success", "warning", "error", "danger"];
+var BADGE_TOKEN_PATTERN = /(?:\(\([^()\n]+\)\)|\|[^|\n]+\|)(?:\s*\{[^}]*\})?/;
+var BADGE_TOKEN_SPLIT = new RegExp(`(${BADGE_TOKEN_PATTERN.source})`);
+var BADGE_TOKEN_SPLIT_GLOBAL = new RegExp(`(${BADGE_TOKEN_PATTERN.source})`, "g");
+var BADGE_TOKEN_EXACT = /^(?:\(\(([^()\n]+)\)\)|\|([^|\n]+)\|)(?:\s*(\{[^}]*\}))?$/;
+var INLINE_TEXT_TOKEN_SPLIT = new RegExp(
+  `(\\[[^\\]]+\\](?:\\*)?(?:\\s*\\{[^}]*\\})?|:[a-z-]+:|${BADGE_TOKEN_PATTERN.source})`
+);
 function transformToWiremdAST(mdast, options = {}) {
   const meta = {
     version: SYNTAX_VERSION,
@@ -18328,7 +18336,7 @@ function transformParagraph(node2, ctx) {
     };
     for (const child of node2.children) {
       if (child.type === "text") {
-        const textParts = child.value.split(/(\[[^\]]+\](?:\*)?(?:\s*\{[^}]*\})?|:[a-z-]+:|\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+        const textParts = child.value.split(INLINE_TEXT_TOKEN_SPLIT);
         for (const part of textParts) {
           const buttonMatch2 = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
           if (buttonMatch2 && !/^\[[_*]+\]/.test(part)) {
@@ -18351,20 +18359,9 @@ function transformParagraph(node2, ctx) {
                 props: { name: iconMatch2[1] }
               });
             }
-          } else if (part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/)) {
+          } else if (parseBadgeToken(part)) {
             flushText();
-            const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
-            if (pillMatch) {
-              const [, text6, attrs] = pillMatch;
-              const props = parseAttributes(attrs || "");
-              const validVariants = ["default", "primary", "success", "warning", "error"];
-              const variantClass = props.classes?.find((c) => validVariants.includes(c));
-              if (variantClass) {
-                props.variant = variantClass;
-                props.classes = props.classes.filter((c) => c !== variantClass);
-              }
-              processedChildren.push({ type: "badge", content: text6.trim(), props });
-            }
+            processedChildren.push(parseBadgeToken(part));
           } else if (part) {
             currentText += part;
           }
@@ -18962,21 +18959,13 @@ function transformParagraph(node2, ctx) {
       }
     };
   }
-  if (/\|([^|]+)\|/.test(content3)) {
-    const textParts = content3.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+  if (BADGE_TOKEN_SPLIT.test(content3)) {
+    const textParts = content3.split(BADGE_TOKEN_SPLIT_GLOBAL);
     const children = [];
-    const validVariants = ["default", "primary", "success", "warning", "error"];
     for (const part of textParts) {
-      const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
-      if (pillMatch) {
-        const [, text6, attrs] = pillMatch;
-        const props = parseAttributes(attrs || "");
-        const variantClass = props.classes?.find((c) => validVariants.includes(c));
-        if (variantClass) {
-          props.variant = variantClass;
-          props.classes = props.classes.filter((c) => c !== variantClass);
-        }
-        children.push({ type: "badge", content: text6.trim(), props });
+      const badge2 = parseBadgeToken(part);
+      if (badge2) {
+        children.push(badge2);
       } else if (part.trim()) {
         children.push({ type: "text", content: part, props: {} });
       }
@@ -19285,21 +19274,13 @@ function transformTable(node2, ctx) {
       const cellAlign = align[cellIndex] || "left";
       const cellChildren = [];
       const pushCellTextWithInline = (value) => {
-        const parts = value.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?|:[a-z-]+:)/);
+        const parts = value.split(new RegExp(`(${BADGE_TOKEN_PATTERN.source}|:[a-z-]+:)`, "g"));
         for (const part of parts) {
           if (!part)
             continue;
-          const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
-          if (pillMatch) {
-            const [, text6, attrs] = pillMatch;
-            const props = parseAttributes(attrs || "");
-            const validVariants = ["default", "primary", "success", "warning", "error", "danger"];
-            const variantClass = props.classes?.find((c) => validVariants.includes(c));
-            if (variantClass) {
-              props.variant = variantClass === "danger" ? "error" : variantClass;
-              props.classes = props.classes.filter((c) => c !== variantClass);
-            }
-            cellChildren.push({ type: "badge", content: text6.trim(), props });
+          const badge2 = parseBadgeToken(part);
+          if (badge2) {
+            cellChildren.push(badge2);
             continue;
           }
           const iconOnly = part.match(/^:([a-z-]+):$/);
@@ -19324,7 +19305,7 @@ function transformTable(node2, ctx) {
             if (remainder) {
               pushCellTextWithInline(remainder);
             }
-          } else if (/\|[^|]+\|/.test(child.value)) {
+          } else if (BADGE_TOKEN_SPLIT.test(child.value)) {
             pushCellTextWithInline(child.value);
           } else {
             cellChildren.push({
@@ -19404,23 +19385,32 @@ function extractTextContent(node2) {
   }
   return "";
 }
+function parseBadgeToken(token) {
+  const match = token.match(BADGE_TOKEN_EXACT);
+  if (!match)
+    return null;
+  const [, parenContent, pipeContent, attrs] = match;
+  const props = parseAttributes(attrs || "");
+  const variantClass = props.classes?.find((className) => BADGE_VARIANTS.includes(className));
+  if (variantClass) {
+    props.variant = variantClass === "danger" ? "error" : variantClass;
+    props.classes = props.classes.filter((className) => className !== variantClass);
+  }
+  return {
+    type: "badge",
+    content: (parenContent ?? pipeContent).trim(),
+    props
+  };
+}
 function parseInlineToNodes(content3) {
   const nodes = [];
-  const validVariants = ["default", "primary", "success", "warning", "error", "danger"];
-  const pillSplit = content3.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+  const pillSplit = content3.split(BADGE_TOKEN_SPLIT_GLOBAL);
   for (const part of pillSplit) {
     if (!part)
       continue;
-    const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
-    if (pillMatch) {
-      const [, text6, attrs] = pillMatch;
-      const props = parseAttributes(attrs || "");
-      const variantClass = props.classes?.find((c) => validVariants.includes(c));
-      if (variantClass) {
-        props.variant = variantClass === "danger" ? "error" : variantClass;
-        props.classes = props.classes.filter((c) => c !== variantClass);
-      }
-      nodes.push({ type: "badge", content: text6.trim(), props });
+    const badge2 = parseBadgeToken(part);
+    if (badge2) {
+      nodes.push(badge2);
       continue;
     }
     const iconSplit = part.split(/:([a-z-]+):/);

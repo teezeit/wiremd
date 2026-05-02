@@ -161,7 +161,7 @@ $124,500
 :home: :user: :gear: :chart: :bell: :shield: :rocket: :check: :x: :search: :edit: :trash: :plus:
 
 # Badges / pills — inline status labels and counts
-|Active|{.success}  |Pending|{.warning}  |Failed|{.error}  |New|{.primary}  |Draft|
+((Active)){.success}  ((Pending)){.warning}  ((Failed)){.error}  ((New)){.primary}  ((Draft))
 
 # Card, alert
 ::: card

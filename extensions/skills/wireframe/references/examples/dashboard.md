@@ -79,10 +79,10 @@ Data last updated 2 hours ago. [Refresh Now]
 
 | Date   | Customer        | Amount  | Status  | Actions       |
 |--------|-----------------|---------|---------|---------------|
-| Jan 15 | Acme Corp       | $4,200  | |Paid|{.success}    | [View]        |
-| Jan 14 | Globex Inc      | $1,850  | |Pending|{.warning} | [View] [Void] |
-| Jan 13 | Initech         | $3,100  | |Paid|{.success}    | [View]        |
-| Jan 12 | Umbrella Co     | $920    | |Failed|{.error}    | [Retry]       |
+| Jan 15 | Acme Corp       | $4,200  | ((Paid)){.success}    | [View]        |
+| Jan 14 | Globex Inc      | $1,850  | ((Pending)){.warning} | [View] [Void] |
+| Jan 13 | Initech         | $3,100  | ((Paid)){.success}    | [View]        |
+| Jan 12 | Umbrella Co     | $920    | ((Failed)){.error}    | [Retry]       |
 
 :::
 

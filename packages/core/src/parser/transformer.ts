@@ -2080,7 +2080,7 @@ function parseBadgeToken(token: string): WiremdNode | null {
 /**
  * Split a plain-text fragment into inline wiremd nodes — text, badges,
  * and icons. Used by both the multi-line paragraph splitter and the table
- * cell splitter. Pills (`((text)){.cls}` or legacy `|text|{.cls}`) are split first; each remaining
+ * cell splitter. Pills (`((text)){.cls}` or the legacy pipe form) are split first; each remaining
  * text segment is then split on `:icon:` patterns.
  */
 function parseInlineToNodes(content: string): WiremdNode[] {
