@@ -27,15 +27,11 @@ const UpdateBody = z
       .string()
       .max(MAX_CONTENT_BYTES)
       .openapi({ example: "# Hello v2\n\n[Save]* [Cancel]" }),
-    baseUpdatedAt: z
-      .string()
-      .datetime()
-      .optional()
-      .openapi({
-        description:
-          "The updatedAt the client started from. If present and stale, the server returns 409 with the current state instead of overwriting.",
-        example: "2026-05-01T12:00:00.000Z",
-      }),
+    baseUpdatedAt: z.string().datetime().optional().openapi({
+      description:
+        "The updatedAt the client started from. If present and stale, the server returns 409 with the current state instead of overwriting.",
+      example: "2026-05-01T12:00:00.000Z",
+    }),
   })
   .openapi("UpdateProjectBody");
 
@@ -67,9 +63,7 @@ const UpdatedAtResponse = z
   })
   .openapi("UpdatedAt");
 
-const ErrorResponse = z
-  .object({ error: z.string() })
-  .openapi("Error");
+const ErrorResponse = z.object({ error: z.string() }).openapi("Error");
 
 // Permissive on purpose: malformed IDs must look identical to unknown IDs (404),
 // not 400, to avoid leaking namespace probing signal. Strict regex check happens
@@ -182,7 +176,9 @@ const updateProjectRoute = createRoute({
 
 const notFound = () => new HTTPException(404, { message: "Not found" });
 
-export const projectsRoute = new OpenAPIHono<AppEnv>({ defaultHook: defaultValidationHook })
+export const projectsRoute = new OpenAPIHono<AppEnv>({
+  defaultHook: defaultValidationHook,
+})
   .openapi(createProjectRoute, async (c) => {
     const db = c.get("db");
     const { content } = c.req.valid("json");
@@ -215,7 +211,10 @@ export const projectsRoute = new OpenAPIHono<AppEnv>({ defaultHook: defaultValid
     if (!ID_PATTERN.test(id)) throw notFound();
 
     const row = await db.query.projectFile.findFirst({
-      where: and(eq(projectFile.projectId, id), eq(projectFile.path, INDEX_PATH)),
+      where: and(
+        eq(projectFile.projectId, id),
+        eq(projectFile.path, INDEX_PATH),
+      ),
     });
     if (!row) throw notFound();
 
@@ -267,13 +266,19 @@ export const projectsRoute = new OpenAPIHono<AppEnv>({ defaultHook: defaultValid
         // Either the project doesn't exist OR baseUpdatedAt was stale.
         // Differentiate: 404 for missing, 409 for stale.
         const current = await tx.query.projectFile.findFirst({
-          where: and(eq(projectFile.projectId, id), eq(projectFile.path, INDEX_PATH)),
+          where: and(
+            eq(projectFile.projectId, id),
+            eq(projectFile.path, INDEX_PATH),
+          ),
         });
         if (!current) return { kind: "not-found" as const };
         return { kind: "conflict" as const, current };
       }
 
-      await tx.update(project).set({ updatedAt: now }).where(eq(project.id, id));
+      await tx
+        .update(project)
+        .set({ updatedAt: now })
+        .where(eq(project.id, id));
       return { kind: "ok" as const, updatedAt: updated[0]!.updatedAt };
     });
 
