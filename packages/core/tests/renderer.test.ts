@@ -340,7 +340,7 @@ Spans two
       expect(html).toContain('display: flex');
     });
 
-    it('should render align-left and align-right classes on grid-items', () => {
+    it('should ignore per-item alignment headings inside rows', () => {
       const input = `
 ::: row
 
@@ -354,10 +354,8 @@ Spans two
       `.trim();
 
       const html = renderToHTML(parse(input), { style: 'sketch' });
-      expect(html).toContain('wmd-align-left');
-      expect(html).toContain('wmd-align-right');
-      expect(html).toContain('margin-right: auto');
-      expect(html).toContain('margin-left: auto');
+      expect(html).not.toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-left/);
+      expect(html).not.toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-right/);
     });
 
     it('dropdown inside implicit row renders <select> with <option> elements (not a stray <ul>)', () => {
@@ -397,7 +395,7 @@ Spans two
       expect(html).not.toMatch(/<ul[\s\S]*?All Teams/);
     });
 
-    it('should render align-center class on grid-item with {.center}', () => {
+    it('should ignore center alignment headings inside rows', () => {
       const input = `
 ::: row
 
@@ -408,7 +406,7 @@ Centered
       `.trim();
 
       const html = renderToHTML(parse(input), { style: 'sketch' });
-      expect(html).toContain('wmd-align-center');
+      expect(html).not.toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-center/);
     });
   });
 
@@ -1201,7 +1199,7 @@ content
     });
 
     it('comment before a row item annotates that item, not the previous one', () => {
-      const md = '::: row\n\n### {.left}\n[Search___]{type:search}\n\n<!-- fix label -->\n### {.right}\n[Filter v]\n\n:::';
+      const md = '::: row\n\n### Search\n[Search___]{type:search}\n\n<!-- fix label -->\n### Filter\n[Filter v]\n\n:::';
       const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
       expect(html).toContain('fix label');
       expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);

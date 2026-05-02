@@ -39,9 +39,9 @@ Separate lines stack vertically:
 ::: demo
 ::: tabs
 ::: tab General
-::: row
+::: grid-2
 
-### {.left}
+###
 [Name_____________________________]{required}
 
 ### {.right}

@@ -68,7 +68,7 @@ $29/mo — spans two columns
 | `{disabled}` | Disabled state on inputs, textarea, and select — **ignored on buttons**; use `{state:disabled}` for buttons |
 | `{required}` | Required field marker (inputs and textarea only) |
 | `{.col-span-N}` | Grid column span |
-| `{.left}` / `{.right}` / `{.center}` | Alignment in row/grid |
+| `{.left}` / `{.right}` / `{.center}` | Alignment on rows or grid item headings |
 | `{type:email}` | Input type |
 | `{rows:N}` | Textarea row count |
 | `{placeholder:"..."}` | Input placeholder text (**TODO:** quoted values with spaces may not parse correctly — prefer `{placeholder:hint}` without quotes for single words) |

@@ -287,7 +287,7 @@ function collectGridItemsFromContainer(
 
 /**
  * Wrap each direct child of a ::: row container as an implicit grid-item.
- * When ### headings are present, uses heading-based grouping (supports alignment classes).
+ * When ### headings are present, uses heading-based grouping.
  * Otherwise, each paragraph/node is its own grid-item.
  * Dropdown paragraphs are always grouped with their following option list.
  */
@@ -306,10 +306,7 @@ function collectRowItemsFromContainer(
     while (i < children.length) {
       const child = children[i];
       if (child.type === 'heading' && child.depth === itemDepth) {
-        const headingContent = extractTextContent(child);
-        const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
         const itemProps: any = { classes: [] };
-        if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
         // Flush pending comment nodes as siblings BEFORE this row-item
         for (const c of pending) {
           const m = (c.value as string).match(/^<!--([\s\S]*?)-->$/);

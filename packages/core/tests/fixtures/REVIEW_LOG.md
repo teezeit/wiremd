@@ -95,7 +95,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [✅ basic-row][58]
 - [✅ row-with-alignment][59]
 - [✅ row-with-alignment-2][60]
-- [✅ explicit-items-with-per-item-alignment][61]
+- [✅ split-layouts][61]
 - [✅ mixed-content][62]
 - [✅ mixed-content-2][63]
 - [✅ mixed-content-3][64]
@@ -230,7 +230,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 [58]: ./REVIEW.html#fixture-docs-row-basic-row
 [59]: ./REVIEW.html#fixture-docs-row-row-with-alignment
 [60]: ./REVIEW.html#fixture-docs-row-row-with-alignment-2
-[61]: ./REVIEW.html#fixture-docs-row-explicit-items-with-per-item-alignment
+[61]: ./REVIEW.html#fixture-docs-row-split-layouts
 [62]: ./REVIEW.html#fixture-docs-row-mixed-content
 [63]: ./REVIEW.html#fixture-docs-row-mixed-content-2
 [64]: ./REVIEW.html#fixture-docs-row-mixed-content-3

@@ -47,7 +47,7 @@
 | **Row (aligned)** | `::: row {.right}` … `:::` | Right-aligned row |
 | **Tabs** | `::: tabs` with `::: tab Label` children | Tabbed panels |
 | **Col span** | `### Item {.col-span-2}` | Item spans 2 columns |
-| **Item alignment** | `### {.right}` / `### {.left}` / `### {.center}` inside `::: row` or `::: grid-N` | Aligns that item |
+| **Grid item alignment** | `### {.right}` / `### {.left}` / `### {.center}` inside `::: grid-N` | Aligns that grid item |
 
 Grid items are defined by `###` headings inside the `::: grid-N` container.
 
@@ -263,4 +263,3 @@ wiremd supports **all standard Markdown** syntax:
 | Grid not working | Use `###` for grid items inside `::: grid-N` |
 | Button looks wrong | Check for `(url)` - that makes it a link |
 | Attributes ignored | Put `{...}` immediately after element (space OK) |
-

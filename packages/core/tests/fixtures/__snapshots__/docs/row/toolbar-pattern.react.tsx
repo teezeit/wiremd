@@ -3,8 +3,9 @@ import React from 'react';
 export const WiremdComponent: React.FC = () => {
   return (
     <div className="wmd-root">
-  <div className="wmd-row">
-    <div className="wmd-grid-item wmd-align-left">
+  <div className="wmd-grid wmd-grid-2" style={{ '--grid-columns': 2 } as React.CSSProperties}>
+    <div className="wmd-grid-item">
+      <h3 className="wmd-h3"></h3>
       <div className="wmd-container-form-group">
 <strong>Projects</strong>
  
@@ -12,6 +13,7 @@ export const WiremdComponent: React.FC = () => {
       </div>
     </div>
     <div className="wmd-grid-item wmd-align-right">
+      <h3 className="wmd-h3 wmd-right"></h3>
       <div className="wmd-container-button-group">
         <button className="wmd-button">
           Filter
