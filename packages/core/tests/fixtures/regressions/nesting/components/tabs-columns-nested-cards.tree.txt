@@ -1,0 +1,41 @@
+Document
+  └─ tabs
+     ├─ tab "Board" active=true
+     │  └─ grid[3] props={card=true}
+     │     ├─ grid-item props={classes=["card"]}
+     │     │  ├─ heading[3] "Todo"
+     │     │  ├─ heading[3] "Draft copy"
+     │     │  ├─ paragraph
+     │     │  │  ├─ text "Owner "
+     │     │  │  └─ badge "Mae" props={variant="primary"}
+     │     │  └─ button "Start" props={variant="primary"}
+     │     ├─ grid-item props={classes=["card"]}
+     │     │  ├─ heading[3] "Doing"
+     │     │  ├─ heading[3] "Wire layouts"
+     │     │  ├─ paragraph
+     │     │  │  ├─ text "Owner "
+     │     │  │  └─ badge "Noah" props={variant="warning"}
+     │     │  └─ row
+     │     │     ├─ grid-item
+     │     │     │  └─ button "Comment"
+     │     │     └─ grid-item
+     │     │        └─ button "Review" props={variant="primary"}
+     │     └─ grid-item props={classes=["card"]}
+     │        ├─ heading[3] "Done"
+     │        ├─ heading[3] "Ship preview"
+     │        ├─ paragraph
+     │        │  ├─ text "Owner "
+     │        │  └─ badge "Kai" props={variant="success"}
+     │        └─ button "Open"
+     └─ tab "Settings" active=false
+        └─ grid[2] props={card=false}
+           ├─ grid-item
+           │  ├─ heading[3] "Notifications"
+           │  ├─ switch "Daily digest" checked=true
+           │  └─ switch "Mentions only" checked=false
+           └─ grid-item props={classes=["align-right"]}
+              └─ row props={classes=["right"]}
+                 ├─ grid-item
+                 │  └─ button "Cancel"
+                 └─ grid-item
+                    └─ button "Save" props={variant="primary"}

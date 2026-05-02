@@ -1,0 +1,41 @@
+Document
+  └─ tabs
+     ├─ tab "Profile" active=true
+     │  └─ container[card]
+     │     ├─ heading[3] "Personal details"
+     │     ├─ row
+     │     │  ├─ grid-item
+     │     │  │  └─ icon props={name="user"}
+     │     │  ├─ grid-item
+     │     │  │  └─ paragraph
+     │     │  │     ├─ text "Jane Doe "
+     │     │  │     └─ badge "Admin" props={variant="primary"}
+     │     │  ├─ grid-item
+     │     │  │  └─ button "Edit"
+     │     │  └─ grid-item
+     │     │     └─ button "Deactivate" props={variant="danger"}
+     │     └─ container[form-group]
+     │        ├─ text "Email"
+     │        └─ input props={type="email", required=true, placeholder="jane@example.com", width=22}
+     └─ tab "Permissions" active=false
+        └─ container[card]
+           ├─ heading[3] "Role settings"
+           ├─ switch "Can invite members" checked=true
+           ├─ switch "Can manage billing" checked=false
+           ├─ switch "Requires approval" checked=false props={disabled=true}
+           └─ table
+              ├─ table-header
+              │  ├─ table-cell "Area" align="left" header=true
+              │  │  └─ text "Area"
+              │  └─ table-cell "Access" align="left" header=true
+              │     └─ text "Access"
+              ├─ table-row
+              │  ├─ table-cell "Projects" align="left" header=false
+              │  │  └─ text "Projects"
+              │  └─ table-cell "((Full)){.success}" align="left" header=false
+              │     └─ badge "Full" props={variant="success"}
+              └─ table-row
+                 ├─ table-cell "Billing" align="left" header=false
+                 │  └─ text "Billing"
+                 └─ table-cell "((Limited)){.warning}" align="left" header=false
+                    └─ badge "Limited" props={variant="warning"}

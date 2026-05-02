@@ -1,0 +1,40 @@
+Document
+  └─ grid[2] props={card=false}
+     ├─ grid-item
+     │  └─ container[card]
+     │     ├─ heading[3] "Project Alpha"
+     │     ├─ paragraph "Primary project controls."
+     │     └─ tabs
+     │        ├─ tab "Summary" active=true
+     │        │  ├─ list ordered=false
+     │        │  │  ├─ list-item "12 open tasks"
+     │        │  │  ├─ list-item "4 blocked tasks"
+     │        │  │  └─ list-item "2 reviewers"
+     │        │  └─ button "Open project" props={variant="primary"}
+     │        └─ tab "Activity" active=false
+     │           └─ table
+     │              ├─ table-header
+     │              │  ├─ table-cell "User" align="left" header=true
+     │              │  │  └─ text "User"
+     │              │  └─ table-cell "Action" align="left" header=true
+     │              │     └─ text "Action"
+     │              ├─ table-row
+     │              │  ├─ table-cell "Sam" align="left" header=false
+     │              │  │  └─ text "Sam"
+     │              │  └─ table-cell "Updated status" align="left" header=false
+     │              │     └─ text "Updated status"
+     │              └─ table-row
+     │                 ├─ table-cell "Lee" align="left" header=false
+     │                 │  └─ text "Lee"
+     │                 └─ table-cell "Added comment" align="left" header=false
+     │                    └─ text "Added comment"
+     └─ grid-item
+        └─ container[card]
+           ├─ heading[3] "Filters"
+           ├─ input props={type="search", placeholder="Search projects"}
+           ├─ select props={placeholder="Status"} options=[All, Active, Archived]
+           └─ row
+              ├─ grid-item
+              │  └─ button "Reset"
+              └─ grid-item
+                 └─ button "Apply" props={variant="primary"}

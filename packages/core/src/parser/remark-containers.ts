@@ -13,11 +13,63 @@
  */
 
 import type { Plugin } from "unified";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import { remarkWiremdInlineContainers } from "./remark-inline-containers.js";
 
 interface ContainerOpener {
   containerType: string;
   attrs: string;
   inline: string;
+}
+
+export function normalizeContainerDirectiveSpacing(markdown: string): string {
+  const lines = markdown.split(/\r?\n/);
+  const out: string[] = [];
+  let inFence = false;
+  let fenceMarker: "`" | "~" | null = null;
+
+  const isFenceLine = (line: string) => {
+    const match = line.trim().match(/^(`{3,}|~{3,})/);
+    return match ? match[1] : null;
+  };
+
+  const isDirectiveLine = (line: string) =>
+    !inFence && /^:::(?:\s|$)/.test(line.trim());
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const fence = isFenceLine(line);
+    if (fence) {
+      const marker = fence[0] as "`" | "~";
+      if (!inFence) {
+        inFence = true;
+        fenceMarker = marker;
+      } else if (fenceMarker === marker) {
+        inFence = false;
+        fenceMarker = null;
+      }
+    }
+
+    const directive = isDirectiveLine(line);
+    if (directive && out.length > 0 && out[out.length - 1].trim() !== "") {
+      out.push("");
+    }
+
+    out.push(line);
+
+    const nextLine = lines[i + 1];
+    if (
+      directive &&
+      nextLine !== undefined &&
+      nextLine.trim() !== ""
+    ) {
+      out.push("");
+    }
+  }
+
+  return out.join("\n");
 }
 
 /** Parse a paragraph node as a container opener. Returns null if not an opener. */
@@ -30,8 +82,12 @@ function parseContainerOpener(node: any): ContainerOpener | null {
     return null;
 
   const firstLine = (node.children[0].value as string).split("\n")[0].trim();
+  return parseContainerOpenerLine(firstLine);
+}
+
+function parseContainerOpenerLine(line: string): ContainerOpener | null {
   // Match ::: followed by a single-word type, optional {attrs}, optional inline content
-  const match = firstLine.match(/^:::\s*(\S+)(?:\s*(\{[^}]+\}))?(?:\s+(.+))?$/);
+  const match = line.trim().match(/^:::\s*(\S+)(?:\s*(\{[^}]+\}))?(?:\s+(.+))?$/);
   if (!match) return null;
 
   return {
@@ -39,6 +95,10 @@ function parseContainerOpener(node: any): ContainerOpener | null {
     attrs: match[2] ? match[2].trim() : "",
     inline: match[3] ? match[3].trim() : "",
   };
+}
+
+function isContainerCloserLine(line: string): boolean {
+  return line.trim() === ":::";
 }
 
 /** Check if a node is a standalone closing ::: paragraph. */
@@ -92,6 +152,115 @@ function finishContainer(
   return { node, nextIndex };
 }
 
+function parseMarkdownBlocks(markdown: string): any[] {
+  const trimmed = normalizeContainerDirectiveSpacing(markdown.trim());
+  if (!trimmed) return [];
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkWiremdInlineContainers);
+  const parsed = processor.parse(trimmed);
+  const processed = processor.runSync(parsed) as any;
+  return processed.children || [];
+}
+
+function collectPlainTextContainer(
+  lines: string[],
+  startIdx: number,
+  position?: any,
+): { node: any; nextIndex: number } | null {
+  const opener = parseContainerOpenerLine(lines[startIdx] || "");
+  if (!opener) return null;
+
+  const children: any[] = [];
+  if (opener.inline) {
+    children.push({
+      type: "paragraph",
+      children: [{ type: "text", value: opener.inline }],
+    });
+  }
+
+  const flushContent = (buffer: string[]) => {
+    const text = buffer.join("\n").trim();
+    if (text) children.push(...parseMarkdownBlocks(text));
+    buffer.length = 0;
+  };
+
+  const buffer: string[] = [];
+  let i = startIdx + 1;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (isContainerCloserLine(line)) {
+      flushContent(buffer);
+      const node = makeContainerNode(
+        opener.containerType,
+        opener.attrs,
+        children,
+        position,
+      );
+      if (opener.inline) node.inline = opener.inline;
+      if (opener.containerType === "demo") {
+        node.rawContent = mdastNodesToText(children);
+      }
+      return { node, nextIndex: i + 1 };
+    }
+
+    if (parseContainerOpenerLine(line)) {
+      flushContent(buffer);
+      const nested = collectPlainTextContainer(lines, i);
+      if (nested) {
+        children.push(nested.node);
+        if (nested.nextIndex <= i) {
+          i++;
+          continue;
+        }
+        i = nested.nextIndex;
+        continue;
+      }
+    }
+
+    buffer.push(line);
+    i++;
+  }
+
+  flushContent(buffer);
+  const node = makeContainerNode(
+    opener.containerType,
+    opener.attrs,
+    children,
+    position,
+  );
+  if (opener.inline) node.inline = opener.inline;
+  if (opener.containerType === "demo") {
+    node.rawContent = mdastNodesToText(children);
+  }
+  return { node, nextIndex: i };
+}
+
+function collectPlainTextContainerRun(
+  fullText: string,
+  position?: any,
+): { node: any; trailing?: any[]; nextIndex: number } | null {
+  const lines = fullText.split("\n");
+  if (!parseContainerOpenerLine(lines[0] || "")) return null;
+  if (
+    !lines.slice(1).some((line) => parseContainerOpenerLine(line)) ||
+    !lines.slice(1).some((line) => isContainerCloserLine(line))
+  ) {
+    return null;
+  }
+
+  const collected = collectPlainTextContainer(lines, 0, position);
+  if (!collected) return null;
+
+  const trailingText = lines.slice(collected.nextIndex).join("\n").trim();
+  return {
+    node: collected.node,
+    nextIndex: 1,
+    trailing: trailingText ? parseMarkdownBlocks(trailingText) : undefined,
+  };
+}
+
 function collectContainer(
   nodes: any[],
   startIdx: number,
@@ -106,6 +275,12 @@ function collectContainer(
     openerNode.children[0].type === "text"
   ) {
     const fullText = openerNode.children[0].value as string;
+    const plainTextRun = collectPlainTextContainerRun(
+      fullText,
+      openerNode.position,
+    );
+    if (plainTextRun) return plainTextRun;
+
     const lines = fullText.split("\n");
     // Depth-aware scan: find the FIRST `:::` that closes this container at
     // depth 0. Scanning from the end (old approach) breaks when multiple

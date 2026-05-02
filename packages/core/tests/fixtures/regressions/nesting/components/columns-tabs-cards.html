@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  
+</head>
+<body class="wmd-root wmd-clean">
+  <div class="wmd-grid wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <div class="wmd-container-card">
+  <h3 class="wmd-h3">Project Alpha</h3>
+<p class="wmd-paragraph">Primary project controls.</p>
+<div class="wmd-tabs" data-wmd-tabs>
+  <div class="wmd-tab-headers" role="tablist"><button type="button" role="tab" class="wmd-tab-header wmd-active" data-wmd-tab="0">Summary</button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="1">Activity</button></div>
+  <div class="wmd-tab-panels">
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="0">
+    <ul class="wmd-list">
+  <li class="wmd-list-item">12 open tasks</li>
+  <li class="wmd-list-item">4 blocked tasks</li>
+  <li class="wmd-list-item">2 reviewers</li>
+</ul>
+<button class="wmd-button wmd-button-primary">Open project</button>
+  </div>
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="1" hidden>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">User</th>
+    <th class="wmd-table-cell wmd-align-left">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Sam</td>
+    <td class="wmd-table-cell wmd-align-left">Updated status</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Lee</td>
+    <td class="wmd-table-cell wmd-align-left">Added comment</td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+  </div>
+</div><script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.wmd-tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.wmd-tab-header').forEach(function(b){b.classList.toggle('wmd-active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>
+</div>
+  </div>
+<div class="wmd-grid-item">
+    <div class="wmd-container-card">
+  <h3 class="wmd-h3">Filters</h3>
+<input type="search" class="wmd-input" placeholder="Search projects" />
+<select class="wmd-select">
+    <option value="" disabled selected>Status</option>
+    <option value="All">All</option>
+    <option value="Active">Active</option>
+    <option value="Archived">Archived</option>
+  </select>
+<div class="wmd-row">
+  <div class="wmd-grid-item">
+    <button class="wmd-button">Reset</button>
+  </div>
+<div class="wmd-grid-item">
+    <button class="wmd-button wmd-button-primary">Apply</button>
+  </div>
+</div>
+</div>
+  </div>
+</div>
+  
+  
+</body>
+</html>

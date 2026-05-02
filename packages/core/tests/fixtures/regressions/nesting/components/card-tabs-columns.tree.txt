@@ -1,0 +1,33 @@
+Document
+  └─ container[card]
+     ├─ heading[3] "Account workspace"
+     ├─ paragraph "Manage the active workspace and billing context."
+     └─ tabs
+        ├─ tab "Overview" active=true
+        │  └─ grid[2] props={card=false}
+        │     ├─ grid-item
+        │     │  ├─ heading[3] "Workspace"
+        │     │  ├─ container[form-group]
+        │     │  │  ├─ text "Name"
+        │     │  │  └─ input props={required=true, placeholder="Acme Design System", width=24}
+        │     │  └─ switch "Public profile" checked=true
+        │     └─ grid-item props={classes=["align-right"]}
+        │        └─ row props={classes=["right"]}
+        │           ├─ grid-item
+        │           │  └─ button "Archive"
+        │           └─ grid-item
+        │              └─ button "Save workspace" props={variant="primary"}
+        └─ tab "Billing" active=false
+           └─ grid[3] props={card=true}
+              ├─ grid-item props={classes=["card"]}
+              │  ├─ heading[3] "Starter"
+              │  ├─ paragraph "$9 / month"
+              │  └─ button "Current"
+              ├─ grid-item props={classes=["card"]}
+              │  ├─ heading[3] "Pro"
+              │  ├─ paragraph "$29 / month"
+              │  └─ button "Upgrade" props={variant="primary"}
+              └─ grid-item props={classes=["card"]}
+                 ├─ heading[3] "Enterprise"
+                 ├─ paragraph "Custom"
+                 └─ button "Contact sales"

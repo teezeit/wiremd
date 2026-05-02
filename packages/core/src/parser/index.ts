@@ -14,7 +14,10 @@ import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import type { DocumentNode, ParseOptions, ValidationError } from '../types.js';
 import { transformToWiremdAST } from './transformer.js';
-import { remarkWiremdContainers } from './remark-containers.js';
+import {
+  normalizeContainerDirectiveSpacing,
+  remarkWiremdContainers,
+} from './remark-containers.js';
 import { remarkWiremdInlineContainers } from './remark-inline-containers.js';
 
 const INCLUDE_PATTERN = /!\[\[\s*([^\]]+?\.md)\s*\]\]/g;
@@ -60,6 +63,8 @@ export function resolveIncludes(markdown: string, basePath: string): string {
  * ```
  */
 export function parse(input: string, options: ParseOptions = {}): DocumentNode {
+  const normalizedInput = normalizeContainerDirectiveSpacing(input);
+
   // Create unified processor with remark
   const processor = unified()
     .use(remarkParse)
@@ -68,7 +73,7 @@ export function parse(input: string, options: ParseOptions = {}): DocumentNode {
     .use(remarkWiremdContainers);
 
   // Parse markdown to MDAST
-  const mdast = processor.parse(input);
+  const mdast = processor.parse(normalizedInput);
 
   // Run the processor to apply plugins
   const processed = processor.runSync(mdast) as any;
