@@ -71,3 +71,4 @@ releases/
 # REVIEW_LOG.md is committed — it's the source of truth for visual review verdicts,
 # enforced by tests/review-gate.test.ts (fails on any ⏳ row).
 packages/core/tests/fixtures/REVIEW.html
+.vercel
