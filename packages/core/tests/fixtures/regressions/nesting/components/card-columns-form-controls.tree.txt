@@ -1,0 +1,27 @@
+Document
+  └─ container[card]
+     ├─ heading[3] "Launch checklist"
+     └─ grid[2] props={card=false}
+        ├─ grid-item
+        │  ├─ heading[3] "Content"
+        │  ├─ container[form-group]
+        │  │  ├─ text "Title"
+        │  │  └─ input props={required=true, placeholder="Spring campaign", width=21}
+        │  ├─ container[form-group]
+        │  │  ├─ text "Audience"
+        │  │  └─ select props={required=true, placeholder="Select audience"} options=[All users, Trial users, Enterprise customers]
+        │  ├─ paragraph "Delivery channel"
+        │  └─ list ordered=false
+        │     ├─ radio "Email" selected=true
+        │     ├─ radio "Push notification" selected=false
+        │     └─ radio "In-app banner" selected=false
+        └─ grid-item
+           ├─ heading[3] "Controls"
+           ├─ switch "Schedule send" checked=false
+           ├─ switch "Require approval" checked=true
+           ├─ switch "Lock after publish" checked=false props={disabled=true}
+           └─ row props={classes=["right"]}
+              ├─ grid-item
+              │  └─ button "Preview"
+              └─ grid-item
+                 └─ button "Publish" props={variant="primary"}

@@ -13,15 +13,19 @@
 
 import { writeFileSync } from 'fs';
 import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { register } from 'node:module';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { loadFixtures, type Fixture } from '../tests/lib/fixture-runner.js';
-import { parse } from '../src/parser/index.js';
-import { renderToHTML } from '../src/renderer/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const SCRIPTS_DIR = dirname(__filename);
 const CORE_DIR = dirname(SCRIPTS_DIR);
 const PAGE_PATH = join(CORE_DIR, 'tests', 'fixtures', 'REVIEW.html');
+
+register('./svg-raw-loader.mjs', pathToFileURL(`${SCRIPTS_DIR}/`));
+
+const { parse } = await import('../src/parser/index.js');
+const { renderToHTML } = await import('../src/renderer/index.js');
 
 function slugify(text: string): string {
   return text
@@ -301,7 +305,7 @@ const html = `<!DOCTYPE html>
     display: grid;
     grid-template-columns: 30% 40% 30%;
     min-height: 240px;
-    max-height: 400px;
+    height: clamp(240px, 45vh, 400px);
   }
   .col-input {
     margin: 0;
@@ -312,6 +316,8 @@ const html = `<!DOCTYPE html>
     overflow: auto;
     white-space: pre;
     border-right: 1px solid var(--border);
+    min-height: 0;
+    max-height: 100%;
   }
   .col-input code { display: block; }
   .col-output {

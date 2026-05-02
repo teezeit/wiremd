@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  
+</head>
+<body class="wmd-root wmd-clean">
+  <div class="wmd-tabs" data-wmd-tabs>
+  <div class="wmd-tab-headers" role="tablist"><button type="button" role="tab" class="wmd-tab-header wmd-active" data-wmd-tab="0">Board</button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="1">Settings</button></div>
+  <div class="wmd-tab-panels">
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="0">
+    <div class="wmd-grid wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item wmd-card wmd-grid-item-card">
+    <h3 class="wmd-h3">Todo</h3>
+<h3 class="wmd-h3">Draft copy</h3>
+<p class="wmd-paragraph">Owner <span class="wmd-badge wmd-badge-primary">Mae</span></p>
+<button class="wmd-button wmd-button-primary">Start</button>
+  </div>
+<div class="wmd-grid-item wmd-card wmd-grid-item-card">
+    <h3 class="wmd-h3">Doing</h3>
+<h3 class="wmd-h3">Wire layouts</h3>
+<p class="wmd-paragraph">Owner <span class="wmd-badge wmd-badge-warning">Noah</span></p>
+<div class="wmd-row">
+  <div class="wmd-grid-item">
+    <button class="wmd-button">Comment</button>
+  </div>
+<div class="wmd-grid-item">
+    <button class="wmd-button wmd-button-primary">Review</button>
+  </div>
+</div>
+  </div>
+<div class="wmd-grid-item wmd-card wmd-grid-item-card">
+    <h3 class="wmd-h3">Done</h3>
+<h3 class="wmd-h3">Ship preview</h3>
+<p class="wmd-paragraph">Owner <span class="wmd-badge wmd-badge-success">Kai</span></p>
+<button class="wmd-button">Open</button>
+  </div>
+</div>
+  </div>
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="1" hidden>
+    <div class="wmd-grid wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Notifications</h3>
+<label class="wmd-switch">
+    <span class="wmd-switch-label">Daily digest</span>
+    <input type="checkbox" role="switch" checked />
+    <span class="wmd-switch-track"><span class="wmd-switch-thumb"></span></span>
+  </label>
+<label class="wmd-switch">
+    <span class="wmd-switch-label">Mentions only</span>
+    <input type="checkbox" role="switch" />
+    <span class="wmd-switch-track"><span class="wmd-switch-thumb"></span></span>
+  </label>
+  </div>
+<div class="wmd-grid-item wmd-align-right">
+    <div class="wmd-row wmd-right">
+  <div class="wmd-grid-item">
+    <button class="wmd-button">Cancel</button>
+  </div>
+<div class="wmd-grid-item">
+    <button class="wmd-button wmd-button-primary">Save</button>
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+  </div>
+</div><script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.wmd-tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.wmd-tab-header').forEach(function(b){b.classList.toggle('wmd-active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>
+  
+  
+</body>
+</html>
