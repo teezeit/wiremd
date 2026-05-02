@@ -5,7 +5,7 @@
 
 ## Basic Usage
 ::: demo
-[Primary]* [Secondary] [Danger]{variant:danger}
+[Primary]* [Secondary] [Danger]{danger}
 :::
 
 ## With a Form

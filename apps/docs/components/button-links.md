@@ -21,8 +21,8 @@ Install wiremd and create your first wireframe in minutes.
 
 ## With Attributes
 ::: demo
-[[Sign Up](./index.md)]{.secondary}
-[[Cancel](./index.md)]{.danger}
+[[Sign Up](./index.md)]{secondary}
+[[Cancel](./index.md)]{danger}
 :::
 
 ## Navigation Use Case
@@ -37,5 +37,5 @@ Button links are the primary way to wire up multi-page prototypes. In `--serve` 
 ```
 [[Label](./path.md)]        link button, default style
 [[Label](./path.md)]*       primary link button
-[[Label](./path.md)]{.secondary}
+[[Label](./path.md)]{secondary}
 ```

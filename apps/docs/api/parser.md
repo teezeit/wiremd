@@ -74,7 +74,7 @@ Name
 Email
 [_____________________________]{type:email required}
 
-[Submit]{.primary} [Cancel]
+[Submit]{primary} [Cancel]
 `);
 
 console.log(ast.type); // 'document'

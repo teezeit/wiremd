@@ -23,15 +23,43 @@
 ```markdown
 [Default]
 [Primary]*                     ← asterisk shorthand
-[Primary]{.primary}            ← class form
-[Secondary]{.secondary}
-[Outline]{.outline}
-[Danger]{variant:danger}
-[Loading...]{state:loading}
-[Disabled]{state:disabled}
+[Primary]{primary}
+[Secondary]{secondary}
+[Danger]{danger}
+[Loading...]{loading}
+[Disabled]{disabled}
 ```
 
 Group buttons on the same line: `[Save]* [Cancel] [Reset]`
+
+---
+
+## Modifier model
+
+Use plain tokens for UI intent:
+
+```markdown
+[Delete]{danger large disabled}
+::: row {right}
+::: column Summary {span-2 center}
+((Done)){success}
+```
+
+Use key-value attributes when you need explicit properties:
+
+```markdown
+[Delete]{variant:danger state:disabled}
+[Email___________]{type:email required}
+```
+
+Use dot-prefixed tokens only as raw CSS class hooks:
+
+```markdown
+[Button]{.my-button}
+::: card {.highlight-card}
+```
+
+Semantic tokens are normalized before rendering; raw CSS classes pass through unchanged.
 
 ---
 
@@ -75,8 +103,8 @@ Message
 ### Input states
 
 ```markdown
-[Field value]{state:error}
-[Field value]{state:disabled}
+[Field value]{error}
+[Field value]{disabled}
 ```
 
 ### Dropdowns
@@ -205,7 +233,7 @@ Something went wrong. Please try again.
 ## Confirm Delete
 Are you sure you want to delete this item?
 
-[Delete]{variant:danger}  [Cancel]
+[Delete]{danger}  [Cancel]
 :::
 
 ::: sidebar
@@ -249,9 +277,9 @@ A common real-world pattern — card with a header row and content:
 ::: column Sprint: Q2 Onboarding
 
 :::
-::: column .right
+::: column {right}
 
-Started: Apr 1 · ((Due: Apr 30)){.warning}
+Started: Apr 1 · ((Due: Apr 30)){warning}
 
 :::
 :::
@@ -270,7 +298,7 @@ Tabs can contain grids, rows, and any other containers:
 
 ::: tab Overview
 
-::: row {.right}
+::: row {right}
 [Search_______________]{type:search}
 [All Teams___________v]
 
@@ -345,10 +373,10 @@ Content for the main area goes here.
 :::
 ```
 
-Add `{.right}` to push content to the right edge:
+Add `{right}` to push content to the right edge:
 
 ```markdown
-::: row {.right}
+::: row {right}
 [+ New Item]*
 :::
 ```
@@ -412,7 +440,7 @@ The most common `columns-2` pattern: title on the left, action button on the rig
 ::: column Recent Sessions
 
 :::
-::: column .right
+::: column {right}
 
 [View All]*
 
@@ -420,7 +448,7 @@ The most common `columns-2` pattern: title on the left, action button on the rig
 :::
 ```
 
-The `.right` modifier aligns the column's content to the right. A `::: column` can be empty or contain controls without a heading:
+The `right` modifier aligns the column's content to the right. A `::: column` can be empty or contain controls without a heading:
 
 ```markdown
 ::: columns-2
@@ -429,7 +457,7 @@ The `.right` modifier aligns the column's content to the right. A `::: column` c
 Left cell content with no heading.
 
 :::
-::: column .right
+::: column {right}
 
 [+ New Item]*
 
@@ -464,13 +492,13 @@ Left cell content with no heading.
 ### Column spans
 
 ```markdown
-::: column Featured Item {.span-2}
+::: column Featured Item {span-2}
 Spans two columns.
 :::
 ```
 
 ```markdown
-::: column Featured Item {.span-2}
+::: column Featured Item {span-2}
 Spans two columns.
 :::
 ```
@@ -491,11 +519,11 @@ Double parentheses create inline status labels, counts, and tags:
 
 ```markdown
 ((Active))
-((Active)){.success}
-((3)){.warning}
-((Failed)){.error}
-((New)){.primary}
-Status: ((Active)){.success}
+((Active)){success}
+((3)){warning}
+((Failed)){error}
+((New)){primary}
+Status: ((Active)){success}
 ```
 
 Variants: `success` · `warning` · `error` · `primary` · (none = neutral gray)
@@ -533,9 +561,9 @@ Done    [##################] 100%
 | Component | wiremd |
 |-----------|--------|
 | `<Button variant="primary">` | `[Label]*` |
-| `<Button variant="secondary">` | `[Label]{.secondary}` |
-| `<Button variant="danger">` | `[Label]{variant:danger}` |
-| `<Button disabled>` | `[Label]{state:disabled}` |
+| `<Button variant="secondary">` | `[Label]{secondary}` |
+| `<Button variant="danger">` | `[Label]{danger}` |
+| `<Button disabled>` | `[Label]{disabled}` |
 | `<Input placeholder="...">` | `[placeholder___________]` |
 | `<Input type="password">` | `[*********************]` |
 | `<Textarea rows={4}>` | `[Placeholder...]{rows:4}` |
@@ -547,17 +575,17 @@ Done    [##################] 100%
 | `<Card>` | `:::card` block |
 | `<Dialog>` / `<Modal>` | `:::modal` block at bottom of file |
 | `<Alert variant="success">` | `:::alert success` |
-| `<Badge>` / `<Chip>` / status pill | `((Label)){.variant}` |
+| `<Badge>` / `<Chip>` / status pill | `((Label)){success}` |
 | Flex row of cards | `::: columns-3 card` … `:::` |
 | Stats row (no card) | `::: columns-3` … `:::` |
 | Horizontal filter/toolbar | `::: row` … `:::` |
-| Right-aligned action row | `::: row {.right}` … `:::` |
-| Section header + right action | `::: columns-2` with `### Title` + `::: column .right` |
+| Right-aligned action row | `::: row {right}` … `:::` |
+| Section header + right action | `::: columns-2` with `### Title` + `::: column {right}` |
 | `<Tabs>` | `::: tabs` with `::: tab Label` children |
 | `<Tabs>` (multi-page) | one `.md` file per tab |
 | Loading state | `> **Loading state:** spinner + "Loading..."` |
 | Empty state | `> **Empty state:** "No items yet" + [Add Item]*` |
-| Error state | `:::alert error` block or `{state:error}` on input |
+| Error state | `:::alert error` block or `{error}` on input |
 | Sidebar + main | `::: sidebar` before page content |
 
 ---

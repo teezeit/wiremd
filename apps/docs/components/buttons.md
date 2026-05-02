@@ -10,7 +10,7 @@ Square brackets create a button. Add `*` for primary variant.
 
 ## Variants
 ::: demo
-[Default] [Primary]* [Secondary]{variant:secondary} [Danger]{variant:danger}
+[Default] [Primary]* [Secondary]{secondary} [Danger]{danger}
 :::
 
 ## Disabled
@@ -18,15 +18,15 @@ Square brackets create a button. Add `*` for primary variant.
 [Submit]{disabled}
 :::
 
-## Sizes & Custom Classes
+## Sizes
 
 ::: demo
-[Small]{.small} [Default] [Large]{.large}
+[Small]{small} [Default] [Large]{large}
 :::
 
 ## With Icons
 ::: demo
-[:search: Search] [+ New Item]* [Delete]{.danger}
+[:search: Search] [+ New Item]* [Delete]{danger}
 :::
 
 ## Syntax
@@ -34,12 +34,14 @@ Square brackets create a button. Add `*` for primary variant.
 ```
 [Label]                      default button
 [Label]*                     primary (preferred shorthand)
-[Label]{variant:primary}     primary (explicit)
-[Label]{variant:secondary}   secondary
-[Label]{variant:danger}      danger/destructive
-[Label]{state:disabled}      disabled (also: {disabled} shorthand)
-[Label]{state:loading}       loading  (also: {loading} shorthand)
+[Label]{primary}             primary
+[Label]{secondary}           secondary
+[Label]{danger}              danger/destructive
+[Label]{disabled}            disabled
+[Label]{loading}             loading
+[Label]{large}               large
+[Label]{small}               small
 [A] [B] [C]                  inline action row
 ```
 
-> **Note:** `{.primary}` and `{.danger}` add raw CSS classes with no built-in styling — use `{variant:*}` instead.
+> **Advanced:** `{variant:primary}` / `{state:disabled}` still work. Dot-prefixed tokens like `{.primary}` are raw CSS classes.

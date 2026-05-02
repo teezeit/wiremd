@@ -14,17 +14,17 @@ Your session will expire in 10 minutes.
 
 ## Variants
 ::: demo
-::: alert {.success}
+::: alert {success}
 Profile updated successfully.
 :::
 :::
 ::: demo
-::: alert {.warning}
+::: alert {warning}
 You are approaching your storage limit.
 :::
 :::
 ::: demo
-::: alert {.error}
+::: alert {error}
 Payment failed. Please check your card details.
 :::
 :::
@@ -33,7 +33,7 @@ Payment failed. Please check your card details.
 
 Place content directly on the opener line to use it as a title/heading.
 ::: demo
-::: alert {.warning} Storage limit reached
+::: alert {warning} Storage limit reached
 Upgrade your plan to continue uploading files.
 
 [Upgrade Now]* [Dismiss]
@@ -46,10 +46,10 @@ Upgrade your plan to continue uploading files.
 ::: alert
 Message text.
 :::
-::: alert {.success}
-::: alert {.warning}
-::: alert {.error}
-::: alert {.warning} Title text
+::: alert {success}
+::: alert {warning}
+::: alert {error}
+::: alert {warning} Title text
 Body content.
 :::
 ```

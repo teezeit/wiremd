@@ -27,7 +27,7 @@ Password
 ::: demo
 [Primary]*
 [Secondary]
-[Danger]{.danger}
+[Danger]{danger}
 [Disabled]{disabled}
 :::
 
@@ -55,7 +55,7 @@ Country
 
 ## Badges & Status
 ::: demo
-((New)){.primary} ((Beta)){.warning} ((Deprecated)){.error} ((Stable)){.success}
+((New)){primary} ((Beta)){warning} ((Deprecated)){error} ((Stable)){success}
 :::
 
 ---

@@ -98,7 +98,7 @@ Name
 Email
 [_____________________________]{type:email}
 
-[Submit]{.primary} [Cancel]
+[Submit]{primary} [Cancel]
 `);
 
 const html = renderToHTML(ast);
@@ -367,7 +367,7 @@ Username
 Password
 [_____________________________]{type:password}
 
-[Login]{.primary}
+[Login]{primary}
 `);
 
 const component = renderToReact(ast);
@@ -539,7 +539,7 @@ $99.99
 
 Color: [Red] [Blue] [Green]
 
-[Add to Cart]{.primary}
+[Add to Cart]{primary}
 [Add to Wishlist]
 `);
 

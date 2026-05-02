@@ -54,6 +54,28 @@ describe('Parser', () => {
       });
     });
 
+    it('should parse no-dot button variant tokens', () => {
+      const result = parse('[Delete]{danger}');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        content: 'Delete',
+        props: {
+          variant: 'danger',
+        },
+      });
+    });
+
+    it('should parse no-dot button state tokens', () => {
+      const result = parse('[Submit]{disabled}');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        content: 'Submit',
+        props: {
+          state: 'disabled',
+        },
+      });
+    });
+
     it('should parse a button with class attribute', () => {
       const result = parse('[Click Me]{.primary}');
       expect(result.children[0]).toMatchObject({
@@ -110,6 +132,19 @@ describe('Parser', () => {
     });
   });
 
+  describe('Badge Syntax', () => {
+    it('should parse no-dot badge variant tokens', () => {
+      const result = parse('((Active)){success}');
+      expect(result.children[0]).toMatchObject({
+        type: 'badge',
+        content: 'Active',
+        props: {
+          variant: 'success',
+        },
+      });
+    });
+  });
+
   describe('Input Syntax', () => {
     it('should parse a basic text input', () => {
       const result = parse('[_____]');
@@ -144,6 +179,16 @@ describe('Parser', () => {
         type: 'input',
         props: {
           required: true,
+        },
+      });
+    });
+
+    it('should parse no-dot input state tokens', () => {
+      const result = parse('[not-an-email___________]{error}');
+      expect(result.children[0]).toMatchObject({
+        type: 'input',
+        props: {
+          state: 'error',
         },
       });
     });
@@ -423,6 +468,23 @@ Content here
         containerType: 'card',
         props: {
           classes: ['featured'],
+        },
+      });
+    });
+
+    it('should parse no-dot container status tokens as classes', () => {
+      const input = `
+::: alert {success}
+Saved
+:::
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0]).toMatchObject({
+        type: 'container',
+        containerType: 'alert',
+        props: {
+          classes: ['success'],
         },
       });
     });
@@ -1098,6 +1160,17 @@ Center item
       expect(grid.children[1].props.classes).toContain('align-left');
       expect(grid.children[2].props.classes).toContain('align-center');
     });
+
+    it('should support no-dot alignment inside ::: row attributes', () => {
+      const result = parse(`
+::: row {right}
+[+ New]*
+:::
+      `.trim());
+
+      const row = result.children[0] as any;
+      expect(row.props.classes).toContain('right');
+    });
   });
 
   describe('Sidebar layout', () => {
@@ -1232,6 +1305,25 @@ First name
       const result = parse(`
 ::: columns-3 card
 ::: column Pro Plan {.span-2 .right}
+$29/mo
+:::
+:::
+      `.trim());
+
+      const grid = result.children[0] as any;
+      const item = grid.children[0];
+      expect(item.props.classes).toEqual(['card', 'col-span-2', 'align-right']);
+      expect(item.children[0]).toMatchObject({
+        type: 'heading',
+        level: 3,
+        content: 'Pro Plan',
+      });
+    });
+
+    it('should support no-dot column span and alignment tokens', () => {
+      const result = parse(`
+::: columns-3 card
+::: column Pro Plan {span-2 right}
 $29/mo
 :::
 :::

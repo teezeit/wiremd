@@ -35,12 +35,12 @@ Description of the third feature goes here.
 
 ## Top Nav with Right-aligned Actions
 
-Use a `::: row` with `{.right}` to push actions to the right inside a card or section:
+Use a `::: row` with `{right}` to push actions to the right inside a card or section:
 
 ::: demo
 [[ App | [Dashboard] | [Projects] | [Team] | [Settings] | [Logout] ]]
 
-::: row {.right}
+::: row {right}
 [+ New Project]*
 :::
 
@@ -48,8 +48,8 @@ Use a `::: row` with `{.right}` to push actions to the right inside a card or se
 
 | Name | Status | Updated |
 |------|--------|---------|
-| Alpha | ((Active)){.success} | Today |
-| Beta | ((Review)){.warning} | Yesterday |
+| Alpha | ((Active)){success} | Today |
+| Beta | ((Review)){warning} | Yesterday |
 | Gamma | ((Draft)) | 3 days ago |
 
 :::

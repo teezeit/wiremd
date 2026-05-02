@@ -6,6 +6,16 @@ allowed-tools: Read, Write, Edit, Glob, Bash(wiremd:*), Bash(node:*), Bash(sed:*
 
 You are creating a wireframe using wiremd.
 
+## Authoring convention
+
+Use plain semantic tokens for UI intent and combine them in one brace block:
+`[Delete]{danger large disabled}`, `::: row {right}`, `::: column Summary {span-2 right}`,
+`((Done)){success}`, `[Email___]{type:email error}`.
+
+Use key-value attributes for explicit props such as `type:email`, `rows:4`, and
+`placeholder:"Search..."`. Use dot-prefixed tokens only as raw CSS class escape hatches,
+not in normal examples.
+
 ## Step 1 — Choose a rendering mode
 
 Ask this single question first, before anything else:

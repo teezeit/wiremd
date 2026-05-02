@@ -83,7 +83,7 @@ A centred dialog panel. Use for confirmations, forms, and alerts.
 
 This will permanently delete **Acme Redesign** and all its files. This action cannot be undone.
 
-[Cancel] [Delete]{.danger}
+[Cancel] [Delete]{danger}
 
 :::
 
