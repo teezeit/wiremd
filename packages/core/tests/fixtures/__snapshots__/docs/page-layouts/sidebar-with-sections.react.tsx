@@ -8,28 +8,48 @@ export const WiremdComponent: React.FC = () => {
       <div className="wmd-container-sidebar">
         <p className="wmd-paragraph"><strong>Acme Co.</strong></p>
         <h4 className="wmd-h4">Workspace</h4>
-        <div className="wmd-container-button-group">
-          <button className="wmd-button wmd-button-primary">
-            Overview
-          </button>
-          <button className="wmd-button">
-            Projects
-          </button>
-          <button className="wmd-button">
-            Tasks
-          </button>
-          <button className="wmd-button">
-            Calendar
-          </button>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button wmd-button-primary">
+              Overview
+            </button>
+          </div>
+        </div>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button">
+              Projects
+            </button>
+          </div>
+        </div>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button">
+              Tasks
+            </button>
+          </div>
+        </div>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button">
+              Calendar
+            </button>
+          </div>
         </div>
         <h4 className="wmd-h4">Team</h4>
-        <div className="wmd-container-button-group">
-          <button className="wmd-button">
-            Members
-          </button>
-          <button className="wmd-button">
-            Roles
-          </button>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button">
+              Members
+            </button>
+          </div>
+        </div>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button">
+              Roles
+            </button>
+          </div>
         </div>
         <hr className="wmd-separator" />
         <button className="wmd-button">

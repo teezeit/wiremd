@@ -340,7 +340,7 @@ Spans two
       expect(html).toContain('display: flex');
     });
 
-    it('should ignore per-item alignment headings inside rows', () => {
+    it('should not render align-left and align-right classes from headings inside rows', () => {
       const input = `
 ::: row
 
@@ -354,8 +354,10 @@ Spans two
       `.trim();
 
       const html = renderToHTML(parse(input), { style: 'sketch' });
-      expect(html).not.toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-left/);
-      expect(html).not.toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-right/);
+      expect(html).not.toMatch(/class="[^"]*wmd-align-left/);
+      expect(html).not.toMatch(/class="[^"]*wmd-align-right/);
+      expect(html).toContain('margin-right: auto');
+      expect(html).toContain('margin-left: auto');
     });
 
     it('dropdown inside implicit row renders <select> with <option> elements (not a stray <ul>)', () => {
@@ -395,7 +397,7 @@ Spans two
       expect(html).not.toMatch(/<ul[\s\S]*?All Teams/);
     });
 
-    it('should ignore center alignment headings inside rows', () => {
+    it('should not render align-center class from headings inside rows', () => {
       const input = `
 ::: row
 
@@ -406,7 +408,7 @@ Centered
       `.trim();
 
       const html = renderToHTML(parse(input), { style: 'sketch' });
-      expect(html).not.toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-center/);
+      expect(html).not.toMatch(/class="[^"]*wmd-align-center/);
     });
   });
 
@@ -426,6 +428,14 @@ Centered
       const html = renderToHTML(ast, { style: 'sketch' });
       // No literal ][ in the output (would appear between two paragraph-rendered links)
       expect(html).not.toMatch(/\].*\[/);
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*"[^>]*>Docs<\/a>/);
+      expect(html).toMatch(/<a href="\.\/api\.md" class="[^"]*wmd-button[^"]*"[^>]*>API<\/a>/);
+    });
+
+    it('should render newline-separated [[btn](url)] as separate rows', () => {
+      const ast = parse('[[Docs](./docs.md)]\n[[API](./api.md)]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html.match(/class="wmd-row"/g)?.length).toBe(2);
       expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*"[^>]*>Docs<\/a>/);
       expect(html).toMatch(/<a href="\.\/api\.md" class="[^"]*wmd-button[^"]*"[^>]*>API<\/a>/);
     });
@@ -832,11 +842,11 @@ Details panel
   });
 
   describe('Row — labeled input (form-group) renders as block inside flex item', () => {
-    it('should render form-group inside row as grid-item containing form-group, not button-group', () => {
+    it('should render form-group inside row as grid-item containing form-group, not an action row', () => {
       const md = `::: row\n\nSearch\n[Search__________________________]\n\n:::`;
       const html = renderToHTML(parse(md), { style: 'clean' });
       expect(html).toContain('wmd-container-form-group');
-      expect(html).not.toMatch(/wmd-container-button-group[^"]*">\s*Search/);
+      expect(html).not.toMatch(/wmd-row[^"]*">\s*Search/);
     });
 
     it('CSS: row input override must use child combinator (>) not descendant ( ) to avoid breaking form-groups', () => {
@@ -1198,11 +1208,11 @@ content
       expect(annotatedPos).toBeLessThan(secondGridItemPos);
     });
 
-    it('comment before a row item annotates that item, not the previous one', () => {
-      const md = '::: row\n\n### Search\n[Search___]{type:search}\n\n<!-- fix label -->\n### Filter\n[Filter v]\n\n:::';
+    it('comment before a row item renders once', () => {
+      const md = '::: row\n\n[Search___]{type:search}\n\n<!-- fix label -->\n[Filter v]\n\n:::';
       const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
       expect(html).toContain('fix label');
-      expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
+      expect(html).not.toMatch(/class="wmd-comment-badge"/);
     });
 
     it('comment inside a sidebar section routes to side panel, not inline', () => {

@@ -15,8 +15,8 @@ export function check({ ast }: InvariantsArgs) {
   expect(card.type).toBe('container');
 
   // The card should contain at least 2 children at the top level: a button
-  // (or button-group) and a paragraph. Currently they're folded together
-  // into a single paragraph.
+  // or action row and a paragraph. Currently they're folded together into
+  // a single paragraph.
   expect(card.children.length).toBeGreaterThanOrEqual(2);
 
   // A button must appear as a direct (non-nested) child.

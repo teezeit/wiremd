@@ -794,10 +794,8 @@ Solo
       const input = `
 ::: row
 
-###
 [All]* [Active]
 
-###
 [+ New]*
 
 :::
@@ -806,9 +804,10 @@ Solo
       const result = parse(input);
       expect(result.children[0]).toMatchObject({ type: 'row' });
       const row = result.children[0] as any;
-      expect(row.children).toHaveLength(2);
+      expect(row.children).toHaveLength(3);
       expect(row.children[0].type).toBe('grid-item');
       expect(row.children[1].type).toBe('grid-item');
+      expect(row.children[2].type).toBe('grid-item');
     });
 
     it('should auto-wrap direct children as implicit grid-items (no ### needed)', () => {
@@ -827,7 +826,7 @@ Solo
       const result = parse(input);
       const row = result.children[0] as any;
       expect(row.type).toBe('row');
-      expect(row.children).toHaveLength(3);
+      expect(row.children).toHaveLength(5);
       expect(row.children.every((c: any) => c.type === 'grid-item')).toBe(true);
     });
 
@@ -920,7 +919,7 @@ Button
   });
 
   describe('Alignment on grid items', () => {
-    it('should ignore row item alignment via ### headings', () => {
+    it('should not treat ### headings inside ::: row as alignment markers', () => {
       const input = `
 ::: row
 
@@ -935,11 +934,14 @@ Button
 
       const result = parse(input);
       const row = result.children[0] as any;
+      expect(row.children).toHaveLength(4);
       expect(row.children[0].props.classes).not.toContain('align-left');
-      expect(row.children[1].props.classes).not.toContain('align-right');
+      expect(row.children[2].props.classes).not.toContain('align-right');
+      expect(row.children[0].children[0]).toMatchObject({ type: 'heading', level: 3 });
+      expect(row.children[2].children[0]).toMatchObject({ type: 'heading', level: 3 });
     });
 
-    it('should ignore center row item alignment via ### headings', () => {
+    it('should not treat center heading inside ::: row as an alignment marker', () => {
       const input = `
 ::: row
 
@@ -952,14 +954,21 @@ Centered
       const result = parse(input);
       const row = result.children[0] as any;
       expect(row.children[0].props.classes).not.toContain('align-center');
+      expect(row.children[0].children[0]).toMatchObject({ type: 'heading', level: 3 });
     });
 
-    it('should support alignment inside ::: grid-N as well', () => {
+    it('should support alignment inside ::: grid-N', () => {
       const input = `
-::: grid-2
+::: grid-3
 
 ### {.right}
 Right item
+
+### {.left}
+Left item
+
+### {.center}
+Center item
 
 :::
       `.trim();
@@ -967,6 +976,8 @@ Right item
       const result = parse(input);
       const grid = result.children[0] as any;
       expect(grid.children[0].props.classes).toContain('align-right');
+      expect(grid.children[1].props.classes).toContain('align-left');
+      expect(grid.children[2].props.classes).toContain('align-center');
     });
   });
 
@@ -1335,67 +1346,91 @@ Text
   });
 
   describe('Mixed inline elements (buttons + inputs + selects on adjacent lines)', () => {
-    it('should parse buttons + input on one line as a button-group with input child', () => {
-      const result = parse('[Both Buttons] [+ In the same line]* [Search___________________________]');
-      const node = result.children[0] as any;
-      expect(node.type).toBe('container');
-      expect(node.containerType).toBe('button-group');
-      expect(node.children).toHaveLength(3);
-      expect(node.children[0]).toMatchObject({ type: 'button', content: 'Both Buttons' });
-      expect(node.children[1]).toMatchObject({ type: 'button', content: '+ In the same line' });
-      expect(node.children[2].type).toBe('input');
+    it('should parse linked buttons on separate markdown lines as separate rows', () => {
+      const result = parse('[[Go](./go.md)]\n[[Stay](./stay.md)]*');
+      expect(result.children).toHaveLength(2);
+
+      const first = result.children[0] as any;
+      const second = result.children[1] as any;
+      expect(first.type).toBe('row');
+      expect(first.children).toHaveLength(1);
+      expect(first.children[0].children[0]).toMatchObject({
+        type: 'button',
+        content: 'Go',
+        href: './go.md',
+      });
+      expect(second.type).toBe('row');
+      expect(second.children).toHaveLength(1);
+      expect(second.children[0].children[0]).toMatchObject({
+        type: 'button',
+        content: 'Stay',
+        href: './stay.md',
+        props: { variant: 'primary' },
+      });
     });
 
-    it('should parse buttons+input line adjacent to select as button-group with all 4 children', () => {
+    it('should parse buttons + input on one line as a row with input child', () => {
+      const result = parse('[Both Buttons] [+ In the same line]* [Search___________________________]');
+      const node = result.children[0] as any;
+      expect(node.type).toBe('row');
+      expect(node.children).toHaveLength(3);
+      expect(node.children[0].children[0]).toMatchObject({ type: 'button', content: 'Both Buttons' });
+      expect(node.children[1].children[0]).toMatchObject({ type: 'button', content: '+ In the same line' });
+      expect(node.children[2].children[0].type).toBe('input');
+    });
+
+    it('should parse buttons+input line adjacent to select as separate rows', () => {
       const md = '[Both Buttons] [+ In the same line]* [Search___________________________]\n[Select_______v]';
       const result = parse(md);
       const node = result.children[0] as any;
-      expect(node.type).toBe('container');
-      expect(node.containerType).toBe('button-group');
-      expect(node.children).toHaveLength(4);
-      expect(node.children[0]).toMatchObject({ type: 'button', content: 'Both Buttons' });
-      expect(node.children[1]).toMatchObject({ type: 'button', content: '+ In the same line' });
-      expect(node.children[2].type).toBe('input');
-      expect(node.children[3].type).toBe('select');
+      const second = result.children[1] as any;
+      expect(result.children).toHaveLength(2);
+      expect(node.type).toBe('row');
+      expect(node.children).toHaveLength(3);
+      expect(node.children[0].children[0]).toMatchObject({ type: 'button', content: 'Both Buttons' });
+      expect(node.children[1].children[0]).toMatchObject({ type: 'button', content: '+ In the same line' });
+      expect(node.children[2].children[0].type).toBe('input');
+      expect(second.type).toBe('row');
+      expect(second.children[0].children[0].type).toBe('select');
     });
 
-    it('should parse pure button lines adjacent to select as button-group', () => {
+    it('should parse pure button lines adjacent to select as separate rows', () => {
       const md = '[All]* [Active]\n[Select_______v]';
       const result = parse(md);
       const node = result.children[0] as any;
-      expect(node.type).toBe('container');
-      expect(node.containerType).toBe('button-group');
-      expect(node.children).toHaveLength(3);
-      expect(node.children[0]).toMatchObject({ type: 'button', content: 'All' });
-      expect(node.children[1]).toMatchObject({ type: 'button', content: 'Active' });
-      expect(node.children[2].type).toBe('select');
+      const second = result.children[1] as any;
+      expect(result.children).toHaveLength(2);
+      expect(node.type).toBe('row');
+      expect(node.children).toHaveLength(2);
+      expect(node.children[0].children[0]).toMatchObject({ type: 'button', content: 'All' });
+      expect(node.children[1].children[0]).toMatchObject({ type: 'button', content: 'Active' });
+      expect(second.type).toBe('row');
+      expect(second.children[0].children[0].type).toBe('select');
     });
 
-    it('should parse select on same line as buttons as button-group with select child', () => {
+    it('should parse select on same line as buttons as a row with select child', () => {
       const md = '[Both Buttons] [+ In the same line]* [Search___________________________] [Select_______v]';
       const result = parse(md);
       const node = result.children[0] as any;
-      expect(node.type).toBe('container');
-      expect(node.containerType).toBe('button-group');
+      expect(node.type).toBe('row');
       expect(node.children).toHaveLength(4);
-      expect(node.children[0]).toMatchObject({ type: 'button', content: 'Both Buttons' });
-      expect(node.children[1]).toMatchObject({ type: 'button', content: '+ In the same line' });
-      expect(node.children[2].type).toBe('input');
-      expect(node.children[3].type).toBe('select');
+      expect(node.children[0].children[0]).toMatchObject({ type: 'button', content: 'Both Buttons' });
+      expect(node.children[1].children[0]).toMatchObject({ type: 'button', content: '+ In the same line' });
+      expect(node.children[2].children[0].type).toBe('input');
+      expect(node.children[3].children[0].type).toBe('select');
     });
 
-    it('should parse all-adjacent buttons+input+button as button-group (last line is button)', () => {
+    it('should preserve all-adjacent buttons+input+button as one row per line', () => {
       const md = '[All]*\n[Active]\n[Archived]\n[Search__________________________]\n[+ New Item]*';
       const result = parse(md);
       const node = result.children[0] as any;
-      expect(node.type).toBe('container');
-      expect(node.containerType).toBe('button-group');
-      expect(node.children).toHaveLength(5);
-      expect(node.children[0]).toMatchObject({ type: 'button', content: 'All' });
-      expect(node.children[1]).toMatchObject({ type: 'button', content: 'Active' });
-      expect(node.children[2]).toMatchObject({ type: 'button', content: 'Archived' });
-      expect(node.children[3].type).toBe('input');
-      expect(node.children[4]).toMatchObject({ type: 'button', content: '+ New Item' });
+      expect(result.children).toHaveLength(5);
+      expect(result.children.every((child: any) => child.type === 'row')).toBe(true);
+      expect(node.children[0].children[0]).toMatchObject({ type: 'button', content: 'All' });
+      expect((result.children[1] as any).children[0].children[0]).toMatchObject({ type: 'button', content: 'Active' });
+      expect((result.children[2] as any).children[0].children[0]).toMatchObject({ type: 'button', content: 'Archived' });
+      expect((result.children[3] as any).children[0].children[0].type).toBe('input');
+      expect((result.children[4] as any).children[0].children[0]).toMatchObject({ type: 'button', content: '+ New Item' });
     });
 
     it('should still treat plain text + input as form-group (label pattern)', () => {
@@ -1408,7 +1443,7 @@ Text
       expect(node.children[1].type).toBe('input');
     });
 
-    it('should produce form-group (not button-group) when plain text label is above input inside a row', () => {
+    it('should produce form-group when plain text label is above input inside a row', () => {
       const md = `::: row\n\ntext\n[Search__________________________]\n\n:::`;
       const result = parse(md);
       const row = result.children[0] as any;
@@ -1949,13 +1984,13 @@ Some **bold** content
         expect(colB.children.some((n: any) => n.type === 'comment')).toBe(true);
       });
 
-      it('comment before a row item is a sibling before that item, not inside its children', () => {
-        const md = '::: row\n\n### Search\n[Search___]{type:search}\n\n<!-- fix label -->\n### Filter\n[Filter v]\n\n:::';
+      it('comment before a row item is preserved as its own row item', () => {
+        const md = '::: row\n\n[Search___]{type:search}\n\n<!-- fix label -->\n[Filter v]\n\n:::';
         const ast = parse(md);
         const row = ast.children[0] as any;
-        // row.children = [grid-item-A, comment, grid-item-B]
+        // row.children = [grid-item-A, grid-item-comment, grid-item-B]
         expect(row.children[0].type).toBe('grid-item');
-        expect(row.children[1]).toMatchObject({ type: 'comment', text: 'fix label' });
+        expect(row.children[1].children[0]).toMatchObject({ type: 'comment', text: 'fix label' });
         expect(row.children[2].type).toBe('grid-item');
         expect(row.children[0].children.every((n: any) => n.type !== 'comment')).toBe(true);
         expect(row.children[2].children.every((n: any) => n.type !== 'comment')).toBe(true);

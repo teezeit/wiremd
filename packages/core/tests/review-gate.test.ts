@@ -37,13 +37,7 @@ const LOG_PATH = join(TESTS_DIR, 'fixtures', 'REVIEW_LOG.md');
  * without acknowledgement, which is also useful — it's the trigger to
  * rename the .expected-fail.invariants.ts file and close the bug).
  */
-const KNOWN_FAILURES = new Set<string>([
-  // Button .small/.large size rules only landed in clean during Phase A;
-  // sketch/wireframe/material/brutal/tailwind all render sizes identically.
-  // Tracked here until the rules are propagated; a future styles.test.ts
-  // assertion covering non-clean styles will tighten this further.
-  'fixture-docs-buttons-sizes-custom-classes',
-]);
+const KNOWN_FAILURES = new Set<string>([]);
 
 interface Row {
   ref: string;

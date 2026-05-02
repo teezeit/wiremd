@@ -11813,6 +11813,45 @@ function renderNode2(node2, context, indent2 = 0) {
   const indentStr = repeatString("  ", indent2);
   return `${indentStr}{/* Unknown node type: ${node2.type} */}`;
 }
+function renderChildrenList(children, context, indent2 = 0) {
+  const sidebarLayout = splitStandaloneSidebarLayout(children);
+  if (sidebarLayout) {
+    const beforeJSX = renderChildrenList(sidebarLayout.before, context, indent2);
+    const layoutJSX = renderStandaloneSidebarLayout(sidebarLayout.sidebar, sidebarLayout.main, context, indent2);
+    return [beforeJSX, layoutJSX].filter(Boolean).join("\n");
+  }
+  return children.map((child) => renderNode2(child, context, indent2)).join("\n");
+}
+function renderStandaloneSidebarLayout(sidebar, main2, context, indent2) {
+  const indentStr = repeatString("  ", indent2);
+  const childIndent = repeatString("  ", indent2 + 1);
+  const sidebarJSX = renderNode2(sidebar, context, indent2 + 2);
+  const mainJSX = renderChildrenList(main2, context, indent2 + 2);
+  return `${indentStr}<div className="${context.classPrefix}container-layout ${context.classPrefix}sidebar-main">
+${childIndent}<div className="${context.classPrefix}layout-sidebar">
+${sidebarJSX}
+${childIndent}</div>
+${childIndent}<div className="${context.classPrefix}layout-main">
+${mainJSX}
+${childIndent}</div>
+${indentStr}</div>`;
+}
+function splitStandaloneSidebarLayout(children) {
+  const sidebarIndex = children.findIndex((child) => {
+    return child.type === "container" && child.containerType === "sidebar";
+  });
+  if (sidebarIndex < 0)
+    return null;
+  const main2 = children.slice(sidebarIndex + 1);
+  const hasMainContent = main2.some((child) => child.type !== "comment");
+  if (!hasMainContent)
+    return null;
+  return {
+    before: children.slice(0, sidebarIndex),
+    sidebar: children[sidebarIndex],
+    main: main2
+  };
+}
 function buildClasses2(prefix, baseClass, props) {
   const classes = [`${prefix}${baseClass}`];
   if (props.classes && Array.isArray(props.classes)) {
@@ -11880,6 +11919,40 @@ function renderNode3(node2, context) {
   }
   return `<!-- Unknown node type: ${node2.type} -->`;
 }
+function renderChildrenList2(children, context) {
+  const sidebarLayout = splitStandaloneSidebarLayout2(children);
+  if (sidebarLayout) {
+    const beforeHTML = renderChildrenList2(sidebarLayout.before, context);
+    const sidebarHTML = renderNode3(sidebarLayout.sidebar, context);
+    const mainHTML = renderChildrenList2(sidebarLayout.main, context);
+    const layoutHTML = `<div class="grid grid-cols-[220px_1fr] gap-4 items-start">
+  <div class="min-w-0">
+    ${sidebarHTML}
+  </div>
+  <div class="min-w-0 [&>*:first-child]:mt-0">
+    ${mainHTML}
+  </div>
+</div>`;
+    return [beforeHTML, layoutHTML].filter(Boolean).join("\n  ");
+  }
+  return children.map((child) => renderNode3(child, context)).join("\n  ");
+}
+function splitStandaloneSidebarLayout2(children) {
+  const sidebarIndex = children.findIndex((child) => {
+    return child.type === "container" && child.containerType === "sidebar";
+  });
+  if (sidebarIndex < 0)
+    return null;
+  const main2 = children.slice(sidebarIndex + 1);
+  const hasMainContent = main2.some((child) => child.type !== "comment");
+  if (!hasMainContent)
+    return null;
+  return {
+    before: children.slice(0, sidebarIndex),
+    sidebar: children[sidebarIndex],
+    main: main2
+  };
+}
 function escapeHtml2(text6) {
   if (!text6)
     return "";
@@ -11895,6 +11968,13 @@ function renderButtonTailwind(node2, context) {
   const isPrimary = variant === "primary" || nodeClasses.includes("primary");
   const isSecondary = variant === "secondary" || nodeClasses.includes("secondary");
   const isDanger = variant === "danger" || nodeClasses.includes("danger");
+  const isSmall = nodeClasses.includes("small");
+  const isLarge = nodeClasses.includes("large");
+  if (isSmall) {
+    classes = "px-2.5 py-1 text-sm rounded-md font-medium transition-colors";
+  } else if (isLarge) {
+    classes = "px-6 py-3 text-lg rounded-md font-medium transition-colors";
+  }
   if (isPrimary) {
     classes += " bg-indigo-600 text-white hover:bg-indigo-700";
   } else if (isSecondary) {
@@ -11934,7 +12014,7 @@ function renderContainerHTML(node2, context) {
   if (node2.containerType === "layout" && nodeClasses.includes("sidebar-main")) {
     return renderSidebarMainLayout(node2, context, classes);
   }
-  const childrenHTML = renderChildrenList(node2.children || [], context);
+  const childrenHTML = renderChildrenList3(node2.children || [], context);
   return `<div class="${classes}"${sourceLine(node2)}>
   ${childrenHTML}
 </div>`;
@@ -11967,7 +12047,7 @@ function renderSidebarMainLayout(node2, context, classes) {
   if (current)
     sections.push(current);
   const sectionsHTML = sections.map((s) => {
-    const contentHTML = renderChildrenList(s.nodes, context);
+    const contentHTML = renderChildrenList3(s.nodes, context);
     return `  <div class="${prefix}layout-${s.name}">
     ${contentHTML}
   </div>`;
@@ -11983,7 +12063,7 @@ function renderContainerReact(node2, context, indent2 = 0) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses2(prefix, `container-${node2.containerType}`, node2.props);
   const classAttr = context.useClassName ? "className" : "class";
-  const childrenJSX = (node2.children || []).map((child) => renderNode2(child, context, indent2 + 1)).join("\n");
+  const childrenJSX = renderChildrenList(node2.children || [], context, indent2 + 1);
   return `${indentStr}<div ${classAttr}="${classes}">
 ${childrenJSX}
 ${indentStr}</div>`;
@@ -12023,13 +12103,10 @@ function renderContainerTailwind(node2, context) {
     case "form-group":
       classes = "mb-4";
       break;
-    case "button-group":
-      classes = "flex flex-wrap gap-2 my-4";
-      break;
     default:
       classes = "p-4 my-4";
   }
-  const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n  ");
+  const childrenHTML = renderChildrenList2(node2.children || [], context);
   return `<div class="${classes}">
   ${childrenHTML}
 </div>`;
@@ -12172,7 +12249,7 @@ function renderGridHTML(node2, context) {
   const classes = buildClasses(prefix, "grid", node2.props);
   const columns = node2.columns || 3;
   const gridClass = `${classes} ${prefix}grid-${columns}`;
-  const childrenHTML = renderChildrenList(node2.children || [], context);
+  const childrenHTML = renderChildrenList3(node2.children || [], context);
   return `<div class="${gridClass}"${sourceLine(node2)} style="--grid-columns: ${columns}">
   ${childrenHTML}
 </div>`;
@@ -12225,7 +12302,7 @@ function renderGridItemHTML(node2, context) {
   const extraClasses = hasCard ? [...propsClasses, "grid-item-card"] : propsClasses;
   const itemProps = { ...node2.props, classes: extraClasses };
   const classes = buildClasses(prefix, "grid-item", itemProps);
-  const childrenHTML = renderChildrenList(node2.children || [], context);
+  const childrenHTML = renderChildrenList3(node2.children || [], context);
   return `<div class="${classes}">
     ${childrenHTML}
   </div>`;
@@ -12266,7 +12343,7 @@ var gridItem = {
 function renderRowHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "row", node2.props);
-  const childrenHTML = renderChildrenList(node2.children || [], context);
+  const childrenHTML = renderChildrenList3(node2.children || [], context);
   return `<div class="${classes}"${sourceLine(node2)}>
   ${childrenHTML}
 </div>`;
@@ -12288,7 +12365,12 @@ ${indentStr}</div>`;
 function renderRowTailwind(node2, context) {
   const propsClasses = node2.props?.classes || [];
   const classes = propsClasses.includes("right") ? "flex items-center gap-3 flex-wrap justify-end" : propsClasses.includes("center") ? "flex items-center gap-3 flex-wrap justify-center" : "flex items-center gap-3 flex-wrap";
-  const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n  ");
+  const childrenHTML = (node2.children || []).map((child) => {
+    if (child.type === "grid-item") {
+      return (child.children || []).map((grandchild) => renderNode3(grandchild, context)).join("\n  ");
+    }
+    return renderNode3(child, context);
+  }).join("\n  ");
   return `<div class="${classes}">
   ${childrenHTML}
 </div>`;
@@ -13551,7 +13633,7 @@ function renderTabsHTML(node2, context) {
   const tabs2 = node2.children || [];
   const renderedPanels = tabs2.map((tab2, i) => {
     const commentsBefore = context._comments?.length ?? 0;
-    const panelChildren = renderChildrenList(tab2.children || [], context);
+    const panelChildren = renderChildrenList3(tab2.children || [], context);
     const hasAnnotations = context.showComments && (context._comments?.length ?? 0) > commentsBefore;
     const hidden = tab2.active ? "" : " hidden";
     return {
@@ -13601,7 +13683,7 @@ var tab = {
 // packages/core/src/nodes/demo/html.ts
 function renderDemoHTML(node2, context) {
   const { classPrefix: prefix } = context;
-  const previewHTML = (node2.children || []).map((child) => renderNode(child, context)).join("\n");
+  const previewHTML = renderChildrenList3(node2.children || [], context);
   const codeHTML = escapeHtml(node2.raw || "");
   return `<div class="${prefix}demo">
   <div class="${prefix}demo-preview">${previewHTML}</div>
@@ -13694,7 +13776,23 @@ function renderNode(node2, context) {
   }
   return `<!-- Unknown node type: ${node2.type} -->`;
 }
-function renderChildrenList(children, context) {
+function renderChildrenList3(children, context) {
+  const sidebarLayout = splitStandaloneSidebarLayout3(children);
+  if (sidebarLayout) {
+    const { classPrefix: prefix2 } = context;
+    const beforeHTML = renderChildrenList3(sidebarLayout.before, context);
+    const sidebarHTML = renderNode(sidebarLayout.sidebar, context);
+    const mainHTML = renderChildrenList3(sidebarLayout.main, context);
+    const layoutHTML = `<div class="${prefix2}container-layout ${prefix2}sidebar-main">
+  <div class="${prefix2}layout-sidebar">
+    ${sidebarHTML}
+  </div>
+  <div class="${prefix2}layout-main">
+    ${mainHTML}
+  </div>
+</div>`;
+    return [beforeHTML, layoutHTML].filter(Boolean).join("\n");
+  }
   const { classPrefix: prefix } = context;
   let result = "";
   const parentNextCommentId = context._nextCommentId ?? null;
@@ -13727,6 +13825,22 @@ function renderChildrenList(children, context) {
   }
   context._nextCommentId = parentNextCommentId;
   return result.trim();
+}
+function splitStandaloneSidebarLayout3(children) {
+  const sidebarIndex = children.findIndex((child) => {
+    return child.type === "container" && child.containerType === "sidebar";
+  });
+  if (sidebarIndex < 0)
+    return null;
+  const main2 = children.slice(sidebarIndex + 1);
+  const hasMainContent = main2.some((child) => child.type !== "comment");
+  if (!hasMainContent)
+    return null;
+  return {
+    before: children.slice(0, sidebarIndex),
+    sidebar: children[sidebarIndex],
+    main: main2
+  };
 }
 function renderCommentsPanel(comments, prefix) {
   const items = comments.map((c) => {
@@ -13789,10 +13903,15 @@ function getStructuralCSS(prefix) {
 .${prefix}align-left { margin-right: auto; }
 .${prefix}align-right { margin-left: auto; }
 .${prefix}align-center { margin: auto; }
-.${prefix}container-button-group > .${prefix}input,
-.${prefix}container-button-group > .${prefix}select,
+.${prefix}container-hero .${prefix}row { justify-content: center; }
+.${prefix}container-sidebar .${prefix}row,
+.${prefix}layout-sidebar .${prefix}row { display: block; }
+.${prefix}container-sidebar .${prefix}row > .${prefix}grid-item,
+.${prefix}layout-sidebar .${prefix}row > .${prefix}grid-item { display: block; width: 100%; }
 .${prefix}row > .${prefix}grid-item > .${prefix}input,
 .${prefix}row > .${prefix}grid-item > .${prefix}select { display: inline-block; width: auto; }
+.${prefix}button.${prefix}small { padding: 4px 10px; font-size: 0.875em; }
+.${prefix}button.${prefix}large { padding: 12px 24px; font-size: 1.125em; }
 `;
   const demoStructural = `
 .${prefix}demo { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #d0d0d0; border-radius: 6px; overflow: hidden; margin: 1rem 0; }
@@ -14216,6 +14335,9 @@ body.${prefix}root {
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main {
   min-width: 0;
+}
+.${prefix}layout-main > :first-child {
+  margin-top: 0;
 }
 
 /* Grid */
@@ -14752,6 +14874,7 @@ body.${prefix}root {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.85em; opacity: 0.6; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 /* Grid */
 .${prefix}grid {
@@ -15268,6 +15391,7 @@ body.${prefix}root {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.85em; opacity: 0.6; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 /* Grid */
 .${prefix}grid {
@@ -15520,6 +15644,7 @@ body.${prefix}root {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 8px 0 4px; font-size: 0.85em; opacity: 0.6; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 4px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 .${prefix}grid {
   display: grid;
@@ -15979,6 +16104,7 @@ body {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.75em; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #6b7280; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 /* Grid */
 .${prefix}grid {
@@ -16084,14 +16210,6 @@ body {
   margin: 1.5rem 0;
   color: #4b5563;
   font-style: italic;
-}
-
-/* Button group */
-.${prefix}container-button-group {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin: 1rem 0;
 }
 
 /* Form group */
@@ -16669,6 +16787,7 @@ body {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.75em; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(0,0,0,0.54); }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 /* Material Grid */
 .${prefix}grid {
@@ -16779,14 +16898,6 @@ body {
   margin: 16px 0;
   color: rgba(0, 0, 0, 0.6);
   font-style: italic;
-}
-
-/* Button group */
-.${prefix}container-button-group {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 16px 0;
 }
 
 /* Form group */
@@ -17362,6 +17473,7 @@ body {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.85em; font-weight: 900; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 /* Brutal Grid */
 .${prefix}grid {
@@ -17492,14 +17604,6 @@ body {
   font-weight: 600;
   font-style: normal;
   background: linear-gradient(to right, rgba(255, 217, 61, 0.2), transparent);
-}
-
-/* Button group */
-.${prefix}container-button-group {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin: 20px 0;
 }
 
 /* Form group */
@@ -17675,7 +17779,7 @@ function renderToHTML(ast, options = {}) {
     _nextCommentId: null,
     _radioGroupCounter: { value: 0 }
   };
-  const childrenHTML = renderChildrenList(ast.children, context);
+  const childrenHTML = renderChildrenList3(ast.children, context);
   const panelHTML = showComments && collectedComments.length > 0 ? renderCommentsPanel(collectedComments, classPrefix) : "";
   const bodyClass = showComments && collectedComments.length > 0 ? `${classPrefix}root ${classPrefix}${style} ${classPrefix}has-comments` : `${classPrefix}root ${classPrefix}${style}`;
   const css = inlineStyles ? getStyleCSS(style, classPrefix) : "";
@@ -17940,81 +18044,47 @@ function collectGridItemsFromContainer(children, ctx, isCard) {
 }
 function collectRowItemsFromContainer(children, ctx) {
   const items = [];
-  const hasHeadings = children.some((n) => n.type === "heading");
-  if (hasHeadings) {
-    const firstHeading = children.find((n) => n.type === "heading");
-    const itemDepth = firstHeading.depth;
-    let pending = [];
-    let i = 0;
-    while (i < children.length) {
-      const child = children[i];
-      if (child.type === "heading" && child.depth === itemDepth) {
-        const headingContent = extractTextContent(child);
-        const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
-        const itemProps = { classes: [] };
-        if (alignMatch)
-          itemProps.classes.push(`align-${alignMatch[1]}`);
-        for (const c of pending) {
-          const m = c.value.match(/^<!--([\s\S]*?)-->$/);
-          if (m)
-            items.push({ type: "comment", text: m[1].trim() });
+  let i = 0;
+  while (i < children.length) {
+    const child = children[i];
+    if (child.type === "paragraph") {
+      const nodeText = extractTextContent(child);
+      const controls = parseBracketControlsFromLine(nodeText);
+      const next = children[i + 1];
+      const needsOptionList = controls?.some((control) => control.type === "select") && next?.type === "list";
+      if (controls && !needsOptionList) {
+        for (const control of controls) {
+          items.push({
+            type: "grid-item",
+            props: { classes: [] },
+            children: [control]
+          });
         }
-        pending = [];
         i++;
-        const rawItemNodes = [];
-        while (i < children.length) {
-          const next = children[i];
-          if (next.type === "heading" && next.depth <= itemDepth)
-            break;
-          if (next.type === "paragraph") {
-            const nodeText = extractTextContent(next);
-            const isDropdown = /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
-            rawItemNodes.push(next);
-            i++;
-            if (isDropdown && i < children.length && children[i].type === "list") {
-              rawItemNodes.push(children[i]);
-              i++;
-            }
-          } else {
-            rawItemNodes.push(next);
-            i++;
-          }
-        }
-        if (i < children.length) {
-          let split = rawItemNodes.length;
-          while (split > 0 && isHtmlCommentNode(rawItemNodes[split - 1]))
-            split--;
-          if (split < rawItemNodes.length)
-            pending = rawItemNodes.splice(split);
-        }
-        items.push({
-          type: "grid-item",
-          props: itemProps,
-          children: ctx.transformChildren(rawItemNodes)
-        });
-      } else {
+        continue;
+      }
+    }
+    const groupNodes = [child];
+    i++;
+    if (child.type === "paragraph") {
+      const nodeText = extractTextContent(child);
+      const isDropdown = /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
+      if (isDropdown && i < children.length && children[i].type === "list") {
+        groupNodes.push(children[i]);
         i++;
       }
     }
-  } else {
-    let i = 0;
-    while (i < children.length) {
-      const child = children[i];
-      const groupNodes = [child];
-      i++;
-      if (child.type === "paragraph") {
-        const nodeText = extractTextContent(child);
-        const isDropdown = /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
-        if (isDropdown && i < children.length && children[i].type === "list") {
-          groupNodes.push(children[i]);
-          i++;
-        }
+    const transformed = ctx.transformChildren(groupNodes);
+    for (const node2 of transformed) {
+      if (node2.type === "row") {
+        items.push(...node2.children || []);
+      } else {
+        items.push({
+          type: "grid-item",
+          props: { classes: [] },
+          children: [node2]
+        });
       }
-      items.push({
-        type: "grid-item",
-        props: { classes: [] },
-        children: ctx.transformChildren(groupNodes)
-      });
     }
   }
   return items;
@@ -18268,6 +18338,40 @@ function tryParseButtonLinkSequence(children) {
     };
   });
 }
+function parseButtonLinkLines(serialized) {
+  if (!serialized.includes("\n"))
+    return null;
+  const lines = serialized.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  if (lines.length < 2)
+    return null;
+  const out = [];
+  for (const line of lines) {
+    const buttons = [];
+    let remaining = line;
+    const pattern = /^\[\[([^\]]+)\]\(([^)]+)\)\](\*)?(?:\s*(\{[^}]*\}))?/;
+    while (remaining.trim()) {
+      remaining = remaining.trimStart();
+      const match = remaining.match(pattern);
+      if (!match)
+        return null;
+      const [, text6, href, isPrimary, attrs] = match;
+      const props = attrs ? parseAttributes(attrs) : {};
+      buttons.push({
+        type: "button",
+        content: text6,
+        href,
+        props: { ...props, variant: isPrimary ? "primary" : props.variant }
+      });
+      remaining = remaining.slice(match[0].length);
+    }
+    const node2 = controlsAsNode(buttons, true);
+    if (node2)
+      out.push(node2);
+  }
+  if (out.length === 0)
+    return null;
+  return out.length === 1 ? out[0] : out;
+}
 function serializeMdastChildren(children) {
   return (children || []).map((child) => {
     if (child.type === "link") {
@@ -18281,6 +18385,76 @@ function serializeMdastChildren(children) {
     return child.value || "";
   }).join("");
 }
+function makeImplicitRow(children) {
+  return {
+    type: "row",
+    props: {},
+    children: children.map((child) => ({
+      type: "grid-item",
+      props: { classes: [] },
+      children: [child]
+    }))
+  };
+}
+function controlsAsNode(children, forceRow = false) {
+  if (children.length === 0)
+    return null;
+  if (children.length === 1 && !forceRow)
+    return children[0];
+  return makeImplicitRow(children);
+}
+function parseBracketControlsFromLine(line) {
+  const trimmed = line.trim();
+  if (!trimmed || !/\[/.test(trimmed))
+    return null;
+  const controlPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
+  const controls = [];
+  let match;
+  while ((match = controlPattern.exec(trimmed)) !== null) {
+    const [, text6, isPrimary, attrs] = match;
+    const props = parseAttributes(attrs || "");
+    if ("rows" in props)
+      return null;
+    if (/_{1,}v$/.test(text6)) {
+      const placeholder = text6.replace(/_{1,}v$/, "").trim() || void 0;
+      controls.push({
+        type: "select",
+        props: { ...props, ...placeholder ? { placeholder } : {} },
+        options: []
+      });
+      continue;
+    }
+    if (/^[_*]+$/.test(text6) || /_{3,}$/.test(text6)) {
+      const placeholderMatch = text6.match(/^([^_*]+)_{3,}$/);
+      if (placeholderMatch)
+        props.placeholder = placeholderMatch[1].trim();
+      controls.push({ type: "input", props });
+      continue;
+    }
+    if (isPrimary)
+      props.variant = "primary";
+    if (/:([a-z-]+):/.test(text6)) {
+      const iconPattern = /:([a-z-]+):/g;
+      const parts = text6.split(iconPattern);
+      const children = [];
+      for (let i = 0; i < parts.length; i++) {
+        if (i % 2 === 0) {
+          if (parts[i].trim())
+            children.push({ type: "text", content: parts[i], props: {} });
+        } else {
+          children.push({ type: "icon", props: { name: parts[i] } });
+        }
+      }
+      controls.push({ type: "button", content: "", children, props });
+    } else {
+      controls.push({ type: "button", content: text6, props });
+    }
+  }
+  if (controls.length === 0)
+    return null;
+  const remainingText = trimmed.replace(controlPattern, "").trim();
+  return remainingText ? null : controls;
+}
 function transformParagraph(node2, ctx) {
   const nextNode = ctx.peekNext();
   if (node2.children?.length) {
@@ -18292,6 +18466,9 @@ function transformParagraph(node2, ctx) {
       const items = content4.split("|").map((item) => item.trim());
       return transformInlineContainer({ type: "wiremdInlineContainer", content: content4, items, attributes: attrs.trim() }, ctx);
     }
+    const linkedButtonLines = parseButtonLinkLines(serialized);
+    if (linkedButtonLines)
+      return linkedButtonLines;
   }
   const hasRichContent = node2.children && node2.children.some(
     (child) => child.type === "strong" || child.type === "emphasis" || child.type === "link" || child.type === "code" || child.type === "inlineCode" || child.type === "image"
@@ -18300,12 +18477,7 @@ function transformParagraph(node2, ctx) {
   if (buttonLinks !== null) {
     if (buttonLinks.length === 1)
       return buttonLinks[0];
-    return {
-      type: "container",
-      containerType: "button-group",
-      children: buttonLinks,
-      props: {}
-    };
+    return makeImplicitRow(buttonLinks);
   }
   if (hasRichContent) {
     let content4 = extractTextContent(node2);
@@ -18571,31 +18743,17 @@ function transformParagraph(node2, ctx) {
     };
     const allButtons = lines.every(lineIsAllButtons);
     if (allButtons) {
-      const buttons = [];
-      const buttonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
+      const out = [];
       for (const line of lines) {
-        let match;
-        buttonPattern.lastIndex = 0;
-        while ((match = buttonPattern.exec(line.trim())) !== null) {
-          if (/^\[[_*]+\]/.test(match[0]))
-            continue;
-          const [, text6, isPrimary, attrs] = match;
-          const props = parseAttributes(attrs || "");
-          if (isPrimary)
-            props.variant = "primary";
-          buttons.push({ type: "button", content: text6, props });
-        }
+        const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === "button") || [];
+        const node3 = controlsAsNode(controls, lines.length > 1);
+        if (node3)
+          out.push(node3);
       }
-      if (buttons.length > 1) {
-        return {
-          type: "container",
-          containerType: "button-group",
-          props: {},
-          children: buttons
-        };
-      } else if (buttons.length === 1) {
-        return buttons[0];
-      }
+      if (out.length === 1)
+        return out[0];
+      if (out.length > 1)
+        return out;
     }
     const hasFormElement = (line) => {
       const trimmed = line.trim();
@@ -18635,32 +18793,13 @@ function transformParagraph(node2, ctx) {
           groups.push({ kind, lines: [lines[i]] });
       }
       const out = [];
-      const splitButtonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
       for (const group of groups) {
         if (group.kind === "buttons") {
-          const groupButtons = [];
           for (const line of group.lines) {
-            let m;
-            splitButtonPattern.lastIndex = 0;
-            while ((m = splitButtonPattern.exec(line.trim())) !== null) {
-              if (/^\[[_*]+\]/.test(m[0]))
-                continue;
-              const [, text6, isPrimary, attrs] = m;
-              const p = parseAttributes(attrs || "");
-              if (isPrimary)
-                p.variant = "primary";
-              groupButtons.push({ type: "button", content: text6, props: p });
-            }
-          }
-          if (groupButtons.length === 1)
-            out.push(groupButtons[0]);
-          else if (groupButtons.length > 1) {
-            out.push({
-              type: "container",
-              containerType: "button-group",
-              props: {},
-              children: groupButtons
-            });
+            const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === "button") || [];
+            const node3 = controlsAsNode(controls, group.lines.length > 1);
+            if (node3)
+              out.push(node3);
           }
         } else if (group.kind === "nav") {
           for (const line of group.lines) {
@@ -18707,27 +18846,13 @@ function transformParagraph(node2, ctx) {
       return stripped === "";
     };
     const labelLinesAreButtons = labelLineArray.length > 0 && labelLineArray.every(lineIsAllInlineElements);
-    const isInputText = (t) => /^[_*]+$/.test(t) || /_{3,}$/.test(t);
-    const parseLabelAsButtons = () => {
+    const parseLabelAsRows = () => {
       const nodes = [];
-      const btnPat = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
       for (const line of labelLineArray) {
-        let m;
-        btnPat.lastIndex = 0;
-        while ((m = btnPat.exec(line.trim())) !== null) {
-          const [, text6, isPrimary, attrs] = m;
-          const p = parseAttributes(attrs || "");
-          if (isInputText(text6)) {
-            const placeholderMatch = text6.match(/^([^_*]+)_{3,}$/);
-            if (placeholderMatch)
-              p.placeholder = placeholderMatch[1].trim();
-            nodes.push({ type: "input", props: p });
-          } else {
-            if (isPrimary)
-              p.variant = "primary";
-            nodes.push({ type: "button", content: text6, props: p });
-          }
-        }
+        const controls = parseBracketControlsFromLine(line) || [];
+        const node3 = controlsAsNode(controls, true);
+        if (node3)
+          nodes.push(node3);
       }
       return nodes;
     };
@@ -18750,16 +18875,14 @@ function transformParagraph(node2, ctx) {
           ctx.consumeNext();
       }
       if (labelLinesAreButtons) {
-        return {
-          type: "container",
-          containerType: "button-group",
-          props: {},
-          children: [...parseLabelAsButtons(), {
+        return [
+          ...parseLabelAsRows(),
+          makeImplicitRow([{
             type: "select",
             props: { ...props, placeholder: text6.replace(/[_\s]+$/, "").trim() || void 0 },
             options
-          }]
-        };
+          }])
+        ];
       }
       return {
         type: "container",
@@ -18804,12 +18927,7 @@ function transformParagraph(node2, ctx) {
           }
         }
         if (labelLinesAreButtons) {
-          return {
-            type: "container",
-            containerType: "button-group",
-            props: {},
-            children: [...parseLabelAsButtons(), { type: "input", props }]
-          };
+          return [...parseLabelAsRows(), makeImplicitRow([{ type: "input", props }])];
         }
         return {
           type: "container",
@@ -18831,15 +18949,13 @@ function transformParagraph(node2, ctx) {
         const [, placeholder, attrs] = textareaMatch;
         const props = parseAttributes(attrs || "");
         if (labelLinesAreButtons) {
-          return {
-            type: "container",
-            containerType: "button-group",
-            props: {},
-            children: [...parseLabelAsButtons(), {
+          return [
+            ...parseLabelAsRows(),
+            makeImplicitRow([{
               type: "textarea",
               props: { ...props, placeholder: placeholder.trim() }
-            }]
-          };
+            }])
+          ];
         }
         return {
           type: "container",
@@ -18872,12 +18988,7 @@ function transformParagraph(node2, ctx) {
       }
       if (buttons.length > 0) {
         if (labelLinesAreButtons) {
-          return {
-            type: "container",
-            containerType: "button-group",
-            props: {},
-            children: [...parseLabelAsButtons(), ...buttons]
-          };
+          return [...parseLabelAsRows(), makeImplicitRow(buttons)];
         }
         if (labelLines) {
           return {
@@ -18893,12 +19004,7 @@ function transformParagraph(node2, ctx) {
         if (buttons.length === 1) {
           return buttons[0];
         }
-        return {
-          type: "container",
-          containerType: "button-group",
-          props: {},
-          children: buttons
-        };
+        return makeImplicitRow(buttons);
       }
     }
   }
@@ -19033,12 +19139,7 @@ function transformParagraph(node2, ctx) {
     } else if (elements.length > 0) {
       const remainingText = content3.replace(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/g, "").trim();
       if (!remainingText && elements.length > 1) {
-        return {
-          type: "container",
-          containerType: "button-group",
-          props: {},
-          children: elements
-        };
+        return makeImplicitRow(elements);
       } else if (!remainingText && buttons.length === 1 && !hasMixed) {
         return buttons[0];
       } else if (!remainingText && elements.length === 1) {

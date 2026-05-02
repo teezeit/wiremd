@@ -107,7 +107,7 @@ Same as `[Select___v]` + list — the `v` suffix and following list already expr
 
 Segmented control. Used for view-mode switches (list/grid), alignment, and filters.
 
-A `::: row` with a class modifier — row already creates a flex button container, `.toggle-group` styles it as a segmented control:
+A `::: row` with a class modifier — row already creates a flex container, `.toggle-group` styles it as a segmented control:
 
 ```
 ::: row {.toggle-group}

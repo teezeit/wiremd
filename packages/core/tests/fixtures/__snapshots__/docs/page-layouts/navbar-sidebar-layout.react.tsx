@@ -24,25 +24,41 @@ export const WiremdComponent: React.FC = () => {
     <div className="wmd-layout-sidebar">
       <div className="wmd-container-sidebar">
         <h4 className="wmd-h4">Main</h4>
-        <div className="wmd-container-button-group">
-          <button className="wmd-button wmd-button-primary">
-            Dashboard
-          </button>
-          <button className="wmd-button">
-            Projects
-          </button>
-          <button className="wmd-button">
-            Tasks
-          </button>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button wmd-button-primary">
+              Dashboard
+            </button>
+          </div>
+        </div>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button">
+              Projects
+            </button>
+          </div>
+        </div>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button">
+              Tasks
+            </button>
+          </div>
         </div>
         <h4 className="wmd-h4">Admin</h4>
-        <div className="wmd-container-button-group">
-          <button className="wmd-button">
-            Users
-          </button>
-          <button className="wmd-button">
-            Billing
-          </button>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button">
+              Users
+            </button>
+          </div>
+        </div>
+        <div className="wmd-row">
+          <div className="wmd-grid-item">
+            <button className="wmd-button">
+              Billing
+            </button>
+          </div>
         </div>
         <hr className="wmd-separator" />
         <button className="wmd-button">
