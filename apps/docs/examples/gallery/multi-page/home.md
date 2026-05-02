@@ -25,7 +25,7 @@ From idea to prototype in minutes, not hours.
 Battle-tested across thousands of real projects.
 
 :::
-::: column :gear: Flexible
+::: column :settings: Flexible
 Works with any workflow, any team size.
 :::
 :::

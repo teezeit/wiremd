@@ -10,58 +10,71 @@ export const examples: Example[] = [
   {
     name: 'Login Form',
     description: 'Simple authentication page',
-    code: `## Login Form
+    code: `::: card
+## Sign In
 
-Username
-[_____________________________]{required}
+Continue to your workspace.
+
+Email
+[name@company.com_____________]{type:email required}
 
 Password
-[*****************************]{required}
+[*****************************]{type:password required}
 
-- [ ] Remember me
+[Keep me signed in]{switch checked}
 
 <!-- Should the primary action say "Sign In" or "Log In"? @sara -->
 <!-- "Sign In" is the standard — matches Google, GitHub, etc. @tobias -->
-[Sign In]*
-[Forgot Password?]
+[Sign In]* [Forgot password?]
+:::
 `,
   },
   {
     name: 'Dashboard',
     description: 'Stats cards with navigation',
-    code: `[[ Logo | Dashboard | Analytics | Settings | [Profile] ]]
+    code: `[[ :logo: WireOps | *Dashboard* | Reports | :settings: Settings | [Profile] ]]
 
 ## Dashboard Overview
 
-::: columns-3
-::: column
-::: card
-### Total Users
-# 12,847
-+14.5% from last month
+::: columns-4 card
+::: column :users: Users
+**12,847**
+((+14.5%)){success}
 :::
 
-::: card
-### Revenue
-# $45,230
-+8.2% from last month
+::: column :currency-dollar: Revenue
+**$45,230**
+((+8.2%)){success}
 :::
 
-::: card
-### Active Sessions
-# 1,429
--3.1% from last hour
+::: column :activity: Sessions
+**1,429**
+((-3.1%)){warning}
 :::
+
+::: column :circle-check: Uptime
+**99.98%**
+((Healthy)){success}
 :::
 :::
 
-## Recent Activity
+::: row
+[Search activity___________]{type:search}
+
+[Workspace                 _v]
+- [Acme Inc](./acme.md)
+- [Personal](./personal.md)
+
+[Refresh] [Export]{secondary}
+:::
+
+### Recent Activity
 
 | Time | User | Action | Status |
 |------|------|--------|--------|
-| 2 min ago | Alice | Uploaded file | Success |
-| 5 min ago | Bob | Created project | Pending |
-| 12 min ago | Carol | Updated settings | Success |
+| 2 min ago | Alice | Uploaded file | ((Success)){success} |
+| 5 min ago | Bob | Created project | ((Pending)){warning} |
+| 12 min ago | Carol | Updated settings | ((Success)){success} |
 `,
   },
   {
@@ -71,119 +84,155 @@ Password
 
 > We'd love to hear from you! Fill out the form below and we'll get back to you as soon as possible.
 
-First Name
+::: columns-2
+::: column First Name
 [_____________________________]{required}
 
-Last Name
+:::
+::: column Last Name
 [_____________________________]{required}
+:::
+:::
 
-Email
+::: columns-2
+::: column Email
 [_____________________________]{type:email required}
 
-Subject
-{choose one v}
+:::
+::: column Subject
+[Select subject             v]{required}
+- Product question
+- Support request
+- Partnership
+:::
+:::
 
 Message
-[_____________________________|
-|                             |
-|                             |
-|_____________________________|]{required}
+[Tell us what you need...]{rows:5 required}
 
-- [x] Subscribe to newsletter
+[Subscribe to newsletter]{switch checked}
 
-[Send Message]*
-[Cancel]
+[Send Message]* [Cancel]{secondary}
 `,
   },
   {
     name: 'E-commerce Product',
     description: 'Product detail page layout',
-    code: `[[ Store | Products | Categories | Cart (3) | [Account] ]]
+    code: `[[ :shopping-cart: Store | Products | Categories | Cart ((3)){primary} | [Account] ]]
 
-> / Home / Products / Headphones
+[[ Home > Products > Headphones ]]
 
 ::: columns-2
 ::: column
 ::: card
-![Product Image]
+### :photo: Product Gallery
+
+![Premium headphones]
 :::
 
+::: column
 ::: card
 ### Premium Wireless Headphones
-# $299.99
+**$299.99**  ((Sale)){warning}
 
-⭐⭐⭐⭐⭐ (128 reviews)
+Rating: :star: :star: :star: :star: :star: (128 reviews)
 
-Available in:
+Color
 - (x) Midnight Black
 - ( ) Arctic White
 - ( ) Ocean Blue
 
 Quantity
-{1 v}
+[1                         v]
+- 1
+- 2
+- 3
+- 4
 
-[Add to Cart]*
-[Add to Wishlist]
+Product actions
+[Actions                   v]
+- [Compare]
+- [Share]
+- [Report issue]
 
----
-
-**Free shipping** on orders over $50
+[Add to Cart]* [Save]{secondary}
+:::
+:::
 :::
 
+::: columns-3 card
+::: column :truck: Shipping
+Free 2-day delivery.
+
+:::
+::: column :shield: Warranty
+Two-year protection.
+
+:::
+::: column :refresh: Returns
+30-day returns.
 :::
 :::
-
-## Customer Reviews
-
-| Rating | Review | Author |
-|--------|--------|--------|
-| ⭐⭐⭐⭐⭐ | Amazing sound quality! | John D. |
-| ⭐⭐⭐⭐ | Great battery life | Sarah M. |
-| ⭐⭐⭐⭐⭐ | Best headphones I've owned | Mike R. |
 `,
   },
   {
     name: 'Settings Page',
-    description: 'User settings with toggles',
-    code: `[[ App | Dashboard | Settings ]]
+    description: 'User settings with switches and actions',
+    code: `[[ :logo: App | Dashboard | *Settings* ]]
 
 ## Account Settings
 
-### Profile Information
+::: tabs
 
-Display Name
-[_____________________________]
+::: tab Profile
+First Name
+[_____________________________]{required}
 
 Email
 [user@example.com_____________]{type:email}
 
+Role
+[Select role                v]
+- Admin
+- Editor
+- Viewer
+
 Bio
-[_____________________________|
-|_____________________________|]
+[Short profile summary...]{rows:3}
 
-### Notifications
+[Save Profile]*
+:::
 
-- [x] Email notifications
-- [x] Push notifications
-- [ ] SMS notifications
-- [x] Weekly digest
+::: tab Notifications
+[Email notifications]{switch checked}
+[Push notifications]{switch checked}
+[SMS alerts]{switch}
+[Weekly digest]{switch disabled}
 
-### Privacy
+[Save Preferences]*
+:::
 
-- [x] Show profile publicly
-- [ ] Allow search engines to index
-- [x] Two-factor authentication
+::: tab Security
+[Two-factor authentication]{switch checked}
+[Require SSO]{switch}
+[Session timeout alerts]{switch checked}
 
----
+Security actions
+[Actions                   v]
+- [Reset password]
+- [Revoke sessions]
+- [Download audit log]
 
-[Save Changes]*
-[Discard]
+[Update Security]* [Discard]{secondary}
+:::
+
+:::
 `,
   },
   {
     name: 'Landing Page',
     description: 'Marketing hero with features',
-    code: `[[ wiremd | Features | Pricing | Docs | [Get Started] ]]
+    code: `[[ :logo: wiremd | Features | Pricing | Docs | [Get Started] ]]
 
 ::: hero
 # Design UI with Markdown
@@ -191,28 +240,29 @@ Bio
 
 > Write markdown. Get wireframes. Ship faster.
 
-[Get Started — Free]*
-[View Documentation]
+[Get Started - Free]* [View Documentation]{secondary}
 :::
 
----
-
 ::: columns-3 card
-::: column ⚡ Lightning Fast
+::: column :rocket: Lightning Fast
 Write your UI in markdown and see it rendered instantly. No drag and drop needed.
 
 :::
-::: column 🎨 Multiple Styles
+::: column :device-desktop: Multiple Styles
 Choose from Sketch, Clean, Material, Tailwind, Brutal, and more visual styles.
 
 <!-- Should this say "For Engineering Teams" with more specifics? @sara -->
 <!-- Agreed — mention CLI + VS Code explicitly. @tobias -->
 <!-- +1, updated copy sounds way stronger. @mike -->
 :::
-::: column 🔧 Developer First
+::: column :settings: Developer First
 CLI tool, VS Code extension, and npm package. Fits your existing workflow.
 
 :::
+:::
+
+::: row {right}
+[Install CLI] [Open Editor]*
 :::
 
 ---

@@ -62,7 +62,7 @@ Lightning quick performance
 Bank-level security
 
 :::
-::: column :gear: Flexible
+::: column :settings: Flexible
 Fully customizable
 
 :::
@@ -317,7 +317,7 @@ Your wiremd design will appear as a new Figma page with:
 
 ### What Gets Imported
 
-✅ All layout components (containers, grids, navigation)
+✅ All layout components (containers, columns, navigation)
 ✅ Form elements (buttons, inputs, selects, checkboxes, radios)
 ✅ Content (headings, paragraphs, lists, tables, code blocks)
 ✅ Proper spacing, padding, and auto-layout constraints

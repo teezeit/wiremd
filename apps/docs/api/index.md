@@ -201,7 +201,7 @@ Try wiremd online with our [live demo site](https://github.com/teezeit/wiremd) t
 
 - Different visual styles (sketch, clean, wireframe, material, brutal)
 - Form components (buttons, inputs, selects, checkboxes)
-- Layout components (grids, containers, navigation)
+- Layout components (columns, containers, navigation)
 - Complex wireframes (dashboards, e-commerce, admin panels)
 
 ## Advanced Topics

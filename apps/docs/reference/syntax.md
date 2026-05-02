@@ -308,7 +308,27 @@ Before you can pitch to a decision maker, you need to get past the gatekeeper.
 :::
 ```
 
-> **⚠️ Gotcha:** When the last line inside a container has inline code, bold, or links, add a blank line before the closing `:::` to avoid parser ambiguity.
+Adjacent nested containers work without spacer lines.
+
+### Blank lines
+
+Use blank lines to separate blocks, but keep these parser rules in mind:
+
+- **Do not put a blank line between an input label and the input.** The label must be directly above the field.
+- **Add a blank line before a closing `:::` when the final child is a list or a line with inline syntax** such as a button, link, bold text, badge, or inline code.
+- **Do not add spacer lines just to nest containers.** Adjacent `::: card`, `::: columns-N`, `::: column`, `::: row`, and `::: tabs` openers are supported.
+
+```markdown
+Name
+[_____________________________]{required}
+
+::: card
+Features
+- Fast
+- Reusable
+
+:::
+```
 
 ---
 
@@ -446,7 +466,7 @@ Spans two columns.
 Use `:name:` anywhere — headings, nav, buttons, table cells, body text:
 
 ```
-:home:  :user:  :gear:  :chart:  :bell:  :shield:
+:home:  :user:  :settings:  :chart:  :bell:  :shield:
 :rocket:  :check:  :x:  :logo:  :search:  :edit:
 :trash:  :plus:  :arrow-right:
 ```

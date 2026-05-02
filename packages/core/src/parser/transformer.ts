@@ -388,6 +388,27 @@ function parseColumnInline(value: string): { title: string; props: any } {
   };
 }
 
+function createColumnTitleHeading(title: string): WiremdNode {
+  const children = parseInlineToNodes(title);
+  const hasRichInline = children.some((child) => child.type !== 'text' || 'mark' in child);
+
+  if (hasRichInline) {
+    return {
+      type: 'heading',
+      level: 3,
+      children: children as any,
+      props: { classes: [] },
+    };
+  }
+
+  return {
+    type: 'heading',
+    level: 3,
+    content: title,
+    props: { classes: [] },
+  };
+}
+
 function transformColumnContainer(
   node: any,
   ctx: TransformContext,
@@ -426,12 +447,7 @@ function transformColumnContainer(
   if (isCard) classes.unshift('card');
   const children = ctx.transformChildren(contentChildren) as any;
   if (title) {
-    children.unshift({
-      type: 'heading',
-      level: 3,
-      content: title,
-      props: { classes: [] },
-    });
+    children.unshift(createColumnTitleHeading(title));
   }
 
   return {
@@ -710,6 +726,9 @@ function transformInlineContainer(node: any, _ctx: TransformContext): WiremdNode
 
       // Create a brand node for :logo:, otherwise nav-item
       const nodeType = iconName === 'logo' ? 'brand' : 'nav-item';
+      if (nodeType === 'brand') {
+        brandEmitted = true;
+      }
 
       children.push({
         type: nodeType,

@@ -591,6 +591,31 @@ Nested content
       expect(result.children[0].children[0].children[1].type).toBe('text');
     });
 
+    it('should not parse plain items after a logo brand as additional brands', () => {
+      const input = `[[ :logo: WireOps | *Dashboard* | Reports | :settings: Settings | [Profile] ]]`;
+
+      const result = parse(input);
+      const nav = result.children[0] as any;
+
+      expect(nav.type).toBe('nav');
+      expect(nav.children.map((child: any) => child.type)).toEqual([
+        'brand',
+        'nav-item',
+        'nav-item',
+        'nav-item',
+        'button',
+      ]);
+      expect(nav.children.filter((child: any) => child.type === 'brand')).toHaveLength(1);
+      expect(nav.children[2]).toMatchObject({ type: 'nav-item', content: 'Reports' });
+      expect(nav.children[3]).toMatchObject({
+        type: 'nav-item',
+        children: [
+          { type: 'icon', props: { name: 'settings' } },
+          { type: 'text', content: 'Settings' },
+        ],
+      });
+    });
+
     it('should parse navigation with buttons', () => {
       const input = `[[ Home | Products | [Sign In] | [Get Started] ]]{.nav}`;
 
@@ -1310,6 +1335,28 @@ First name
       });
       expect(item.children[1].type).toBe('container');
       expect(item.children[1].containerType).toBe('form-group');
+    });
+
+    it('should parse icons in column opener titles', () => {
+      const result = parse(`
+::: columns-4 card
+::: column :users: Users
+**12,847**
+((+14.5%)){success}
+:::
+:::
+      `.trim());
+
+      const grid = result.children[0] as any;
+      const heading = grid.children[0].children[0];
+      expect(heading).toMatchObject({
+        type: 'heading',
+        level: 3,
+      });
+      expect(heading.children).toMatchObject([
+        { type: 'icon', props: { name: 'users' } },
+        { type: 'text', content: ' Users' },
+      ]);
     });
 
     it('should support column opener title with attributes', () => {

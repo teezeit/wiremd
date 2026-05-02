@@ -8,32 +8,29 @@ type WiremdStyle = typeof STYLES[number]
 const EXAMPLES: { label: string; code: string }[] = [
   {
     label: 'This page',
-    code: `[[ wiremd  | :logo: | Docs | Editor ]]
+    code: `[[ wiremd | :logo: | Docs | Editor ]]
 
-::: row {.center}
+::: row {center}
 *Idea* → **wiremd** → *Claude Design* → *Claude Code*
 :::
 
 ::: hero
-## The missing layer.
+# The missing layer.
 
 The universal grammar that humans, designers, and AI all speak.
 
-| |
-
-[Install in Claude Design] [OpenEditor]*
+[Install in Claude] [Open Editor]*
 :::
 
 ::: columns-3 card
-
-::: column For Product
-|The Spec Layer|{.success}
+::: column :file-text: Product
+((Spec layer)){success}
 
 Write wireframes in your PRD. Your PM writes it, your LLM reads it, Claude Design consumes it.
 :::
 
-::: column For Design
-|The Bridge|
+::: column :diamond: Design
+((Bridge)){primary}
 
 Lo-fi spec → Claude Design → hi-fi output. No translation layer. No lost intent.
 :::
@@ -41,65 +38,65 @@ Lo-fi spec → Claude Design → hi-fi output. No translation layer. No lost int
 <!-- Should this say "For Developers" instead? @sara -->
 <!-- "Engineering" is more precise — it's the team that owns the pipeline. @tobias -->
 <!-- +1, keeping it. @mike -->
-::: column For Engineering
-|The Pipeline|{.warning}
+::: column :code: Engineering
+((Pipeline)){warning}
 
 Use wiremd directly in your tickets, render in your IDE.
 :::
+:::
 
-:::`,
+[Use comments]{switch checked}`,
   },
   {
     label: 'Dashboard',
-    code: `## Dashboard
+    code: `[[ :logo: Pulse | *Dashboard* | Reports | :settings: Settings ]]
 
-::: columns-3 card
+## Dashboard
 
-::: column 12,480
-Users · ↑ 8%
+::: columns-4 card
+::: column :users: Users
+**12,480**
+((+8%)){success}
 :::
 
-::: column $48,200
-Revenue · ↑ 12%
+::: column :currency-dollar: Revenue
+**$48,200**
+((+12%)){success}
 :::
 
-::: column 94.2%
-Uptime · ↓ 1%
+::: column :circle-check: Uptime
+**94.2%**
+((-1%)){warning}
 :::
 
+::: column :activity: Sessions
+**1,482**
+((Live)){primary}
+:::
 :::
 
 ::: columns-2 card
-
 ::: column Revenue
-
-\`\`\`
-Jan  ***********           $22k
-Feb  *****************     $34k
-Mar  **************        $28k
-Apr  ********************  $40k
-May  **************        $29k
-Jun  *****************     $36k
-\`\`\`
+| Month | Revenue | Status |
+|-------|---------|--------|
+| Apr | $40k | ((Best)){success} |
+| May | $29k | ((Watch)){warning} |
+| Jun | $36k | ((Good)){success} |
 :::
 
-::: column Visitors
+::: column Filters
+Workspace
+[Select workspace          v]
+- [Acme Inc](./acme.md)
+- [Personal](./personal.md)
 
-\`\`\`
-     |              *
-     |          *       *
-     |      *               *
-     |  *
-     +----+----+----+----+----
-      Jan  Feb  Mar  Apr  May
-\`\`\`
+[Live refresh]{switch checked}
 :::
-
 :::
 
 Search [_________________________]
 
-[New Report]* [Export]  [Settings]`,
+[New Report]* [Export]{secondary}`,
   },
   {
     label: 'Settings',
@@ -115,18 +112,17 @@ Email
 [_______________________]{type:email}
 
 Bio
-[_______________________]{rows:3}
+[Short profile summary...]{rows:3}
 
 [Save Changes]*
 
 :::
 
 ::: tab Notifications
-
-- [x] Email notifications
-- [x] Push notifications
-- [ ] SMS alerts
-- [ ] Weekly digest
+[Email notifications]{switch checked}
+[Push notifications]{switch checked}
+[SMS alerts]{switch}
+[Weekly digest]{switch disabled}
 
 [Save Preferences]*
 
@@ -134,24 +130,29 @@ Bio
 
 ::: tab Security
 Current Password
-[_______________________]{type:password}
+[***********************]{type:password}
 
 New Password
-[_______________________]{type:password}
+[***********************]{type:password}
 
-- [ ] Enable 2FA
+[Enable 2FA]{switch}
 
 [Update Password]*
 
 :::
 
 ::: tab Billing
-
-|Pro Plan| |Active|{.success}
+((Pro Plan)){primary} ((Active)){success}
 
 $49 / month · Next billing: Jun 1
 
-[Upgrade Plan]* [Cancel]
+Plan actions
+[Actions                   v]
+- [Upgrade plan]
+- [Download invoice]
+- [Cancel subscription]
+
+[Upgrade Plan]* [Cancel]{secondary}
 
 :::
 
@@ -159,21 +160,24 @@ $49 / month · Next billing: Jun 1
   },
   {
     label: 'Sign In',
-    code: `## Sign In
+    code: `::: card
+## Sign In
 
 Email
 [_____________________________]{type:email}
 
 Password
-[_____________________________]{type:password}
+[*****************************]{type:password}
 
-- [ ] Remember me
+[Remember me]{switch}
 
-[Sign In]* [Forgot password?]`,
+[Sign In]* [Forgot password?]
+:::`,
   },
   {
     label: 'Sign In + Comments',
-    code: `## Sign In
+    code: `::: card
+## Sign In
 
 <!-- Should this be "Log In" to match the marketing page? @sara -->
 <!-- +1, updating — keeping "Sign In" for the app itself. @tobias -->
@@ -182,40 +186,56 @@ Email
 [_____________________________]{type:email}
 
 Password
-[_____________________________]{type:password}
+[*****************************]{type:password}
 
 <!-- Hide "Remember me" on mobile? @lee -->
 <!-- Yes — only show on screens > 375px. @tobias -->
-- [ ] Remember me
+[Remember me]{switch}
 
-[Sign In]* [Forgot password?]`,
+[Sign In]* [Forgot password?]
+:::`,
   },
   {
     label: 'Product',
-    code: `::: card
-## Wireless Headphones
+    code: `[[ Store | Products | Cart ((3)){primary} | [Account] ]]
 
-|New| |Sale|
+::: columns-2 card
+::: column Wireless Headphones
+((New)){primary} ((Sale)){warning}
 
 Premium noise-cancelling · 30h battery
 
 **$149.00** ~~$249.00~~
 
-[Add to Cart]* [Save]
+[Add to Cart]* [Save]{secondary}
+:::
+
+::: column Choose options
+Color
+- (x) Midnight
+- ( ) Arctic
+- ( ) Ocean
+
+Product actions
+[Actions                   v]
+- [Compare]
+- [Share]
+- [Report issue]
+:::
 :::`,
   },
   {
     label: 'Data Table',
     code: `## Users
 
-[+ Invite]* [Export]
+[+ Invite]* [Export]{secondary}
 
 | Name | Role | Status | Joined |
 |------|------|--------|--------|
-| Alice Martin | Admin | Active | Jan 2024 |
-| Bob Chen | Editor | Active | Mar 2024 |
-| Carol Wu | Viewer | Pending | Apr 2024 |
-| Dave Lee | Editor | Inactive | Feb 2024 |`,
+| Alice Martin | Admin | ((Active)){success} | Jan 2024 |
+| Bob Chen | Editor | ((Active)){success} | Mar 2024 |
+| Carol Wu | Viewer | ((Pending)){warning} | Apr 2024 |
+| Dave Lee | Editor | ((Inactive)){error} | Feb 2024 |`,
   },
 ]
 

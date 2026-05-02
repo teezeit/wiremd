@@ -162,7 +162,7 @@ $124,500
 | Alice | Admin | Active  | [Edit] [Remove] |
 
 # Icons — use anywhere in text, headings, nav, buttons
-:home: :user: :gear: :chart: :bell: :shield: :rocket: :check: :x: :search: :edit: :trash: :plus:
+:home: :user: :settings: :chart: :bell: :shield: :rocket: :check: :x: :search: :edit: :trash: :plus:
 
 # Badges / pills — inline status labels and counts
 ((Active)){success}  ((Pending)){warning}  ((Failed)){error}  ((New)){primary}  ((Draft))
@@ -229,7 +229,7 @@ See the renderable version at `${CLAUDE_PLUGIN_ROOT}/references/examples/dashboa
 ## Gotchas
 
 1. **Label directly above input.** No blank line between label text and `[_____]` — it breaks the association.
-2. **Blank line before `:::` when last line has inline elements.** Buttons, backtick code, bold, links, or list items on the final line of a container — add an empty line before `:::`.
+2. **Blank line before `:::` when the final child is a list or inline-rich line.** Buttons, links, badges, bold text, inline code, or list items on the final line of a container — add an empty line before `:::`.
 3. **`[[ ]]` nav hrefs require wiremd ≥ 0.1.7.** Earlier versions silently drop the URL and every item renders as `href="#"`. Mixed static + clickable works in 0.1.7+: `[[ *Home* | [About](./about.md) | [Contact](./contact.md) ]]`.
 4. **`:::accordion` doesn't exist.** Use `::: tabs` with `::: tab Label` children for tabbed panels. For a simple switcher, use `[Tab]*  [Other]`.
 5. **Use `![[file.md]]` for includes, not `:::display`.** `:::display` is obsolete. `![[path/to/file.md]]` works in both the CLI and VS Code preview — path resolves relative to the current file.
