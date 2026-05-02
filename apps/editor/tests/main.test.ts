@@ -80,6 +80,7 @@ describe('editor main bootstrap', () => {
 
     const requiredIds = [
       'brand-link',
+      'cloud-share',
       'file-sync-indicator',
       'monaco-container',
       'preview-iframe',

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["fra1"],
+  "outputDirectory": ".",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/api packages/",
+  "functions": {
+    "api/[[...route]].ts": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/[[...route]]" }]
+}

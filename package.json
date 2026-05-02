@@ -2,21 +2,21 @@
   "name": "wiremd-monorepo",
   "private": true,
   "scripts": {
-    "preinstall":     "npx only-allow pnpm",
-    "build":          "turbo run build",
-    "dev":            "turbo run dev",
-    "test":           "turbo run test",
-    "test:e2e":       "playwright test",
-    "typecheck":      "turbo run typecheck",
-    "lint":           "turbo run lint",
-    "clean":          "turbo run clean",
-    "skill:zip":      "bash scripts/package-skill.sh",
-    "bundle":         "node scripts/build-bundle.mjs",
-    "sync-versions":  "node scripts/sync-versions.mjs",
-    "version":        "node scripts/sync-versions.mjs && git add extensions/vscode/package.json extensions/skills/wireframe/.claude-plugin/plugin.json",
-    "version:patch":  "cd packages/core && npm version patch",
-    "version:minor":  "cd packages/core && npm version minor",
-    "version:major":  "cd packages/core && npm version major"
+    "preinstall": "npx only-allow pnpm",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "test:e2e": "playwright test",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "skill:zip": "bash scripts/package-skill.sh",
+    "bundle": "node scripts/build-bundle.mjs",
+    "sync-versions": "node scripts/sync-versions.mjs",
+    "version": "node scripts/sync-versions.mjs && git add extensions/vscode/package.json extensions/skills/wireframe/.claude-plugin/plugin.json",
+    "version:patch": "cd packages/core && npm version patch",
+    "version:minor": "cd packages/core && npm version minor",
+    "version:major": "cd packages/core && npm version major"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
@@ -26,5 +26,10 @@
   "packageManager": "pnpm@9.7.1",
   "engines": {
     "node": ">=18.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "zod": "3.24.1"
+    }
   }
 }

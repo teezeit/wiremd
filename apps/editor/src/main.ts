@@ -1,55 +1,183 @@
 /** wiremd Editor - Main Entry Point */
 
-import './styles/editor.css';
-import { initEditor } from './editor.js';
-import { createPreview } from './preview.js';
-import type { StyleName } from './renderMarkup.js';
+import "./styles/editor.css";
+import { initEditor } from "./editor.js";
+import { createPreview } from "./preview.js";
+import type { StyleName } from "./renderMarkup.js";
 import {
   calculateSplitPercent,
   getEditorPanelStyle,
   getSplitLayout,
-} from './splitter.js';
-import { initToolbar, showToast } from './toolbar.js';
-import { examples } from './examples.js';
-import { decodeShareHash, encodeShareHash } from './url-share.js';
-import { createFileSyncIndicator } from './file-sync-indicator.js';
-import { basenameFromPath, parseFileHint, startInFromPath, stripFileHint } from './file-hint.js';
-import { showFileHintModal } from './file-hint-modal.js';
+} from "./splitter.js";
+import { initToolbar, showToast } from "./toolbar.js";
+import { examples } from "./examples.js";
+import { decodeShareHash, encodeShareHash } from "./url-share.js";
+import { createFileSyncIndicator } from "./file-sync-indicator.js";
+import {
+  basenameFromPath,
+  parseFileHint,
+  startInFromPath,
+  stripFileHint,
+} from "./file-hint.js";
+import { showFileHintModal } from "./file-hint-modal.js";
 import {
   isFileSystemAccessSupported,
   openLocalFile,
   saveAsLocalFile,
   watchFile,
   writeFile,
-} from './local-file.js';
-import type { LocalFileResult, WireFileHandle } from './local-file.js';
-import { createDebouncedChangeController } from './debouncedChange.js';
-import { addToHistory, getRecentFiles } from './file-history.js';
+} from "./local-file.js";
+import type { LocalFileResult, WireFileHandle } from "./local-file.js";
+import { createDebouncedChangeController } from "./debouncedChange.js";
+import { addToHistory, getRecentFiles } from "./file-history.js";
+import { createProject, getProject, updateProject } from "./api-client.js";
+import {
+  createProjectController,
+  type SaveState,
+  type RemoteUpdate,
+} from "./project-controller.js";
+import { createCloudShare } from "./cloud-share.js";
+
+const PROJECT_POLL_INTERVAL_MS = 10_000;
 
 // --- DOM Elements ---
-const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+const $ = <T extends HTMLElement>(id: string) =>
+  document.getElementById(id) as T;
 
-($<HTMLAnchorElement>('brand-link')).href = import.meta.env.DEV
-  ? 'http://localhost:5175/wiremd/'
-  : '/wiremd/';
+$<HTMLAnchorElement>("brand-link").href = import.meta.env.DEV
+  ? "http://localhost:5175/wiremd/"
+  : "/wiremd/";
 
-const fileSyncContainer = $('file-sync-indicator');
-const monacoContainer = $('monaco-container');
-const previewIframe = $<HTMLIFrameElement>('preview-iframe');
-const htmlOutputContainer = $('html-output');
-const errorBar = $('error-bar');
-const errorMessage = $('error-message');
-const styleSelect = $<HTMLSelectElement>('style-select');
-const previewTabs = $('preview-tabs');
-const copyBtn = $<HTMLButtonElement>('copy-html-btn');
-const copyLinkBtn = $<HTMLButtonElement>('copy-link-btn');
-const examplesDropdown = $('examples-dropdown');
-const toast = $('toast');
-const divider = $('divider');
-const editorPanel = $('editor-panel');
-const showCommentsCheck = $<HTMLInputElement>('show-comments-check');
-const commentCountBadge = $('comment-count-badge');
-const commentToggleLabel = $('comment-toggle-label');
+const cloudShareContainer = $("cloud-share");
+const fileSyncContainer = $("file-sync-indicator");
+const monacoContainer = $("monaco-container");
+const previewIframe = $<HTMLIFrameElement>("preview-iframe");
+const htmlOutputContainer = $("html-output");
+const errorBar = $("error-bar");
+const errorMessage = $("error-message");
+const styleSelect = $<HTMLSelectElement>("style-select");
+const previewTabs = $("preview-tabs");
+const copyBtn = $<HTMLButtonElement>("copy-html-btn");
+const copyLinkBtn = $<HTMLButtonElement>("copy-link-btn");
+const examplesDropdown = $("examples-dropdown");
+const toast = $("toast");
+const divider = $("divider");
+const editorPanel = $("editor-panel");
+const showCommentsCheck = $<HTMLInputElement>("show-comments-check");
+const commentCountBadge = $("comment-count-badge");
+const commentToggleLabel = $("comment-toggle-label");
+
+// --- Project (collab) controller + cloud-share UI ---
+const apiBase = import.meta.env.VITE_API_BASE_URL ?? "";
+
+// Tracks the content the server is known to have. Used to detect "user has
+// unsaved typing" when applying a remote update — if local !== lastSynced,
+// we copy local to clipboard before replacing.
+let lastSyncedContent = "";
+// Suppresses onChange-triggered saves while we're applying a remote update.
+let isUpdatingFromRemote = false;
+
+async function copyToClipboard(text: string): Promise<boolean> {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  return false;
+}
+
+async function applyRemoteUpdate(remote: RemoteUpdate): Promise<void> {
+  const local = editor.getValue();
+  const hadUnsavedTyping = local !== lastSyncedContent;
+
+  if (hadUnsavedTyping) {
+    const copied = await copyToClipboard(local);
+    showToast(
+      toast,
+      copied
+        ? "Updated by another editor — your unsaved version is in your clipboard"
+        : "Updated by another editor — your unsaved version could not be preserved",
+    );
+  } else {
+    showToast(toast, "Updated by another editor");
+  }
+
+  isUpdatingFromRemote = true;
+  editor.setValuePreservingCursor(remote.content);
+  isUpdatingFromRemote = false;
+  lastSyncedContent = remote.content;
+}
+
+const cloudShare = createCloudShare(cloudShareContainer, {
+  onPromote: async () => {
+    try {
+      await projectController.promote(editor.getValue());
+      // promote() already pushed the new ?p=<id> URL via pushUrl.
+      cloudShare.setState({ mode: "project", saveState: "saved" });
+      lastSyncedContent = editor.getValue();
+      projectController.startSyncLoop(PROJECT_POLL_INTERVAL_MS);
+      const copied = await copyToClipboard(window.location.href);
+      showToast(
+        toast,
+        copied ? "Project URL copied to clipboard" : "Sharing live",
+      );
+    } catch (err) {
+      console.error("[wiremd] promote failed:", err);
+      showToast(toast, "Could not start collaboration — check your connection");
+    }
+  },
+  onCopyLink: async () => {
+    const copied = await copyToClipboard(window.location.href);
+    showToast(toast, copied ? "Link copied!" : "Copy failed");
+  },
+});
+
+const projectController = createProjectController({
+  api: {
+    create: (content) => createProject(apiBase, content),
+    get: (id) => getProject(apiBase, id),
+    update: (id, content, baseUpdatedAt) =>
+      updateProject(apiBase, id, content, baseUpdatedAt),
+  },
+  location: window.location,
+  pushUrl: (url) => window.history.pushState(null, "", url),
+  onStateChange: (state: SaveState) => {
+    cloudShare.setState({ mode: "project", saveState: state });
+  },
+  onRemoteUpdate: (remote) => {
+    void applyRemoteUpdate(remote);
+  },
+});
+
+const projectSaveDebounce = createDebouncedChangeController<string>({
+  delayMs: 500,
+  onChange: async (content) => {
+    try {
+      await projectController.save(content);
+      // Save resolved without throwing — either applied (saved) OR a conflict
+      // landed and the controller already updated lastKnownUpdatedAt + fired
+      // onRemoteUpdate. In both cases, our local view of the server's content
+      // is now `content` (saved) or `remote.content` (set by applyRemoteUpdate).
+      // The save-success path: mark this content as the synced baseline.
+      // The conflict path: applyRemoteUpdate already overwrote lastSyncedContent,
+      // so the editor's value (which now equals the remote) matches it. No-op.
+      if (editor.getValue() === content) {
+        lastSyncedContent = content;
+      }
+    } catch (err) {
+      console.error("[wiremd] project save failed:", err);
+    }
+  },
+});
+
+// If the URL already names a project on initial load, reflect that in the UI
+// before content is fetched (so the user sees "Sharing live" right away).
+if (projectController.getMode() === "project") {
+  cloudShare.setState({ mode: "project", saveState: "idle" });
+}
 
 // --- File sync state ---
 let currentHandle: WireFileHandle | null = null;
@@ -64,9 +192,9 @@ const writeDebounce = createDebouncedChangeController<string>({
       await writeFile(currentHandle, content);
       const file = await currentHandle.getFile();
       watcher?.setLastSeen(file.lastModified);
-      fileSyncIndicator.setState('synced', currentHandle.name);
+      fileSyncIndicator.setState("synced", currentHandle.name);
     } catch {
-      fileSyncIndicator.setState('error', currentHandle.name);
+      fileSyncIndicator.setState("error", currentHandle.name);
     }
   },
 });
@@ -87,7 +215,7 @@ async function linkFile(result: LocalFileResult) {
     },
     { initialLastModified: result.lastModified },
   );
-  fileSyncIndicator.setState('synced', result.handle.name);
+  fileSyncIndicator.setState("synced", result.handle.name);
 }
 
 function unlinkFile() {
@@ -95,7 +223,7 @@ function unlinkFile() {
   writeDebounce.cancel();
   watcher = null;
   currentHandle = null;
-  fileSyncIndicator.setState('idle');
+  fileSyncIndicator.setState("idle");
 }
 
 const fileSyncIndicator = createFileSyncIndicator(fileSyncContainer, {
@@ -111,7 +239,10 @@ const fileSyncIndicator = createFileSyncIndicator(fileSyncContainer, {
   onSaveAs: async () => {
     editor.flushPendingChange();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = await saveAsLocalFile((window as any).showSaveFilePicker, editor.getValue());
+    const result = await saveAsLocalFile(
+      (window as any).showSaveFilePicker,
+      editor.getValue(),
+    );
     if (result) {
       addToHistory(result.handle, result.handle.name);
       linkFile(result);
@@ -121,27 +252,34 @@ const fileSyncIndicator = createFileSyncIndicator(fileSyncContainer, {
 });
 
 function updateCopyButtonState() {
-  copyBtn.disabled = preview.getHTML() === '';
+  copyBtn.disabled = preview.getHTML() === "";
 }
 
 function updateCommentBadge() {
   const count = preview.state.lastCommentCount;
   if (count > 0) {
     commentCountBadge.textContent = String(count);
-    commentCountBadge.removeAttribute('hidden');
+    commentCountBadge.removeAttribute("hidden");
   } else {
-    commentCountBadge.setAttribute('hidden', '');
+    commentCountBadge.setAttribute("hidden", "");
   }
 }
 
 let lastCursorLine = 1;
 
 function syncCursorToPreview(line: number) {
-  previewIframe.contentWindow?.postMessage({ type: 'wiremd-cursor', line }, '*');
+  previewIframe.contentWindow?.postMessage(
+    { type: "wiremd-cursor", line },
+    "*",
+  );
 }
 
 function renderMarkdown(markdown: string) {
-  previewIframe.addEventListener('load', () => syncCursorToPreview(lastCursorLine), { once: true });
+  previewIframe.addEventListener(
+    "load",
+    () => syncCursorToPreview(lastCursorLine),
+    { once: true },
+  );
   preview.render(markdown);
   updateCopyButtonState();
   updateCommentBadge();
@@ -157,18 +295,18 @@ async function copyText(text: string): Promise<boolean> {
     }
   }
 
-  const textarea = document.createElement('textarea');
+  const textarea = document.createElement("textarea");
   textarea.value = text;
-  textarea.setAttribute('readonly', 'true');
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
-  textarea.style.pointerEvents = 'none';
+  textarea.setAttribute("readonly", "true");
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  textarea.style.pointerEvents = "none";
   document.body.appendChild(textarea);
   textarea.select();
 
   let copied = false;
   try {
-    copied = document.execCommand('copy');
+    copied = document.execCommand("copy");
   } finally {
     document.body.removeChild(textarea);
   }
@@ -181,9 +319,9 @@ let isInitializing = true;
 function syncUrlToBuffer(value: string) {
   const hash = encodeShareHash(value);
   const url = window.location.pathname + window.location.search + hash;
-  window.history.replaceState(null, '', url);
+  window.history.replaceState(null, "", url);
 }
-	
+
 // --- Preview ---
 const preview = createPreview({
   iframe: previewIframe,
@@ -200,11 +338,19 @@ const editor = initEditor({
     syncCursorToPreview(line);
   },
   onFocus: () => syncCursorToPreview(lastCursorLine),
-  onBlur: () => previewIframe.contentWindow?.postMessage({ type: 'wiremd-cursor-blur' }, '*'),
+  onBlur: () =>
+    previewIframe.contentWindow?.postMessage(
+      { type: "wiremd-cursor-blur" },
+      "*",
+    ),
   onChange: (value) => {
     renderMarkdown(value);
-    if (!isInitializing) {
-      syncUrlToBuffer(value);
+    if (!isInitializing && !isUpdatingFromRemote) {
+      if (projectController.getMode() === "project") {
+        projectSaveDebounce.schedule(value);
+      } else {
+        syncUrlToBuffer(value);
+      }
     }
     if (currentHandle && !isUpdatingFromFile) {
       writeDebounce.schedule(value);
@@ -234,24 +380,26 @@ initToolbar({
     const html = preview.getHTML();
 
     if (!html) {
-      showToast(toast, 'Nothing to copy');
+      showToast(toast, "Nothing to copy");
       return;
     }
 
     const copied = await copyText(html);
-    showToast(toast, copied ? 'Copied to clipboard!' : 'Copy failed');
+    showToast(toast, copied ? "Copied to clipboard!" : "Copy failed");
   },
   onCopyLink: async () => {
     editor.flushPendingChange();
     syncUrlToBuffer(editor.getValue());
     const copied = await copyText(window.location.href);
-    showToast(toast, copied ? 'Link copied!' : 'Copy failed');
+    showToast(toast, copied ? "Link copied!" : "Copy failed");
   },
 });
 
-showCommentsCheck.addEventListener('change', () => {
+showCommentsCheck.addEventListener("change", () => {
   preview.setShowComments(showCommentsCheck.checked);
-  commentToggleLabel.textContent = showCommentsCheck.checked ? 'Hide comments' : 'Show comments';
+  commentToggleLabel.textContent = showCommentsCheck.checked
+    ? "Hide comments"
+    : "Show comments";
   renderMarkdown(editor.getValue());
 });
 
@@ -263,26 +411,31 @@ let verticalSplit = 50;
 
 function applySplit() {
   const layout = getSplitLayout(window.innerWidth);
-  const editorPanelStyle = getEditorPanelStyle(layout, horizontalSplit, verticalSplit);
+  const editorPanelStyle = getEditorPanelStyle(
+    layout,
+    horizontalSplit,
+    verticalSplit,
+  );
   editorPanel.style.width = editorPanelStyle.width;
   editorPanel.style.height = editorPanelStyle.height;
   editor.layout();
 }
 
-divider.addEventListener('pointerdown', (e) => {
+divider.addEventListener("pointerdown", (e) => {
   isDragging = true;
   activePointerId = e.pointerId;
   divider.setPointerCapture(e.pointerId);
-  divider.classList.add('ed-divider--active');
-  document.body.style.cursor = getSplitLayout(window.innerWidth) === 'vertical'
-    ? 'row-resize'
-    : 'col-resize';
-  document.body.style.userSelect = 'none';
-  document.body.style.touchAction = 'none';
+  divider.classList.add("ed-divider--active");
+  document.body.style.cursor =
+    getSplitLayout(window.innerWidth) === "vertical"
+      ? "row-resize"
+      : "col-resize";
+  document.body.style.userSelect = "none";
+  document.body.style.touchAction = "none";
   e.preventDefault();
 });
 
-document.addEventListener('pointermove', (e) => {
+document.addEventListener("pointermove", (e) => {
   if (activePointerId !== null && e.pointerId !== activePointerId) return;
   if (!isDragging) return;
 
@@ -291,10 +444,15 @@ document.addEventListener('pointermove', (e) => {
   const mainRect = main.getBoundingClientRect();
   const layout = getSplitLayout(window.innerWidth);
 
-  if (layout === 'vertical') {
+  if (layout === "vertical") {
     verticalSplit = calculateSplitPercent(layout, e, mainRect, verticalSplit);
   } else {
-    horizontalSplit = calculateSplitPercent(layout, e, mainRect, horizontalSplit);
+    horizontalSplit = calculateSplitPercent(
+      layout,
+      e,
+      mainRect,
+      horizontalSplit,
+    );
   }
 
   applySplit();
@@ -305,30 +463,36 @@ function stopDragging(e?: PointerEvent) {
   if (e && activePointerId !== null && e.pointerId !== activePointerId) return;
 
   isDragging = false;
-  divider.classList.remove('ed-divider--active');
-  document.body.style.cursor = '';
-  document.body.style.userSelect = '';
-  document.body.style.touchAction = '';
+  divider.classList.remove("ed-divider--active");
+  document.body.style.cursor = "";
+  document.body.style.userSelect = "";
+  document.body.style.touchAction = "";
   if (activePointerId !== null && divider.hasPointerCapture(activePointerId)) {
     divider.releasePointerCapture(activePointerId);
   }
   activePointerId = null;
 }
 
-document.addEventListener('pointerup', stopDragging);
-document.addEventListener('pointercancel', stopDragging);
-window.addEventListener('resize', applySplit);
+document.addEventListener("pointerup", stopDragging);
+document.addEventListener("pointercancel", stopDragging);
+window.addEventListener("resize", applySplit);
 
 applySplit();
 updateCopyButtonState();
 
 // --- Load initial content ---
-const rawHash = window.location.hash ?? '';
+const rawHash = window.location.hash ?? "";
 const sharedContent = decodeShareHash(rawHash);
 const fileHintPath = parseFileHint(window.location.search);
 
 function stripHintFromUrl() {
-  window.history.replaceState(null, '', window.location.pathname + stripFileHint(window.location.search) + window.location.hash);
+  window.history.replaceState(
+    null,
+    "",
+    window.location.pathname +
+      stripFileHint(window.location.search) +
+      window.location.hash,
+  );
 }
 
 async function openViaPickerAndLink(hintPath: string | null) {
@@ -344,14 +508,18 @@ async function openViaPickerAndLink(hintPath: string | null) {
 
 async function openRecentHandle(handle: WireFileHandle, path: string) {
   if (handle.requestPermission) {
-    const perm = await handle.requestPermission({ mode: 'readwrite' });
-    if (perm !== 'granted') {
+    const perm = await handle.requestPermission({ mode: "readwrite" });
+    if (perm !== "granted") {
       await openViaPickerAndLink(path);
       return;
     }
   }
   const file = await handle.getFile();
-  linkFile({ handle, content: await file.text(), lastModified: file.lastModified });
+  linkFile({
+    handle,
+    content: await file.text(),
+    lastModified: file.lastModified,
+  });
 }
 
 async function onRecentOpen(handle: WireFileHandle | null, path: string) {
@@ -363,29 +531,69 @@ async function onRecentOpen(handle: WireFileHandle | null, path: string) {
   }
 }
 
-if (sharedContent !== null) {
+// Project mode wins over hash / file-hint / recent files: server is authoritative.
+const projectLoadResult = await projectController.loadInitialContent();
+
+if (projectLoadResult?.kind === "loaded") {
+  editor.setValue(projectLoadResult.content);
+  lastSyncedContent = projectLoadResult.content;
+  projectController.startSyncLoop(PROJECT_POLL_INTERVAL_MS);
+  // Drop any stale #code= hash so the URL is clean for sharing.
+  if (window.location.hash) {
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.search,
+    );
+  }
+}
+// Surface project-load failures once, before falling through to the existing flow.
+if (projectLoadResult?.kind === "notFound") {
+  showToast(toast, "Project not found — opened a fresh editor");
+} else if (projectLoadResult?.kind === "error") {
+  showToast(toast, `Couldn't load project: ${projectLoadResult.error}`);
+}
+
+if (projectLoadResult?.kind === "loaded") {
+  // already set above; skip the rest of the load chain
+} else if (sharedContent !== null) {
   editor.setValue(sharedContent);
 } else if (fileHintPath) {
   const recentFiles = await getRecentFiles();
-  const match = recentFiles.find((e) => e.path === fileHintPath && e.handle !== null);
+  const match = recentFiles.find(
+    (e) => e.path === fileHintPath && e.handle !== null,
+  );
 
   if (match) {
-    const perm = await match.handle!.queryPermission?.({ mode: 'readwrite' });
-    if (perm === undefined || perm === 'granted') {
+    const perm = await match.handle!.queryPermission?.({ mode: "readwrite" });
+    if (perm === undefined || perm === "granted") {
       // Silent reopen — permission already granted (or handle has no queryPermission)
       stripHintFromUrl();
       try {
         const file = await match.handle!.getFile();
-        linkFile({ handle: match.handle!, content: await file.text(), lastModified: file.lastModified });
+        linkFile({
+          handle: match.handle!,
+          content: await file.text(),
+          lastModified: file.lastModified,
+        });
         showToast(toast, `Reopened ${match.name}`);
       } catch {
         showFileHintModal({
           fullPath: fileHintPath,
           supported: isFileSystemAccessSupported(),
           recentFiles,
-          onOpen: async () => { stripHintFromUrl(); await openViaPickerAndLink(fileHintPath); },
-          onRecentOpen: async (handle, path) => { stripHintFromUrl(); await onRecentOpen(handle, path); },
-          onDismiss: () => { stripHintFromUrl(); if (examples.length > 0) editor.setValue(examples[0].code); },
+          onOpen: async () => {
+            stripHintFromUrl();
+            await openViaPickerAndLink(fileHintPath);
+          },
+          onRecentOpen: async (handle, path) => {
+            stripHintFromUrl();
+            await onRecentOpen(handle, path);
+          },
+          onDismiss: () => {
+            stripHintFromUrl();
+            if (examples.length > 0) editor.setValue(examples[0].code);
+          },
         });
       }
     } else {
@@ -393,9 +601,18 @@ if (sharedContent !== null) {
         fullPath: fileHintPath,
         supported: isFileSystemAccessSupported(),
         recentFiles,
-        onOpen: async () => { stripHintFromUrl(); await openViaPickerAndLink(fileHintPath); },
-        onRecentOpen: async (handle, path) => { stripHintFromUrl(); await onRecentOpen(handle, path); },
-        onDismiss: () => { stripHintFromUrl(); if (examples.length > 0) editor.setValue(examples[0].code); },
+        onOpen: async () => {
+          stripHintFromUrl();
+          await openViaPickerAndLink(fileHintPath);
+        },
+        onRecentOpen: async (handle, path) => {
+          stripHintFromUrl();
+          await onRecentOpen(handle, path);
+        },
+        onDismiss: () => {
+          stripHintFromUrl();
+          if (examples.length > 0) editor.setValue(examples[0].code);
+        },
       });
     }
   } else {
@@ -403,9 +620,18 @@ if (sharedContent !== null) {
       fullPath: fileHintPath,
       supported: isFileSystemAccessSupported(),
       recentFiles,
-      onOpen: async () => { stripHintFromUrl(); await openViaPickerAndLink(fileHintPath); },
-      onRecentOpen: async (handle, path) => { stripHintFromUrl(); await onRecentOpen(handle, path); },
-      onDismiss: () => { stripHintFromUrl(); if (examples.length > 0) editor.setValue(examples[0].code); },
+      onOpen: async () => {
+        stripHintFromUrl();
+        await openViaPickerAndLink(fileHintPath);
+      },
+      onRecentOpen: async (handle, path) => {
+        stripHintFromUrl();
+        await onRecentOpen(handle, path);
+      },
+      onDismiss: () => {
+        stripHintFromUrl();
+        if (examples.length > 0) editor.setValue(examples[0].code);
+      },
     });
   }
 } else {
@@ -415,11 +641,13 @@ if (sharedContent !== null) {
       supported: isFileSystemAccessSupported(),
       recentFiles,
       onRecentOpen,
-      onDismiss: () => { if (examples.length > 0) editor.setValue(examples[0].code); },
+      onDismiss: () => {
+        if (examples.length > 0) editor.setValue(examples[0].code);
+      },
     });
   } else {
     if (rawHash.length > 1) {
-      showToast(toast, 'Could not load shared link — opening default');
+      showToast(toast, "Could not load shared link — opening default");
     }
     if (examples.length > 0) {
       editor.setValue(examples[0].code);
