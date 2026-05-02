@@ -12,7 +12,7 @@ Define a card or list item in its own file, then include it multiple times to si
 ::: card
 
 ### Sprint 12
-[In Progress]{.warning} 8 tasks · due Friday
+[In Progress]{warning} 8 tasks · due Friday
 
 [View Sprint]* [Edit]
 :::

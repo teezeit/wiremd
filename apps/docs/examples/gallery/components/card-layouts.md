@@ -588,7 +588,7 @@ Regular card in default state
 
 :::
 ::: column Highlighted Card
-::: card {.highlight}
+::: card
 **Featured!**
 
 This card has special emphasis
@@ -808,7 +808,7 @@ Works with any stack.
 
 ### Column Spanning
 
-Add `.span-N` to a `::: column` opener to span multiple columns.
+Add `span-N` to a `::: column` opener to span multiple columns.
 
 ```markdown
 ::: columns-3 card
@@ -816,7 +816,7 @@ Add `.span-N` to a `::: column` opener to span multiple columns.
 $9/month — up to 3 projects.
 
 :::
-::: column Pro {.span-2}
+::: column Pro {span-2}
 $29/month — unlimited projects, priority support, spans two columns.
 :::
 :::
@@ -828,7 +828,7 @@ $29/month — unlimited projects, priority support, spans two columns.
 $9/month — up to 3 projects.
 
 :::
-::: column Pro {.span-2}
+::: column Pro {span-2}
 $29/month — unlimited projects, priority support, spans two columns.
 :::
 :::

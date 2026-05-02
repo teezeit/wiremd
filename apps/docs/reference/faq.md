@@ -51,7 +51,7 @@ See the [Components reference](../components/) for all syntax and components.
 
 ### How does wiremd distinguish a button from a link?
 
-A button uses square brackets with no URL: `[Label]`. A standard Markdown link uses square brackets followed by a URL in parentheses: `[Label](https://example.com)`. wiremd sees any bare `[Label]` (or `[Label]*` for primary, `[Label]{variant:danger}` for variants) as a button node, and any `[Label](url)` as a link node.
+A button uses square brackets with no URL: `[Label]`. A standard Markdown link uses square brackets followed by a URL in parentheses: `[Label](https://example.com)`. wiremd sees any bare `[Label]` (or `[Label]*` for primary, `[Label]{danger}` for variants) as a button node, and any `[Label](url)` as a link node.
 
 ### How does label association work for inputs?
 
@@ -110,29 +110,29 @@ Accordion syntax (`::: accordion`) parses correctly but is **not yet rendered** 
 
 ### What button variants are available?
 
-Three: `primary`, `secondary`, and `danger`. Use the asterisk shorthand for primary (`[Submit]*`), or the `variant` key-value attribute for any variant:
+Three: `primary`, `secondary`, and `danger`. Use the asterisk shorthand for primary (`[Submit]*`), or a plain semantic token for any variant:
 
 ```markdown
-[Submit]*                   # Primary — preferred shorthand
-[Submit]{variant:primary}   # Primary — explicit form
-[Cancel]{variant:secondary} # Secondary
-[Delete]{variant:danger}    # Danger/destructive
+[Submit]*              # Primary — preferred shorthand
+[Submit]{primary}      # Primary — explicit form
+[Cancel]{secondary}    # Secondary
+[Delete]{danger}       # Danger/destructive
 ```
 
-**Note:** `{.primary}`, `{.secondary}`, and `{.danger}` (dot-prefix class syntax) add raw CSS classes, not variant classes. They have no built-in style definitions and will not produce styled buttons. Use `*` or `{variant:name}` instead.
+**Note:** `{variant:primary}`, `{variant:secondary}`, and `{variant:danger}` still work. Dot-prefix class syntax like `{.custom}` is for raw CSS classes.
 
 ### Can I create disabled or loading button states?
 
 Yes, using the `state` attribute:
 
 ```markdown
-[Submit]{state:disabled}
-[Processing...]{state:loading}
-[Saved]{state:success}
-[Error]{state:error}
+[Submit]{disabled}
+[Processing...]{loading}
+[Saved]{success}
+[Error]{error}
 ```
 
-**Note:** `{disabled}` (boolean syntax without `state:`) works on inputs, textareas, and selects, but is silently ignored on buttons. Always use `{state:disabled}` for buttons.
+**Note:** `{state:disabled}`, `{state:loading}`, and `{state:error}` still work. Use plain tokens in new examples.
 
 ---
 

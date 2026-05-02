@@ -366,7 +366,7 @@ wiremd has a native **Obsidian plugin** that brings live wireframe previews dire
    Password
    [****************************]
 
-   [Sign In]{.primary} [Cancel]
+   [Sign In]{primary} [Cancel]
    ```
    ````
 
@@ -396,7 +396,7 @@ const ast = parse(`
 
   Name
   [_____________________________]
-  [Submit]{.primary}
+  [Submit]{primary}
 `);
 
 // Render to HTML with visual style

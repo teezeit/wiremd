@@ -33,7 +33,7 @@ const ast = parse(`
   ## Contact Form
   Name
   [_____________________________]
-  [Submit]{.primary}
+  [Submit]{primary}
 `);
 
 // Render to HTML
@@ -151,7 +151,7 @@ writeFileSync('output.html', html);
 ```typescript
 import { parse, renderToHTML, renderToReact, renderToJSON } from '@eclectic-ai/wiremd';
 
-const markdown = '## Login\n[Submit]{.primary}';
+const markdown = '## Login\n[Submit]{primary}';
 const ast = parse(markdown);
 
 // Generate multiple formats

@@ -26,17 +26,45 @@ How the parser decides what `[...]` is:
 ```markdown
 [Default]
 [Primary]*                     ← asterisk shorthand
-[Primary]{.primary}            ← class form
-[Secondary]{.secondary}
-[Outline]{.outline}
-[Danger]{variant:danger}
-[Loading...]{state:loading}
-[Disabled]{state:disabled}     ← use state:disabled, not {disabled}
+[Primary]{primary}
+[Secondary]{secondary}
+[Danger]{danger}
+[Loading...]{loading}
+[Disabled]{disabled}
 ```
 
 Group buttons on the same line: `[Save]* [Cancel] [Reset]`
 
-> **⚠️ Gotcha:** `{disabled}` (without `state:`) is silently ignored. Always use `{state:disabled}`.
+> **Advanced:** `{variant:danger}` and `{state:disabled}` are still accepted. Dot-prefixed tokens like `{.my-button}` are raw CSS classes.
+
+---
+
+## Modifier Model
+
+Use plain tokens for UI intent:
+
+```markdown
+[Delete]{danger large disabled}
+::: row {right}
+::: column Summary {span-2 center}
+((Done)){success}
+```
+
+Use key-value attributes when you need explicit properties:
+
+```markdown
+[Delete]{variant:danger state:disabled}
+[Email___________]{type:email required}
+```
+
+Use dot-prefixed tokens only as raw CSS class hooks:
+
+```markdown
+[Button]{.my-button}
+::: card {.highlight-card}
+```
+
+Semantic tokens are normalized before rendering; raw CSS classes pass through unchanged.
 
 ---
 
@@ -97,8 +125,8 @@ Message
 ### Input states
 
 ```markdown
-[Field value]{state:error}
-[Field value]{state:disabled}
+[Field value]{error}
+[Field value]{disabled}
 ```
 
 ### Textarea
@@ -200,7 +228,7 @@ Supporting text
 ## Confirm Delete
 Are you sure you want to delete this item?
 
-[Delete]{variant:danger}  [Cancel]
+[Delete]{danger}  [Cancel]
 :::
 ::: sidebar
 #### Section
@@ -222,16 +250,16 @@ Are you sure you want to delete this item?
 ::: alert
 Your session will expire in 10 minutes.
 :::
-::: alert {.success}
+::: alert {success}
 Changes saved successfully.
 :::
-::: alert {.warning}
+::: alert {warning}
 This action cannot be undone.
 :::
-::: alert {.error}
+::: alert {error}
 Something went wrong.
 :::
-::: alert {.warning} Storage limit reached
+::: alert {warning} Storage limit reached
 Upgrade your plan to continue uploading.
 
 [Upgrade Now]* [Dismiss]
@@ -248,9 +276,9 @@ Containers can be nested — the parser handles them recursively:
 ::: column Sprint: Q2 Onboarding
 
 :::
-::: column .right
+::: column {right}
 
-Started: Apr 1 · ((Due: Apr 30)){.warning}
+Started: Apr 1 · ((Due: Apr 30)){warning}
 :::
 :::
 
@@ -293,10 +321,10 @@ Content for the main area.
 :::
 ```
 
-Right-align content with `{.right}`:
+Right-align content with `{right}`:
 
 ```markdown
-::: row {.right}
+::: row {right}
 [+ New Item]*
 :::
 ```
@@ -356,7 +384,7 @@ The most common `columns-2` pattern — title left, button right:
 ::: column Recent Sessions
 
 :::
-::: column .right
+::: column {right}
 
 [View All]*
 :::
@@ -365,23 +393,23 @@ The most common `columns-2` pattern — title left, button right:
 
 ### Column alignment
 
-Add `.right`, `.left`, or `.center` to a `::: column` opener to align that column's content:
+Add `right`, `left`, or `center` to a `::: column` opener to align that column's content:
 
 ```markdown
-::: column .right
-::: column .left
-::: column .center
+::: column {right}
+::: column {left}
+::: column {center}
 ```
 
 ### Column spans
 
 ```markdown
-::: column Featured Item {.span-2}
+::: column Featured Item {span-2}
 Spans two columns.
 :::
 
 ```markdown
-::: column Featured Item {.span-2}
+::: column Featured Item {span-2}
 Spans two columns.
 :::
 ```
@@ -407,12 +435,12 @@ Double parentheses create inline status labels:
 
 ```markdown
 ((Active))
-((Active)){.success}
-((3)){.warning}
-((Failed)){.error}
-((New)){.primary}
+((Active)){success}
+((3)){warning}
+((Failed)){error}
+((New)){primary}
 
-Status: ((Active)){.success}
+Status: ((Active)){success}
 ```
 
 Variants: `success` · `warning` · `error` · `primary` · (none = neutral gray)
@@ -512,9 +540,9 @@ All standard Markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 | JSX / HTML | wiremd |
 |-----------|--------|
 | `<Button variant="primary">` | `[Label]*` |
-| `<Button variant="secondary">` | `[Label]{.secondary}` |
-| `<Button variant="danger">` | `[Label]{variant:danger}` |
-| `<Button disabled>` | `[Label]{state:disabled}` |
+| `<Button variant="secondary">` | `[Label]{secondary}` |
+| `<Button variant="danger">` | `[Label]{danger}` |
+| `<Button disabled>` | `[Label]{disabled}` |
 | `<Input placeholder="...">` | `[placeholder___________]` |
 | `<Input type="password">` | `[*********************]` |
 | `<Textarea rows={4}>` | `[Placeholder...]{rows:4}` |
@@ -525,15 +553,15 @@ All standard Markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 | `<Table>` | markdown table |
 | `<Card>` | `::: card` block |
 | `<Dialog>` / `<Modal>` | `::: modal` at bottom of file |
-| `<Alert variant="success">` | `::: alert {.success}` |
-| `<Badge>` / `<Chip>` | `((Label)){.variant}` |
+| `<Alert variant="success">` | `::: alert {success}` |
+| `<Badge>` / `<Chip>` | `((Label)){success}` |
 | Flex row of cards | `::: columns-3 card` |
 | Stats row (no card) | `::: columns-3` |
 | Horizontal toolbar | `::: row` |
-| Right-aligned action | `::: row {.right}` |
-| Section header + right action | `::: columns-2` with `::: column .right` |
+| Right-aligned action | `::: row {right}` |
+| Section header + right action | `::: columns-2` with `::: column {right}` |
 | `<Tabs>` | `::: tabs` with `::: tab Label` children |
 | Loading state | `> **Loading state:** ...` |
 | Empty state | `> **Empty state:** ...` |
-| Error state | `::: alert {.error}` or `{state:error}` on input |
+| Error state | `::: alert {error}` or `{error}` on input |
 | Sidebar + main | `::: sidebar` before page content |

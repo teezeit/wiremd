@@ -12,14 +12,14 @@
 
 ## Row with Alignment
 
-Add `{.right}` or `{.center}` to align all content.
+Add `{right}` or `{center}` to align all content.
 ::: demo
-::: row {.right}
+::: row {right}
 [Export] [+ New Item]*
 :::
 :::
 ::: demo
-::: row {.center}
+::: row {center}
 Page 1 of 12   [← Prev] [Next →]
 :::
 :::
@@ -33,7 +33,7 @@ Use columns when one side needs to stay left while another side aligns right.
 [All]* [Active] [Archived]
 
 :::
-::: column .right
+::: column {right}
 [+ New Item]*
 :::
 :::
@@ -44,23 +44,23 @@ Use columns when one side needs to stay left while another side aligns right.
 Text, badges, icons, and buttons can be combined freely in a row.
 ::: demo
 ::: row
-Inbox ((24)){.primary}
+Inbox ((24)){primary}
 :::
 :::
 ::: demo
 ::: row
 :check:
 
-All systems operational ((Live)){.success}
+All systems operational ((Live)){success}
 :::
 :::
 ::: demo
 ::: row
 :user:
 
-John Doe ((Admin)){.warning}
+John Doe ((Admin)){warning}
 
-[Edit] [Remove]{.danger}
+[Edit] [Remove]{danger}
 :::
 :::
 
@@ -77,10 +77,10 @@ Use a row for a simple toolbar. For a title on the left and actions on the right
 ::: demo
 ::: columns-2
 ::: column
-**Projects** ((12)){.primary}
+**Projects** ((12)){primary}
 
 :::
-::: column .right
+::: column {right}
 [Filter] [Sort] [+ New Project]*
 :::
 :::
@@ -92,14 +92,14 @@ Use a row for a simple toolbar. For a title on the left and actions on the right
 ::: row
 [A] [B] [C]           implicit items, left-aligned
 :::
-::: row {.right}      right-align all content
-::: row {.center}     center all content
+::: row {right}       right-align all content
+::: row {center}      center all content
 
 ::: columns-2           split left/right content into columns
 ::: column
 [A] [B] [C]
 :::
-::: column .right
+::: column {right}
 [Save]*
 :::
 :::

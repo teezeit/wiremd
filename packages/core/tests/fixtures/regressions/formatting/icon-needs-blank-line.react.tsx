@@ -14,7 +14,7 @@ John Doe <span className="wmd-badge wmd-badge-warning">Admin</span></p>
       </button>
     </div>
     <div className="wmd-grid-item">
-      <button className="wmd-button wmd-danger">
+      <button className="wmd-button wmd-button-danger">
         Remove
       </button>
     </div>

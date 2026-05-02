@@ -21,6 +21,16 @@ describe('HTML Renderer', () => {
       expect(html).toContain('Submit');
     });
 
+    it('should render no-dot button tokens', () => {
+      const ast = parse('[Delete]{danger large disabled}');
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('wmd-button-danger');
+      expect(html).toContain('wmd-large');
+      expect(html).toContain('wmd-state-disabled');
+      expect(html).toContain('disabled');
+    });
+
     it('should render a text input', () => {
       const ast = parse('[Email_______________________]');
       const html = renderToHTML(ast, { style: 'sketch' });
@@ -306,6 +316,22 @@ Content
       const input = `
 ::: columns-3
 ::: column .span-2
+## Wide
+Spans two columns
+:::
+
+:::
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-col-span-2/);
+    });
+
+    it('should render no-dot span class on column item', () => {
+      const input = `
+::: columns-3
+::: column {span-2}
 ## Wide
 Spans two columns
 :::

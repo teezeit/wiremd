@@ -19,7 +19,7 @@
 ::: column Profile Settings
 
 :::
-::: column .right
+::: column {right}
 
 [Save Changes]* [Cancel]
 
@@ -73,7 +73,7 @@ Notification frequency
 
 Deleting your account is permanent and cannot be undone.
 
-[Delete Account]{variant:danger}
+[Delete Account]{danger}
 
 :::
 
@@ -107,6 +107,6 @@ Type your email to confirm:
 
 [_____________________________]{type:email required}
 
-[Permanently Delete]{variant:danger} [Cancel]
+[Permanently Delete]{danger} [Cancel]
 
 :::

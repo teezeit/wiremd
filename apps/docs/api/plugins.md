@@ -185,7 +185,7 @@ Name
 Email
 [_____________________________]{type:email name:email}
 
-[Submit]{.primary}
+[Submit]{primary}
 `);
 
 const vueComponent = renderToVue(ast, {
@@ -586,7 +586,7 @@ Username
 Password
 [_____________________________]{type:password}
 
-[Login]{.primary} [Cancel]
+[Login]{primary} [Cancel]
   `;
 
   const ast = parse(markdown);

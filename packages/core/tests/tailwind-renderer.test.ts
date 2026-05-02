@@ -50,6 +50,16 @@ describe('Tailwind Renderer', () => {
       expect(html).toContain('disabled');
     });
 
+    it('should render no-dot button tokens', () => {
+      const ast = parse('[Delete]{danger large disabled}');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('px-6 py-3 text-lg');
+      expect(html).toContain('bg-red-600 text-white hover:bg-red-700');
+      expect(html).toContain('opacity-50 cursor-not-allowed');
+      expect(html).toContain('disabled');
+    });
+
     it('should render an input with Tailwind classes', () => {
       const ast = parse('[___________]{type:email required}');
       const html = renderToTailwind(ast);
@@ -246,6 +256,15 @@ describe('Tailwind Renderer', () => {
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"');
+    });
+
+    it('should render no-dot column span and alignment tokens', () => {
+      const ast = parse('::: columns-3 card\n::: column {span-2 right}\n[Save]*\n:::\n:::');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('lg:col-span-2');
+      expect(html).toContain('ml-auto');
+      expect(html).toContain('text-right');
     });
   });
 

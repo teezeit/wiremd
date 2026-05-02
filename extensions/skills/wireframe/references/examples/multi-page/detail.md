@@ -6,9 +6,9 @@
 ::: column Launch Plan
 
 :::
-::: column .right
+::: column {right}
 
-::: row {.right}
+::: row {right}
 [Edit] [Publish]*
 :::
 

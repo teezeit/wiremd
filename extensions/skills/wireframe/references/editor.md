@@ -70,8 +70,8 @@ For the full syntax including all attributes, edge cases, and disambiguation rul
 [Overview]* [Details] [Raw Data]
 
 # Buttons
-[Primary]* [Secondary]{.secondary} [Outline]{.outline}
-[Danger]{variant:danger} [Disabled]{state:disabled} [Saving...]{state:loading}
+[Primary]* [Secondary]{secondary}
+[Danger]{danger} [Disabled]{disabled} [Saving...]{loading}
 
 # Inputs — label must be on the line DIRECTLY above (no blank line)
 Email
@@ -101,7 +101,7 @@ Role
 :::
 
 # Row, right-aligned
-::: row {.right}
+::: row {right}
 [+ New Item]*
 :::
 
@@ -110,7 +110,7 @@ Role
 ::: column Section Title
 
 :::
-::: column .right
+::: column {right}
 
 [+ Add Item]*
 
@@ -165,7 +165,7 @@ $124,500
 :home: :user: :gear: :chart: :bell: :shield: :rocket: :check: :x: :search: :edit: :trash: :plus:
 
 # Badges / pills — inline status labels and counts
-((Active)){.success}  ((Pending)){.warning}  ((Failed)){.error}  ((New)){.primary}  ((Draft))
+((Active)){success}  ((Pending)){warning}  ((Failed)){error}  ((New)){primary}  ((Draft))
 
 # Card, alert
 ::: card
@@ -212,7 +212,7 @@ Changes saved.
 ## Confirm Delete
 Are you sure?
 
-[Delete]{variant:danger} [Cancel]
+[Delete]{danger} [Cancel]
 
 :::
 ```

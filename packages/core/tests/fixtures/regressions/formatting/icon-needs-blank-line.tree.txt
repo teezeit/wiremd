@@ -8,4 +8,4 @@ Document
      ├─ grid-item
      │  └─ button "Edit"
      └─ grid-item
-        └─ button "Remove" props={classes=["danger"]}
+        └─ button "Remove" props={variant="danger"}

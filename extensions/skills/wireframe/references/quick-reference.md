@@ -7,7 +7,7 @@
 | Component | Syntax | Example |
 |-----------|--------|---------|
 | **Button** | `[Text]` | `[Click Me]` |
-| **Primary Button** | `[Text]*` or `[Text]{.primary}` | `[Submit]*` |
+| **Primary Button** | `[Text]*` or `[Text]{primary}` | `[Submit]*` |
 | **Text Input** | `[___]` | `[Name___________]` |
 | **Email Input** | `[___]{type:email}` | `[Email___]{type:email required}` |
 | **Password** | `[***]` or `{type:password}` | `[********]{type:password}` |
@@ -29,7 +29,7 @@
 | **Generic** | `::: type ... :::` | Any container block |
 | **Card** | `::: card ... :::` | Card component |
 | **Hero** | `::: hero ... :::` | Hero section |
-| **Alert** | `::: alert {.success} ... :::` | variants: `.success`, `.warning`, `.error` — **not yet rendered** (parses but no visual style) |
+| **Alert** | `::: alert {success} ... :::` | variants: `success`, `warning`, `error` |
 | **Modal** | `::: modal ... :::` | Dialog/modal |
 | **Sidebar** | `::: sidebar ... :::` | Sidebar navigation |
 | **Footer** | `::: footer ... :::` | Footer section |
@@ -44,11 +44,11 @@
 | **3 Columns** | `::: columns-3` | |
 | **4 Columns** | `::: columns-4` | |
 | **Row** | `::: row` … `:::` | Horizontal flex row, children auto-wrapped |
-| **Row (aligned)** | `::: row {.right}` … `:::` | Right-aligned row |
+| **Row (aligned)** | `::: row {right}` … `:::` | Right-aligned row |
 | **Tabs** | `::: tabs` with `::: tab Label` children | Tabbed panels |
 | **Column title** | `::: column Billing address` | Renders a heading at the top of the column |
-| **Col span** | `::: column .span-2` | Item spans 2 columns |
-| **Column alignment** | `::: column .right` / `::: column .left` / `::: column .center` inside `::: columns-N` | Aligns that column |
+| **Col span** | `::: column {span-2}` | Item spans 2 columns |
+| **Column alignment** | `::: column {right}` / `::: column {left}` / `::: column {center}` inside `::: columns-N` | Aligns that column |
 
 Columns are defined by explicit `::: column` child containers inside the `::: columns-N` container.
 
@@ -58,10 +58,13 @@ Columns are defined by explicit `::: column` child containers inside the `::: co
 
 | Attribute Type | Syntax | Example |
 |----------------|--------|---------|
-| **Class** | `{.classname}` | `{.primary .large}` |
+| **Semantic token** | `{name}` | `{danger large disabled}` |
 | **Key-Value** | `{key:value}` | `{type:email required}` |
-| **State** | `{state:name}` | `{state:disabled}` |
-| **Combined** | `{.class key:value state:name}` | `{.primary type:submit state:loading}` |
+| **State** | `{disabled}` / `{loading}` | `{disabled}` |
+| **Combined** | `{primary large disabled}` | `{primary large disabled}` |
+| **Raw CSS class** | `{.classname}` | `{.custom-card}` |
+
+Plain tokens describe UI intent and are normalized before rendering. Key-value attributes are explicit props. Dot-prefixed tokens pass through as raw CSS classes for integrations or custom styling.
 
 ## Input Types
 
@@ -85,8 +88,8 @@ Columns are defined by explicit `::: column` child containers inside the `::: co
 {required}           # Required field
 {required:true}      # Also valid
 {disabled}           # Disabled
-{state:disabled}     # Also valid
-{state:error}        # Error state
+{loading}            # Loading
+{error}              # Error state
 {min:1 max:100}      # Number constraints
 {rows:5}             # Textarea rows
 {cols:60}            # Textarea columns
@@ -97,12 +100,12 @@ Columns are defined by explicit `::: column` child containers inside the `::: co
 ```markdown
 [Button]                    # Default
 [Button]*                   # Primary (asterisk shorthand)
-[Button]{variant:danger}    # Danger/destructive
-[Button]{state:disabled}    # Disabled ← use state:disabled, not {disabled}
-[Button]{state:loading}     # Loading
+[Button]{danger}            # Danger/destructive
+[Button]{disabled}          # Disabled
+[Button]{loading}           # Loading
 ```
 
-> **⚠️ Gotcha:** `{disabled}` (without `state:`) is silently ignored on buttons. Always use `{state:disabled}`.
+> **Advanced:** `{variant:danger}` and `{state:disabled}` are still accepted. Dot-prefixed tokens are raw CSS classes.
 
 ## Form Pattern
 

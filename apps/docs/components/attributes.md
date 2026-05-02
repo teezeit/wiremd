@@ -1,16 +1,21 @@
 ![[_sidebar.md]]
-# Attributes & Classes
+# Attributes
 
-Any wiremd element accepts `{...}` after it to add classes, attributes, and modifiers.
+Any wiremd element accepts `{...}` after it to add modifiers, attributes, and advanced CSS classes.
+
+## Semantic Modifiers
+
+Use plain words for common UI intent:
+::: demo
+[Primary]* [Secondary]{secondary} [Danger]{danger} [Large]{large}
+:::
 
 ## CSS Classes
 
-Add `.classname` to attach a CSS class:
-::: demo
-[Primary]* [Primary]{variant:primary} [Danger]{variant:danger} [Large]{.large}
-:::
-
-> **Note:** `{.primary}` and `{.danger}` on buttons add raw CSS classes (`wmd-primary`, `wmd-danger`), not variant classes (`wmd-button-primary`, `wmd-button-danger`). These classes have no built-in CSS definitions and produce unstyled buttons. Use `[Button]*` or `{variant:primary}` / `{variant:danger}` instead. Size classes like `.small` and `.large` are built in.
+Add `.classname` only when you intentionally want a raw CSS class:
+```markdown
+[Custom]{.featured}
+```
 
 ## Key-value Attributes
 
@@ -22,37 +27,37 @@ Email
 
 ## Combining Classes and Attributes
 ::: demo
-[Submit]{variant:primary state:disabled}
+[Submit]{primary disabled}
 :::
 
-> **Note:** `{type:submit}` on buttons is **not implemented** — the `type` property is defined in the AST but never parsed from attributes or rendered to HTML. `{disabled}` on buttons is also silently ignored; use `{state:disabled}` instead. The example above does not fully render as intended.
+> **Note:** `{type:submit}` on buttons is **not implemented** — the `type` property is defined in the AST but never parsed from attributes or rendered to HTML.
 
 ## On Containers
 
 Attributes on `:::` containers add classes to the wrapper element:
-::: demo
+```markdown
 ::: card {.featured}
 ### Featured Plan
 The most popular choice for growing teams.
 [Get Started]*
 :::
-:::
+```
 
 ## On Headings
-::: demo
+```markdown
 ## Section Title {.muted}
-:::
+```
 
 ## On Column Items
 
-Use `.span-N` on `::: column` openers inside columns:
+Use `span-N` on `::: column` openers inside columns:
 ::: demo
 ::: columns-3 card
-::: column Starter {.span-1}
+::: column Starter {span-1}
 $9/mo
 
 :::
-::: column Pro {.span-2}
+::: column Pro {span-2}
 $29/mo — spans two columns
 :::
 :::
@@ -62,29 +67,56 @@ $29/mo — spans two columns
 
 | Modifier | Effect |
 |----------|--------|
-| `{variant:primary}` | Primary variant (blue) — use this or `[Button]*` for styled primary buttons |
-| `{variant:secondary}` | Secondary variant |
-| `{variant:danger}` | Danger / destructive variant |
-| `{.primary}` / `{.danger}` | Raw CSS class passthrough — **not a styled variant**; no built-in CSS definition |
-| `{state:disabled}` | Disabled state on buttons and form elements (buttons: adds `disabled` attr + state class) |
-| `{disabled}` | Disabled state on inputs, textarea, and select — **ignored on buttons**; use `{state:disabled}` for buttons |
+| `{primary}` | Primary variant — use this or `[Button]*` |
+| `{secondary}` | Secondary variant |
+| `{danger}` | Danger / destructive variant |
+| `{large}` / `{small}` | Button size |
+| `{disabled}` | Disabled state |
+| `{loading}` | Loading state |
+| `{error}` / `{success}` / `{warning}` | Status state for inputs, badges, alerts, and similar status UI |
 | `{required}` | Required field marker (inputs and textarea only) |
-| `::: column .span-N` | Column span |
-| `.left` / `.right` / `.center` on `::: column` | Column alignment |
+| `::: column {span-N}` | Column span |
+| `{left}` / `{right}` / `{center}` on `::: row` or `::: column` | Alignment |
 | `{type:email}` | Input type |
 | `{rows:N}` | Textarea row count |
 | `{placeholder:"..."}` | Input placeholder text (**TODO:** quoted values with spaces may not parse correctly — prefer `{placeholder:hint}` without quotes for single words) |
 
+## How Modifiers Work
+
+Modifiers are parsed left to right inside one `{...}` block. Most authors should use plain tokens because they describe UI intent:
+
+```markdown
+[Delete]{danger large disabled}
+::: row {right}
+::: column Summary {span-2 center}
+((Done)){success}
+```
+
+For more explicit or integration-focused code, key-value attributes are still supported:
+
+```markdown
+[Delete]{variant:danger state:disabled}
+[Email___________]{type:email required}
+[Notes...]{rows:4 placeholder:"Internal note"}
+```
+
+Dot-prefixed tokens are raw CSS class hooks. Use them only when you want the rendered element to carry a custom class for downstream CSS or renderer-specific styling:
+
+```markdown
+[Button]{.my-button}
+::: card {.highlight-card}
+## Heading {.muted}
+```
+
+The parser normalizes semantic tokens before rendering. For example, `{danger}` on a button becomes the danger button variant, `{success}` on a badge becomes the success badge variant, and `{span-2 right}` on a column becomes the existing grid span and alignment classes. Dot-prefixed classes are not normalized; they pass through as authored.
+
 ## Syntax
 
 ```
-[Button]{.classname}
-[Button]{.class1 .class2}
+[Button]{primary large disabled}
 [Input]{type:email required}
-[Input]{.primary type:submit disabled}
-::: container {.classname}
-## Heading {.muted}
-::: column Column item {.span-2}
+::: column Column item {span-2 right}
+[Button]{.custom-class}
 :::
 ```
 
@@ -115,11 +147,11 @@ $29/mo — spans two columns
 ### Badge vs. table cell
 
 ```
-((Active)){.success}   badge — double-parentheses delimiters
+((Active)){success}    badge — double-parentheses delimiters
 | Active |            table cell — spaces and alignment dashes context
 ```
 
-Inside a table cell, use the same badge syntax: `((Active)){.success}`
+Inside a table cell, use the same badge syntax: `((Active)){success}`
 
 ### Container vs. raw HTML
 

@@ -44,7 +44,7 @@ Separate lines stack vertically:
 [Name_____________________________]{required}
 
 :::
-::: column .right
+::: column {right}
 [Save Changes]*
 :::
 :::
@@ -55,7 +55,7 @@ Separate lines stack vertically:
 | Bob | Editor | Active |
 :::
 ::: tab Notifications
-::: row {.right}
+::: row {right}
 
 [Save]*
 :::

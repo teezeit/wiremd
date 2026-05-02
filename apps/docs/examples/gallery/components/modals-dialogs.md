@@ -740,7 +740,7 @@ Permission Level
 ### Full-Screen Content Modal
 
 ```markdown
-::: modal {.fullscreen}
+::: modal
 ### Terms of Service
 
 [×] Close

@@ -8,7 +8,7 @@ Use `:name:` inline anywhere — in headings, buttons, nav bars, or plain text.
 :home: Home  :user: Profile  :settings: Settings
 :::
 ::: demo
-[:search: Search]*  [:edit: Edit]  [:delete: Delete]{variant:danger}
+[:search: Search]*  [:edit: Edit]  [:delete: Delete]{danger}
 :::
 ::: demo
 [[ :logo: MyApp | :home: Home | :bell: Alerts | :user: Account ]]

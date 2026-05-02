@@ -112,6 +112,8 @@ packages/core/src/
 
 **Parser flow**: unified/remark parses standard Markdown into MDAST, then `remark-containers` and `remark-inline-containers` handle wiremd-specific syntax (`::: card`, `[[ nav ]]`, buttons `[Label]*`, inputs `[_____]`). The transformer walks the MDAST and emits wiremd AST nodes.
 
+**Authoring convention for modifiers**: use plain semantic tokens for product intent and combine them in one brace block: `[Delete]{danger large disabled}`, `::: row {right}`, `::: column Summary {span-2 right}`, `((Done)){success}`, `[Email___]{type:email error}`. Use key-value attributes for explicit props (`type:email`, `rows:4`, `placeholder:"..."`). Use dot-prefixed tokens only as raw CSS class escape hatches (`{.custom-card}`), not in normal examples.
+
 **Render flow (Strategy + Registry)**: each renderer's `renderNode(node, ctx)` looks up `node.type` in `nodes/_registry.ts`. If a `NodeDefinition` exists with the matching render target (`html` / `react` / `tailwind`), it delegates to that node's module. Otherwise it falls through to an "Unknown node" comment — which is the intentional behavior for the few node types (alert, accordion, breadcrumb-item, loading/empty/error-state) that never had per-target renderers. Recursion through `node.children` is the node module's job: it calls `renderNode(child, ctx)` to dispatch back through the registry.
 
 **Adding a new component**: drop a folder under `src/nodes/<type>/` with at minimum `index.ts` (exports `NodeDefinition<'<type>'>`) and `html.ts` (the render function). Add a one-line entry to `_registry.ts`. React and Tailwind renderers are optional; the dispatcher handles missing targets cleanly. See [`CONTRIBUTING.md`](CONTRIBUTING.md#feature-development-checklist) for the full checklist.

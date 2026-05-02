@@ -147,13 +147,13 @@ Extends the badge `((...))` syntax — chips are badges with a `×` and the trai
 
 Temporary bottom-screen notification. Used for success/error confirmations after actions.
 
-New container type — follows the same `{.variant}` pattern as `::: alert`:
+New container type — follows the same `{variant}` token pattern as `::: alert`:
 
 ```
-::: snackbar {.success}
+::: snackbar {success}
 Changes saved
 :::
-::: snackbar {.error}
+::: snackbar {error}
 Something went wrong. [Retry]
 :::
 ```
@@ -232,7 +232,7 @@ New container type with positional class modifier — mirrors how `::: sidebar` 
 ::: drawer {.left}
 [[Home](./index.md)]
 [[Settings](./settings.md)]
-[Logout]{.danger}
+[Logout]{danger}
 :::
 ```
 
@@ -247,7 +247,7 @@ Icon or button + following list — mirrors the dropdown pattern (element + list
 [:more-vertical:]{menu}
 - Edit
 - Duplicate
-- Delete{.danger}
+- Delete{danger}
 ```
 
 :::
@@ -371,8 +371,8 @@ Extends native Markdown table syntax — sort arrows and checkboxes are rendered
 ```
 | ☐ | Name ↑ | Status |
 |----|--------|--------|
-| ☑ | Alice  | ((Active)){.success} |
-| ☐ | Bob    | ((Pending)){.warning} |
+| ☑ | Alice  | ((Active)){success} |
+| ☐ | Bob    | ((Pending)){warning} |
 ```
 :::
 :::
@@ -405,7 +405,7 @@ Container with a primary button trigger and a list of action buttons — mirrors
 [+]*
 - [:edit: Edit]
 - [:share: Share]
-- [:delete: Delete]{.danger}
+- [:delete: Delete]{danger}
 :::
 ```
 

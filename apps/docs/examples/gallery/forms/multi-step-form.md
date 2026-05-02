@@ -55,7 +55,7 @@ Gender
 ### Contact Information
 
 Primary Email
-[_____________________________] {type:email required:true state:disabled}
+[_____________________________] {type:email required:true disabled}
 *Verified ✓*
 
 Secondary Email (Optional)
@@ -165,7 +165,7 @@ Newsletter Topics
 ---
 
 ## All Steps Overview
-::: card {.minimal}
+::: card
 
 ### Wizard Steps
 

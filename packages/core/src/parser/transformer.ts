@@ -43,11 +43,14 @@ export function transformToWiremdAST(
     theme: 'sketch',
   };
 
+  const children = processNodeList(mdast.children as any[], options);
+  children.forEach(normalizeSemanticTokens);
+
   return {
     type: 'document',
     version: SYNTAX_VERSION,
     meta,
-    children: processNodeList(mdast.children as any[], options),
+    children,
   };
 }
 
@@ -225,6 +228,109 @@ function isHtmlCommentNode(node: any): boolean {
   return node.type === 'html' && typeof node.value === 'string' && /^<!--[\s\S]*-->$/.test(node.value.trim());
 }
 
+const BUTTON_VARIANT_TOKENS = ['primary', 'secondary', 'danger'] as const;
+const BUTTON_SIZE_TOKENS = ['small', 'large'] as const;
+const BUTTON_STATE_TOKENS = ['disabled', 'loading'] as const;
+const ALIGNMENT_TOKENS = ['left', 'center', 'right'] as const;
+const STATUS_CLASS_TOKENS = ['primary', 'success', 'warning', 'error', 'danger'] as const;
+const FORM_STATE_TOKENS = ['error', 'success', 'warning'] as const;
+
+function ensureClass(props: any, className: string): void {
+  props.classes = Array.isArray(props.classes) ? props.classes : [];
+  if (!props.classes.includes(className)) props.classes.push(className);
+}
+
+function takeBooleanToken(props: any, token: string): boolean {
+  if (props[token] !== true) return false;
+  delete props[token];
+  return true;
+}
+
+function normalizeButtonProps(props: any): void {
+  for (const token of BUTTON_VARIANT_TOKENS) {
+    if (takeBooleanToken(props, token) && !props.variant) {
+      props.variant = token;
+    }
+  }
+
+  for (const token of BUTTON_STATE_TOKENS) {
+    if (takeBooleanToken(props, token) && !props.state) {
+      props.state = token;
+    }
+  }
+
+  for (const token of BUTTON_SIZE_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, token);
+    }
+  }
+}
+
+function normalizeBadgeProps(props: any): void {
+  for (const token of BADGE_VARIANTS) {
+    if (takeBooleanToken(props, token) && !props.variant) {
+      props.variant = token === 'danger' ? 'error' : token;
+    }
+  }
+}
+
+function normalizeRowProps(props: any): void {
+  for (const token of ALIGNMENT_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, token);
+    }
+  }
+}
+
+function normalizeContainerProps(props: any): void {
+  for (const token of STATUS_CLASS_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, token === 'danger' ? 'error' : token);
+    }
+  }
+}
+
+function normalizeFormControlProps(props: any): void {
+  for (const token of FORM_STATE_TOKENS) {
+    if (takeBooleanToken(props, token) && !props.state) {
+      props.state = token;
+    }
+  }
+}
+
+function normalizeGridItemProps(props: any): void {
+  for (const key of Object.keys(props)) {
+    const match = key.match(/^span-(\d+)$/);
+    if (match && props[key] === true) {
+      delete props[key];
+      ensureClass(props, `col-span-${match[1]}`);
+    }
+  }
+
+  for (const token of ALIGNMENT_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, `align-${token}`);
+    }
+  }
+}
+
+function normalizeSemanticTokens(node: any): void {
+  if (!node || typeof node !== 'object') return;
+
+  if (node.props) {
+    if (node.type === 'button') normalizeButtonProps(node.props);
+    if (node.type === 'badge') normalizeBadgeProps(node.props);
+    if (node.type === 'container') normalizeContainerProps(node.props);
+    if (['input', 'select', 'textarea'].includes(node.type)) normalizeFormControlProps(node.props);
+    if (node.type === 'row') normalizeRowProps(node.props);
+    if (node.type === 'grid-item') normalizeGridItemProps(node.props);
+  }
+
+  if (Array.isArray(node.children)) {
+    node.children.forEach(normalizeSemanticTokens);
+  }
+}
+
 function mapColumnClasses(classes: string[] = []): string[] {
   const mapped: string[] = [];
   for (const className of classes) {
@@ -274,7 +380,10 @@ function transformColumnContainer(
   const title = inlineParts?.title || '';
 
   if (inlineParts) {
-    props.classes = [...(props.classes || []), ...(inlineParts.props.classes || [])];
+    const baseClasses = props.classes || [];
+    const inlineClasses = inlineParts.props.classes || [];
+    Object.assign(props, inlineParts.props);
+    props.classes = [...baseClasses, ...inlineClasses];
     if (
       contentChildren[0]?.type === 'paragraph' &&
       extractTextContent(contentChildren[0]).trim() === node.inline.trim()
@@ -285,7 +394,10 @@ function transformColumnContainer(
     const firstText = extractTextContent(contentChildren[0]);
     const firstParagraphProps = parseBareColumnProps(firstText);
     if (firstParagraphProps) {
-      props.classes = [...(props.classes || []), ...(firstParagraphProps.classes || [])];
+      const baseClasses = props.classes || [];
+      const paragraphClasses = firstParagraphProps.classes || [];
+      Object.assign(props, firstParagraphProps);
+      props.classes = [...baseClasses, ...paragraphClasses];
       contentChildren.shift();
     }
   }

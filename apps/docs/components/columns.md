@@ -47,14 +47,14 @@ Plain Markdown syntax. No new tools to learn.
 
 ## Column Spanning
 
-Add `.span-N` to a `::: column` opener to span multiple columns.
+Add `span-N` to a `::: column` opener to span multiple columns.
 ::: demo
 ::: columns-3 card
-::: column Starter {.span-1}
+::: column Starter {span-1}
 $9 / month
 
 :::
-::: column Pro {.span-2}
+::: column Pro {span-2}
 $29 / month — most popular, spans two columns
 :::
 :::
@@ -80,7 +80,7 @@ $29 / month — most popular, spans two columns
 
 ## Alignment
 
-Add `.left`, `.right`, or `.center` to a `::: column` opener to align that column. Useful for action bars: filters on the left, primary action on the right.
+Add `left`, `right`, or `center` to a `::: column` opener to align that column. Useful for action bars: filters on the left, primary action on the right.
 ::: demo
 ::: columns-2
 ::: column
@@ -88,7 +88,7 @@ Add `.left`, `.right`, or `.center` to a `::: column` opener to align that colum
 [reset] [Search___________]{type:search}
 
 :::
-::: column .right
+::: column {right}
 
 [+ New Sprint]*
 :::
@@ -105,14 +105,14 @@ Add `.left`, `.right`, or `.center` to a `::: column` opener to align that colum
 :::
 
 ::: columns-3 card     three columns with card borders
-::: column Item title {.span-2}
+::: column Item title {span-2}
 spans 2 columns
 :::
-::: column .right      shrink column and push to right edge
+::: column {right}     shrink column and push to right edge
 :::
-::: column .left       push to left edge
+::: column {left}      push to left edge
 :::
-::: column .center     center
+::: column {center}    center
 :::
 ```
 

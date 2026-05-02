@@ -158,7 +158,7 @@ Time Zone
 
 [Primary Button]*
 
-[Secondary Button]{.outline}
+[Secondary Button]{secondary}
 :::
 
 ### Button Groups
@@ -186,20 +186,20 @@ Email
 ### Disabled Fields
 ::: demo
 Username (Cannot be changed)
-[johndoe___________] {state:disabled}
+[johndoe___________] {disabled}
 
 Email (Verified)
-[john@example.com___________] {type:email state:disabled}
+[john@example.com___________] {type:email disabled}
 :::
 
 ### Error States
 ::: demo
 Invalid Email
-[not-an-email___________] {state:error}
+[not-an-email___________] {error}
 *Please enter a valid email address*
 
 Password Too Short
-[123___] {type:password state:error}
+[123___] {type:password error}
 *Password must be at least 8 characters*
 :::
 

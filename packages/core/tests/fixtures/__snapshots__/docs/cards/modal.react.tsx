@@ -13,7 +13,7 @@ export const WiremdComponent: React.FC = () => {
         </button>
       </div>
       <div className="wmd-grid-item">
-        <button className="wmd-button wmd-danger">
+        <button className="wmd-button wmd-button-danger">
           Delete
         </button>
       </div>

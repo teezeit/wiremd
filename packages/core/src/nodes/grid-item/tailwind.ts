@@ -7,8 +7,28 @@ export function renderGridItemTailwind(
   node: GridItemNode,
   context: TailwindRenderContext,
 ): string {
-  const classes =
-    'bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow';
+  const propsClasses = (node.props?.classes as string[] | undefined) || [];
+  const utilityClasses: string[] = [];
+
+  for (const className of propsClasses) {
+    const span = className.match(/^col-span-(\d+)$/);
+    if (span) {
+      utilityClasses.push(`lg:col-span-${span[1]}`);
+    }
+  }
+
+  if (propsClasses.includes('align-right')) {
+    utilityClasses.push('ml-auto', 'text-right');
+  } else if (propsClasses.includes('align-center')) {
+    utilityClasses.push('mx-auto', 'text-center');
+  } else if (propsClasses.includes('align-left')) {
+    utilityClasses.push('mr-auto', 'text-left');
+  }
+
+  const classes = [
+    'bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow',
+    ...utilityClasses,
+  ].join(' ');
   const childrenHTML = (node.children || [])
     .map((child) => renderNode(child, context))
     .join('\n    ');

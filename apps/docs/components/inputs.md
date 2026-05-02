@@ -61,7 +61,7 @@ Search
 ## Error state
 ::: demo
 Email
-[_____________________________]{type:email state:error}
+[_____________________________]{type:email error}
 :::
 
 ## Number constraints
