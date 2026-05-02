@@ -189,8 +189,9 @@ export const projectsRoute = new OpenAPIHono<AppEnv>({ defaultHook: defaultValid
     const id = nanoid();
     const fileId = nanoid();
 
+    const now = new Date();
     const inserted = await db.transaction(async (tx) => {
-      await tx.insert(project).values({ id });
+      await tx.insert(project).values({ id, createdAt: now, updatedAt: now });
       const rows = await tx
         .insert(projectFile)
         .values({
@@ -198,6 +199,8 @@ export const projectsRoute = new OpenAPIHono<AppEnv>({ defaultHook: defaultValid
           projectId: id,
           path: INDEX_PATH,
           content,
+          createdAt: now,
+          updatedAt: now,
         })
         .returning({ updatedAt: projectFile.updatedAt });
       return rows[0]!;
