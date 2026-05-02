@@ -19,13 +19,17 @@ Description
       
     </textarea>
   </div>
-  <div className="wmd-container-button-group">
-    <button className="wmd-button wmd-button-primary">
-      Submit Feedback
-    </button>
-    <button className="wmd-button">
-      Cancel
-    </button>
+  <div className="wmd-row">
+    <div className="wmd-grid-item">
+      <button className="wmd-button wmd-button-primary">
+        Submit Feedback
+      </button>
+    </div>
+    <div className="wmd-grid-item">
+      <button className="wmd-button">
+        Cancel
+      </button>
+    </div>
   </div>
     </div>
   );

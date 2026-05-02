@@ -31,10 +31,15 @@ export function getStructuralCSS(prefix: string): string {
 .${prefix}align-left { margin-right: auto; }
 .${prefix}align-right { margin-left: auto; }
 .${prefix}align-center { margin: auto; }
-.${prefix}container-button-group > .${prefix}input,
-.${prefix}container-button-group > .${prefix}select,
+.${prefix}container-hero .${prefix}row { justify-content: center; }
+.${prefix}container-sidebar .${prefix}row,
+.${prefix}layout-sidebar .${prefix}row { display: block; }
+.${prefix}container-sidebar .${prefix}row > .${prefix}grid-item,
+.${prefix}layout-sidebar .${prefix}row > .${prefix}grid-item { display: block; width: 100%; }
 .${prefix}row > .${prefix}grid-item > .${prefix}input,
 .${prefix}row > .${prefix}grid-item > .${prefix}select { display: inline-block; width: auto; }
+.${prefix}button.${prefix}small { padding: 4px 10px; font-size: 0.875em; }
+.${prefix}button.${prefix}large { padding: 12px 24px; font-size: 1.125em; }
 `;
 
   const demoStructural = `

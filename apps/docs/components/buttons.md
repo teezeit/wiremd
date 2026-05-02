@@ -20,7 +20,6 @@ Square brackets create a button. Add `*` for primary variant.
 
 ## Sizes & Custom Classes
 
-> **TODO:** `{.large}` / `{.small}` classes are applied but no CSS rules exist for them
 ::: demo
 [Small]{.small} [Default] [Large]{.large}
 :::
@@ -40,7 +39,7 @@ Square brackets create a button. Add `*` for primary variant.
 [Label]{variant:danger}      danger/destructive
 [Label]{state:disabled}      disabled (also: {disabled} shorthand)
 [Label]{state:loading}       loading  (also: {loading} shorthand)
-[A] [B] [C]                  button group (inline)
+[A] [B] [C]                  inline action row
 ```
 
 > **Note:** `{.primary}` and `{.danger}` add raw CSS classes with no built-in styling — use `{variant:*}` instead.

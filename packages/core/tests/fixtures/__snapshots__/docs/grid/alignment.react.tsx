@@ -6,11 +6,15 @@ export const WiremdComponent: React.FC = () => {
   <div className="wmd-grid wmd-grid-2" style={{ '--grid-columns': 2 } as React.CSSProperties}>
     <div className="wmd-grid-item">
       <h3 className="wmd-h3"></h3>
-      <div className="wmd-container-button-group">
-        <button className="wmd-button">
-          reset
-        </button>
-        <input type="search" className="wmd-input" placeholder="Search" />
+      <div className="wmd-row">
+        <div className="wmd-grid-item">
+          <button className="wmd-button">
+            reset
+          </button>
+        </div>
+        <div className="wmd-grid-item">
+          <input type="search" className="wmd-input" placeholder="Search" />
+        </div>
       </div>
     </div>
     <div className="wmd-grid-item wmd-align-right">

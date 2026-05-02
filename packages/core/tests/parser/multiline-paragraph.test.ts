@@ -11,9 +11,8 @@
  * Fix: `transformParagraph` may now return `WiremdNode[]`. When the input
  * paragraph contains both pure-button lines and pure-text lines (and no
  * form-element lines like inputs/dropdowns/textareas), the transform
- * groups consecutive same-kind lines and emits each group as its own
- * sibling block: text → `paragraph`, button(s) → `button` or
- * `button-group`.
+ * emits each physical control line as its own sibling block: text →
+ * `paragraph`, same-line controls → `row`.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -29,13 +28,12 @@ describe('multi-line paragraph splitter', () => {
     expect((ast.children[1] as any).content).toContain('separate paragraph');
   });
 
-  it('splits text\\n[Button] [Button] into [paragraph, button-group]', () => {
+  it('splits text\\n[Button] [Button] into [paragraph, row]', () => {
     const ast = parse('Description prose here.\n[Save] [Cancel]*\n');
     expect(ast.children).toHaveLength(2);
     expect(ast.children[0].type).toBe('paragraph');
     const second = ast.children[1] as any;
-    expect(second.type).toBe('container');
-    expect(second.containerType).toBe('button-group');
+    expect(second.type).toBe('row');
     expect(second.children).toHaveLength(2);
   });
 
@@ -67,12 +65,12 @@ describe('multi-line paragraph splitter', () => {
     expect(fg.containerType).toBe('form-group');
   });
 
-  it('preserves the multi-line all-buttons path (no split when every line is buttons)', () => {
+  it('preserves physical lines when every line is buttons', () => {
     const ast = parse('[Save]*\n[Cancel]\n');
-    expect(ast.children).toHaveLength(1);
-    const bg = ast.children[0] as any;
-    expect(bg.type).toBe('container');
-    expect(bg.containerType).toBe('button-group');
-    expect(bg.children).toHaveLength(2);
+    expect(ast.children).toHaveLength(2);
+    expect(ast.children[0].type).toBe('row');
+    expect(ast.children[1].type).toBe('row');
+    expect((ast.children[0] as any).children[0].children[0]).toMatchObject({ type: 'button', content: 'Save' });
+    expect((ast.children[1] as any).children[0].children[0]).toMatchObject({ type: 'button', content: 'Cancel' });
   });
 });

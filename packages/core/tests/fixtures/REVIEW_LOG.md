@@ -40,7 +40,7 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [✅ basic][19]
 - [✅ variants][20]
 - [✅ disabled][21]
-- [❌ sizes-custom-classes][22] — this works in minimal style, but not in any other
+- [✅ sizes-custom-classes][22]
 - [✅ with-icons][23]
 
 ### Button Links (apps/docs/components/button-links.md)

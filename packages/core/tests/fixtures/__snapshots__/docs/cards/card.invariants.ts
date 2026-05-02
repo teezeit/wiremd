@@ -15,7 +15,7 @@ export function check({ ast }: InvariantsArgs) {
   expect(card.type).toBe('container');
 
   // The card should hold: heading, description (paragraph), then a button
-  // group (or two direct button children) — NOT a form-group that wraps
+  // row (or direct button children) — NOT a form-group that wraps
   // text + buttons together.
   const hasFormGroupWithText = card.children.some(
     (c) =>
@@ -25,11 +25,12 @@ export function check({ ast }: InvariantsArgs) {
   );
   expect(hasFormGroupWithText).toBe(false);
 
-  // Buttons should appear as direct children (or in a button-group container).
+  // Buttons should appear as direct children or in a row.
   const hasButton = card.children.some(
     (c) =>
       c.type === 'button' ||
-      (c.type === 'container' && c.containerType === 'button-group')
+      (c.type === 'row' &&
+        c.children.some((item: any) => item.children?.some((k: WiremdNode) => k.type === 'button')))
   );
   expect(hasButton).toBe(true);
 }

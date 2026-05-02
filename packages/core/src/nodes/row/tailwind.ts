@@ -11,7 +11,14 @@ export function renderRowTailwind(node: RowNode, context: TailwindRenderContext)
       ? 'flex items-center gap-3 flex-wrap justify-center'
       : 'flex items-center gap-3 flex-wrap';
   const childrenHTML = (node.children || [])
-    .map((child) => renderNode(child, context))
+    .map((child) => {
+      if (child.type === 'grid-item') {
+        return (child.children || [])
+          .map((grandchild) => renderNode(grandchild, context))
+          .join('\n  ');
+      }
+      return renderNode(child, context);
+    })
     .join('\n  ');
 
   return `<div class="${classes}">

@@ -38,7 +38,7 @@ export interface DocumentNode {
 
 export type WiremdNode =
   // Layout
-  | { type: 'container'; containerType: 'hero' | 'card' | 'modal' | 'sidebar' | 'footer' | 'alert' | 'grid' | 'layout' | 'section' | 'form-group' | 'button-group'; props: ComponentProps; children: WiremdNode[]; position?: Location }
+  | { type: 'container'; containerType: 'hero' | 'card' | 'modal' | 'sidebar' | 'footer' | 'alert' | 'grid' | 'layout' | 'section' | 'form-group'; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'nav'; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'nav-item'; content?: string; children?: WiremdNode[]; href?: string; props: ComponentProps; position?: Location }
   | { type: 'brand'; children: WiremdNode[]; props: ComponentProps; position?: Location }

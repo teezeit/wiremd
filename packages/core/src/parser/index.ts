@@ -136,7 +136,7 @@ export function validate(ast: DocumentNode): ValidationError[] {
 
     // Validate component type is recognized
     const validTypes = [
-      'container', 'nav', 'nav-item', 'brand', 'grid', 'grid-item',
+      'container', 'nav', 'nav-item', 'brand', 'grid', 'grid-item', 'row',
       'button', 'input', 'textarea', 'select', 'option', 'checkbox', 'radio', 'radio-group', 'form',
       'heading', 'paragraph', 'text', 'image', 'icon', 'link', 'list', 'list-item',
       'table', 'table-header', 'table-row', 'table-cell', 'blockquote', 'code',
@@ -165,7 +165,7 @@ export function validate(ast: DocumentNode): ValidationError[] {
             code: 'MISSING_CONTAINER_TYPE',
           });
         } else {
-          const validContainerTypes = ['hero', 'card', 'modal', 'sidebar', 'footer', 'alert', 'grid', 'layout', 'section', 'form-group', 'button-group'];
+          const validContainerTypes = ['hero', 'card', 'modal', 'sidebar', 'footer', 'alert', 'grid', 'layout', 'section', 'form-group'];
           if (!validContainerTypes.includes(node.containerType)) {
             errors.push({
               message: `Invalid containerType: "${node.containerType}". Must be one of: ${validContainerTypes.join(', ')}`,

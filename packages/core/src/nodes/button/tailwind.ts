@@ -24,6 +24,14 @@ export function renderButtonTailwind(node: ButtonNode, context: TailwindRenderCo
   const isPrimary = variant === 'primary' || nodeClasses.includes('primary');
   const isSecondary = variant === 'secondary' || nodeClasses.includes('secondary');
   const isDanger = variant === 'danger' || nodeClasses.includes('danger');
+  const isSmall = nodeClasses.includes('small');
+  const isLarge = nodeClasses.includes('large');
+
+  if (isSmall) {
+    classes = 'px-2.5 py-1 text-sm rounded-md font-medium transition-colors';
+  } else if (isLarge) {
+    classes = 'px-6 py-3 text-lg rounded-md font-medium transition-colors';
+  }
 
   if (isPrimary) {
     classes += ' bg-indigo-600 text-white hover:bg-indigo-700';
