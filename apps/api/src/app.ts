@@ -1,6 +1,5 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { swaggerUI } from "@hono/swagger-ui";
-import { compress } from "hono/compress";
 import { secureHeaders } from "hono/secure-headers";
 import { bodyLimit } from "hono/body-limit";
 
@@ -17,9 +16,6 @@ export function createApp(db: Db) {
   const app = new OpenAPIHono<AppEnv>({ defaultHook: defaultValidationHook });
 
   app
-    // First in the chain = outermost wrapper. Compresses the final response
-    // body once everyone else has finished writing it.
-    .use("*", compress())
     .use("*", async (c, next) => {
       c.set("db", db);
       await next();
