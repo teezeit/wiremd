@@ -9,4 +9,3 @@ if (!databaseUrl) {
 }
 
 export default createApp(createDb(databaseUrl));
-

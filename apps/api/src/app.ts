@@ -4,7 +4,11 @@ import { secureHeaders } from "hono/secure-headers";
 import { bodyLimit } from "hono/body-limit";
 
 import { corsMiddleware } from "./middleware/cors.js";
-import { defaultValidationHook, onError, onNotFound } from "./middleware/error.js";
+import {
+  defaultValidationHook,
+  onError,
+  onNotFound,
+} from "./middleware/error.js";
 import { healthRoute } from "./routes/health.js";
 import { projectsRoute } from "./routes/projects.js";
 import type { Db } from "./db/client.js";
@@ -42,7 +46,10 @@ export function createApp(db: Db) {
         "Collaboration API for wiremd. Persistent projects shareable via /p/:projectId. POC: no auth, security by obscurity (unguessable nanoid project IDs).",
     },
     tags: [
-      { name: "Projects", description: "Create, read, update wiremd projects." },
+      {
+        name: "Projects",
+        description: "Create, read, update wiremd projects.",
+      },
       { name: "Meta", description: "Health check and operational endpoints." },
     ],
   });
