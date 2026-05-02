@@ -22,6 +22,17 @@ Use `:icon:` for the brand logo and embed `[Button]` items for actions:
 [[ :logo: Brand | Home | Features | Pricing | [Sign In] | [Get Started]* ]]
 :::
 
+## Navigation Select
+
+A select with linked options becomes a navigation select. Use it for compact navigation where a full navbar or sidebar would take too much space, such as an app switcher or workspace switcher.
+::: demo
+Switch app
+[Switch app                v]
+- [Jira](./jira.md)
+- [Confluence](./confluence.md)
+- [Bitbucket](./bitbucket.md)
+:::
+
 ## Breadcrumbs
 
 Use `[[ ... ]]` with `>` separators for breadcrumb trails.
@@ -65,6 +76,10 @@ Use `[[ ... ]]` with `>` separators for breadcrumb trails.
 
 ```
 [[ Brand | Link | Link | [Action]* ]]    navbar
+
+[Switch app                v]            navigation select
+- [Jira](./jira.md)
+- [Confluence](./confluence.md)
 
 [[ Home > Section > Page ]]              breadcrumb
 ::: sidebar                              sidebar nav

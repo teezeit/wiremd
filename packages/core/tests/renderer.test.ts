@@ -601,6 +601,37 @@ Centered
       expect(html).toContain('Support');
       expect(html).toContain('Other');
     });
+
+    it('should render linked options as a navigation select', () => {
+      const input = `
+[Workspace___v]
+- [Acme Inc](./acme.md)
+- [Personal](./personal.md)
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('wmd-navigation-select');
+      expect(html).toContain('onchange="if (this.value) window.location.href = this.value"');
+      expect(html).toContain('<option value="./acme.md" data-href="./acme.md">Acme Inc</option>');
+      expect(html).toContain('<option value="./personal.md" data-href="./personal.md">Personal</option>');
+    });
+
+    it('should render action options as an action select', () => {
+      const input = `
+[Actions___v]
+- [Duplicate]
+- [Archive]
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('wmd-action-select');
+      expect(html).toContain('<option value="Duplicate" data-action="Duplicate">Duplicate</option>');
+      expect(html).toContain('<option value="Archive" data-action="Archive">Archive</option>');
+    });
   });
 
   describe('Complete Form', () => {
