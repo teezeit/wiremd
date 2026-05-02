@@ -4,7 +4,7 @@ import {
   buildClasses,
   repeatString,
 } from '../../renderer/react-renderer.js';
-import { ICON_MAP_SMALL } from './_iconmap.js';
+import { renderTablerIcon } from './_iconmap.js';
 
 type IconNode = Extract<WiremdNode, { type: 'icon' }>;
 
@@ -19,7 +19,5 @@ export function renderIconReact(
   const iconName = node.props.name || 'default';
   const classAttr = context.useClassName ? 'className' : 'class';
 
-  const iconContent = ICON_MAP_SMALL[iconName] || ICON_MAP_SMALL['default'];
-
-  return `${indentStr}<span ${classAttr}="${classes}" data-icon="${iconName}" aria-label="${iconName}">${iconContent}</span>`;
+  return `${indentStr}${renderTablerIcon(iconName, classes, { classAttribute: classAttr, react: true })}`;
 }

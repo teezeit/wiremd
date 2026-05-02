@@ -271,8 +271,8 @@ Email
 
       expect(jsx).toContain('data-icon="home"');
       expect(jsx).toContain('data-icon="user"');
-      expect(jsx).toContain('🏠');
-      expect(jsx).toContain('👤');
+      expect(jsx).toContain('<svg className="wmd-icon"');
+      expect(jsx).toContain('strokeWidth="2"');
     });
   });
 

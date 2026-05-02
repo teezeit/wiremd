@@ -328,6 +328,17 @@ describe('Parser', () => {
         },
       });
     });
+
+    it('should parse icon names with digits', () => {
+      const result = parse(':menu-2: Menu');
+      expect(result.children[0]).toMatchObject({
+        type: 'paragraph',
+        children: [
+          { type: 'icon', props: { name: 'menu-2' } },
+          { type: 'text', content: 'Menu' },
+        ],
+      });
+    });
   });
 
   describe('Icon in Table Cells', () => {
