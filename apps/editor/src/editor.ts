@@ -1,58 +1,59 @@
 /** wiremd Editor - Monaco Editor Panel */
 
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
-import { createDebouncedChangeController } from './debouncedChange.js';
-import { ensureEditorMonacoSetup, getSharedMonacoOptions } from './monaco.js';
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
+import { createDebouncedChangeController } from "./debouncedChange.js";
+import { ensureEditorMonacoSetup, getSharedMonacoOptions } from "./monaco.js";
 
 /** Register a custom wiremd language for basic syntax highlighting */
 function registerWiremdLanguage() {
   // Only register once
-  if (monaco.languages.getLanguages().some((l) => l.id === 'wiremd')) return;
+  if (monaco.languages.getLanguages().some((l) => l.id === "wiremd")) return;
 
-  monaco.languages.register({ id: 'wiremd' });
+  monaco.languages.register({ id: "wiremd" });
 
-  monaco.languages.setMonarchTokensProvider('wiremd', {
+  monaco.languages.setMonarchTokensProvider("wiremd", {
     tokenizer: {
       root: [
         // Headings
-        [/^#{1,6}\s.*$/, 'keyword'],
+        [/^#{1,6}\s.*$/, "keyword"],
         // Containers ::: name
-        [/^:::.*$/, 'type.identifier'],
+        [/^:::.*$/, "type.identifier"],
         // Navigation bar [[ ... ]]
-        [/\[\[.*?\]\]/, 'string'],
+        [/\[\[.*?\]\]/, "string"],
         // Buttons [Text]* or [Text]
-        [/\[.*?\]\*/, 'keyword.control'],
-        [/\[.*?\](\{[^}]*\})?/, 'variable'],
+        [/\[.*?\]\*/, "keyword.control"],
+        [/\[.*?\](\{[^}]*\})?/, "variable"],
         // Input fields with underscores or asterisks
-        [/\[[\*_|]+\]/, 'number'],
+        [/\[[\*_|]+\]/, "number"],
         // Attributes {key:value}
-        [/\{[^}]*\}/, 'annotation'],
+        [/\{[^}]*\}/, "annotation"],
         // Blockquotes
-        [/^>.*$/, 'comment'],
+        [/^>.*$/, "comment"],
         // Table separators
-        [/\|/, 'delimiter'],
+        [/\|/, "delimiter"],
         // Checkbox / radio
-        [/- \[[ x]\]/, 'keyword'],
-        [/- \([ x]\)/, 'keyword'],
+        [/- \[[ x]\]/, "keyword"],
+        [/- \([ x]\)/, "keyword"],
         // Horizontal rule
-        [/^---+$/, 'delimiter'],
+        [/^---+$/, "delimiter"],
         // Bold
-        [/\*\*[^*]+\*\*/, 'strong'],
+        [/\*\*[^*]+\*\*/, "strong"],
         // Italic
-        [/\*[^*]+\*/, 'emphasis'],
+        [/\*[^*]+\*/, "emphasis"],
         // Images
-        [/!\[.*?\]/, 'string'],
+        [/!\[.*?\]/, "string"],
         // Icons
-        [/:[a-z-]+:/, 'tag'],
+        [/:[a-z-]+:/, "tag"],
       ],
     },
   });
-
 }
 
 export interface EditorInstance {
   getValue: () => string;
   setValue: (v: string) => void;
+  /** Replace content without moving the cursor (for remote/external updates). */
+  setValuePreservingCursor: (v: string) => void;
   getEditor: () => monaco.editor.IStandaloneCodeEditor;
   layout: () => void;
   flushPendingChange: () => void;
@@ -71,14 +72,14 @@ export function initEditor(opts: {
 
   const monacoEditor = monaco.editor.create(opts.container, {
     ...getSharedMonacoOptions(),
-    value: opts.initialValue ?? '',
-    language: 'wiremd',
+    value: opts.initialValue ?? "",
+    language: "wiremd",
     fontSize: 13,
     lineHeight: 22,
     fontLigatures: true,
-    renderLineHighlight: 'line',
-    cursorBlinking: 'smooth',
-    cursorSmoothCaretAnimation: 'on',
+    renderLineHighlight: "line",
+    cursorBlinking: "smooth",
+    cursorSmoothCaretAnimation: "on",
     bracketPairColorization: { enabled: false },
     folding: false,
     tabSize: 2,
@@ -115,6 +116,35 @@ export function initEditor(opts: {
       suppressNextChange = true;
       debouncedChange.cancel();
       monacoEditor.setValue(v);
+      opts.onChange(v);
+    },
+    setValuePreservingCursor: (v: string) => {
+      suppressNextChange = true;
+      debouncedChange.cancel();
+      const model = monacoEditor.getModel();
+      if (model) {
+        const savedSelections = monacoEditor.getSelections() ?? [];
+        const fullRange = model.getFullModelRange();
+        model.pushEditOperations(
+          savedSelections,
+          [{ range: fullRange, text: v }],
+          () => {
+            const lineCount = model.getLineCount();
+            return savedSelections.map((sel) => {
+              const sl = Math.min(sel.selectionStartLineNumber, lineCount);
+              const el = Math.min(sel.positionLineNumber, lineCount);
+              return new monaco.Selection(
+                sl,
+                Math.min(sel.selectionStartColumn, model.getLineMaxColumn(sl)),
+                el,
+                Math.min(sel.positionColumn, model.getLineMaxColumn(el)),
+              );
+            });
+          },
+        );
+      } else {
+        monacoEditor.setValue(v);
+      }
       opts.onChange(v);
     },
     getEditor: () => monacoEditor,
