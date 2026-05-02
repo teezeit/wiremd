@@ -105,7 +105,7 @@ Works with Claude Code or Claude Desktop (Cowork) running on the same machine as
 Keep talking — Claude edits the `.md` file and the preview updates live:
 
 - "Add a sidebar with navigation links on the left"
-- "Replace the table with a card grid"
+- "Replace the table with a card columns"
 - "Show the empty state — no items yet, with an Add button"
 - "What does the mobile layout look like?"
 
@@ -121,6 +121,6 @@ No install, no Claude skill needed. Ask Claude (in any chat) to write wiremd Mar
 
 ## Tips
 
-- **Be specific about layout.** "Two-column grid, nav on the left, content on the right" works better than "a typical dashboard layout."
+- **Be specific about layout.** "Two-column layout, nav on the left, content on the right" works better than "a typical dashboard layout."
 - **Name the states you need.** "Show the loading state for the Submit button" or "Add an error message under the email field."
 - **You don't need to know wiremd syntax.** Describe what you want visually — Claude translates it.
