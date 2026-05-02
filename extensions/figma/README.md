@@ -15,7 +15,7 @@ Import wiremd markdown mockups as fully editable Figma designs with native compo
 ### Layout
 - Containers (hero, card, modal, alert, section)
 - Navigation bars
-- Grid layouts (2, 3, 4+ columns)
+- Column layouts (2, 3, 4+ columns)
 - Brand headers
 
 ### Forms
@@ -72,16 +72,19 @@ Transform your workflow with powerful tools
 [Get Started] [Learn More]{.outline}
 :::
 
-::: grid-3 card
+::: columns-3 card
 
-### Fast Performance
+::: column Fast Performance
 Lightning-quick load times
+:::
 
-### Secure
+::: column Secure
 Enterprise-grade security
+:::
 
-### Scalable
+::: column Scalable
 Grows with your needs
+:::
 
 :::
 ```
@@ -154,8 +157,8 @@ Convert repeated elements to components:
 2. Create Component (Cmd/Ctrl + Alt + K)
 3. Reuse across your design
 
-### Working with Grids
-Imported grids use horizontal frames with columns:
+### Working with Columns
+Imported column layouts use horizontal frames with columns:
 - Adjust `itemSpacing` to change gaps
 - Resize columns independently
 - Add/remove columns as needed

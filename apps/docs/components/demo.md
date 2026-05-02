@@ -21,18 +21,24 @@ Password
 
 ## With a Grid
 ::: demo
-::: grid-3 card
+::: columns-3 card
+::: column
 ### Free
 $0/mo
 [Get Started]
 
+:::
+::: column
 ### Pro
 $12/mo
 [Start Trial]*
 
+:::
+::: column
 ### Enterprise
 Custom
 [Contact Sales]
+:::
 :::
 :::
 

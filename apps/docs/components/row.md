@@ -28,12 +28,14 @@ Page 1 of 12   [← Prev] [Next →]
 
 Use a grid when one side needs to stay left while another side aligns right.
 ::: demo
-::: grid-2
-###
+::: columns-2
+::: column
 [All]* [Active] [Archived]
 
-### {.right}
+:::
+::: column .right
 [+ New Item]*
+:::
 :::
 :::
 
@@ -71,12 +73,14 @@ John Doe ((Admin)){.warning}
 
 ## Toolbar Pattern
 ::: demo
-::: grid-2
-###
+::: columns-2
+::: column
 **Projects** ((12)){.primary}
 
-### {.right}
+:::
+::: column .right
 [Filter] [Sort] [+ New Project]*
+:::
 :::
 :::
 
@@ -89,10 +93,12 @@ John Doe ((Admin)){.warning}
 ::: row {.right}      right-align all content
 ::: row {.center}     center all content
 
-::: grid-2           split left/right content into columns
-###
+::: columns-2           split left/right content into columns
+::: column
 [A] [B] [C]
-### {.right}
+:::
+::: column .right
 [Save]*
+:::
 :::
 ```

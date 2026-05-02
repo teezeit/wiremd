@@ -67,12 +67,16 @@ import { renderToHTML, renderToReact, renderToTailwind } from '@eclectic-ai/wire
 ```markdown
 ## Screen title
 
-::: grid-3 card
+::: columns-3 card
+::: column
 ### Feature A
 Description
 
+:::
+::: column
 ### Feature B
 Description
+:::
 :::
 
 Name

@@ -16,28 +16,35 @@
 **Date Range:** [Last 30 days...v] [Compare to: Previous period...v] [Export Report]
 
 ---
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Total Revenue
 **$124,567**
 :chart: +18.5% vs last period
 
+:::
+::: column
 ### Orders
 **2,456**
 :chart: +12.3% vs last period
 
+:::
+::: column
 ### Avg Order Value
 **$50.72**
 :chart: +5.2% vs last period
 
+:::
+::: column
 ### Conversion Rate
 **3.2%**
 :chart: +0.8% vs last period
 :::
+:::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Revenue Chart (30 Days)
 
 ![Line Chart](https://via.placeholder.com/600x300)
@@ -49,6 +56,8 @@
 
 [View Detailed Analytics →]
 
+:::
+::: column
 ### Sales by Category
 
 ![Pie Chart](https://via.placeholder.com/600x300)
@@ -60,6 +69,7 @@
 | Home & Garden | $23,456 | 456 | 19% |
 | Sports | $12,890 | 234 | 10% |
 | Other | $7,976 | 140 | 6% |
+:::
 :::
 
 ---
@@ -83,8 +93,8 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 :::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Low Stock Alerts
 ::: alert warning
 ⚠️ **15 products** are running low on stock
@@ -100,6 +110,8 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 
 [Restock Now →] [View Full Inventory →]
 
+:::
+::: column
 ### Top Selling Products
 
 | Product | Sales | Revenue | Stock |
@@ -112,10 +124,11 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 
 [View All Products →]
 :::
+:::
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Total Customers
 **8,234**
 +456 new this month
@@ -125,6 +138,8 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 - Returning: 5,889 (72%)
 - VIP: 234 (3%)
 
+:::
+::: column
 ### Lifetime Value
 **$487.23**
 Average per customer
@@ -134,6 +149,8 @@ Average per customer
 - Returning: $598 avg
 - New: $142 avg
 
+:::
+::: column
 ### Customer Satisfaction
 **4.8** / 5.0
 Based on 1,234 reviews
@@ -145,36 +162,46 @@ Based on 1,234 reviews
 - ⭐⭐ 1%
 - ⭐ 1%
 :::
+:::
 
 ---
 
 ## Order Status Overview
-::: grid-5 card
-
+::: columns-5 card
+::: column
 ### Pending
 **45** orders
 
 [View →]
 
+:::
+::: column
 ### Processing
 **123** orders
 
 [View →]
 
+:::
+::: column
 ### Shipped
 **234** orders
 
 [Track →]
 
+:::
+::: column
 ### Delivered
 **1,789** orders
 
 [Archive →]
 
+:::
+::: column
 ### Cancelled/Returned
 **23** orders
 
 [Review →]
+:::
 :::
 
 ---
@@ -196,8 +223,8 @@ Based on 1,234 reviews
 :::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Active Campaigns
 
 **Email Campaign: Spring Sale**
@@ -219,6 +246,8 @@ Based on 1,234 reviews
 
 [Manage Ads →]
 
+:::
+::: column
 ### Discount Codes
 
 | Code | Uses | Revenue | Active |
@@ -230,6 +259,7 @@ Based on 1,234 reviews
 | EXPIRED | 0 | $0 | ❌ No |
 
 [Create New Code →]
+:::
 :::
 
 ---
@@ -262,8 +292,8 @@ Based on 1,234 reviews
 :::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Shipping Methods
 
 | Method | Orders | Avg Cost | Delivery |
@@ -273,6 +303,8 @@ Based on 1,234 reviews
 | Overnight | 89 | $24.99 | Next day |
 | Free Shipping | 677 | $0.00 | 5-7 days |
 
+:::
+::: column
 ### Fulfillment Stats
 
 **Orders to Ship:** 123
@@ -281,6 +313,7 @@ Based on 1,234 reviews
 **Return Rate:** 2.3%
 
 [Manage Shipping →]
+:::
 :::
 
 ---
@@ -312,31 +345,38 @@ Based on 1,234 reviews
 ---
 
 ## Customer Support
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Open Tickets
 **23**
 🔴 5 urgent
 
 [View →]
 
+:::
+::: column
 ### Avg Response
 **2.5 hrs**
 Target: 4hrs
 
 [Improve →]
 
+:::
+::: column
 ### Resolution Rate
 **94.5%**
 First contact
 
 [Details →]
 
+:::
+::: column
 ### Satisfaction
 **4.7** / 5.0
 1,234 ratings
 
 [Reviews →]
+:::
 :::
 
 ---

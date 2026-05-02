@@ -43,16 +43,20 @@ The most popular choice for growing teams.
 ## Section Title {.muted}
 :::
 
-## On Grid Items
+## On Column Items
 
-Use `{.col-span-N}` on `###` headings inside a grid:
+Use `.span-N` on `::: column` openers inside columns:
 ::: demo
-::: grid-3 card
-### Starter {.col-span-1}
+::: columns-3 card
+::: column .span-1
+### Starter
 $9/mo
 
-### Pro {.col-span-2}
+:::
+::: column .span-2
+### Pro
 $29/mo — spans two columns
+:::
 :::
 :::
 
@@ -67,8 +71,8 @@ $29/mo — spans two columns
 | `{state:disabled}` | Disabled state on buttons and form elements (buttons: adds `disabled` attr + state class) |
 | `{disabled}` | Disabled state on inputs, textarea, and select — **ignored on buttons**; use `{state:disabled}` for buttons |
 | `{required}` | Required field marker (inputs and textarea only) |
-| `{.col-span-N}` | Grid column span |
-| `{.left}` / `{.right}` / `{.center}` | Alignment on rows or grid item headings |
+| `::: column .span-N` | Column span |
+| `.left` / `.right` / `.center` on `::: column` | Column alignment |
 | `{type:email}` | Input type |
 | `{rows:N}` | Textarea row count |
 | `{placeholder:"..."}` | Input placeholder text (**TODO:** quoted values with spaces may not parse correctly — prefer `{placeholder:hint}` without quotes for single words) |
@@ -82,7 +86,9 @@ $29/mo — spans two columns
 [Input]{.primary type:submit disabled}
 ::: container {.classname}
 ## Heading {.muted}
-### Grid item {.col-span-2}
+::: column .span-2
+### Column item
+:::
 ```
 
 ## Disambiguation rules

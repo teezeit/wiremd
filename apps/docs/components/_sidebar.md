@@ -15,7 +15,7 @@
 [[Tables](./tables.md)]
 
 #### Layout
-[[Grid](./grid.md)]
+[[Columns](./grid.md)]
 [[Row](./row.md)]
 [[Page Layouts](./page-layouts.md)]
 

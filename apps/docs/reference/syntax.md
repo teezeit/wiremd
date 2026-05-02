@@ -239,13 +239,15 @@ Containers can be nested — the parser handles them recursively:
 
 ```markdown
 ::: card
-::: grid-2
-
+::: columns-2
+::: column
 ### Sprint: Q2 Onboarding
 
-### {.right}
+:::
+::: column .right
 
 Started: Apr 1 · ((Due: Apr 30)){.warning}
+:::
 :::
 
 Before you can pitch to a decision maker, you need to get past the gatekeeper.
@@ -297,76 +299,89 @@ Right-align content with `{.right}`:
 
 ---
 
-## Grids
+## Columns
 
-Grid items are `###` headings (and their content) inside a `::: grid-N` container.
-Supported widths: `grid-2`, `grid-3`, `grid-4`, `grid-5`.
+Columns use explicit `::: column` child containers inside a `::: columns-N` container. Put a title on the opener, like `::: column Billing address`, to render a heading at the top of that column.
+Supported widths: `columns-2`, `columns-3`, `columns-4`, `columns-5`.
 
 **Layout only** — equal columns, no card chrome. Use for metrics and KPI rows:
 
 ```markdown
-::: grid-3
-
-### Revenue
+::: columns-3
+::: column Revenue
 **$124,500**
 ↑ 8% vs last period
 
-### Users
+:::
+::: column Users
 **3,842**
 ↑ 12% vs last period
 
-### Conversion
+:::
+::: column Conversion
 **4.2%**
 ↓ 0.3% vs last period
+:::
 :::
 ```
 
 **Grid of cards** — each item gets card styling. Use for feature lists, channel breakdowns:
 
 ```markdown
-::: grid-3 card
-
-### :rocket: Organic
+::: columns-3 card
+::: column :rocket: Organic
 **42%** of traffic
 
-### :chart: Paid
+:::
+::: column :chart: Paid
 **31%** of traffic
 
-### :bell: Email
+:::
+::: column :bell: Email
 **27%** of traffic
+:::
 :::
 ```
 
 ### Section header with right-aligned action
 
-The most common `grid-2` pattern — title left, button right:
+The most common `columns-2` pattern — title left, button right:
 
 ```markdown
-::: grid-2
+::: columns-2
+::: column Recent Sessions
 
-### Recent Sessions
-
-### {.right}
+:::
+::: column .right
 
 [View All]*
 :::
+:::
 ```
 
-### Grid item alignment
+### Column alignment
 
-Add `.right`, `.left`, or `.center` to a `###` heading inside `::: grid-N` to align that grid item's content:
+Add `.right`, `.left`, or `.center` to a `::: column` opener to align that column's content:
 
 ```markdown
-### {.right}
-### {.left}
-### {.center}
+::: column .right
+::: column .left
+::: column .center
 ```
 
 ### Column spans
 
 ```markdown
-### Featured Item {.col-span-2}
+::: column .span-2
+### Featured Item
 Spans two columns.
+:::
+
+```markdown
+::: column Featured Item {.span-2}
+Spans two columns.
+:::
+```
 ```
 
 ---
@@ -508,11 +523,11 @@ All standard Markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 | `<Dialog>` / `<Modal>` | `::: modal` at bottom of file |
 | `<Alert variant="success">` | `::: alert {.success}` |
 | `<Badge>` / `<Chip>` | `((Label)){.variant}` |
-| Flex row of cards | `::: grid-3 card` |
-| Stats row (no card) | `::: grid-3` |
+| Flex row of cards | `::: columns-3 card` |
+| Stats row (no card) | `::: columns-3` |
 | Horizontal toolbar | `::: row` |
 | Right-aligned action | `::: row {.right}` |
-| Section header + right action | `::: grid-2` with `### {.right}` |
+| Section header + right action | `::: columns-2` with `::: column .right` |
 | `<Tabs>` | `::: tabs` with `::: tab Label` children |
 | Loading state | `> **Loading state:** ...` |
 | Empty state | `> **Empty state:** ...` |

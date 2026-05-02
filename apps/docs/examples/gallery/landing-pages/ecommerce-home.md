@@ -24,29 +24,40 @@ Discover our latest styles for the season
 :::
 
 ---
-::: grid-6 card
-
+::: columns-6 card
+::: column
 ### :tshirt: Clothing
 2,450 items
 
+:::
+::: column
 ### :shoe: Footwear
 890 items
 
+:::
+::: column
 ### :gem: Accessories
 1,230 items
 
+:::
+::: column
 ### :watch: Watches
 
+:::
+::: column
 ### :briefcase: Bags
 560 items
 
+:::
+::: column
 ### :glasses: Eyewear
 280 items
 :::
+:::
 
 ---
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Summer Dress
 ![Product](https://via.placeholder.com/250x300)
 
@@ -56,6 +67,8 @@ Discover our latest styles for the season
 
 [Add to Cart]*
 
+:::
+::: column
 ### Running Shoes
 ![Product](https://via.placeholder.com/250x300)
 
@@ -65,6 +78,8 @@ Discover our latest styles for the season
 
 [Add to Cart]*
 
+:::
+::: column
 ### Leather Wallet
 ![Product](https://via.placeholder.com/250x300)
 
@@ -74,6 +89,8 @@ Discover our latest styles for the season
 
 [Add to Cart]*
 
+:::
+::: column
 ### Sunglasses
 ![Product](https://via.placeholder.com/250x300)
 
@@ -83,14 +100,15 @@ Discover our latest styles for the season
 
 [Add to Cart]*
 :::
+:::
 
 [View All Deals →]
 
 ---
 
 ## New Arrivals
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Designer Handbag
 ![Product](https://via.placeholder.com/300x350)
 
@@ -102,6 +120,8 @@ Premium leather with gold hardware
 
 [Quick View] [Add to Cart]*
 
+:::
+::: column
 ### Casual Sneakers
 ![Product](https://via.placeholder.com/300x350)
 
@@ -113,6 +133,8 @@ Comfortable all-day wear
 
 [Quick View] [Add to Cart]*
 
+:::
+::: column
 ### Smart Watch
 ![Product](https://via.placeholder.com/300x350)
 
@@ -124,6 +146,7 @@ Fitness tracking & notifications
 
 [Quick View] [Add to Cart]*
 :::
+:::
 
 [See All New Items →]
 
@@ -134,43 +157,55 @@ Fitness tracking & notifications
 [[ :brand: Nike | :brand: Adidas | :brand: Zara | :brand: H&M | :brand: Levi's | :brand: Puma | [View All Brands →] ]]
 
 ---
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### :truck: Free Shipping
 On orders over $50
 
+:::
+::: column
 ### :return: Easy Returns
 30-day return policy
 
+:::
+::: column
 ### :shield: Secure Checkout
 SSL encrypted payment
 
+:::
+::: column
 ### :support: 24/7 Support
 Always here to help
+:::
 :::
 
 ---
 
 ## Customer Reviews
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :star::star::star::star::star:
 *"Best online shopping experience! Fast shipping and quality products."*
 
 **Jennifer L.**
 Verified Buyer
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"Great prices and amazing customer service. Highly recommended!"*
 
 **Michael T.**
 Verified Buyer
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"Love the variety and ease of returns. My go-to store now."*
 
 **Sarah K.**
 Verified Buyer
+:::
 :::
 
 ---
@@ -189,8 +224,8 @@ Verified Buyer
 ---
 
 ## Special Offers
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### :gift: Summer Sale
 **Up to 50% Off**
 
@@ -200,6 +235,8 @@ Shop seasonal favorites at unbeatable prices
 
 [Shop Sale]*
 
+:::
+::: column
 ### :email: New Customer Offer
 **15% Off First Order**
 
@@ -208,6 +245,7 @@ Shop seasonal favorites at unbeatable prices
 Sign up and get instant discount code
 
 [Sign Up Now]*
+:::
 :::
 
 ---
@@ -242,23 +280,30 @@ Stay connected for daily inspiration
 ---
 
 ## Shop by Price
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Under $25
 1,234 items
 [Shop →]
 
+:::
+::: column
 ### $25 - $50
 2,456 items
 [Shop →]
 
+:::
+::: column
 ### $50 - $100
 1,890 items
 [Shop →]
 
+:::
+::: column
 ### Over $100
 890 items
 [Shop →]
+:::
 :::
 
 ---
@@ -284,8 +329,8 @@ Stay connected for daily inspiration
 
 ---
 ::: footer
-::: grid-5 card
-
+::: columns-5 card
+::: column
 ### Shop
 - Women
 - Men
@@ -293,6 +338,8 @@ Stay connected for daily inspiration
 - Sale
 - New Arrivals
 
+:::
+::: column
 ### Customer Care
 - Contact Us
 - Track Order
@@ -300,6 +347,8 @@ Stay connected for daily inspiration
 - Shipping Info
 - Size Guide
 
+:::
+::: column
 ### About
 - Our Story
 - Careers
@@ -307,6 +356,8 @@ Stay connected for daily inspiration
 - Sustainability
 - Store Locator
 
+:::
+::: column
 ### Account
 - Sign In
 - Register
@@ -314,12 +365,15 @@ Stay connected for daily inspiration
 - Wishlist
 - Gift Cards
 
+:::
+::: column
 ### Legal
 - Privacy Policy
 - Terms of Service
 - Accessibility
 - Cookie Policy
 - Sitemap
+:::
 :::
 
 ---

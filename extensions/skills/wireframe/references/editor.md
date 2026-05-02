@@ -106,45 +106,62 @@ Role
 :::
 
 # Section header with right-aligned action — VERY COMMON PATTERN
-::: grid-2
+::: columns-2
+::: column
 ### Section Title
 
-### {.right}
+:::
+::: column .right
 
 [+ Add Item]*
 
 :::
+:::
 
 # KPI metric card
-::: grid-3
+::: columns-3
+::: column
 ### Total Revenue
 **$124,500**
 ↑ 8% vs last period
 
+:::
+::: column
 ### Active Users
 **3,842**
 ↑ 12% vs last period
 
+:::
+::: column
 ### Conversion
 **4.2%**
 ↓ 0.3% vs last period
 
 :::
+:::
 
 # Grid — layout only, equal columns, no card chrome
-::: grid-3
+::: columns-3
+::: column
 ### Revenue
 $124,500
+:::
+::: column
 ### Users
 3,842
+:::
+::: column
 ### Conversion
 4.2%
 :::
+:::
 
 # Grid of cards — each item gets card styling
-::: grid-3 card
+::: columns-3 card
+::: column
 ### :rocket: Organic
 42% of traffic
+:::
 :::
 
 # Table

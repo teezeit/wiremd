@@ -174,20 +174,25 @@ Email
 }
 ```
 
-### 12.3 Grid Layout
+### 12.3 Columns Layout
 
 **Input:**
 ```markdown
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :rocket: Fast
 Quick rendering
 
+:::
+::: column
 ### :shield: Secure
 Enterprise security
 
+:::
+::: column
 ### :zap: Powerful
 Advanced features
+:::
 :::
 ```
 

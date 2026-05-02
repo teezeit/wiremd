@@ -18,7 +18,8 @@ export const WiremdComponent: React.FC = () => {
       <ul className="wmd-list">
         <li className="wmd-list-item">Figma licence</li>
         <li className="wmd-list-item">Design skills</li>
-        <li className="wmd-list-item">Build step</li>
+        <li className="wmd-list-item">Build step
+:::</li>
       </ul>
     </div>
   </div>

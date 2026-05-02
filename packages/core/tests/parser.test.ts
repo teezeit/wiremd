@@ -575,19 +575,24 @@ Nested content
     });
   });
 
-  describe('Grid Layout Detection', () => {
-    it('should parse a 3-column grid', () => {
+  describe('Columns Layout Detection', () => {
+    it('should parse a 3-column columns layout', () => {
       const input = `
-::: grid-3
-
+::: columns-3
+::: column
 ### Feature One
 Fast and reliable
+:::
 
+::: column
 ### Feature Two
 Secure and safe
+:::
 
+::: column
 ### Feature Three
 Powerful tools
+:::
 
 :::
       `.trim();
@@ -602,18 +607,23 @@ Powerful tools
       expect(result.children[0].children[0].type).toBe('grid-item');
     });
 
-    it('should parse grid items with icons', () => {
+    it('should parse column items with icons', () => {
       const input = `
-::: grid-3
-
+::: columns-3
+::: column
 ### :rocket: Fast
 Lightning quick rendering
+:::
 
+::: column
 ### :shield: Secure
 Enterprise grade security
+:::
 
+::: column
 ### :zap: Powerful
 Advanced features included
+:::
 
 :::
       `.trim();
@@ -629,14 +639,21 @@ Advanced features included
       expect(firstItem.children[1].type).toBe('paragraph');
     });
 
-    it('should parse grid with different column counts', () => {
+    it('should parse columns with different column counts', () => {
       const input = `
-::: grid-4
-
+::: columns-4
+::: column
 ### Col 1
+:::
+::: column
 ### Col 2
+:::
+::: column
 ### Col 3
+:::
+::: column
 ### Col 4
+:::
 
 :::
       `.trim();
@@ -651,16 +668,21 @@ Advanced features included
 
     it('should set card prop on grid node when card modifier is present', () => {
       const input = `
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Fast
 Quick
+:::
 
+::: column
 ### Secure
 Safe
+:::
 
+::: column
 ### Scalable
 Grows
+:::
 
 :::
       `.trim();
@@ -672,10 +694,11 @@ Grows
 
     it('should not set card prop on grid node without card modifier', () => {
       const input = `
-::: grid-3
-
+::: columns-3
+::: column
 ### Fast
 Quick
+:::
 
 :::
       `.trim();
@@ -684,20 +707,25 @@ Quick
       expect((result.children[0] as any).props.card).toBeFalsy();
     });
 
-    it('should parse a grid nested inside a container as a grid node', () => {
+    it('should parse columns nested inside a container as a grid node', () => {
       const input = `
 ::: card
 
-::: grid-3
-
+::: columns-3
+::: column
 ### Fast
 Quick
+:::
 
+::: column
 ### Secure
 Safe
+:::
 
+::: column
 ### Powerful
 Strong
+:::
 
 :::
 
@@ -716,24 +744,30 @@ Strong
       expect(grid.children[0].type).toBe('grid-item');
     });
 
-    it('should detect nested grid inside a grid item (issue #15)', () => {
+    it('should detect nested columns inside a column item (issue #15)', () => {
       const input = `
-::: grid-2
-
+::: columns-2
+::: column
 ### Item A
 
-::: grid-2
-
+::: columns-2
+::: column
 #### Nested 1
 Content 1
-
-#### Nested 2
-Content 2
-
 :::
 
+::: column
+#### Nested 2
+Content 2
+:::
+
+:::
+:::
+
+::: column
 ### Item B
 Solo
+:::
 
 :::
       `.trim();
@@ -751,19 +785,22 @@ Solo
       expect(inner.children).toHaveLength(2);
     });
 
-    it('should detect nested grid inside a tab panel (issue #15)', () => {
+    it('should detect nested columns inside a tab panel (issue #15)', () => {
       const input = `
 ::: tabs
 
 ::: tab Panel A
 
-::: grid-2
-
+::: columns-2
+::: column
 #### Left
 L
+:::
 
+::: column
 #### Right
 R
+:::
 
 :::
 
@@ -954,13 +991,12 @@ Centered
       expect(row.children[0].props.classes).not.toContain('align-center');
     });
 
-    it('should support alignment inside ::: grid-N as well', () => {
+    it('should support alignment inside ::: column as well', () => {
       const input = `
-::: grid-2
-
-### {.right}
+::: columns-2
+::: column .right
 Right item
-
+:::
 :::
       `.trim();
 
@@ -1003,16 +1039,21 @@ Nav
 
 ::: main
 
-::: grid-3
-
+::: columns-3
+::: column
 ### Done
 48
+:::
 
+::: column
 ### Active
 12
+:::
 
+::: column
 ### Pending
 5
+:::
 
 :::
 
@@ -1070,16 +1111,74 @@ Nav
     });
   });
 
-  describe('Grid col-span', () => {
-    it('should hoist col-span class from heading to grid-item', () => {
-      const input = `
-::: grid-3
+  describe('Column span', () => {
+    it('should turn a column opener title into a heading', () => {
+      const result = parse(`
+::: columns-2
+::: column Billing address
+First name
+[_________________]
+:::
+:::
+      `.trim());
 
-### Starter {.col-span-1}
-$9/mo
+      const grid = result.children[0] as any;
+      const item = grid.children[0];
+      expect(item.type).toBe('grid-item');
+      expect(item.children[0]).toMatchObject({
+        type: 'heading',
+        level: 3,
+        content: 'Billing address',
+      });
+      expect(item.children[1].type).toBe('container');
+      expect(item.children[1].containerType).toBe('form-group');
+    });
 
-### Pro {.col-span-2}
+    it('should support column opener title with attributes', () => {
+      const result = parse(`
+::: columns-3 card
+::: column Pro Plan {.span-2 .right}
 $29/mo
+:::
+:::
+      `.trim());
+
+      const grid = result.children[0] as any;
+      const item = grid.children[0];
+      expect(item.props.classes).toEqual(['card', 'col-span-2', 'align-right']);
+      expect(item.children[0]).toMatchObject({
+        type: 'heading',
+        level: 3,
+        content: 'Pro Plan',
+      });
+    });
+
+    it('should keep modifier-only column openers titleless', () => {
+      const result = parse(`
+::: columns-2
+::: column .right .span-2
+[Save]*
+:::
+:::
+      `.trim());
+
+      const item = (result.children[0] as any).children[0];
+      expect(item.props.classes).toEqual(['align-right', 'col-span-2']);
+      expect(item.children[0].type).toBe('button');
+    });
+
+    it('should map span class from column to grid-item', () => {
+      const input = `
+::: columns-3
+::: column .span-1
+### Starter
+$9/mo
+:::
+
+::: column .span-2
+### Pro
+$29/mo
+:::
 
 :::
       `.trim();
@@ -1093,10 +1192,11 @@ $29/mo
 
     it('should leave grid-item without col-span when not specified', () => {
       const input = `
-::: grid-3
-
+::: columns-3
+::: column
 ### Item One
 Content
+:::
 
 :::
       `.trim();
@@ -1107,12 +1207,13 @@ Content
       expect(item.props.classes).not.toContain('col-span-2');
     });
 
-    it('should not render grid label text as a child node', () => {
+    it('should not render columns label text as a child node', () => {
       const input = `
-::: grid-3
-
+::: columns-3
+::: column
 ### Fast
 Quick
+:::
 
 :::
       `.trim();
@@ -1124,24 +1225,30 @@ Quick
       expect(types.every((t: string) => t === 'grid-item')).toBe(true);
     });
 
-    it('should parse a nested grid inside a grid item as a grid node', () => {
+    it('should parse nested columns inside a column item as a grid node', () => {
       const input = `
-::: grid-2
-
+::: columns-2
+::: column
 ### Left
 
-::: grid-2
-
+::: columns-2
+::: column
 #### A
 One
-
-#### B
-Two
-
 :::
 
+::: column
+#### B
+Two
+:::
+
+:::
+:::
+
+::: column
 ### Right
 Just text
+:::
 
 :::
       `.trim();
@@ -1161,18 +1268,21 @@ Just text
       expect(innerGrid.children).toHaveLength(2);
     });
 
-    it('should parse a :::card inside a grid item (regression)', () => {
+    it('should parse a :::card inside a column item (regression)', () => {
       const input = `
-::: grid-2
-
+::: columns-2
+::: column
 ### Left
 
 ::: card
 Card content
 :::
+:::
 
+::: column
 ### Right
 Text
+:::
 
 :::
       `.trim();
@@ -1269,19 +1379,22 @@ b
       expect(topTypes).not.toContain('heading');
     });
 
-    it('should parse a nested grid inside a tab panel as a grid node', () => {
+    it('should parse nested columns inside a tab panel as a grid node', () => {
       const md = `
 ::: tabs
 
 ::: tab Overview
 
-::: grid-2
-
+::: columns-2
+::: column
 #### Users
 100
+:::
 
+::: column
 #### Revenue
 $500
+:::
 
 :::
 
@@ -1500,18 +1613,23 @@ Text
   });
 
   describe('::: container-based layout syntax', () => {
-    it('should parse ::: grid-3 as a grid node', () => {
+    it('should parse ::: columns-3 as a grid node', () => {
       const result = parse(`
-::: grid-3
-
+::: columns-3
+::: column
 ### Feature One
 Fast
+:::
 
+::: column
 ### Feature Two
 Secure
+:::
 
+::: column
 ### Feature Three
 Powerful
+:::
 
 :::
       `.trim());
@@ -1520,15 +1638,18 @@ Powerful
       expect(result.children[0].children[0].type).toBe('grid-item');
     });
 
-    it('should parse ::: grid-3 card as a card grid', () => {
+    it('should parse ::: columns-3 card as a card grid', () => {
       const result = parse(`
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Fast
 Quick
+:::
 
+::: column
 ### Secure
 Safe
+:::
 
 :::
       `.trim());
@@ -1537,14 +1658,21 @@ Safe
       expect((grid.props.classes || []).includes('card') || grid.props.card).toBeTruthy();
     });
 
-    it('should parse ::: grid-4 with 4 columns', () => {
+    it('should parse ::: columns-4 with 4 columns', () => {
       const result = parse(`
-::: grid-4
-
+::: columns-4
+::: column
 ### A
+:::
+::: column
 ### B
+:::
+::: column
 ### C
+:::
+::: column
 ### D
+:::
 
 :::
       `.trim());
@@ -1669,7 +1797,7 @@ Content here
       expect(main).toBeDefined();
     });
 
-    it('should parse ::: grid-N inside ::: layout main section', () => {
+    it('should parse ::: columns-N inside ::: layout main section', () => {
       const result = parse(`
 ::: layout {.sidebar-main}
 
@@ -1679,16 +1807,21 @@ Nav
 
 ::: main
 
-::: grid-3
-
+::: columns-3
+::: column
 ### Done
 48
+:::
 
+::: column
 ### Active
 12
+:::
 
+::: column
 ### Pending
 5
+:::
 
 :::
 
@@ -1793,23 +1926,28 @@ Username
     it('reconstructs inline modifier on opener line in raw field', () => {
       const result = parse(`::: demo
 
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Fast
 Quick.
+:::
 
+::: column
 ### Simple
 Easy.
+:::
 
+::: column
 ### Flexible
 Versatile.
+:::
 
 :::
 
 :::`);
       const demo = result.children[0] as any;
-      expect(demo.raw).toContain('::: grid-3 card');
-      expect(demo.raw).not.toMatch(/::: grid-3\ncard/);
+      expect(demo.raw).toContain('::: columns-3 card');
+      expect(demo.raw).not.toMatch(/::: columns-3\ncard/);
     });
 
     it('captures full raw content when nested container has no blank line before demo opener', () => {
@@ -1914,9 +2052,9 @@ Some **bold** content
       expect(comments).toHaveLength(1);
     });
 
-    describe('Comment routing in grid cells', () => {
-      it('comment before a grid cell is a sibling before the grid-item, not inside its children', () => {
-        const md = '::: grid-2\n\n### Col A\ncontent\n\n<!-- check this -->\n### Col B\ncontent\n\n:::';
+    describe('Comment routing in columns', () => {
+      it('comment before a column is a sibling before the grid-item, not inside its children', () => {
+        const md = '::: columns-2\n::: column\n### Col A\ncontent\n:::\n<!-- check this -->\n::: column\n### Col B\ncontent\n:::\n:::';
         const ast = parse(md);
         const grid = ast.children[0] as any;
         // grid.children = [grid-item-A, comment, grid-item-B]
@@ -1929,8 +2067,8 @@ Some **bold** content
         expect(grid.children[2].children.every((n: any) => n.type !== 'comment')).toBe(true);
       });
 
-      it('multiple comments before a grid cell are siblings before that grid-item', () => {
-        const md = '::: grid-3\n\n### A\n\n<!-- first -->\n<!-- second -->\n### B\n\n### C\n\n:::';
+      it('multiple comments before a column are siblings before that grid-item', () => {
+        const md = '::: columns-3\n::: column\n### A\n:::\n<!-- first -->\n<!-- second -->\n::: column\n### B\n:::\n::: column\n### C\n:::\n:::';
         const ast = parse(md);
         const grid = ast.children[0] as any;
         // grid.children = [grid-item-A, comment('first'), comment('second'), grid-item-B, grid-item-C]
@@ -1941,8 +2079,8 @@ Some **bold** content
         expect(grid.children[4].type).toBe('grid-item');
       });
 
-      it('comment after the last grid cell stays in that cell (no next cell)', () => {
-        const md = '::: grid-2\n\n### Col A\ncontent\n\n### Col B\ncontent\n<!-- trailing -->\n\n:::';
+      it('comment after the last column stays in that column (no next column)', () => {
+        const md = '::: columns-2\n::: column\n### Col A\ncontent\n:::\n::: column\n### Col B\ncontent\n<!-- trailing -->\n:::\n:::';
         const ast = parse(md);
         const grid = ast.children[0] as any;
         const colB = grid.children[1];

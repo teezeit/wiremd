@@ -230,8 +230,8 @@ Message
 
 ### Two-Column Form Layout
 ::: demo
-::: grid-2
-
+::: columns-2
+::: column
 ### Left Column
 
 First Name
@@ -243,6 +243,8 @@ Email
 Phone
 [_____________________________] {type:tel}
 
+:::
+::: column
 ### Right Column
 
 Last Name
@@ -255,6 +257,7 @@ Country
 [Select country...v]
 :::
 :::
+:::
 
 ---
 
@@ -264,8 +267,8 @@ Country
 ::: demo
 ::: card
 ### Create Account
-::: grid-2
-
+::: columns-2
+::: column
 ### Login Information
 
 Email Address
@@ -281,6 +284,8 @@ Password
 Confirm Password
 [********] {type:password required:true}
 
+:::
+::: column
 ### Personal Information
 
 First Name
@@ -294,6 +299,7 @@ Phone Number
 
 Date of Birth
 [_____________________________] {type:date}
+:::
 :::
 
 ---

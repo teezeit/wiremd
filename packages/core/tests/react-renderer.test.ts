@@ -150,9 +150,9 @@ describe('React Renderer', () => {
     });
   });
 
-  describe('Grid Layout', () => {
-    it('should render a grid', () => {
-      const ast = parse('::: grid-3\n\n### Item 1\n### Item 2\n### Item 3\n\n:::');
+  describe('Columns Layout', () => {
+    it('should render columns as a grid', () => {
+      const ast = parse('::: columns-3\n::: column\n### Item 1\n:::\n::: column\n### Item 2\n:::\n::: column\n### Item 3\n:::\n:::');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('wmd-grid');

@@ -135,10 +135,14 @@ function collectContainer(
         });
       }
       if (contentText) {
-        children.push({
-          type: "paragraph",
-          children: [{ type: "text", value: contentText }],
-        });
+        children.push(
+          ...processNodes([
+            {
+              type: "paragraph",
+              children: [{ type: "text", value: contentText }],
+            },
+          ]),
+        );
       }
       // Preserve any text after the closer line as sibling node(s). Remark
       // folds the entire run of non-blank lines into the opener paragraph,

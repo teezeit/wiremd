@@ -27,30 +27,41 @@ The all-in-one platform for modern teams to collaborate, automate, and scale the
 [[ :logo: Company1 | :logo: Company2 | :logo: Company3 | :logo: Company4 | :logo: Company5 | :logo: Company6 ]]
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :rocket: Lightning Fast
 Deploy in seconds, not hours. Our infrastructure handles millions of requests with 99.99% uptime.
 
+:::
+::: column
 ### :shield: Enterprise Security
 Bank-level encryption, SOC 2 compliance, and advanced access controls keep your data safe.
 
+:::
+::: column
 ### :gear: Fully Customizable
 Powerful API, webhooks, and integrations with 500+ tools you already use.
 
+:::
+::: column
 ### :chart: Real-time Analytics
 Track performance, user behavior, and business metrics with beautiful dashboards.
 
+:::
+::: column
 ### :people: Team Collaboration
 Built for teams with seamless sharing, commenting, and real-time updates.
 
+:::
+::: column
 ### :support: 24/7 Support
 Expert support team available around the clock via chat, email, and phone.
 :::
+:::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Automation That Just Works
 
 ![Automation Screenshot](https://via.placeholder.com/500x300)
@@ -63,6 +74,8 @@ Expert support team available around the clock via chat, email, and phone.
 
 [Learn More →]
 
+:::
+::: column
 ### Analytics & Insights
 
 ![Analytics Screenshot](https://via.placeholder.com/500x300)
@@ -75,10 +88,11 @@ Expert support team available around the clock via chat, email, and phone.
 
 [See Examples →]
 :::
+:::
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Starter
 **$29** /month
 
@@ -94,6 +108,8 @@ Perfect for small teams
 
 *Most Popular*
 
+:::
+::: column
 ### Professional
 **$99** /month
 
@@ -108,6 +124,8 @@ For growing businesses
 
 [Start Free Trial]*
 
+:::
+::: column
 ### Enterprise
 **Custom**
 
@@ -123,29 +141,35 @@ For large organizations
 
 [Contact Sales]*
 :::
+:::
 
 ---
 
 ## What Our Customers Say
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :star::star::star::star::star:
 *"CloudFlow transformed how our team works. We've saved 20 hours per week on manual tasks."*
 
 **Sarah Johnson**
 CEO, TechStart Inc.
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"The best investment we made this year. ROI was clear within the first month."*
 
 **Michael Chen**
 CTO, DataCorp
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"Support team is amazing. They helped us migrate 5 years of data seamlessly."*
 
 **Emily Rodriguez**
 Operations Director, GlobalTech
+:::
 :::
 
 ---
@@ -195,8 +219,8 @@ Start your free trial today. No credit card required.
 
 ---
 ::: footer
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Product
 - Features
 - Pricing
@@ -204,6 +228,8 @@ Start your free trial today. No credit card required.
 - Changelog
 - Roadmap
 
+:::
+::: column
 ### Resources
 - Documentation
 - API Reference
@@ -211,6 +237,8 @@ Start your free trial today. No credit card required.
 - Blog
 - Case Studies
 
+:::
+::: column
 ### Company
 - About Us
 - Careers
@@ -218,12 +246,15 @@ Start your free trial today. No credit card required.
 - Contact
 - Partners
 
+:::
+::: column
 ### Legal
 - Privacy Policy
 - Terms of Service
 - Security
 - GDPR
 - Compliance
+:::
 :::
 
 ---

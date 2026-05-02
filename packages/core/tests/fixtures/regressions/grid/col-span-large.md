@@ -1,10 +1,14 @@
 <!-- regression: `{.col-span-N}` for N > 4 doesn't actually span N columns
      in the rendered output (caps at some lower value). The AST should
      carry the requested span; renderer/CSS should honor it. -->
-::: grid-7 card
-### Starter {.col-span-5}
+::: columns-7 card
+::: column .span-5
+### Starter
 spans five
-### Pro {.col-span-1}
+:::
+::: column .span-1
+### Pro
 spans one
 
+:::
 :::

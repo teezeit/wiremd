@@ -16,28 +16,35 @@
 Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Total Visitors
 **458,234**
 :chart: +12.5% vs last period
 
+:::
+::: column
 ### Page Views
 **1,234,567**
 :chart: +8.3% vs last period
 
+:::
+::: column
 ### Bounce Rate
 **42.3%**
 :chart: -3.2% vs last period
 
+:::
+::: column
 ### Avg. Session
 **3m 24s**
 :chart: +15.7% vs last period
 :::
+:::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Visitors Over Time
 
 ![Line Chart](https://via.placeholder.com/600x300)
@@ -50,6 +57,8 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 [View Detailed Report →]
 
+:::
+::: column
 ### Traffic Sources
 
 ![Pie Chart](https://via.placeholder.com/600x300)
@@ -61,6 +70,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | Social Media | 67,890 | 15% |
 | Referral | 45,678 | 10% |
 | Email | 11,865 | 3% |
+:::
 :::
 
 ---
@@ -90,8 +100,8 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 :::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Top Countries
 
 | Country | Visitors | Sessions | Conversion |
@@ -104,6 +114,8 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 [View Full Report →]
 
+:::
+::: column
 ### Top Cities
 
 | City | Visitors | Revenue |
@@ -114,10 +126,11 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | Sydney | 19,234 | $38,901 |
 | Berlin | 15,678 | $29,456 |
 :::
+:::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Device Types
 
 ![Bar Chart](https://via.placeholder.com/500x250)
@@ -126,6 +139,8 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 - 💻 Desktop: 38% (174,129 visitors)
 - 📱 Tablet: 10% (45,823 visitors)
 
+:::
+::: column
 ### Browser Distribution
 
 | Browser | Users | Percentage |
@@ -135,6 +150,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | Firefox | 67,890 | 15% |
 | Edge | 23,456 | 5% |
 | Other | 8,865 | 2% |
+:::
 :::
 
 ---
@@ -156,23 +172,28 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 :::
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Step 1: Landing
 **100,000** visitors
 100%
 
 [↓ 75%]
 
+:::
+::: column
 ### Step 2: Engaged
 **75,000** visitors
 75%
 
 [↓ 40%]
 
+:::
+::: column
 ### Step 3: Converted
 **30,000** visitors
 30%
+:::
 :::
 
 **Conversion Rate:** 30% | **Drop-off:** 70%
@@ -182,27 +203,34 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 ---
 
 ## Goals & Events
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Newsletter Signups
 **8,234**
 Target: 10,000
 [######____] 82%
 
+:::
+::: column
 ### Product Purchases
 **2,456**
 Target: 3,000
 [######____] 82%
 
+:::
+::: column
 ### Free Trial Starts
 **5,678**
 Target: 5,000
 [##########] 114%
 
+:::
+::: column
 ### Contact Forms
 **1,234**
 Target: 2,000
 [#####_____] 62%
+:::
 :::
 
 ---

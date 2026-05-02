@@ -15,16 +15,21 @@ wiremd is a text-first UI design tool that generates wireframes from Markdown.
 Write your UI, see it instantly — no design software required.
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :user: Alice Chen
 Co-founder & CEO
 
+:::
+::: column
 ### :user: Ben Müller
 Co-founder & CTO
 
+:::
+::: column
 ### :user: Sara Kim
 Head of Design
+:::
 :::
 
 ---

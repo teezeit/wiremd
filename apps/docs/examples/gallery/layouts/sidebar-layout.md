@@ -32,16 +32,21 @@
 ## Overview
 
 A summary of your workspace activity and open tasks.
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :check: Tasks Done
 **48** this week
 
+:::
+::: column
 ### :clock: In Progress
 **12** open
 
+:::
+::: column
 ### :bell: Upcoming
 **5** due today
+:::
 :::
 
 ## Recent Projects

@@ -205,19 +205,24 @@ Content
     });
   });
 
-  describe('Grid Layout', () => {
-    it('should render a 3-column grid', () => {
+  describe('Columns layout', () => {
+    it('should render a 3-column columns layout', () => {
       const input = `
-::: grid-3
-
-### Feature One
+::: columns-3
+::: column
+## Feature One
 Fast
+:::
 
-### Feature Two
+::: column
+## Feature Two
 Secure
+:::
 
-### Feature Three
+::: column
+## Feature Three
 Powerful
+:::
 
 :::
       `.trim();
@@ -236,13 +241,16 @@ Powerful
 
     it('should render wmd-grid-item-card class when card modifier is set', () => {
       const input = `
-::: grid-3 card
-
-### Fast
+::: columns-3 card
+::: column
+## Fast
 Quick
+:::
 
-### Secure
+::: column
+## Secure
 Safe
+:::
 
 :::
       `.trim();
@@ -254,10 +262,11 @@ Safe
 
     it('should NOT render wmd-grid-item-card class without card modifier', () => {
       const input = `
-::: grid-3
-
-### Fast
+::: columns-3
+::: column
+## Fast
 Quick
+:::
 
 :::
       `.trim();
@@ -267,12 +276,13 @@ Quick
       expect(html).not.toMatch(/class="[^"]*wmd-grid-item-card/);
     });
 
-    it('should NOT render grid label text in output', () => {
+    it('should NOT render columns label text in output', () => {
       const input = `
-::: grid-3
-
-### Item One
+::: columns-3
+::: column
+## Item One
 Content
+:::
 
 :::
       `.trim();
@@ -282,12 +292,13 @@ Content
       expect(html).toMatch(/<div class="[^"]*wmd-grid[^"]*"/);
     });
 
-    it('should render col-span class on grid item', () => {
+    it('should render span class on column item', () => {
       const input = `
-::: grid-3
-
-### Wide {.col-span-2}
+::: columns-3
+::: column .span-2
+## Wide
 Spans two columns
+:::
 
 :::
       `.trim();
@@ -298,17 +309,18 @@ Spans two columns
     });
 
     it('should include col-span mobile reset in CSS', () => {
-      const ast = parse('::: grid-3\n\n### Item\nContent\n\n:::');
+      const ast = parse('::: columns-3\n::: column\n## Item\nContent\n:::\n:::');
       const html = renderToHTML(ast, { style: 'sketch' });
       expect(html).toMatch(/max-width:\s*768px[\s\S]*?col-span-2[\s\S]*?grid-column:\s*span 1/);
     });
 
     it('should render col-span combined with card modifier', () => {
       const input = `
-::: grid-3 card
-
-### Wide {.col-span-2}
+::: columns-3 card
+::: column .span-2
+## Wide
 Spans two
+:::
 
 :::
       `.trim();
@@ -317,6 +329,88 @@ Spans two
       const html = renderToHTML(ast, { style: 'sketch' });
       expect(html).toMatch(/class="[^"]*wmd-grid-item-card/);
       expect(html).toMatch(/class="[^"]*wmd-col-span-2/);
+    });
+
+    it('should render alignment classes on column items', () => {
+      const input = `
+::: columns-2
+::: column .left
+[Reset]
+:::
+::: column .right
+[+ New]*
+:::
+:::
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-left/);
+      expect(html).toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-right/);
+    });
+
+    it('should render column opener titles as headings', () => {
+      const input = `
+::: columns-2
+::: column Billing address
+First name
+[_________________]
+:::
+::: column Shipping address {.right}
+[Use billing address]
+:::
+:::
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('Billing address');
+      expect(html).toContain('Shipping address');
+      expect(html).toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-right/);
+      expect(html).not.toContain('column Billing address');
+    });
+
+    it('should preserve nested headings inside columns as content', () => {
+      const input = `
+::: columns-2
+::: column
+### Nested Heading
+Content
+:::
+::: column
+Text
+:::
+:::
+      `.trim();
+
+      const ast = parse(input);
+      const grid = ast.children[0] as any;
+      expect(grid.type).toBe('grid');
+      expect(grid.children).toHaveLength(2);
+
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('Nested Heading');
+      expect(html.match(/wmd-grid-item/g)?.length).toBeGreaterThanOrEqual(2);
+    });
+
+    it('should not parse removed grid syntax as a grid', () => {
+      const ast = parse('::: grid-2\n### Item\nContent\n:::');
+      expect(ast.children[0]?.type).not.toBe('grid');
+    });
+
+    it('should not split columns by headings', () => {
+      const ast = parse(`
+::: columns-2
+### First
+One
+
+### Second
+Two
+:::
+      `.trim());
+      const grid = ast.children[0] as any;
+      expect(grid.type).toBe('grid');
+      expect(grid.children).toHaveLength(0);
     });
   });
 
@@ -552,21 +646,26 @@ Email
     });
   });
 
-  describe('Grid inside container', () => {
-    it('should render a grid nested inside a card container', () => {
+  describe('Columns inside container', () => {
+    it('should render columns nested inside a card container', () => {
       const input = `
 ::: card
 
-::: grid-3
-
+::: columns-3
+::: column
 ### Fast
 Quick
+:::
 
+::: column
 ### Secure
 Safe
+:::
 
+::: column
 ### Powerful
 Strong
+:::
 
 :::
 
@@ -582,7 +681,7 @@ Strong
       expect(html).toContain('Powerful');
     });
 
-    it('should render a grid nested inside sidebar-main layout main section', () => {
+    it('should render columns nested inside sidebar-main layout main section', () => {
       const input = `
 ::: layout {.sidebar-main}
 
@@ -592,16 +691,21 @@ Nav
 
 ::: main
 
-::: grid-3
-
+::: columns-3
+::: column
 ### Done
 48
+:::
 
+::: column
 ### Active
 12
+:::
 
+::: column
 ### Pending
 5
+:::
 
 :::
 
@@ -890,18 +994,23 @@ Details panel
   });
 
   describe('::: container-based layout rendering', () => {
-    it('should render ::: grid-3 as a 3-column grid', () => {
+    it('should render ::: columns-3 as a 3-column grid', () => {
       const input = `
-::: grid-3
-
+::: columns-3
+::: column
 ### Feature One
 Fast
+:::
 
+::: column
 ### Feature Two
 Secure
+:::
 
+::: column
 ### Feature Three
 Powerful
+:::
 
 :::
       `.trim();
@@ -913,15 +1022,18 @@ Powerful
       expect(html).toContain('Feature Two');
     });
 
-    it('should render ::: grid-3 card with card class on items', () => {
+    it('should render ::: columns-3 card with card class on items', () => {
       const input = `
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Fast
 Quick
+:::
 
+::: column
 ### Secure
 Safe
+:::
 
 :::
       `.trim();
@@ -1040,22 +1152,25 @@ Content
       expect(html).toContain('| Alice');
     });
 
-    it('shows ::: grid-3 card on one line in the code pane', () => {
+    it('shows ::: columns-3 card on one line in the code pane', () => {
       const html = renderToHTML(parse(`
 ::: demo
 
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### A
 content
+:::
 
+::: column
 ### B
 content
+:::
 
 :::
 
 :::`), { style: 'clean' });
-      expect(html).toContain('::: grid-3 card');
+      expect(html).toContain('::: columns-3 card');
     });
   });
 
@@ -1114,8 +1229,8 @@ content
       }
     });
 
-    it('comment inside a grid cell routes to side panel, not inline', () => {
-      const md = '::: grid-2\n\n### Left\n\n### {.right}\n\n<!-- check this -->\n[Action]*\n\n:::';
+    it('comment inside a column routes to side panel, not inline', () => {
+      const md = '::: columns-2\n::: column\n### Left\n:::\n::: column .right\n<!-- check this -->\n[Action]*\n:::\n:::';
       const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
       expect(html).not.toContain('<span class="wmd-comment">');
       expect(html).toContain('wmd-comments-panel');
@@ -1171,15 +1286,15 @@ content
       expect((html.match(/class="wmd-annotated"/g) || []).length).toBe(1);
     });
 
-    it('comment above a grid annotates the whole grid, not the first cell', () => {
-      const md = '<!-- grid note -->\n::: grid-2\n\n### Col A\n\n### Col B\n\n:::';
+    it('comment above columns annotates the whole grid, not the first cell', () => {
+      const md = '<!-- columns note -->\n::: columns-2\n::: column\n### Col A\n:::\n::: column\n### Col B\n:::\n:::';
       const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
       expect(html.indexOf('class="wmd-annotated"')).toBeLessThan(html.indexOf('class="wmd-grid '));
       expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
     });
 
-    it('comment before a grid cell heading annotates that cell, not the previous one', () => {
-      const md = '::: grid-2\n\n### Col A\ncontent A\n\n<!-- check Col B -->\n### Col B\ncontent B\n\n:::';
+    it('comment before a column annotates that column, not the previous one', () => {
+      const md = '::: columns-2\n::: column\n### Col A\ncontent A\n:::\n<!-- check Col B -->\n::: column\n### Col B\ncontent B\n:::\n:::';
       const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
       expect(html).toContain('check Col B');
       expect(html).toContain('wmd-comments-panel');
@@ -1187,8 +1302,8 @@ content
       expect(html.match(/class="wmd-comment-badge"/g)?.length).toBe(1);
     });
 
-    it('comment before a grid cell annotates the whole grid-item div, not a child inside', () => {
-      const md = '::: grid-2\n\n### Col A\ncontent A\n\n<!-- whole card -->\n### Col B\ncontent B\n\n:::';
+    it('comment before a column annotates the whole grid-item div, not a child inside', () => {
+      const md = '::: columns-2\n::: column\n### Col A\ncontent A\n:::\n<!-- whole card -->\n::: column\n### Col B\ncontent B\n:::\n:::';
       const html = renderToHTML(parse(md), { style: 'sketch', showComments: true });
       // wmd-annotated wrapper must open before the annotated grid-item's class attribute
       // Use the HTML attribute form to avoid matching CSS selectors in <style>
@@ -1284,8 +1399,8 @@ content
       expect(html).toContain('data-source-line');
     });
 
-    it('data-source-line is present on container, grid, row, nav', () => {
-      const md = '::: card\n[Btn]*\n\n:::\n\n::: grid-2\n### A\n### B\n:::\n\n[[ Home | About ]]\n';
+    it('data-source-line is present on container, columns, row, nav', () => {
+      const md = '::: card\n[Btn]*\n\n:::\n\n::: columns-2\n::: column\n### A\n:::\n::: column\n### B\n:::\n:::\n\n[[ Home | About ]]\n';
       const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
       expect(html).toContain('data-source-line');
     });

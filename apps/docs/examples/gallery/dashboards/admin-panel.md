@@ -40,32 +40,41 @@
 :::
 
 ---
-::: grid-5 card
-
+::: columns-5 card
+::: column
 ### Total Users
 **24,567**
 +234 this week
 
+:::
+::: column
 ### Active Sessions
 **1,234**
 Current online
 
+:::
+::: column
 ### Total Revenue
 **$458,234**
 +12% this month
 
+:::
+::: column
 ### Support Tickets
 **89**
 23 pending
 
+:::
+::: column
 ### Server Load
 **67%**
 Normal
 :::
+:::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Latest Users
 
 | User | Email | Role | Status | Joined |
@@ -78,6 +87,8 @@ Normal
 
 [Manage Users →]
 
+:::
+::: column
 ### Recent Orders
 
 | Order | Customer | Amount | Status | Date |
@@ -89,6 +100,7 @@ Normal
 | #12341 | Charlie Kim | $178.50 | Completed | 8h ago |
 
 [View All Orders →]
+:::
 :::
 
 ---
@@ -129,8 +141,8 @@ Showing 1-5 of 24,567 users
 [← Previous] [1] [2] [3] ... [4913] [Next →]
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Published Content
 
 | Type | Count | This Week |
@@ -142,6 +154,8 @@ Showing 1-5 of 24,567 users
 
 [Manage Content →]
 
+:::
+::: column
 ### Draft Content
 
 **Pending Review:** 45
@@ -149,6 +163,7 @@ Showing 1-5 of 24,567 users
 **Auto-saved:** 8
 
 [Review Drafts →]
+:::
 :::
 
 ---
@@ -249,8 +264,8 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 :::
 
 ---
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Database Stats
 
 **Total Records:** 1,234,567
@@ -265,6 +280,8 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 [Backup Now] [Optimize Database]
 
+:::
+::: column
 ### Storage Usage
 
 **Total Storage:** 100 GB
@@ -281,10 +298,11 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 [Cleanup Storage]
 :::
+:::
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Open Tickets
 **23** new
 
@@ -295,6 +313,8 @@ Priority breakdown:
 
 [View Tickets →]
 
+:::
+::: column
 ### In Progress
 **45** active
 
@@ -303,6 +323,8 @@ Average response time:
 
 [Assign Tickets →]
 
+:::
+::: column
 ### Resolved Today
 **89** closed
 
@@ -311,31 +333,39 @@ Customer satisfaction:
 
 [View Reports →]
 :::
+:::
 
 ---
 
 ## Quick Actions
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### :user: Create User
 Add new user account
 
 [+ New User]*
 
+:::
+::: column
 ### :content: Add Content
 Create new post/page
 
 [+ New Content]*
 
+:::
+::: column
 ### :mail: Send Email
 Broadcast to users
 
 [Compose]*
 
+:::
+::: column
 ### :download: Export Data
 Download reports
 
 [Export]*
+:::
 :::
 
 ---

@@ -14,8 +14,8 @@
 Join thousands of users already enjoying our platform
 
 ---
-::: grid-2
-
+::: columns-2
+::: column
 ### Account Details
 
 Email Address
@@ -28,6 +28,8 @@ Password
 Confirm Password
 [********] {type:password required:true}
 
+:::
+::: column
 ### Profile Information
 
 First Name
@@ -39,10 +41,11 @@ Last Name
 Phone Number
 [_____________________________] {type:tel}
 :::
+:::
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Free
 **$0** /month
 
@@ -53,6 +56,8 @@ Phone Number
 
 - ( ) Select Free
 
+:::
+::: column
 ### Pro
 **$19** /month
 
@@ -63,6 +68,8 @@ Phone Number
 
 - (*) Select Pro
 
+:::
+::: column
 ### Enterprise
 **Custom** pricing
 
@@ -72,6 +79,7 @@ Phone Number
 - SLA Guarantee
 
 - ( ) Select Enterprise
+:::
 :::
 
 ---

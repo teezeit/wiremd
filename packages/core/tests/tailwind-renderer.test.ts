@@ -209,30 +209,30 @@ describe('Tailwind Renderer', () => {
     });
   });
 
-  describe('Grid Layout', () => {
-    it('should render a 2-column grid', () => {
-      const ast = parse('::: grid-2\n\n### Item 1\n### Item 2\n\n:::');
+  describe('Columns Layout', () => {
+    it('should render a 2-column layout', () => {
+      const ast = parse('::: columns-2\n::: column\n### Item 1\n:::\n::: column\n### Item 2\n:::\n:::');
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="grid gap-6 my-8 grid-cols-1 md:grid-cols-2"');
     });
 
-    it('should render a 3-column grid', () => {
-      const ast = parse('::: grid-3\n\n### Item 1\n### Item 2\n### Item 3\n\n:::');
+    it('should render a 3-column layout', () => {
+      const ast = parse('::: columns-3\n::: column\n### Item 1\n:::\n::: column\n### Item 2\n:::\n::: column\n### Item 3\n:::\n:::');
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="grid gap-6 my-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"');
     });
 
-    it('should render a 4-column grid', () => {
-      const ast = parse('::: grid-4\n\n### A\n### B\n### C\n### D\n\n:::');
+    it('should render a 4-column layout', () => {
+      const ast = parse('::: columns-4\n::: column\n### A\n:::\n::: column\n### B\n:::\n::: column\n### C\n:::\n::: column\n### D\n:::\n:::');
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="grid gap-6 my-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4"');
     });
 
-    it('should render grid items', () => {
-      const ast = parse('::: grid-2\n\n### Item 1\nDescription\n\n:::');
+    it('should render column items', () => {
+      const ast = parse('::: columns-2 card\n::: column\n### Item 1\nDescription\n:::\n:::');
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"');
@@ -326,7 +326,7 @@ Email
 
   describe('Responsive Design', () => {
     it('should include responsive grid classes', () => {
-      const ast = parse('::: grid-3\n\n### A\n### B\n### C\n\n:::');
+      const ast = parse('::: columns-3\n::: column\n### A\n:::\n::: column\n### B\n:::\n::: column\n### C\n:::\n:::');
       const html = renderToTailwind(ast);
 
       // Should be mobile-first: 1 column on mobile, 2 on md, 3 on lg

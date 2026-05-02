@@ -16,16 +16,21 @@ The fastest way to prototype multi-page apps in Markdown.
 
 [[Get Started](./about.md)]* [[See Features](./about.md)]
 :::
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :rocket: Fast
 From idea to prototype in minutes, not hours.
 
+:::
+::: column
 ### :shield: Reliable
 Battle-tested across thousands of real projects.
 
+:::
+::: column
 ### :gear: Flexible
 Works with any workflow, any team size.
+:::
 :::
 
 ---

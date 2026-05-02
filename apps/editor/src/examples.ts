@@ -33,7 +33,8 @@ Password
 
 ## Dashboard Overview
 
-::: grid-3
+::: columns-3
+::: column
 ::: card
 ### Total Users
 # 12,847
@@ -50,6 +51,7 @@ Password
 ### Active Sessions
 # 1,429
 -3.1% from last hour
+:::
 :::
 :::
 
@@ -100,8 +102,8 @@ Message
 
 > / Home / Products / Headphones
 
-::: grid-2
-
+::: columns-2
+::: column
 ::: card
 ![Product Image]
 :::
@@ -128,6 +130,7 @@ Quantity
 **Free shipping** on orders over $50
 :::
 
+:::
 :::
 
 ## Customer Reviews
@@ -194,20 +197,25 @@ Bio
 
 ---
 
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### ⚡ Lightning Fast
 Write your UI in markdown and see it rendered instantly. No drag and drop needed.
 
+:::
+::: column
 ### 🎨 Multiple Styles
 Choose from Sketch, Clean, Material, Tailwind, Brutal, and more visual styles.
 
 <!-- Should this say "For Engineering Teams" with more specifics? @sara -->
 <!-- Agreed — mention CLI + VS Code explicitly. @tobias -->
 <!-- +1, updated copy sounds way stronger. @mike -->
+:::
+::: column
 ### 🔧 Developer First
 CLI tool, VS Code extension, and npm package. Fits your existing workflow.
 
+:::
 :::
 
 ---

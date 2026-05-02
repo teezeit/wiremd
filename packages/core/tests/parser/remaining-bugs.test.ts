@@ -53,8 +53,8 @@ describe('remark-containers — closer/opener edge cases', () => {
 });
 
 describe('transformContainer — opener flag tolerates trailing text', () => {
-  it('::: grid-3 card extra text → still flags card', () => {
-    const ast = parse('::: grid-3 card extra text\n### A\nx\n### B\ny\n:::\n');
+  it('::: columns-3 card extra text -> still flags card', () => {
+    const ast = parse('::: columns-3 card extra text\n::: column\n### A\nx\n:::\n::: column\n### B\ny\n:::\n:::\n');
     const grid = ast.children[0] as any;
     expect(grid.type).toBe('grid');
     expect(grid.props.card).toBe(true);

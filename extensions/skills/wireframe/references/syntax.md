@@ -222,14 +222,16 @@ A common real-world pattern — card with a header row and content:
 ```markdown
 ::: card
 
-::: grid-2
-
+::: columns-2
+::: column
 ### Sprint: Q2 Onboarding
 
-### {.right}
+:::
+::: column .right
 
 Started: Apr 1 · ((Due: Apr 30)){.warning}
 
+:::
 :::
 
 Before you can pitch to a decision maker, you need to get past the gatekeeper.
@@ -255,13 +257,19 @@ Tabs can contain grids, rows, and any other containers:
 
 :::
 
-::: grid-3 card
+::: columns-3 card
+::: column
 ### :chart: Sessions
 **163**
+:::
+::: column
 ### :user: Active Users
 **42**
+:::
+::: column
 ### :star: Avg Score
 **87%**
+:::
 :::
 
 :::
@@ -332,105 +340,121 @@ If a specific widget (search input, dropdown) fails to render inside `::: row`, 
 
 ---
 
-## Grids
+## Columns
 
-Grid items are `###` headings (and their content) inside a `::: grid-N` container.
+Columns use explicit `::: column` child containers inside a `::: columns-N` container. Put a title on the opener, like `::: column Billing address`, to render a heading at the top of that column.
 
 **Layout only** (equal columns, no card chrome — use for metrics, stats, KPI rows):
 ```markdown
-::: grid-3
-
-### Revenue
+::: columns-3
+::: column Revenue
 $124,500
 
-### Users
+:::
+::: column Users
 3,842
 
-### Conversion
+:::
+::: column Conversion
 4.2%
 
+:::
 :::
 ```
 
 **Grid of cards** (each item gets card styling — use for feature lists, channel breakdowns):
 ```markdown
-::: grid-3 card
-
-### :rocket: Organic
+::: columns-3 card
+::: column :rocket: Organic
 **42%** of traffic
 
-### :chart: Paid
+:::
+::: column :chart: Paid
 **31%** of traffic
 
-### :bell: Email
+:::
+::: column :bell: Email
 **27%** of traffic
 
 :::
+:::
 ```
 
-Add `card` after the column count to get card chrome; omit it for a plain layout grid.
+Add `card` after the column count to get card chrome; omit it for plain layout columns.
 
-Supported widths: `grid-2`, `grid-3`, `grid-4`, `grid-5`
+Supported widths: `columns-2`, `columns-3`, `columns-4`, `columns-5`
 
 ### Section header with right-aligned action
 
-The most common `grid-2` pattern: title on the left, action button on the right. Use an empty `###` as a spacer cell.
+The most common `columns-2` pattern: title on the left, action button on the right.
 
 ```markdown
-::: grid-2
+::: columns-2
+::: column Recent Sessions
 
-### Recent Sessions
-
-### {.right}
+:::
+::: column .right
 
 [View All]*
 
 :::
+:::
 ```
 
-The `{.right}` modifier aligns the cell's content to the right. An empty `###` with no text is a valid spacer — it creates an empty grid cell:
+The `.right` modifier aligns the column's content to the right. A `::: column` can be empty or contain controls without a heading:
 
 ```markdown
-::: grid-2
-
-###
+::: columns-2
+::: column
 
 Left cell content with no heading.
 
-### {.right}
+:::
+::: column .right
 
 [+ New Item]*
 
+:::
 :::
 ```
 
 ### KPI metrics row
 
-`### Title` + `**bold metric**` + supporting text is the standard pattern for stat/KPI grids:
+`::: column Title` + `**bold metric**` + supporting text is the standard pattern for stat/KPI columns:
 
 ```markdown
-::: grid-3
-
-### Total Revenue
+::: columns-3
+::: column Total Revenue
 **$124,500**
 ↑ 8% vs last period
 
-### Active Users
+:::
+::: column Active Users
 **3,842**
 ↑ 12% vs last period
 
-### Conversion Rate
+:::
+::: column Conversion Rate
 **4.2%**
 ↓ 0.3% vs last period
 
+:::
 :::
 ```
 
 ### Column spans
 
 ```markdown
-### Featured Item {.col-span-2}
+::: column .span-2
+### Featured Item
 Spans two columns.
+:::
+```
+
+```markdown
+::: column Featured Item {.span-2}
+Spans two columns.
+:::
 ```
 
 ---
@@ -505,11 +529,11 @@ Done    [##################] 100%
 | `<Dialog>` / `<Modal>` | `:::modal` block at bottom of file |
 | `<Alert variant="success">` | `:::alert success` |
 | `<Badge>` / `<Chip>` / status pill | `((Label)){.variant}` |
-| Flex row of cards | `::: grid-3 card` … `:::` |
-| Stats row (no card) | `::: grid-3` … `:::` |
+| Flex row of cards | `::: columns-3 card` … `:::` |
+| Stats row (no card) | `::: columns-3` … `:::` |
 | Horizontal filter/toolbar | `::: row` … `:::` |
 | Right-aligned action row | `::: row {.right}` … `:::` |
-| Section header + right action | `::: grid-2` with `### Title` + `### {.right}` |
+| Section header + right action | `::: columns-2` with `### Title` + `::: column .right` |
 | `<Tabs>` | `::: tabs` with `::: tab Label` children |
 | `<Tabs>` (multi-page) | one `.md` file per tab |
 | Loading state | `> **Loading state:** spinner + "Loading..."` |

@@ -74,8 +74,8 @@ Preferred Contact
 :::
 
 ---
-::: grid-2
-
+::: columns-2
+::: column
 ### Home Address
 
 Street Address
@@ -101,6 +101,8 @@ Zip/Postal Code
 Country
 [United States...v]
 
+:::
+::: column
 ### Billing Address
 
 - [ ] Same as home address
@@ -116,6 +118,7 @@ State/Province
 
 Zip/Postal Code
 [_____]
+:::
 :::
 
 ---

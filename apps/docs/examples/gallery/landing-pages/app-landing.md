@@ -27,34 +27,51 @@ Stay organized, focused, and on top of your tasks with the #1 rated productivity
 [[ :apple: App Store Featured | :android: Google Play Editors' Choice | :producthunt: Product Hunt #1 | :techcrunch: TechCrunch | :verge: The Verge ]]
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :check: Smart Task Management
 Create, organize, and prioritize tasks with intelligent categorization and due dates.
 
+:::
+::: column
 ### :calendar: Calendar Integration
 Sync with Google Calendar, Outlook, and Apple Calendar seamlessly.
 
+:::
+::: column
 ### :bell: Smart Reminders
 Location-based and time-based reminders ensure you never miss a deadline.
 
+:::
+::: column
 ### :repeat: Recurring Tasks
 Set up daily, weekly, or custom recurring tasks with flexible schedules.
 
+:::
+::: column
 ### :users: Team Collaboration
 Share lists, assign tasks, and collaborate with your team in real-time.
 
+:::
+::: column
 ### :cloud: Cloud Sync
 Access your tasks anywhere with automatic sync across all devices.
 
+:::
+::: column
 ### :chart: Progress Tracking
 Visualize your productivity with charts, streaks, and achievement badges.
 
+:::
+::: column
 ### :shield: Secure & Private
 End-to-end encryption keeps your data safe and private.
 
+:::
+::: column
 ### :palette: Customizable
 Themes, tags, and custom views let you personalize your experience.
+:::
 :::
 
 ---
@@ -81,52 +98,66 @@ TaskMaster combines elegant design with powerful productivity features. Manage y
 ---
 
 ## Loved by Millions
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### :star::star::star::star::star:
 *"This app changed my life. I've never been this organized. The natural language input is a game changer!"*
 
 **Alex Martinez** • Entrepreneur
 *App Store Review*
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"I've tried every task app out there. TaskMaster is the only one that stuck. Simple, fast, and actually helps me get things done."*
 
 **Sarah Chen** • Product Manager
 *Google Play Review*
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"The team collaboration features are fantastic. Our entire company uses it now. Highly recommended!"*
 
 **David Kim** • Startup Founder
 *ProductHunt Review*
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"Beautiful interface, powerful features. The recurring tasks and reminders are exactly what I needed."*
 
 **Emma Johnson** • Designer
 *Twitter*
 :::
-
----
-::: grid-4 card
-
-### 5M+
-Downloads
-
-### 4.9★
-Average Rating
-
-### 150+
-Countries
-
-### 99.9%
-Uptime
 :::
 
 ---
-::: grid-3 card
+::: columns-4 card
+::: column
+### 5M+
+Downloads
 
+:::
+::: column
+### 4.9★
+Average Rating
+
+:::
+::: column
+### 150+
+Countries
+
+:::
+::: column
+### 99.9%
+Uptime
+:::
+:::
+
+---
+::: columns-3 card
+::: column
 ### Free
 **$0** forever
 
@@ -140,6 +171,8 @@ Perfect to get started
 
 [Download Free]*
 
+:::
+::: column
 ### Pro
 **$4.99** /month
 
@@ -155,6 +188,8 @@ For power users
 
 [Start 30-Day Trial]*
 
+:::
+::: column
 ### Teams
 **$8.99** /user/month
 
@@ -169,6 +204,7 @@ For businesses
 - SLA guarantee
 
 [Contact Sales]*
+:::
 :::
 
 ---
@@ -231,8 +267,8 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 
 ---
 ::: footer
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Product
 - Features
 - Pricing
@@ -240,6 +276,8 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 - Roadmap
 - What's New
 
+:::
+::: column
 ### Support
 - Help Center
 - Contact Us
@@ -247,6 +285,8 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 - Report Bug
 - Feature Request
 
+:::
+::: column
 ### Company
 - About
 - Blog
@@ -254,12 +294,15 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 - Press Kit
 - Affiliate Program
 
+:::
+::: column
 ### Legal
 - Privacy
 - Terms
 - Security
 - Licenses
 - Cookies
+:::
 :::
 
 ---

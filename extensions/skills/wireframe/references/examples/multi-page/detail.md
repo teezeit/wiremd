@@ -2,16 +2,18 @@
 
 [[ Home > Detail ]]
 
-::: grid-2
-
+::: columns-2
+::: column
 ### Launch Plan
 
-### {.right}
+:::
+::: column .right
 
 ::: row {.right}
 [Edit] [Publish]*
 :::
 
+:::
 :::
 
 ---

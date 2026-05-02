@@ -25,8 +25,8 @@ I design beautiful, functional digital experiences that users love.
 ---
 
 ## Featured Work
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### E-Commerce Redesign
 ![Project Screenshot](https://via.placeholder.com/500x350)
 
@@ -38,6 +38,8 @@ Redesigned the shopping experience for 2M+ users, increasing conversion by 35%.
 
 [View Case Study →]
 
+:::
+::: column
 ### SaaS Dashboard
 ![Project Screenshot](https://via.placeholder.com/500x350)
 
@@ -49,6 +51,8 @@ Analytics platform for B2B customers with real-time data visualization.
 
 [View Live Site →]
 
+:::
+::: column
 ### Brand Identity
 ![Project Screenshot](https://via.placeholder.com/500x350)
 
@@ -60,6 +64,8 @@ Complete brand identity for sustainable fashion startup including logo, guidelin
 
 [View Portfolio →]
 
+:::
+::: column
 ### Mobile Banking App
 ![Project Screenshot](https://via.placeholder.com/500x350)
 
@@ -70,6 +76,7 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 **Skills:** iOS, Swift, Accessibility, Security
 
 [View Case Study →]
+:::
 :::
 
 ---
@@ -90,8 +97,8 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 ---
 
 ## Skills & Expertise
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### UI/UX Design
 - User Research
 - Wireframing
@@ -101,6 +108,8 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 
 **Tools:** Figma, Sketch, Adobe XD
 
+:::
+::: column
 ### Visual Design
 - Typography
 - Color Theory
@@ -110,6 +119,8 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 
 **Tools:** Illustrator, Photoshop
 
+:::
+::: column
 ### Development
 - HTML/CSS
 - JavaScript
@@ -118,6 +129,7 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 - Responsive Design
 
 **Tools:** VS Code, Git, Tailwind
+:::
 :::
 
 ---
@@ -151,23 +163,30 @@ I'm a product designer with 8+ years of experience creating digital experiences 
 ---
 
 ## Recognition & Awards
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Awwwards
 3x Site of the Day
 2x Mobile Excellence
 
+:::
+::: column
 ### App Store
 5 Featured Apps
 4.8 Average Rating
 
+:::
+::: column
 ### Dribbble
 Top 1% Designer
 50K+ Followers
 
+:::
+::: column
 ### Speaking
 10+ Conferences
 TEDx Speaker
+:::
 :::
 
 ---
@@ -216,22 +235,27 @@ Message
 
 ---
 ::: footer
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Work
 - [Portfolio](https://janedoe.design)
 - [Dribbble](https://dribbble.com/janedoe)
 - [Behance](https://behance.net/janedoe)
 
+:::
+::: column
 ### Social
 - [Twitter](https://twitter.com/janedoe)
 - [LinkedIn](https://linkedin.com/in/janedoe)
 - [Instagram](https://instagram.com/janedoe)
 
+:::
+::: column
 ### Contact
 - [[email protected]](mailto:[email protected])
 - [+1 (555) 123-4567](tel:+15551234567)
 - San Francisco, CA
+:::
 :::
 
 © 2025 Jane Doe. All rights reserved.

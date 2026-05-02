@@ -63,42 +63,52 @@ Cards can include images, text, and buttons for rich content presentation.
 ### Three Column Feature Grid
 
 ```markdown
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :rocket: Fast Performance
 Lightning-quick loading times and optimized rendering for the best user experience.
 
 [Learn More →]
 
+:::
+::: column
 ### :shield: Secure by Default
 Enterprise-grade security with encryption, backups, and compliance certifications.
 
 [Learn More →]
 
+:::
+::: column
 ### :gear: Highly Customizable
 Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
 :::
+:::
 ```
 
 **Rendered:**
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :rocket: Fast Performance
 Lightning-quick loading times and optimized rendering for the best user experience.
 
 [Learn More →]
 
+:::
+::: column
 ### :shield: Secure by Default
 Enterprise-grade security with encryption, backups, and compliance certifications.
 
 [Learn More →]
 
+:::
+::: column
 ### :gear: Highly Customizable
 Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
+:::
 :::
 
 ---
@@ -108,8 +118,8 @@ Flexible configuration options and extensive API for complete control.
 ### Pricing Tiers
 
 ```markdown
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Starter
 **$9** /month
 
@@ -122,6 +132,8 @@ Perfect for individuals
 
 [Start Free Trial]*
 
+:::
+::: column
 ### Professional
 **$29** /month
 
@@ -137,6 +149,8 @@ For growing teams
 
 [Start Free Trial]*
 
+:::
+::: column
 ### Enterprise
 **Custom**
 
@@ -150,11 +164,12 @@ For large organizations
 
 [Contact Sales]*
 :::
+:::
 ```
 
 **Rendered:**
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Starter
 **$9** /month
 
@@ -167,6 +182,8 @@ Perfect for individuals
 
 [Start Free Trial]*
 
+:::
+::: column
 ### Professional
 **$29** /month
 
@@ -182,6 +199,8 @@ For growing teams
 
 [Start Free Trial]*
 
+:::
+::: column
 ### Enterprise
 **Custom**
 
@@ -194,6 +213,7 @@ For large organizations
 - SLA Guarantee
 
 [Contact Sales]*
+:::
 :::
 
 ---
@@ -203,8 +223,8 @@ For large organizations
 ### Product Grid
 
 ```markdown
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Wireless Headphones
 ![Product](https://via.placeholder.com/250x250)
 
@@ -214,6 +234,8 @@ For large organizations
 
 [Add to Cart]*
 
+:::
+::: column
 ### Smart Watch
 ![Product](https://via.placeholder.com/250x250)
 
@@ -223,6 +245,8 @@ For large organizations
 
 [Add to Cart]*
 
+:::
+::: column
 ### Bluetooth Speaker
 ![Product](https://via.placeholder.com/250x250)
 
@@ -232,6 +256,8 @@ For large organizations
 
 [Add to Cart]*
 
+:::
+::: column
 ### Fitness Tracker
 ![Product](https://via.placeholder.com/250x250)
 
@@ -241,11 +267,12 @@ For large organizations
 
 [Add to Cart]*
 :::
+:::
 ```
 
 **Rendered:**
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Wireless Headphones
 ![Product](https://via.placeholder.com/250x250)
 
@@ -255,6 +282,8 @@ For large organizations
 
 [Add to Cart]*
 
+:::
+::: column
 ### Smart Watch
 ![Product](https://via.placeholder.com/250x250)
 
@@ -264,6 +293,8 @@ For large organizations
 
 [Add to Cart]*
 
+:::
+::: column
 ### Bluetooth Speaker
 ![Product](https://via.placeholder.com/250x250)
 
@@ -273,6 +304,8 @@ For large organizations
 
 [Add to Cart]*
 
+:::
+::: column
 ### Fitness Tracker
 ![Product](https://via.placeholder.com/250x250)
 
@@ -281,6 +314,7 @@ For large organizations
 :star::star::star::star: (156 reviews)
 
 [Add to Cart]*
+:::
 :::
 
 ---
@@ -290,8 +324,8 @@ For large organizations
 ### Team Member Grid
 
 ```markdown
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Sarah Johnson
 ![Profile](https://via.placeholder.com/200x200)
 
@@ -301,6 +335,8 @@ For large organizations
 
 [LinkedIn] [Twitter] [[email protected]]
 
+:::
+::: column
 ### Michael Chen
 ![Profile](https://via.placeholder.com/200x200)
 
@@ -310,6 +346,8 @@ For large organizations
 
 [LinkedIn] [GitHub] [[email protected]]
 
+:::
+::: column
 ### Emma Rodriguez
 ![Profile](https://via.placeholder.com/200x200)
 
@@ -319,6 +357,8 @@ For large organizations
 
 [LinkedIn] [Dribbble] [[email protected]]
 
+:::
+::: column
 ### David Kim
 ![Profile](https://via.placeholder.com/200x200)
 
@@ -328,11 +368,12 @@ For large organizations
 
 [LinkedIn] [GitHub] [[email protected]]
 :::
+:::
 ```
 
 **Rendered:**
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Sarah Johnson
 ![Profile](https://via.placeholder.com/200x200)
 
@@ -342,6 +383,8 @@ For large organizations
 
 [LinkedIn] [Twitter] [[email protected]]
 
+:::
+::: column
 ### Michael Chen
 ![Profile](https://via.placeholder.com/200x200)
 
@@ -351,6 +394,8 @@ For large organizations
 
 [LinkedIn] [GitHub] [[email protected]]
 
+:::
+::: column
 ### Emma Rodriguez
 ![Profile](https://via.placeholder.com/200x200)
 
@@ -360,6 +405,8 @@ For large organizations
 
 [LinkedIn] [Dribbble] [[email protected]]
 
+:::
+::: column
 ### David Kim
 ![Profile](https://via.placeholder.com/200x200)
 
@@ -368,6 +415,7 @@ For large organizations
 "Building scalable solutions"
 
 [LinkedIn] [GitHub] [[email protected]]
+:::
 :::
 
 ---
@@ -377,8 +425,8 @@ For large organizations
 ### Blog Post Grid
 
 ```markdown
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Getting Started with Wireframing
 ![Blog Post](https://via.placeholder.com/350x200)
 
@@ -388,6 +436,8 @@ Learn the fundamentals of wireframing and how to create effective designs quickl
 
 [Read More →]
 
+:::
+::: column
 ### 10 UI Design Principles
 ![Blog Post](https://via.placeholder.com/350x200)
 
@@ -397,6 +447,8 @@ Essential principles every designer should know for creating intuitive interface
 
 [Read More →]
 
+:::
+::: column
 ### Accessibility Best Practices
 ![Blog Post](https://via.placeholder.com/350x200)
 
@@ -406,11 +458,12 @@ Make your designs inclusive and accessible to all users with these proven techni
 
 [Read More →]
 :::
+:::
 ```
 
 **Rendered:**
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Getting Started with Wireframing
 ![Blog Post](https://via.placeholder.com/350x200)
 
@@ -420,6 +473,8 @@ Learn the fundamentals of wireframing and how to create effective designs quickl
 
 [Read More →]
 
+:::
+::: column
 ### 10 UI Design Principles
 ![Blog Post](https://via.placeholder.com/350x200)
 
@@ -429,6 +484,8 @@ Essential principles every designer should know for creating intuitive interface
 
 [Read More →]
 
+:::
+::: column
 ### Accessibility Best Practices
 ![Blog Post](https://via.placeholder.com/350x200)
 
@@ -437,6 +494,7 @@ Make your designs inclusive and accessible to all users with these proven techni
 **Accessibility** • 6 min read • Mar 10, 2025
 
 [Read More →]
+:::
 :::
 
 ---
@@ -446,48 +504,58 @@ Make your designs inclusive and accessible to all users with these proven techni
 ### Customer Testimonials
 
 ```markdown
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :star::star::star::star::star:
 *"This product completely transformed how we work. Best decision we made this year!"*
 
 **Sarah Johnson**
 CEO, TechStart Inc.
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"Outstanding support and incredible features. Highly recommended for any team."*
 
 **Michael Chen**
 CTO, DataCorp
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"Easy to use, powerful features, and great value. We couldn't be happier."*
 
 **Emily Rodriguez**
 Operations Director
 :::
+:::
 ```
 
 **Rendered:**
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :star::star::star::star::star:
 *"This product completely transformed how we work. Best decision we made this year!"*
 
 **Sarah Johnson**
 CEO, TechStart Inc.
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"Outstanding support and incredible features. Highly recommended for any team."*
 
 **Michael Chen**
 CTO, DataCorp
 
+:::
+::: column
 ### :star::star::star::star::star:
 *"Easy to use, powerful features, and great value. We couldn't be happier."*
 
 **Emily Rodriguez**
 Operations Director
+:::
 :::
 
 ---
@@ -497,44 +565,58 @@ Operations Director
 ### Key Metrics Dashboard
 
 ```markdown
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Total Users
 **124,567**
 :chart: +12.5% this month
 
+:::
+::: column
 ### Revenue
 **$458,234**
 :chart: +18.3% this month
 
+:::
+::: column
 ### Conversion Rate
 **3.2%**
 :chart: +0.8% this month
 
+:::
+::: column
 ### Customer Satisfaction
 **4.8** / 5.0
 :star::star::star::star::star:
 :::
+:::
 ```
 
 **Rendered:**
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Total Users
 **124,567**
 :chart: +12.5% this month
 
+:::
+::: column
 ### Revenue
 **$458,234**
 :chart: +18.3% this month
 
+:::
+::: column
 ### Conversion Rate
 **3.2%**
 :chart: +0.8% this month
 
+:::
+::: column
 ### Customer Satisfaction
 **4.8** / 5.0
 :star::star::star::star::star:
+:::
 :::
 
 ---
@@ -544,8 +626,8 @@ Operations Director
 ### Card States
 
 ```markdown
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Normal Card
 ::: card
 Regular card in default state
@@ -553,6 +635,8 @@ Regular card in default state
 [Action Button]
 :::
 
+:::
+::: column
 ### Highlighted Card
 ::: card {.highlight}
 **Featured!**
@@ -562,11 +646,12 @@ This card has special emphasis
 [Primary Action]*
 :::
 :::
+:::
 ```
 
 **Rendered:**
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Normal Card
 ::: card
 Regular card in default state
@@ -574,6 +659,8 @@ Regular card in default state
 [Action Button]
 :::
 
+:::
+::: column
 ### Highlighted Card
 ::: card
 **Featured!**
@@ -581,6 +668,7 @@ Regular card in default state
 This card has special emphasis
 
 [Primary Action]*
+:::
 :::
 :::
 
@@ -688,15 +776,15 @@ Expected Delivery: Mar 20, 2025
 
 ---
 
-## 12. Grid Layout vs Card Grid
+## 12. Columns Layout vs Card Columns
 
-### Pure Layout Grid (no card chrome)
+### Pure Layout Columns (no card chrome)
 
-Use `::: grid-N` alone when items are form fields, text columns, or anything that shouldn't have card borders/backgrounds.
+Use `::: columns-N` without `card` when items are form fields, text columns, or anything that should not have card borders/backgrounds.
 
 ```markdown
-::: grid-2
-
+::: columns-2
+::: column
 ### Your Details
 Name
 [_____________________________]{required}
@@ -704,17 +792,20 @@ Name
 Email
 [_____________________________]{type:email required}
 
+:::
+::: column
 ### Message
 Subject
 [_____________________________]{required}
 
 [Send Message]*
 :::
+:::
 ```
 
 **Rendered:**
-::: grid-2
-
+::: columns-2
+::: column
 ### Your Details
 Name
 [_____________________________]{required}
@@ -722,71 +813,90 @@ Name
 Email
 [_____________________________]{type:email required}
 
+:::
+::: column
 ### Message
 Subject
 [_____________________________]{required}
 
 [Send Message]*
+:::
 :::
 
 ---
 
-### Card Grid (with card chrome)
+### Card Columns (with card chrome)
 
 Add `card` to apply card borders and backgrounds to each item.
 
 ```markdown
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :rocket: Fast
 Renders in milliseconds.
 
+:::
+::: column
 ### :shield: Secure
 Enterprise-grade by default.
 
+:::
+::: column
 ### :gear: Flexible
 Works with any stack.
+:::
 :::
 ```
 
 **Rendered:**
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :rocket: Fast
 Renders in milliseconds.
 
+:::
+::: column
 ### :shield: Secure
 Enterprise-grade by default.
 
+:::
+::: column
 ### :gear: Flexible
 Works with any stack.
+:::
 :::
 
 ---
 
 ### Column Spanning
 
-Add `{.col-span-N}` to a child heading to span multiple columns.
+Add `.span-N` to a `::: column` opener to span multiple columns.
 
 ```markdown
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Starter
 $9/month — up to 3 projects.
 
-### Pro {.col-span-2}
+:::
+::: column .span-2
+### Pro
 $29/month — unlimited projects, priority support, spans two columns.
+:::
 :::
 ```
 
 **Rendered:**
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Starter
 $9/month — up to 3 projects.
 
-### Pro {.col-span-2}
+:::
+::: column .span-2
+### Pro
 $29/month — unlimited projects, priority support, spans two columns.
+:::
 :::
 
 ---

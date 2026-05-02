@@ -19,12 +19,13 @@ Everything you need to build your first wireframe in minutes.
 
 :::
 
-## Card Grid
+## Card Columns
 
-Add `card` after `::: grid-N` to apply card styling to each grid item.
+Add `card` after `::: columns-N` to apply card styling to each column item.
 
 ::: demo
-::: grid-3 card
+::: columns-3 card
+::: column
 ### Free
 $0 / month
 - 1 user
@@ -32,6 +33,8 @@ $0 / month
 
 [Get Started]
 
+:::
+::: column
 ### Pro
 $12 / month
 - 10 users
@@ -39,6 +42,8 @@ $12 / month
 
 [Start Trial]*
 
+:::
+::: column
 ### Enterprise
 Custom pricing
 - Unlimited users
@@ -46,6 +51,7 @@ Custom pricing
 
 [Contact Sales]
 
+:::
 :::
 
 :::
@@ -181,6 +187,8 @@ Could not connect to the server. Check your connection and try again.
 ::: empty-state
 ::: loading-state
 ::: error-state
-::: grid-3 card    card grid
-::: grid-2         layout grid (no card chrome)
+::: columns-3 card    card columns
+::: column
+::: columns-2         layout columns (no card chrome)
 ```
+:::

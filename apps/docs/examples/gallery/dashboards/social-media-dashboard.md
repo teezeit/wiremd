@@ -22,32 +22,41 @@
 [[ :facebook: Facebook | :twitter: Twitter | :instagram: Instagram | :linkedin: LinkedIn | :youtube: YouTube | :tiktok: TikTok | [+ Connect Account] ]]
 
 ---
-::: grid-5 card
-
+::: columns-5 card
+::: column
 ### Total Followers
 **458,234**
 :chart: +8,234 (+1.8%) this month
 
+:::
+::: column
 ### Total Engagement
 **89,567**
 :chart: +12,345 (+16%) this month
 
+:::
+::: column
 ### Posts Published
 **124**
 :chart: +23 (+23%) vs last month
 
+:::
+::: column
 ### Reach
 **2.4M**
 :chart: +340K (+16.5%) this month
 
+:::
+::: column
 ### Engagement Rate
 **3.8%**
 :chart: +0.5% vs last month
 :::
+:::
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### :instagram: Instagram
 **Followers:** 234,567 (+2,345)
 
@@ -59,6 +68,8 @@
 
 [View Details →]
 
+:::
+::: column
 ### :twitter: Twitter
 **Followers:** 123,456 (+1,234)
 
@@ -70,6 +81,8 @@
 
 [View Details →]
 
+:::
+::: column
 ### :facebook: Facebook
 **Followers:** 89,234 (+890)
 
@@ -80,6 +93,7 @@
 - Best Post: 3.4K reactions
 
 [View Details →]
+:::
 :::
 
 ---
@@ -103,8 +117,8 @@
 ---
 
 ## Content Calendar
-::: grid-7 card
-
+::: columns-7 card
+::: column
 ### Mon, Mar 17
 **2 posts**
 
@@ -114,6 +128,8 @@ Product feature
 :twitter: 3:00 PM
 Industry news
 
+:::
+::: column
 ### Tue, Mar 18
 **3 posts**
 
@@ -126,12 +142,16 @@ User testimonial
 :linkedin: 4:00 PM
 Blog post
 
+:::
+::: column
 ### Wed, Mar 19
 **1 post**
 
 :twitter: 11:00 AM
 Poll question
 
+:::
+::: column
 ### Thu, Mar 20
 **3 posts**
 
@@ -144,6 +164,8 @@ Product demo
 :twitter: 5:00 PM
 Quick tip
 
+:::
+::: column
 ### Fri, Mar 21
 **2 posts**
 
@@ -153,17 +175,22 @@ Weekend sale
 :instagram: 6:00 PM
 User content
 
+:::
+::: column
 ### Sat, Mar 22
 **1 post**
 
 :instagram: 12:00 PM
 Lifestyle shot
 
+:::
+::: column
 ### Sun, Mar 23
 **1 post**
 
 :twitter: 4:00 PM
 Weekly recap
+:::
 :::
 
 [+ Schedule Post]* [View Full Calendar →]
@@ -171,8 +198,8 @@ Weekly recap
 ---
 
 ## Engagement Analytics
-::: grid-2 card
-
+::: columns-2 card
+::: column
 ### Engagement Over Time
 
 ![Line Chart](https://via.placeholder.com/600x300)
@@ -182,6 +209,8 @@ Weekly recap
 - Average: 2,985/day
 - Growth: +16% vs previous period
 
+:::
+::: column
 ### Engagement by Type
 
 ![Pie Chart](https://via.placeholder.com/600x300)
@@ -193,10 +222,11 @@ Weekly recap
 | Shares/Retweets | 10,456 | 12% |
 | Saves | 4,088 | 4% |
 :::
+:::
 
 ---
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Demographics
 
 **Age Groups:**
@@ -211,6 +241,8 @@ Weekly recap
 - Male: 40%
 - Other: 2%
 
+:::
+::: column
 ### Top Locations
 
 **Countries:**
@@ -227,6 +259,8 @@ Weekly recap
 4. Toronto
 5. Sydney
 
+:::
+::: column
 ### Active Times
 
 **Best Times to Post:**
@@ -239,6 +273,7 @@ Weekly recap
 - Friday: 2 PM
 
 ![Heatmap](https://via.placeholder.com/350x200)
+:::
 :::
 
 ---
@@ -300,31 +335,38 @@ Weekly recap
 ---
 
 ## Messages & Mentions
-::: grid-4 card
-
+::: columns-4 card
+::: column
 ### Unread Messages
 **45**
 Across all platforms
 
 [View Inbox →]*
 
+:::
+::: column
 ### Pending Comments
 **23**
 Awaiting response
 
 [Respond →]
 
+:::
+::: column
 ### New Mentions
 **89**
 Last 24 hours
 
 [Review →]
 
+:::
+::: column
 ### Spam Filtered
 **234**
 Auto-filtered
 
 [Review →]
+:::
 :::
 
 ---
@@ -368,8 +410,8 @@ Auto-filtered
 ---
 
 ## Competitor Analysis
-::: grid-3 card
-
+::: columns-3 card
+::: column
 ### Competitor A
 **Followers:** 567K
 
@@ -379,6 +421,8 @@ Auto-filtered
 
 [Analyze →]
 
+:::
+::: column
 ### Competitor B
 **Followers:** 423K
 
@@ -388,6 +432,8 @@ Auto-filtered
 
 [Analyze →]
 
+:::
+::: column
 ### Competitor C
 **Followers:** 389K
 
@@ -396,6 +442,7 @@ Auto-filtered
 **Best Content:** Product photos
 
 [Analyze →]
+:::
 :::
 
 ---
