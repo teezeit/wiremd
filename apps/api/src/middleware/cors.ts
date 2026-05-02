@@ -5,6 +5,7 @@ const ALLOWED_ORIGINS = [
   "http://localhost:5173",
   "http://localhost:5175",
   "https://teezeit.github.io",
+  "https://tobiashoelzer.com",
 ];
 
 export const corsMiddleware = cors({
