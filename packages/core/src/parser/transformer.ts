@@ -378,10 +378,15 @@ function transformContainer(node: any, ctx: TransformContext): WiremdNode {
   if (gridMatch) {
     const columns = parseInt(gridMatch[1], 10);
     const firstChild = node.children[0];
+    const firstChildText: string =
+      firstChild?.type === 'paragraph' && firstChild.children?.[0]?.type === 'text'
+        ? (firstChild.children[0].value as string)
+        : '';
+    // Accept `card` as the FIRST WORD on the opener-inline line, ignoring any
+    // free trailing text — `::: grid-3 card extra ignored` still flags the grid.
+    const firstWord = firstChildText.trim().split(/\s+/)[0];
     const hasCard =
-      (firstChild?.type === 'paragraph' &&
-        firstChild.children?.[0]?.type === 'text' &&
-        firstChild.children[0].value?.trim() === 'card') ||
+      firstWord === 'card' ||
       (props.classes || []).includes('card');
     const contentChildren = hasCard ? node.children.slice(1) : node.children;
     return {
@@ -1108,23 +1113,28 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
       if (/\[[^\]]+\]\s*\{[^}]*\brows\s*:/.test(trimmed)) return true;   // textarea via {rows:N}
       return false;
     };
+    const isInlineContainerLine = (line: string): boolean => {
+      const trimmed = line.trim();
+      return /^\[\[[\s\S]+\]\](\s*\{[^}]+\})?$/.test(trimmed);
+    };
     const lineKinds = lines.map((line) => {
       const trimmed = line.trim();
       // Form-element detection wins over the all-buttons check, because
       // textareas like `[Write your message...]{rows:4}` strip cleanly with
       // the button regex but are not buttons.
       if (hasFormElement(trimmed)) return 'form' as const;
+      if (isInlineContainerLine(trimmed)) return 'nav' as const;
       if (lineIsAllButtons(trimmed)) return 'buttons' as const;
       return 'text' as const;
     });
-    const hasButtonLine = lineKinds.includes('buttons');
+    const hasNonTextBlock = lineKinds.some((k) => k === 'buttons' || k === 'nav');
     const hasTextLine = lineKinds.includes('text');
     const hasFormLine = lineKinds.includes('form');
-    if (hasButtonLine && hasTextLine && !hasFormLine) {
-      type Group = { kind: 'buttons' | 'text'; lines: string[] };
+    if (hasNonTextBlock && hasTextLine && !hasFormLine) {
+      type Group = { kind: 'buttons' | 'nav' | 'text'; lines: string[] };
       const groups: Group[] = [];
       for (let i = 0; i < lines.length; i++) {
-        const kind = lineKinds[i] as 'buttons' | 'text';
+        const kind = lineKinds[i] as Group['kind'];
         const last = groups[groups.length - 1];
         if (last && last.kind === kind) last.lines.push(lines[i]);
         else groups.push({ kind, lines: [lines[i]] });
@@ -1154,9 +1164,35 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
               children: groupButtons as any,
             });
           }
+        } else if (group.kind === 'nav') {
+          for (const line of group.lines) {
+            const m = line.trim().match(/^\[\[\s*(.+?)\s*\]\](\s*\{[^}]+\})?$/);
+            if (m) {
+              const items = m[1].split('|').map((s) => s.trim());
+              const navNode = transformInlineContainer(
+                {
+                  type: 'wiremdInlineContainer',
+                  content: m[1],
+                  items,
+                  attributes: (m[2] || '').trim(),
+                },
+                ctx,
+              );
+              out.push(navNode);
+            }
+          }
         } else {
           const text = group.lines.join('\n').trim();
-          if (text) out.push({ type: 'paragraph', content: text, props: {} });
+          if (!text) continue;
+          // Run the text through the inline splitter so `:icon:` and
+          // `|badge|{.cls}` produce proper nodes instead of leaking as
+          // literal characters in `content`.
+          const inlineNodes = parseInlineToNodes(text);
+          if (inlineNodes.length === 1 && inlineNodes[0].type === 'text') {
+            out.push({ type: 'paragraph', content: inlineNodes[0].content, props: {} });
+          } else if (inlineNodes.length > 0) {
+            out.push({ type: 'paragraph', children: inlineNodes as any, props: {} });
+          }
         }
       }
       if (out.length === 1) return out[0];
@@ -1900,6 +1936,37 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
       const cellChildren: WiremdNode[] = [];
 
       // Transform cell content
+      const pushCellTextWithInline = (value: string) => {
+        // Split text on inline patterns: badge `|text|{.cls}` and icon `:icon:`.
+        // Mirrors the rich-paragraph splitter so table cells render badges as
+        // proper nodes instead of leaking literal `|...|{.cls}` to the
+        // rendered HTML.
+        const parts = value.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?|:[a-z-]+:)/);
+        for (const part of parts) {
+          if (!part) continue;
+          const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
+          if (pillMatch) {
+            const [, text, attrs] = pillMatch;
+            const props = parseAttributes(attrs || '') as any;
+            const validVariants = ['default', 'primary', 'success', 'warning', 'error', 'danger'];
+            const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
+            if (variantClass) {
+              props.variant = variantClass === 'danger' ? 'error' : variantClass;
+              props.classes = props.classes.filter((c: string) => c !== variantClass);
+            }
+            cellChildren.push({ type: 'badge', content: text.trim(), props });
+            continue;
+          }
+          const iconOnly = part.match(/^:([a-z-]+):$/);
+          if (iconOnly) {
+            cellChildren.push({ type: 'icon', props: { name: iconOnly[1] } });
+            continue;
+          }
+          if (part.trim()) {
+            cellChildren.push({ type: 'text', content: part, props: {} });
+          }
+        }
+      };
       for (const child of cell.children || []) {
         if (child.type === 'text') {
           const iconMatch = /^:([a-z-]+):\s*([\s\S]*)$/.exec(child.value);
@@ -1910,12 +1977,11 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
             });
             const remainder = iconMatch[2].trim();
             if (remainder) {
-              cellChildren.push({
-                type: 'text',
-                content: remainder,
-                props: {},
-              });
+              pushCellTextWithInline(remainder);
             }
+          } else if (/\|[^|]+\|/.test(child.value)) {
+            // Cell text contains badge syntax — split into text + badge nodes.
+            pushCellTextWithInline(child.value);
           } else {
             cellChildren.push({
               type: 'text',
@@ -2012,7 +2078,74 @@ function extractTextContent(node: any): string {
 }
 
 /**
- * Parse attributes from string like {.class key:value}
+ * Split a plain-text fragment into inline wiremd nodes — text, badges,
+ * and icons. Used by both the multi-line paragraph splitter and the table
+ * cell splitter. Pills (`|text|{.cls}`) are split first; each remaining
+ * text segment is then split on `:icon:` patterns.
+ */
+function parseInlineToNodes(content: string): WiremdNode[] {
+  const nodes: WiremdNode[] = [];
+  const validVariants = ['default', 'primary', 'success', 'warning', 'error', 'danger'];
+  const pillSplit = content.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+  for (const part of pillSplit) {
+    if (!part) continue;
+    const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
+    if (pillMatch) {
+      const [, text, attrs] = pillMatch;
+      const props = parseAttributes(attrs || '') as any;
+      const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
+      if (variantClass) {
+        props.variant = variantClass === 'danger' ? 'error' : variantClass;
+        props.classes = props.classes.filter((c: string) => c !== variantClass);
+      }
+      nodes.push({ type: 'badge', content: text.trim(), props });
+      continue;
+    }
+    const iconSplit = part.split(/:([a-z-]+):/);
+    for (let i = 0; i < iconSplit.length; i++) {
+      if (i % 2 === 0) {
+        if (iconSplit[i]) nodes.push({ type: 'text', content: iconSplit[i], props: {} });
+      } else {
+        nodes.push({ type: 'icon', props: { name: iconSplit[i] } });
+      }
+    }
+  }
+  return nodes;
+}
+
+/**
+ * Tokenize an attribute body, respecting double/single-quoted strings so
+ * values like `placeholder:"Search components..."` survive the split.
+ * Returns tokens with quotes still attached on the value side; quote
+ * stripping happens in `parseAttributes`.
+ */
+function tokenizeAttrBody(inner: string): string[] {
+  const tokens: string[] = [];
+  let buf = '';
+  let quote: '"' | "'" | null = null;
+  for (let i = 0; i < inner.length; i++) {
+    const c = inner[i];
+    if (quote) {
+      buf += c;
+      if (c === quote) quote = null;
+    } else if (c === '"' || c === "'") {
+      quote = c;
+      buf += c;
+    } else if (/\s/.test(c)) {
+      if (buf) {
+        tokens.push(buf);
+        buf = '';
+      }
+    } else {
+      buf += c;
+    }
+  }
+  if (buf) tokens.push(buf);
+  return tokens;
+}
+
+/**
+ * Parse attributes from string like {.class key:value key:"quoted value"}
  */
 function parseAttributes(attrString: string): any {
   const props: any = {
@@ -2030,21 +2163,30 @@ function parseAttributes(attrString: string): any {
     return props;
   }
 
-  // Split by spaces (simple parser for now)
-  const parts = inner.split(/\s+/);
+  const parts = tokenizeAttrBody(inner);
 
   for (const part of parts) {
     // Class: .classname
     if (part.startsWith('.')) {
       props.classes.push(part.slice(1));
     }
-    // State: :state
-    else if (part.startsWith(':')) {
+    // State: :state — single leading `:` followed by a single token (no `:value`)
+    else if (part.startsWith(':') && !part.slice(1).includes(':')) {
       props.state = part.slice(1);
     }
-    // Key-value: key:value
+    // Key-value: key:value (value may be quoted to preserve spaces)
     else if (part.includes(':')) {
-      const [key, value] = part.split(':', 2);
+      const colonIdx = part.indexOf(':');
+      const key = part.slice(0, colonIdx);
+      let value = part.slice(colonIdx + 1);
+      // Strip surrounding matching quotes.
+      if (
+        value.length >= 2 &&
+        ((value[0] === '"' && value[value.length - 1] === '"') ||
+          (value[0] === "'" && value[value.length - 1] === "'"))
+      ) {
+        value = value.slice(1, -1);
+      }
       props[key] = value || true;
     }
     // Boolean: required, disabled, etc.

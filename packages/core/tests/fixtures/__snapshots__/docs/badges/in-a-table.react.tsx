@@ -13,15 +13,15 @@ export const WiremdComponent: React.FC = () => {
     <tbody>
           <tr>
               <td className="wmd-table-cell wmd-align-left">Auth</td>
-              <td className="wmd-table-cell wmd-align-left">|Done|&#123;.success&#125;</td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge wmd-badge-success">Done</span></td>
           </tr>
           <tr>
               <td className="wmd-table-cell wmd-align-left">API</td>
-              <td className="wmd-table-cell wmd-align-left">|In Progress|&#123;.warning&#125;</td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge wmd-badge-warning">In Progress</span></td>
           </tr>
           <tr>
               <td className="wmd-table-cell wmd-align-left">Docs</td>
-              <td className="wmd-table-cell wmd-align-left">|Planned|</td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge">Planned</span></td>
           </tr>
     </tbody>
   </table>

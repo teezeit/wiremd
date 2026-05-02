@@ -1,7 +1,10 @@
 Document
   └─ row
      └─ grid-item
-        ├─ paragraph ":user:\nJohn Doe |Admin|{.warning}"
+        ├─ paragraph
+        │  ├─ icon props={name="user"}
+        │  ├─ text "\nJohn Doe "
+        │  └─ badge "Admin" props={variant="warning"}
         └─ container[button-group]
            ├─ button "Edit"
            └─ button "Remove" props={classes=["danger"]}

@@ -1,5 +1,5 @@
 Document
   ├─ container[card]
-  │  ├─ paragraph "A"
-  │  └─ paragraph ":::\n::: card\nB"
-  └─ paragraph ""
+  │  └─ paragraph "A"
+  └─ container[card]
+     └─ paragraph "B"

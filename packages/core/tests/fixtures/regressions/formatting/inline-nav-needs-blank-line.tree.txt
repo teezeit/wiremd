@@ -1,5 +1,7 @@
 Document
   └─ container[card]
-     └─ container[form-group]
-        ├─ text "some intro text"
-        └─ button "[ home > docs > components "
+     ├─ paragraph "some intro text"
+     └─ breadcrumbs
+        ├─ breadcrumb-item "home" current=false
+        ├─ breadcrumb-item "docs" current=false
+        └─ breadcrumb-item "components" current=true
