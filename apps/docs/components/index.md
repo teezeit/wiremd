@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # wiremd Components
 ::: demo
 ## Sign In
@@ -51,5 +49,3 @@ wiremd extends this with UI components — nothing above is broken or overridden
 ## Full syntax reference
 
 Need all components, attributes, and patterns on one page? See the [Syntax Reference](/reference/syntax).
-:::
-:::

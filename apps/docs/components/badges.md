@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Badges
 
 Double parentheses create inline badges. Add a variant class to control colour.
@@ -52,5 +50,3 @@ Updates ((New)){.success}
 
 ((Label)){.success}   inside table cell
 ```
-:::
-:::

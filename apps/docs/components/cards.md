@@ -1,7 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
-::: main
 # Cards & Containers
 
 Generic containers wrap content in a styled block. The container type controls its visual treatment.
@@ -187,7 +184,3 @@ Could not connect to the server. Check your connection and try again.
 ::: grid-3 card    card grid
 ::: grid-2         layout grid (no card chrome)
 ```
-
-:::
-
-:::

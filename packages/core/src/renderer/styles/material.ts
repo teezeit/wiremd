@@ -480,6 +480,7 @@ body {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.75em; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(0,0,0,0.54); }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 /* Material Grid */
 .${prefix}grid {

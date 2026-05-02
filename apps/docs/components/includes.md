@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Reuse Components
 
 `![[path.md]]` inlines another file before parsing — the included content becomes part of the page as if you'd typed it there. This is wiremd's component system: define a piece of UI once, reuse it everywhere.
@@ -138,5 +136,3 @@ If the referenced file doesn't exist, a warning is rendered and the rest of the 
 ```
 
 > **Note:** Paths resolve relative to the including file, not the project root.
-:::
-:::

@@ -277,13 +277,11 @@ Content here.
 
 ---
 
-## Sidebar-main layout (custom feature)
+## Sidebar layout
 
 Two-column layout with a fixed 200px sidebar and fluid main area:
 
 ```markdown
-::: layout {.sidebar-main}
-
 ::: sidebar
 
 [[Dashboard](#)]
@@ -293,7 +291,6 @@ Two-column layout with a fixed 200px sidebar and fluid main area:
 
 :::
 
-::: main
 ### Page Title
 
 Content for the main area goes here.
@@ -301,9 +298,6 @@ Content for the main area goes here.
 | Col A | Col B | Col C |
 |-------|-------|-------|
 | Data  | Data  | Data  |
-:::
-
-:::
 ```
 
 ---
@@ -521,7 +515,7 @@ Done    [##################] 100%
 | Loading state | `> **Loading state:** spinner + "Loading..."` |
 | Empty state | `> **Empty state:** "No items yet" + [Add Item]*` |
 | Error state | `:::alert error` block or `{state:error}` on input |
-| Sidebar + main | `:::layout {.sidebar-main}` |
+| Sidebar + main | `::: sidebar` before page content |
 
 ---
 

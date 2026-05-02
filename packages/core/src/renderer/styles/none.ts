@@ -94,6 +94,7 @@ body.${prefix}root {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 8px 0 4px; font-size: 0.85em; opacity: 0.6; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 4px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 .${prefix}grid {
   display: grid;

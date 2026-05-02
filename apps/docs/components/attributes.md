@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Attributes & Classes
 
 Any wiremd element accepts `{...}` after it to add classes, attributes, and modifiers.
@@ -137,5 +135,3 @@ Inside a table cell, use the same badge syntax: `((Active)){.success}`
 [Button] {.class}    one space is also valid
                      blank line before {}: NOT applied to element
 ```
-:::
-:::

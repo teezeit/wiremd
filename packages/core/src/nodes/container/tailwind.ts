@@ -4,7 +4,7 @@
  */
 
 import type { WiremdNode } from '../../types.js';
-import { type TailwindRenderContext, renderNode } from '../../renderer/tailwind-renderer.js';
+import { type TailwindRenderContext, renderChildrenList } from '../../renderer/tailwind-renderer.js';
 
 type ContainerNode = Extract<WiremdNode, { type: 'container' }>;
 
@@ -53,9 +53,7 @@ export function renderContainerTailwind(
       classes = 'p-4 my-4';
   }
 
-  const childrenHTML = (node.children || [])
-    .map((child) => renderNode(child, context))
-    .join('\n  ');
+  const childrenHTML = renderChildrenList(node.children || [], context);
 
   return `<div class="${classes}">
   ${childrenHTML}

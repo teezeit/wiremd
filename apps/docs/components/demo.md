@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Demo Blocks
 
 `::: demo` renders wiremd content as a split pane — rendered output on the left, raw source on the right. Write once, no duplication.
@@ -49,5 +47,3 @@ Custom
 Works with any wiremd component: buttons, inputs, grids, tabs, badges, navigation, cards. The source pane always shows exactly what you typed.
 
 > **Note:** `::: demo` is rendered by the wiremd CLI and VS Code extension. It is not rendered by VitePress — this page itself is served via `wiremd --serve`.
-:::
-:::

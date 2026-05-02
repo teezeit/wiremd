@@ -2,14 +2,14 @@ import type { WiremdNode } from '../../types.js';
 import {
   type RenderContext,
   escapeHtml,
-  renderNode,
+  renderChildrenList,
 } from '../../renderer/html-renderer.js';
 
 type DemoNode = Extract<WiremdNode, { type: 'demo' }>;
 
 export function renderDemoHTML(node: DemoNode, context: RenderContext): string {
   const { classPrefix: prefix } = context;
-  const previewHTML = (node.children || []).map((child) => renderNode(child, context)).join('\n');
+  const previewHTML = renderChildrenList(node.children || [], context);
   const codeHTML = escapeHtml(node.raw || '');
   return `<div class="${prefix}demo">
   <div class="${prefix}demo-preview">${previewHTML}</div>

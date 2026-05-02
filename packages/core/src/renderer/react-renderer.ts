@@ -72,6 +72,62 @@ export function renderNode(node: WiremdNode, context: ReactRenderContext, indent
   return `${indentStr}{/* Unknown node type: ${(node as { type: string }).type} */}`;
 }
 
+export function renderChildrenList(
+  children: WiremdNode[],
+  context: ReactRenderContext,
+  indent = 0,
+): string {
+  const sidebarLayout = splitStandaloneSidebarLayout(children);
+  if (sidebarLayout) {
+    const beforeJSX = renderChildrenList(sidebarLayout.before, context, indent);
+    const layoutJSX = renderStandaloneSidebarLayout(sidebarLayout.sidebar, sidebarLayout.main, context, indent);
+    return [beforeJSX, layoutJSX].filter(Boolean).join('\n');
+  }
+
+  return children.map((child) => renderNode(child, context, indent)).join('\n');
+}
+
+function renderStandaloneSidebarLayout(
+  sidebar: WiremdNode,
+  main: WiremdNode[],
+  context: ReactRenderContext,
+  indent: number,
+): string {
+  const indentStr = repeatString('  ', indent);
+  const childIndent = repeatString('  ', indent + 1);
+  const sidebarJSX = renderNode(sidebar, context, indent + 2);
+  const mainJSX = renderChildrenList(main, context, indent + 2);
+
+  return `${indentStr}<div className="${context.classPrefix}container-layout ${context.classPrefix}sidebar-main">
+${childIndent}<div className="${context.classPrefix}layout-sidebar">
+${sidebarJSX}
+${childIndent}</div>
+${childIndent}<div className="${context.classPrefix}layout-main">
+${mainJSX}
+${childIndent}</div>
+${indentStr}</div>`;
+}
+
+function splitStandaloneSidebarLayout(
+  children: WiremdNode[],
+): { before: WiremdNode[]; sidebar: WiremdNode; main: WiremdNode[] } | null {
+  const sidebarIndex = children.findIndex((child) => {
+    return child.type === 'container' && child.containerType === 'sidebar';
+  });
+
+  if (sidebarIndex < 0) return null;
+
+  const main = children.slice(sidebarIndex + 1);
+  const hasMainContent = main.some((child) => child.type !== 'comment');
+  if (!hasMainContent) return null;
+
+  return {
+    before: children.slice(0, sidebarIndex),
+    sidebar: children[sidebarIndex],
+    main,
+  };
+}
+
 /**
  * Build CSS classes string from prefix, base class, and props
  */

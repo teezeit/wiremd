@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Button Links
 
 Wrap a Markdown link inside button brackets to create a clickable button that navigates to another `.md` file.
@@ -41,5 +39,3 @@ Button links are the primary way to wire up multi-page prototypes. In `--serve` 
 [[Label](./path.md)]*       primary link button
 [[Label](./path.md)]{.secondary}
 ```
-:::
-:::

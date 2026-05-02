@@ -86,6 +86,24 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
  * immediately following sibling is wrapped with a yellow outline + numbered badge.
  */
 export function renderChildrenList(children: WiremdNode[], context: RenderContext): string {
+  const sidebarLayout = splitStandaloneSidebarLayout(children);
+  if (sidebarLayout) {
+    const { classPrefix: prefix } = context;
+    const beforeHTML = renderChildrenList(sidebarLayout.before, context);
+    const sidebarHTML = renderNode(sidebarLayout.sidebar, context);
+    const mainHTML = renderChildrenList(sidebarLayout.main, context);
+    const layoutHTML = `<div class="${prefix}container-layout ${prefix}sidebar-main">
+  <div class="${prefix}layout-sidebar">
+    ${sidebarHTML}
+  </div>
+  <div class="${prefix}layout-main">
+    ${mainHTML}
+  </div>
+</div>`;
+
+    return [beforeHTML, layoutHTML].filter(Boolean).join('\n');
+  }
+
   const { classPrefix: prefix } = context;
   let result = '';
 
@@ -128,6 +146,26 @@ export function renderChildrenList(children: WiremdNode[], context: RenderContex
   context._nextCommentId = parentNextCommentId;
 
   return result.trim();
+}
+
+function splitStandaloneSidebarLayout(
+  children: WiremdNode[],
+): { before: WiremdNode[]; sidebar: WiremdNode; main: WiremdNode[] } | null {
+  const sidebarIndex = children.findIndex((child) => {
+    return child.type === 'container' && child.containerType === 'sidebar';
+  });
+
+  if (sidebarIndex < 0) return null;
+
+  const main = children.slice(sidebarIndex + 1);
+  const hasMainContent = main.some((child) => child.type !== 'comment');
+  if (!hasMainContent) return null;
+
+  return {
+    before: children.slice(0, sidebarIndex),
+    sidebar: children[sidebarIndex],
+    main,
+  };
 }
 
 export function renderCommentsPanel(comments: Array<{ id: number; texts: string[] }>, prefix: string): string {

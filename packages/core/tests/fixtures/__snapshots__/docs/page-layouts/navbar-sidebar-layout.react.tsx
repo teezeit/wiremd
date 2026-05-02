@@ -21,34 +21,36 @@ export const WiremdComponent: React.FC = () => {
     </div>
   </nav>
   <div className="wmd-container-layout wmd-sidebar-main">
-    <div className="wmd-container-sidebar">
-      <h4 className="wmd-h4">Main</h4>
-      <div className="wmd-container-button-group">
-        <button className="wmd-button wmd-button-primary">
-          Dashboard
-        </button>
+    <div className="wmd-layout-sidebar">
+      <div className="wmd-container-sidebar">
+        <h4 className="wmd-h4">Main</h4>
+        <div className="wmd-container-button-group">
+          <button className="wmd-button wmd-button-primary">
+            Dashboard
+          </button>
+          <button className="wmd-button">
+            Projects
+          </button>
+          <button className="wmd-button">
+            Tasks
+          </button>
+        </div>
+        <h4 className="wmd-h4">Admin</h4>
+        <div className="wmd-container-button-group">
+          <button className="wmd-button">
+            Users
+          </button>
+          <button className="wmd-button">
+            Billing
+          </button>
+        </div>
+        <hr className="wmd-separator" />
         <button className="wmd-button">
-          Projects
-        </button>
-        <button className="wmd-button">
-          Tasks
+          Logout
         </button>
       </div>
-      <h4 className="wmd-h4">Admin</h4>
-      <div className="wmd-container-button-group">
-        <button className="wmd-button">
-          Users
-        </button>
-        <button className="wmd-button">
-          Billing
-        </button>
-      </div>
-      <hr className="wmd-separator" />
-      <button className="wmd-button">
-        Logout
-      </button>
     </div>
-    <div className="wmd-container-main">
+    <div className="wmd-layout-main">
       <h2 className="wmd-h2">Dashboard</h2>
       <div className="wmd-grid wmd-grid-3" style={{ '--grid-columns': 3 } as React.CSSProperties}>
         <div className="wmd-grid-item wmd-card">

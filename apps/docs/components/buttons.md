@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Buttons
 
 Square brackets create a button. Add `*` for primary variant.
@@ -46,5 +44,3 @@ Square brackets create a button. Add `*` for primary variant.
 ```
 
 > **Note:** `{.primary}` and `{.danger}` add raw CSS classes with no built-in styling — use `{variant:*}` instead.
-:::
-:::

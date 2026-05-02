@@ -56,6 +56,47 @@ export function renderNode(node: WiremdNode, context: TailwindRenderContext): st
   return `<!-- Unknown node type: ${(node as { type: string }).type} -->`;
 }
 
+export function renderChildrenList(children: WiremdNode[], context: TailwindRenderContext): string {
+  const sidebarLayout = splitStandaloneSidebarLayout(children);
+  if (sidebarLayout) {
+    const beforeHTML = renderChildrenList(sidebarLayout.before, context);
+    const sidebarHTML = renderNode(sidebarLayout.sidebar, context);
+    const mainHTML = renderChildrenList(sidebarLayout.main, context);
+    const layoutHTML = `<div class="grid grid-cols-[220px_1fr] gap-4 items-start">
+  <div class="min-w-0">
+    ${sidebarHTML}
+  </div>
+  <div class="min-w-0 [&>*:first-child]:mt-0">
+    ${mainHTML}
+  </div>
+</div>`;
+
+    return [beforeHTML, layoutHTML].filter(Boolean).join('\n  ');
+  }
+
+  return children.map((child) => renderNode(child, context)).join('\n  ');
+}
+
+function splitStandaloneSidebarLayout(
+  children: WiremdNode[],
+): { before: WiremdNode[]; sidebar: WiremdNode; main: WiremdNode[] } | null {
+  const sidebarIndex = children.findIndex((child) => {
+    return child.type === 'container' && child.containerType === 'sidebar';
+  });
+
+  if (sidebarIndex < 0) return null;
+
+  const main = children.slice(sidebarIndex + 1);
+  const hasMainContent = main.some((child) => child.type !== 'comment');
+  if (!hasMainContent) return null;
+
+  return {
+    before: children.slice(0, sidebarIndex),
+    sidebar: children[sidebarIndex],
+    main,
+  };
+}
+
 /**
  * Escape HTML special characters
  */

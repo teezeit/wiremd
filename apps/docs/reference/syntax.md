@@ -256,23 +256,19 @@ Before you can pitch to a decision maker, you need to get past the gatekeeper.
 
 ---
 
-## Sidebar-main layout
+## Sidebar layout
 
-Two-column layout with a fixed 200px sidebar and fluid main area:
+Two-column layout with a fixed sidebar and fluid main area:
 
 ```markdown
-::: layout {.sidebar-main}
 ::: sidebar
 [[Dashboard](#)]
 [[Sessions](#)]
 [[Settings](#)]
 :::
-::: main
 ### Page Title
 
 Content for the main area.
-:::
-:::
 ```
 
 ---
@@ -521,4 +517,4 @@ All standard Markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 | Loading state | `> **Loading state:** ...` |
 | Empty state | `> **Empty state:** ...` |
 | Error state | `::: alert {.error}` or `{state:error}` on input |
-| Sidebar + main | `::: layout {.sidebar-main}` |
+| Sidebar + main | `::: sidebar` before page content |

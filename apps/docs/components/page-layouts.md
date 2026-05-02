@@ -1,7 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
-::: main
 # Page Layouts
 
 wiremd supports three common page structure patterns: top nav, sidebar + main, and the combined navbar + sidebar + main used in most dashboards.
@@ -58,10 +55,9 @@ Use a `::: row` with `{.right}` to push actions to the right inside a card or se
 
 ## Sidebar Layout
 
-`::: layout {.sidebar-main}` creates a two-column layout with a fixed sidebar and a main content area.
+Place a `::: sidebar` block before page content to create a two-column layout with a fixed sidebar and a main content area.
 
 ::: demo
-::: layout {.sidebar-main}
 ::: sidebar
 **App**
 
@@ -70,21 +66,15 @@ Use a `::: row` with `{.right}` to push actions to the right inside a card or se
 [Settings]
 
 :::
-::: main
 ## Dashboard
 
 Welcome back! Here's what's happening.
 
 :::
 
-:::
-
-:::
-
 ## Sidebar with Sections
 
 ::: demo
-::: layout {.sidebar-main}
 ::: sidebar
 **Acme Co.**
 
@@ -103,7 +93,6 @@ Welcome back! Here's what's happening.
 [Logout]
 
 :::
-::: main
 ## Overview
 
 ::: grid-3 card
@@ -120,20 +109,15 @@ Welcome back! Here's what's happening.
 
 :::
 
-:::
-
-:::
-
 ---
 
 ## Navbar + Sidebar Layout
 
-The most common dashboard pattern: combine a top navbar with a `::: layout {.sidebar-main}` below it.
+The most common dashboard pattern: combine a top navbar with a `::: sidebar` below it.
 
 ::: demo
 [[ App | [Dashboard] | [Notifications] | [Settings] | [JD] ]]
 
-::: layout {.sidebar-main}
 ::: sidebar
 #### Main
 [Dashboard]*
@@ -149,7 +133,6 @@ The most common dashboard pattern: combine a top navbar with a `::: layout {.sid
 [Logout]
 
 :::
-::: main
 ## Dashboard
 
 ::: grid-3 card
@@ -169,10 +152,6 @@ The most common dashboard pattern: combine a top navbar with a `::: layout {.sid
 
 :::
 
-:::
-
-:::
-
 ---
 
 ## Reusing Layouts
@@ -186,12 +165,8 @@ For multi-page wireframes, extract the sidebar to a shared file and include it o
 Full page pattern:
 
 ```
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 Page content here.
-:::
-:::
 ```
 
 ---
@@ -201,26 +176,14 @@ Page content here.
 ```
 [[ Brand | Link | Link | [Action]* ]]    top navbar
 
-::: layout {.sidebar-main}              sidebar + main
-::: sidebar
+::: sidebar                            sidebar + main
 nav content
 :::
-::: main
 page content
-:::
-:::
 
 [[ Brand | Nav | [Action]* ]]           navbar + sidebar + main
-::: layout {.sidebar-main}
 ::: sidebar
 nav content
 :::
-::: main
 page content
-:::
-:::
 ```
-
-:::
-
-:::
