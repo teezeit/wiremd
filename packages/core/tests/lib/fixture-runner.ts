@@ -45,7 +45,7 @@ const DOC_SOURCES = [
   'apps/docs/components/icons.md',
   'apps/docs/components/badges.md',
   // Layouts
-  'apps/docs/components/grid.md',
+  'apps/docs/components/columns.md',
   'apps/docs/components/row.md',
   'apps/docs/components/cards.md',
   'apps/docs/components/tabs.md',

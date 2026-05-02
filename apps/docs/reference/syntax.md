@@ -324,7 +324,7 @@ Supported widths: `columns-2`, `columns-3`, `columns-4`, `columns-5`.
 :::
 ```
 
-**Grid of cards** — each item gets card styling. Use for feature lists, channel breakdowns:
+**Columns of cards** — each item gets card styling. Use for feature lists, channel breakdowns:
 
 ```markdown
 ::: columns-3 card

@@ -84,11 +84,11 @@ Legend: ⏳ todo | ✅ OK | ❌ failing (.expected-fail.invariants.ts) | 📝 no
 - [✅ in-a-table][51]
 - [✅ count-badges][52]
 
-### Grid (apps/docs/components/grid.md)
-- [✅ layout-grid-no-card-chrome][53]
-- [✅ card-grid][54]
+### Columns (apps/docs/components/columns.md)
+- [✅ layout-columns-no-card-chrome][53]
+- [✅ card-columns][54]
 - [✅ column-spanning][55]
-- [✅ two-column-grid][56]
+- [✅ two-column-layout][56]
 - [✅ alignment][57]
 
 ### Row (apps/docs/components/row.md)

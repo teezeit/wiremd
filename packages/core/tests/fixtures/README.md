@@ -61,7 +61,7 @@ The corpus is functioning as more than a test suite. Each fixture is a worked cl
 | Category | Source | Examples |
 |---|---|---|
 | **Primitives** | `apps/docs/components/{buttons,button-links,inputs,textarea-select,checkboxes-radio,icons,badges}.md` | Button variants, input types, checkbox/radio groups, icons in cells |
-| **Layouts** | `{grid,row,cards,tabs,page-layouts,navigation}.md` | Grid col-span, row alignment, sidebar layout, tabs |
+| **Layouts** | `{columns,row,cards,tabs,page-layouts,navigation}.md` | Column spans, row alignment, sidebar layout, tabs |
 | **Content** | `{tables,alerts,comments,attributes}.md` | Tables with badges, alert variants, comment threads, attributes on containers |
 | **Meta** | `{demo,index}.md` | `:::demo` syntax itself, kitchen-sink pages |
 | **Closer behavior** | `regressions/containers/closer/` | Closer after list / paragraph / heading; nested containers |

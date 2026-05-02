@@ -12,12 +12,12 @@ Markdown string  →  parse()  →  WiremdAST  →  render*()  →  HTML / React
 
 **Stage 1 — Parsing.** The `parse()` function hands your Markdown string to [unified](https://unifiedjs.com/)/remark, which produces a standard Markdown AST (MDAST). Two wiremd-specific remark plugins then enrich that tree before it reaches the transformer:
 
-- `remark-containers` handles fenced block syntax (`::: card`, `::: grid`, etc.), including nested containers.
+- `remark-containers` handles fenced block syntax (`::: card`, `::: columns`, etc.), including nested containers.
 - `remark-inline-containers` handles inline and nav syntax (`[[ nav ]]`, `[[ breadcrumb ]]`).
 
 Standard inline shorthand — buttons (`[Label]*`), inputs (`[_____]`) — are recognised as specially-shaped Markdown link and text nodes, so no additional plugin is needed for them.
 
-The transformer then walks the enriched MDAST and emits a **WiremdAST**: a tree of discriminated-union node types defined in `src/types.ts`. There are roughly 40 node types (Button, Input, Card, Grid, Nav, …). This is the canonical representation of a wireframe.
+The transformer then walks the enriched MDAST and emits a **WiremdAST**: a tree of discriminated-union node types defined in `src/types.ts`. There are roughly 40 node types (Button, Input, Card, Columns, Nav, …). This is the canonical representation of a wireframe.
 
 **Stage 2 — Rendering.** A renderer takes a WiremdAST and serialises it to a target format. Four renderers ship out of the box: HTML, React/JSX, Tailwind-classed HTML, and JSON. Each renderer maps node types to its own output idiom independently.
 
