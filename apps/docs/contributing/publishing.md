@@ -19,9 +19,9 @@ How wiremd ships. Four artifacts ship together under a single version: the npm p
 | `build-bundle.yml` | push to `main` (touching core/skills/extension src or `scripts/build-bundle.mjs`), manual | Rebuild the standalone CLI bundle + `.vsix`; commit the refreshed plugin bin back to `main`; refresh the rolling `latest` GitHub prerelease |
 | `docs.yml` | push to `main` (touching `apps/**` or `packages/core/src/**`), manual | Build VitePress docs + landing + editor; deploy the merged tree to GitHub Pages |
 | `release.yml` | tag push (`v*`) | Create the GitHub Release with auto-generated notes |
-| `publish.yml` | release `published` | Build everything, publish the VS Code extension to the Marketplace via `VSCE_PAT`, attach `wireframe-skill.zip` to the release |
+| `publish.yml` | release `published` | Build everything, publish the VS Code extension to the Marketplace via `VSCE_PAT`, publish the npm package via `NPM_TOKEN`, and attach `wireframe-skill.zip` to the release |
 
-The npm package is **not** published automatically today. See [npm publishing](#npm-publishing) below.
+The npm package is published automatically by `publish.yml` when a GitHub Release is published.
 
 ## Pre-release checklist
 
@@ -59,7 +59,7 @@ git push && git push --tags
 Pushing the tag fires:
 
 1. **`release.yml`** — creates the GitHub release with auto-generated notes.
-2. **`publish.yml`** — builds the VS Code extension, publishes it to the Marketplace, and attaches `wireframe-skill.zip` to the release.
+2. **`publish.yml`** — builds the VS Code extension, publishes it to the Marketplace, publishes the npm package, and attaches `wireframe-skill.zip` to the release.
 
 No manual steps are needed in GitHub or the VS Code Marketplace.
 
@@ -77,26 +77,18 @@ Then create the GitHub release for that tag manually. `publish.yml` fires on the
 
 ## npm publishing
 
-Today, `publish.yml` does **not** publish the `wiremd` npm package — only the VS Code extension and the Claude skill zip. Push a new npm version manually after the version bump:
+`publish.yml` publishes the `wiremd` npm package automatically after the GitHub Release is published:
 
-```bash
-pnpm --filter wiremd run build
-cd packages/core
-npm publish --access public
-```
+- The workflow checks out the release tag.
+- It installs dependencies and builds the monorepo.
+- It runs `npm publish --access public --provenance` from `packages/core/`.
+- It uses the `NPM_TOKEN` repository secret for registry authentication.
 
-To automate it later, add a step to `publish.yml` (gated on an `NPM_TOKEN` secret with publish rights):
-
-```yaml
-- name: Publish wiremd to npm
-  run: pnpm --filter wiremd publish --access public --no-git-checks
-  env:
-    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-```
+Only publish manually if the release workflow cannot be used.
 
 ### NPM token setup
 
-If/when you wire that step up, you will need:
+The automated publish step requires:
 
 1. An npm token with publish rights for `wiremd` ([npm settings → Tokens](https://www.npmjs.com/settings/~/tokens)). Use an **Automation** token for CI.
 2. The token added to GitHub: **Settings → Secrets and variables → Actions → New repository secret**, name `NPM_TOKEN`.
@@ -130,7 +122,7 @@ After tag push:
 1. Watch the [Actions tab](https://github.com/teezeit/wiremd/actions) for `release.yml` and `publish.yml`.
 2. Check the release page: https://github.com/teezeit/wiremd/releases — the new tag should have auto-generated notes, `wireframe-skill.zip`, and (for non-extension-only releases) `wiremd.vsix` + `wiremd.js`.
 3. Confirm the new VS Code extension version on the [Marketplace](https://marketplace.visualstudio.com/items?itemName=eclectic-ai.wiremd-preview).
-4. If you also published to npm: `npm view wiremd version`.
+4. Confirm npm published the new package: `npm view wiremd version`.
 
 ## Manual emergency publish
 

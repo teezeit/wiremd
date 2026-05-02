@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.3.1] - 2026-05-02
+## [0.4.0] - 2026-05-02
 
 ### Added
 - Added first-class switch controls with `[Label]{switch}`, including `checked` and `disabled` state support across HTML, React, Tailwind, and bundled styles.
@@ -16,15 +16,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Tabler SVG icon rendering across HTML, React, and Tailwind outputs, including digit-bearing icon names like `:menu-2:` and compatibility aliases for existing icon names.
 - Added compact nested container parsing so adjacent nested `:::` directives no longer require spacer lines.
 
-### Changed
+### Breaking
 - Replaced author-facing grid syntax with explicit columns syntax: use `::: columns-N` with child `::: column` blocks, optional opener titles like `::: column Billing address`, `::: columns-N card` for card chrome, and `::: column {span-N left/right/center}` or `::: column Title {span-N right}` for per-column modifiers.
 - Removed `::: grid-N` plus `###` heading-delimited grid items from the parser syntax. Internally, renderers may still emit grid AST nodes and CSS classes.
 - Badge/pill syntax now uses `((Label))` / `((Label)){variant}` as the primary notation; legacy pipe-delimited pills remain accepted as a migration alias.
 - Sidebar layouts now use standalone `::: sidebar` followed by page content; `::: layout {.sidebar-main}` / `::: main` remains supported for compatibility but is no longer documented as the preferred pattern.
 - `### {.left}` / `### {.center}` / `### {.right}` inside `::: row` are now ignored; use `::: row {right}` or `::: row {center}` for whole-row alignment, and `::: columns-N` for split left/right layouts.
 
+### Changed
+- Updated the editor and landing page examples to use the current columns, badges, navigation, icon, switch, and action-select syntax.
+- Updated the Claude skill references and syntax docs for compact nested containers, blank-line guidance, current dashboard examples, and icon-aware column titles.
+
 ### Fixed
 - Exposed `CORS_ALLOWED_ORIGINS` to the API app's nested Turbo build environment.
+- Fixed icon rendering in `::: column :icon: Title` opener titles.
+- Fixed logo navigation grouping so `[[ :logo: WireOps | *Dashboard* | Reports | :settings: Settings | [Profile] ]]` renders a single left-side brand with the remaining items/actions on the right.
 
 ## [0.2.1] - 2026-04-30
 
