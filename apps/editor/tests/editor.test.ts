@@ -51,6 +51,10 @@ const editorMocks = vi.hoisted(() => {
           positionColumn: 5,
         },
       ]),
+      getScrollTop: vi.fn(() => 0),
+      getScrollLeft: vi.fn(() => 0),
+      setScrollTop: vi.fn(),
+      setScrollLeft: vi.fn(),
       layout: vi.fn(),
     },
     create: vi.fn(() => state.editor),
@@ -253,6 +257,19 @@ describe("editor editor", () => {
     expect(result[0].positionLineNumber).toBe(5);
     // col 12 exceeds lineMaxColumn 20? No, 12 < 20 so stays 12
     expect(result[0].positionColumn).toBe(12);
+  });
+
+  it("setValuePreservingCursor restores scroll position after edit", async () => {
+    const { initEditor } = await import("../src/editor.js");
+
+    editorMocks.editor.getScrollTop.mockReturnValue(400);
+    editorMocks.editor.getScrollLeft.mockReturnValue(20);
+
+    const editor = initEditor({ container: {} as HTMLElement, onChange: vi.fn() });
+    editor.setValuePreservingCursor("Remote content");
+
+    expect(editorMocks.editor.setScrollTop).toHaveBeenCalledWith(400);
+    expect(editorMocks.editor.setScrollLeft).toHaveBeenCalledWith(20);
   });
 
   it("setValuePreservingCursor falls back to setValue when model is null", async () => {

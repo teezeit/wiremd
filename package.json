@@ -26,5 +26,10 @@
   "packageManager": "pnpm@9.7.1",
   "engines": {
     "node": ">=18.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "zod": "3.24.1"
+    }
   }
 }

@@ -123,12 +123,15 @@ export function initEditor(opts: {
       debouncedChange.cancel();
       const model = monacoEditor.getModel();
       if (model) {
-        const savedSelections = monacoEditor.getSelections() ?? [];
+        const savedSelections = monacoEditor.getSelections();
+        const scrollTop = monacoEditor.getScrollTop();
+        const scrollLeft = monacoEditor.getScrollLeft();
         const fullRange = model.getFullModelRange();
         model.pushEditOperations(
-          savedSelections,
+          savedSelections ?? [],
           [{ range: fullRange, text: v }],
           () => {
+            if (!savedSelections?.length) return null;
             const lineCount = model.getLineCount();
             return savedSelections.map((sel) => {
               const sl = Math.min(sel.selectionStartLineNumber, lineCount);
@@ -142,6 +145,9 @@ export function initEditor(opts: {
             });
           },
         );
+        // pushEditOperations may scroll to the new cursor position; restore the viewport.
+        monacoEditor.setScrollTop(scrollTop);
+        monacoEditor.setScrollLeft(scrollLeft);
       } else {
         monacoEditor.setValue(v);
       }
