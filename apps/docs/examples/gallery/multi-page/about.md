@@ -1,6 +1,6 @@
 # Multi-Page: About
 
-> **Use Case:** About page with team grid and story section, linked from the multi-page home.
+> **Use Case:** About page with team columns and story section, linked from the multi-page home.
 >
 > **Key Features:** Team profile cards, story card, alert, prev/next page navigation
 ::: demo
@@ -16,18 +16,15 @@ Write your UI, see it instantly — no design software required.
 
 ---
 ::: columns-3 card
-::: column
-### :user: Alice Chen
+::: column :user: Alice Chen
 Co-founder & CEO
 
 :::
-::: column
-### :user: Ben Müller
+::: column :user: Ben Müller
 Co-founder & CTO
 
 :::
-::: column
-### :user: Sara Kim
+::: column :user: Sara Kim
 Head of Design
 :::
 :::

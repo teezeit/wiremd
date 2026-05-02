@@ -68,13 +68,11 @@ import { renderToHTML, renderToReact, renderToTailwind } from '@eclectic-ai/wire
 ## Screen title
 
 ::: columns-3 card
-::: column
-### Feature A
+::: column Feature A
 Description
 
 :::
-::: column
-### Feature B
+::: column Feature B
 Description
 :::
 :::

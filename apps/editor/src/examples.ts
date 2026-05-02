@@ -198,21 +198,18 @@ Bio
 ---
 
 ::: columns-3 card
-::: column
-### ⚡ Lightning Fast
+::: column ⚡ Lightning Fast
 Write your UI in markdown and see it rendered instantly. No drag and drop needed.
 
 :::
-::: column
-### 🎨 Multiple Styles
+::: column 🎨 Multiple Styles
 Choose from Sketch, Clean, Material, Tailwind, Brutal, and more visual styles.
 
 <!-- Should this say "For Engineering Teams" with more specifics? @sara -->
 <!-- Agreed — mention CLI + VS Code explicitly. @tobias -->
 <!-- +1, updated copy sounds way stronger. @mike -->
 :::
-::: column
-### 🔧 Developer First
+::: column 🔧 Developer First
 CLI tool, VS Code extension, and npm package. Fits your existing workflow.
 
 :::

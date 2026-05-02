@@ -42,7 +42,7 @@ who are familiar with UX deliverables.
 ## material
 
 Google Material Design: elevation shadows, ripple-style buttons, Material color palette (blue
-primary, teal accent), Roboto font. Grid-based layout.
+primary, teal accent), Roboto font. Column-based layout.
 
 **Use when:** the product is built on Material Design or uses a Material component library,
 and you want the wireframe to feel native to that visual language.

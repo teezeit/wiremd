@@ -47,21 +47,19 @@ Place the comment **above** the `:::card` block to outline the entire card. A co
 :::
 :::
 
-## Annotating a whole grid column
+## Annotating a whole column
 
 Place the comment above the column heading to outline that column.
 
 ::: demo
 ::: columns-2
-::: column
-### Current design
+::: column Current design
 
 The existing layout. Works but feels dated.
 
 <!-- Needs a full rethink — too much whitespace. @sara -->
 :::
-::: column
-### Proposed design
+::: column Proposed design
 
 Tighter spacing, stronger hierarchy.
 

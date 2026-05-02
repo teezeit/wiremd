@@ -29,8 +29,7 @@ Award-winning creative agency specializing in branding, web design, and digital 
 
 ---
 ::: columns-3 card
-::: column
-### :art: Brand Strategy & Design
+::: column :art: Brand Strategy & Design
 We craft compelling brand identities that resonate with your audience and stand out in the market.
 
 **Services:**
@@ -43,8 +42,7 @@ We craft compelling brand identities that resonate with your audience and stand 
 [Learn More →]
 
 :::
-::: column
-### :laptop: Web Design & Development
+::: column :laptop: Web Design & Development
 Beautiful, performant websites built with the latest technologies and best practices.
 
 **Services:**
@@ -57,8 +55,7 @@ Beautiful, performant websites built with the latest technologies and best pract
 [Learn More →]
 
 :::
-::: column
-### :chart: Digital Marketing
+::: column :chart: Digital Marketing
 Data-driven marketing strategies that drive growth and measurable results.
 
 **Services:**
@@ -76,8 +73,7 @@ Data-driven marketing strategies that drive growth and measurable results.
 
 ## Featured Work
 ::: columns-2 card
-::: column
-### TechStart - Brand Redesign
+::: column TechStart - Brand Redesign
 ![Case Study](https://via.placeholder.com/600x400)
 
 **Branding • Web Design • Marketing**
@@ -92,8 +88,7 @@ Complete brand overhaul for B2B SaaS startup, resulting in 300% increase in lead
 [View Case Study →]
 
 :::
-::: column
-### EcoMarket - E-Commerce Platform
+::: column EcoMarket - E-Commerce Platform
 ![Case Study](https://via.placeholder.com/600x400)
 
 **UX/UI • Development • Strategy**
@@ -115,8 +110,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 
 ## Our Process
 ::: columns-4 card
-::: column
-### 1. Discovery
+::: column 1. Discovery
 **Week 1**
 
 - Kickoff meeting
@@ -125,8 +119,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 - Competitive audit
 
 :::
-::: column
-### 2. Strategy
+::: column 2. Strategy
 **Week 2-3**
 
 - Brand positioning
@@ -135,8 +128,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 - Content strategy
 
 :::
-::: column
-### 3. Design
+::: column 3. Design
 **Week 4-6**
 
 - Wireframing
@@ -145,8 +137,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 - User testing
 
 :::
-::: column
-### 4. Development
+::: column 4. Development
 **Week 7-10**
 
 - Front-end dev
@@ -161,23 +152,19 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 ## Why Choose Us?
 ::: card
 ::: columns-4 card
-::: column
-### 250+
+::: column 250+
 Projects Delivered
 
 :::
-::: column
-### 98%
+::: column 98%
 Client Satisfaction
 
 :::
-::: column
-### 50+
+::: column 50+
 Industry Awards
 
 :::
-::: column
-### 12yrs
+::: column 12yrs
 In Business
 :::
 :::
@@ -187,24 +174,21 @@ In Business
 
 ## Client Testimonials
 ::: columns-3 card
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"CreativeCo transformed our brand. Their strategic approach and creative execution exceeded all expectations."*
 
 **Sarah Johnson**
 CEO, TechStart Inc.
 
 :::
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"Best agency we've worked with. Professional, creative, and always delivers on time and on budget."*
 
 **Michael Chen**
 Marketing Director, GlobalCorp
 
 :::
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"They took the time to understand our business and created a website that truly represents our brand."*
 
 **Emily Rodriguez**
@@ -216,8 +200,7 @@ Founder, EcoMarket
 
 ## Our Team
 ::: columns-4 card
-::: column
-### John Doe
+::: column John Doe
 ![Team Member](https://via.placeholder.com/250x250)
 
 **Creative Director**
@@ -225,8 +208,7 @@ Founder, EcoMarket
 [LinkedIn] [Twitter]
 
 :::
-::: column
-### Jane Smith
+::: column Jane Smith
 ![Team Member](https://via.placeholder.com/250x250)
 
 **Strategy Lead**
@@ -234,8 +216,7 @@ Founder, EcoMarket
 [LinkedIn] [Twitter]
 
 :::
-::: column
-### Alex Johnson
+::: column Alex Johnson
 ![Team Member](https://via.placeholder.com/250x250)
 
 **Lead Developer**
@@ -243,8 +224,7 @@ Founder, EcoMarket
 [LinkedIn] [GitHub]
 
 :::
-::: column
-### Sarah Lee
+::: column Sarah Lee
 ![Team Member](https://via.placeholder.com/250x250)
 
 **UX Designer**
@@ -259,33 +239,27 @@ Founder, EcoMarket
 
 ## Recognition & Awards
 ::: columns-6 card
-::: column
-### Awwwards
+::: column Awwwards
 5x Site of the Day
 
 :::
-::: column
-### CSS Awards
+::: column CSS Awards
 3x Best Agency
 
 :::
-::: column
-### Webby Awards
+::: column Webby Awards
 2x Winner
 
 :::
-::: column
-### FWA
+::: column FWA
 10x Featured
 
 :::
-::: column
-### Dribbble
+::: column Dribbble
 Team of the Year
 
 :::
-::: column
-### Fast Company
+::: column Fast Company
 Innovation Award
 :::
 :::
@@ -294,8 +268,7 @@ Innovation Award
 
 ## Our Expertise
 ::: columns-3 card
-::: column
-### Design
+::: column Design
 - Figma
 - Adobe Creative Suite
 - Sketch
@@ -303,8 +276,7 @@ Innovation Award
 - After Effects
 
 :::
-::: column
-### Development
+::: column Development
 - React & Next.js
 - Vue & Nuxt
 - TypeScript
@@ -312,8 +284,7 @@ Innovation Award
 - Python/Django
 
 :::
-::: column
-### Marketing
+::: column Marketing
 - Google Analytics
 - SEMrush
 - HubSpot
@@ -337,8 +308,7 @@ We'd love to hear about your vision and explore how we can help bring it to life
 
 ## Get in Touch
 ::: columns-2
-::: column
-### Send Us a Message
+::: column Send Us a Message
 
 Name
 [_____________________________] {required:true}
@@ -392,8 +362,7 @@ Timeline
 [Send Message]* [Clear]
 
 :::
-::: column
-### Visit Our Studio
+::: column Visit Our Studio
 
 **CreativeCo HQ**
 
@@ -419,8 +388,7 @@ Sunday: Closed
 
 ## Latest from Our Blog
 ::: columns-3 card
-::: column
-### The Future of Web Design
+::: column The Future of Web Design
 ![Blog Post](https://via.placeholder.com/350x200)
 
 Exploring emerging trends and technologies shaping the future of digital experiences.
@@ -430,8 +398,7 @@ Exploring emerging trends and technologies shaping the future of digital experie
 [Read More →]
 
 :::
-::: column
-### Brand Strategy 101
+::: column Brand Strategy 101
 ![Blog Post](https://via.placeholder.com/350x200)
 
 Essential guide to building a brand that resonates with your target audience.
@@ -441,8 +408,7 @@ Essential guide to building a brand that resonates with your target audience.
 [Read More →]
 
 :::
-::: column
-### SEO Best Practices 2025
+::: column SEO Best Practices 2025
 ![Blog Post](https://via.placeholder.com/350x200)
 
 Latest strategies to improve your search rankings and organic traffic.
@@ -458,8 +424,7 @@ Latest strategies to improve your search rankings and organic traffic.
 ---
 ::: footer
 ::: columns-4 card
-::: column
-### Services
+::: column Services
 - Brand Strategy
 - Web Design
 - Development
@@ -468,8 +433,7 @@ Latest strategies to improve your search rankings and organic traffic.
 - Consulting
 
 :::
-::: column
-### Company
+::: column Company
 - About Us
 - Our Team
 - Careers
@@ -478,8 +442,7 @@ Latest strategies to improve your search rankings and organic traffic.
 - Pricing
 
 :::
-::: column
-### Resources
+::: column Resources
 - Blog
 - Newsletter
 - Design Tips
@@ -488,8 +451,7 @@ Latest strategies to improve your search rankings and organic traffic.
 - Downloads
 
 :::
-::: column
-### Contact
+::: column Contact
 - Get in Touch
 - Office Location
 - Careers

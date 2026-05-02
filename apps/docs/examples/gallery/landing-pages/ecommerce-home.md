@@ -25,40 +25,33 @@ Discover our latest styles for the season
 
 ---
 ::: columns-6 card
-::: column
-### :tshirt: Clothing
+::: column :tshirt: Clothing
 2,450 items
 
 :::
-::: column
-### :shoe: Footwear
+::: column :shoe: Footwear
 890 items
 
 :::
-::: column
-### :gem: Accessories
+::: column :gem: Accessories
 1,230 items
 
 :::
-::: column
-### :watch: Watches
+::: column :watch: Watches
 
 :::
-::: column
-### :briefcase: Bags
+::: column :briefcase: Bags
 560 items
 
 :::
-::: column
-### :glasses: Eyewear
+::: column :glasses: Eyewear
 280 items
 :::
 :::
 
 ---
 ::: columns-4 card
-::: column
-### Summer Dress
+::: column Summer Dress
 ![Product](https://via.placeholder.com/250x300)
 
 ~~$89.99~~ **$59.99**
@@ -68,8 +61,7 @@ Discover our latest styles for the season
 [Add to Cart]*
 
 :::
-::: column
-### Running Shoes
+::: column Running Shoes
 ![Product](https://via.placeholder.com/250x300)
 
 ~~$129.99~~ **$89.99**
@@ -79,8 +71,7 @@ Discover our latest styles for the season
 [Add to Cart]*
 
 :::
-::: column
-### Leather Wallet
+::: column Leather Wallet
 ![Product](https://via.placeholder.com/250x300)
 
 ~~$49.99~~ **$29.99**
@@ -90,8 +81,7 @@ Discover our latest styles for the season
 [Add to Cart]*
 
 :::
-::: column
-### Sunglasses
+::: column Sunglasses
 ![Product](https://via.placeholder.com/250x300)
 
 ~~$79.99~~ **$49.99**
@@ -108,8 +98,7 @@ Discover our latest styles for the season
 
 ## New Arrivals
 ::: columns-3 card
-::: column
-### Designer Handbag
+::: column Designer Handbag
 ![Product](https://via.placeholder.com/300x350)
 
 **$199.99**
@@ -121,8 +110,7 @@ Premium leather with gold hardware
 [Quick View] [Add to Cart]*
 
 :::
-::: column
-### Casual Sneakers
+::: column Casual Sneakers
 ![Product](https://via.placeholder.com/300x350)
 
 **$79.99**
@@ -134,8 +122,7 @@ Comfortable all-day wear
 [Quick View] [Add to Cart]*
 
 :::
-::: column
-### Smart Watch
+::: column Smart Watch
 ![Product](https://via.placeholder.com/300x350)
 
 **$299.99**
@@ -158,23 +145,19 @@ Fitness tracking & notifications
 
 ---
 ::: columns-4 card
-::: column
-### :truck: Free Shipping
+::: column :truck: Free Shipping
 On orders over $50
 
 :::
-::: column
-### :return: Easy Returns
+::: column :return: Easy Returns
 30-day return policy
 
 :::
-::: column
-### :shield: Secure Checkout
+::: column :shield: Secure Checkout
 SSL encrypted payment
 
 :::
-::: column
-### :support: 24/7 Support
+::: column :support: 24/7 Support
 Always here to help
 :::
 :::
@@ -183,24 +166,21 @@ Always here to help
 
 ## Customer Reviews
 ::: columns-3 card
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"Best online shopping experience! Fast shipping and quality products."*
 
 **Jennifer L.**
 Verified Buyer
 
 :::
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"Great prices and amazing customer service. Highly recommended!"*
 
 **Michael T.**
 Verified Buyer
 
 :::
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"Love the variety and ease of returns. My go-to store now."*
 
 **Sarah K.**
@@ -225,8 +205,7 @@ Verified Buyer
 
 ## Special Offers
 ::: columns-2 card
-::: column
-### :gift: Summer Sale
+::: column :gift: Summer Sale
 **Up to 50% Off**
 
 ![Promo Banner](https://via.placeholder.com/500x300)
@@ -236,8 +215,7 @@ Shop seasonal favorites at unbeatable prices
 [Shop Sale]*
 
 :::
-::: column
-### :email: New Customer Offer
+::: column :email: New Customer Offer
 **15% Off First Order**
 
 ![Promo Banner](https://via.placeholder.com/500x300)
@@ -281,26 +259,22 @@ Stay connected for daily inspiration
 
 ## Shop by Price
 ::: columns-4 card
-::: column
-### Under $25
+::: column Under $25
 1,234 items
 [Shop →]
 
 :::
-::: column
-### $25 - $50
+::: column $25 - $50
 2,456 items
 [Shop →]
 
 :::
-::: column
-### $50 - $100
+::: column $50 - $100
 1,890 items
 [Shop →]
 
 :::
-::: column
-### Over $100
+::: column Over $100
 890 items
 [Shop →]
 :::
@@ -330,8 +304,7 @@ Stay connected for daily inspiration
 ---
 ::: footer
 ::: columns-5 card
-::: column
-### Shop
+::: column Shop
 - Women
 - Men
 - Kids
@@ -339,8 +312,7 @@ Stay connected for daily inspiration
 - New Arrivals
 
 :::
-::: column
-### Customer Care
+::: column Customer Care
 - Contact Us
 - Track Order
 - Returns
@@ -348,8 +320,7 @@ Stay connected for daily inspiration
 - Size Guide
 
 :::
-::: column
-### About
+::: column About
 - Our Story
 - Careers
 - Press
@@ -357,8 +328,7 @@ Stay connected for daily inspiration
 - Store Locator
 
 :::
-::: column
-### Account
+::: column Account
 - Sign In
 - Register
 - Order History
@@ -366,8 +336,7 @@ Stay connected for daily inspiration
 - Gift Cards
 
 :::
-::: column
-### Legal
+::: column Legal
 - Privacy Policy
 - Terms of Service
 - Accessibility

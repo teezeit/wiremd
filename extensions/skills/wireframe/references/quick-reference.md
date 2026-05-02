@@ -150,22 +150,19 @@ When running `wiremd --serve`, clicking a button link navigates to and renders t
 
 The dev server (`--serve <port>`) redirects `/` to the entry file and renders any `.md` on demand — no build step needed between page navigations.
 
-## Grid Pattern
+## Columns Pattern
 
 ```markdown
 ::: columns-3 card
-::: column
-### Feature 1
+::: column Feature 1
 Description here
 
 :::
-::: column
-### Feature 2
+::: column Feature 2
 Description here
 
 :::
-::: column
-### Feature 3
+::: column Feature 3
 Description here
 
 :::
@@ -207,26 +204,22 @@ Password
 :::
 ```
 
-### Stats Grid
+### Stats Columns
 ```markdown
 ::: columns-4 card
-::: column
-### Users
+::: column Users
 10,000+
 
 :::
-::: column
-### Revenue
+::: column Revenue
 $45,231
 
 :::
-::: column
-### Orders
+::: column Orders
 1,234
 
 :::
-::: column
-### Growth
+::: column Growth
 +12.5%
 
 :::

@@ -41,32 +41,27 @@
 
 ---
 ::: columns-5 card
-::: column
-### Total Users
+::: column Total Users
 **24,567**
 +234 this week
 
 :::
-::: column
-### Active Sessions
+::: column Active Sessions
 **1,234**
 Current online
 
 :::
-::: column
-### Total Revenue
+::: column Total Revenue
 **$458,234**
 +12% this month
 
 :::
-::: column
-### Support Tickets
+::: column Support Tickets
 **89**
 23 pending
 
 :::
-::: column
-### Server Load
+::: column Server Load
 **67%**
 Normal
 :::
@@ -74,8 +69,7 @@ Normal
 
 ---
 ::: columns-2 card
-::: column
-### Latest Users
+::: column Latest Users
 
 | User | Email | Role | Status | Joined |
 |------|-------|------|--------|--------|
@@ -88,8 +82,7 @@ Normal
 [Manage Users →]
 
 :::
-::: column
-### Recent Orders
+::: column Recent Orders
 
 | Order | Customer | Amount | Status | Date |
 |-------|----------|--------|--------|------|
@@ -142,8 +135,7 @@ Showing 1-5 of 24,567 users
 
 ---
 ::: columns-2 card
-::: column
-### Published Content
+::: column Published Content
 
 | Type | Count | This Week |
 |------|-------|-----------|
@@ -155,8 +147,7 @@ Showing 1-5 of 24,567 users
 [Manage Content →]
 
 :::
-::: column
-### Draft Content
+::: column Draft Content
 
 **Pending Review:** 45
 **Scheduled:** 12
@@ -265,8 +256,7 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 ---
 ::: columns-2 card
-::: column
-### Database Stats
+::: column Database Stats
 
 **Total Records:** 1,234,567
 **Size:** 2.4 GB
@@ -281,8 +271,7 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 [Backup Now] [Optimize Database]
 
 :::
-::: column
-### Storage Usage
+::: column Storage Usage
 
 **Total Storage:** 100 GB
 **Used:** 67 GB (67%)
@@ -302,8 +291,7 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 ---
 ::: columns-3 card
-::: column
-### Open Tickets
+::: column Open Tickets
 **23** new
 
 Priority breakdown:
@@ -314,8 +302,7 @@ Priority breakdown:
 [View Tickets →]
 
 :::
-::: column
-### In Progress
+::: column In Progress
 **45** active
 
 Average response time:
@@ -324,8 +311,7 @@ Average response time:
 [Assign Tickets →]
 
 :::
-::: column
-### Resolved Today
+::: column Resolved Today
 **89** closed
 
 Customer satisfaction:
@@ -339,29 +325,25 @@ Customer satisfaction:
 
 ## Quick Actions
 ::: columns-4 card
-::: column
-### :user: Create User
+::: column :user: Create User
 Add new user account
 
 [+ New User]*
 
 :::
-::: column
-### :content: Add Content
+::: column :content: Add Content
 Create new post/page
 
 [+ New Content]*
 
 :::
-::: column
-### :mail: Send Email
+::: column :mail: Send Email
 Broadcast to users
 
 [Compose]*
 
 :::
-::: column
-### :download: Export Data
+::: column :download: Export Data
 Download reports
 
 [Export]*

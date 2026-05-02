@@ -223,8 +223,7 @@ A common real-world pattern — card with a header row and content:
 ::: card
 
 ::: columns-2
-::: column
-### Sprint: Q2 Onboarding
+::: column Sprint: Q2 Onboarding
 
 :::
 ::: column .right
@@ -258,16 +257,13 @@ Tabs can contain grids, rows, and any other containers:
 :::
 
 ::: columns-3 card
-::: column
-### :chart: Sessions
+::: column :chart: Sessions
 **163**
 :::
-::: column
-### :user: Active Users
+::: column :user: Active Users
 **42**
 :::
-::: column
-### :star: Avg Score
+::: column :star: Avg Score
 **87%**
 :::
 :::
@@ -362,7 +358,7 @@ $124,500
 :::
 ```
 
-**Grid of cards** (each item gets card styling — use for feature lists, channel breakdowns):
+**Columns of cards** (each item gets card styling — use for feature lists, channel breakdowns):
 ```markdown
 ::: columns-3 card
 ::: column :rocket: Organic
@@ -445,8 +441,7 @@ Left cell content with no heading.
 ### Column spans
 
 ```markdown
-::: column .span-2
-### Featured Item
+::: column Featured Item {.span-2}
 Spans two columns.
 :::
 ```
@@ -590,10 +585,10 @@ Use standard HTML comments to annotate any component. Comments appear in a **fix
 ```
 
 - Place the comment **above** what you want to annotate — it attaches to the next sibling element
-- Comment **above** a `:::card`, `:::grid-2`, `:::tabs`, etc. outlines the whole block; comment **inside** annotates the specific child that follows
+- Comment **above** a `:::card`, `:::columns-2`, `:::tabs`, etc. outlines the whole block; comment **inside** annotates the specific child that follows
 - Consecutive comments above the same element group into one thread card with dividers
 - Comments between `:::tab` blocks annotate the tab that follows
-- Comments before a grid/row column heading (e.g. `<!-- note -->\n### Col B`) annotate that column
+- Comments before a column or row item annotate that item
 - Multiline comments are supported: `<!--\nLine 1\nLine 2\n-->`
 - The **💬 Comments** button in the CLI toolbar / editor / VS Code toggles visibility
 - CLI static output: hidden by default; pass `--show-comments` to include them

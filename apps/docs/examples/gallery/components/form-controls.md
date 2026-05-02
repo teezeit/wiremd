@@ -231,8 +231,7 @@ Message
 ### Two-Column Form Layout
 ::: demo
 ::: columns-2
-::: column
-### Left Column
+::: column Left Column
 
 First Name
 [_____________________________] {required:true}
@@ -244,8 +243,7 @@ Phone
 [_____________________________] {type:tel}
 
 :::
-::: column
-### Right Column
+::: column Right Column
 
 Last Name
 [_____________________________] {required:true}
@@ -268,8 +266,7 @@ Country
 ::: card
 ### Create Account
 ::: columns-2
-::: column
-### Login Information
+::: column Login Information
 
 Email Address
 [_____________________________] {type:email required:true}
@@ -285,8 +282,7 @@ Confirm Password
 [********] {type:password required:true}
 
 :::
-::: column
-### Personal Information
+::: column Personal Information
 
 First Name
 [_____________________________] {required:true}

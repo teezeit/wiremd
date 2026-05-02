@@ -1,8 +1,8 @@
 # Card Layouts
 
-> **Use Case:** Showcase of card components and grid layouts for content organization.
+> **Use Case:** Showcase of card components and column layouts for content organization.
 >
-> **Key Features:** Basic cards, feature cards, pricing cards, profile cards, product cards, card grids
+> **Key Features:** Basic cards, feature cards, pricing cards, profile cards, product cards, card columns
 
 ## Card Component Showcase
 
@@ -60,26 +60,23 @@ Cards can include images, text, and buttons for rich content presentation.
 
 ## 2. Feature Cards
 
-### Three Column Feature Grid
+### Three Column Feature Layout
 
 ```markdown
 ::: columns-3 card
-::: column
-### :rocket: Fast Performance
+::: column :rocket: Fast Performance
 Lightning-quick loading times and optimized rendering for the best user experience.
 
 [Learn More →]
 
 :::
-::: column
-### :shield: Secure by Default
+::: column :shield: Secure by Default
 Enterprise-grade security with encryption, backups, and compliance certifications.
 
 [Learn More →]
 
 :::
-::: column
-### :gear: Highly Customizable
+::: column :gear: Highly Customizable
 Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
@@ -89,22 +86,19 @@ Flexible configuration options and extensive API for complete control.
 
 **Rendered:**
 ::: columns-3 card
-::: column
-### :rocket: Fast Performance
+::: column :rocket: Fast Performance
 Lightning-quick loading times and optimized rendering for the best user experience.
 
 [Learn More →]
 
 :::
-::: column
-### :shield: Secure by Default
+::: column :shield: Secure by Default
 Enterprise-grade security with encryption, backups, and compliance certifications.
 
 [Learn More →]
 
 :::
-::: column
-### :gear: Highly Customizable
+::: column :gear: Highly Customizable
 Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
@@ -119,8 +113,7 @@ Flexible configuration options and extensive API for complete control.
 
 ```markdown
 ::: columns-3 card
-::: column
-### Starter
+::: column Starter
 **$9** /month
 
 Perfect for individuals
@@ -133,8 +126,7 @@ Perfect for individuals
 [Start Free Trial]*
 
 :::
-::: column
-### Professional
+::: column Professional
 **$29** /month
 
 *Most Popular*
@@ -150,8 +142,7 @@ For growing teams
 [Start Free Trial]*
 
 :::
-::: column
-### Enterprise
+::: column Enterprise
 **Custom**
 
 For large organizations
@@ -169,8 +160,7 @@ For large organizations
 
 **Rendered:**
 ::: columns-3 card
-::: column
-### Starter
+::: column Starter
 **$9** /month
 
 Perfect for individuals
@@ -183,8 +173,7 @@ Perfect for individuals
 [Start Free Trial]*
 
 :::
-::: column
-### Professional
+::: column Professional
 **$29** /month
 
 *Most Popular*
@@ -200,8 +189,7 @@ For growing teams
 [Start Free Trial]*
 
 :::
-::: column
-### Enterprise
+::: column Enterprise
 **Custom**
 
 For large organizations
@@ -220,12 +208,11 @@ For large organizations
 
 ## 4. Product Cards
 
-### Product Grid
+### Product Columns
 
 ```markdown
 ::: columns-4 card
-::: column
-### Wireless Headphones
+::: column Wireless Headphones
 ![Product](https://via.placeholder.com/250x250)
 
 ~~$129.99~~ **$89.99**
@@ -235,8 +222,7 @@ For large organizations
 [Add to Cart]*
 
 :::
-::: column
-### Smart Watch
+::: column Smart Watch
 ![Product](https://via.placeholder.com/250x250)
 
 **$299.99**
@@ -246,8 +232,7 @@ For large organizations
 [Add to Cart]*
 
 :::
-::: column
-### Bluetooth Speaker
+::: column Bluetooth Speaker
 ![Product](https://via.placeholder.com/250x250)
 
 ~~$79.99~~ **$49.99**
@@ -257,8 +242,7 @@ For large organizations
 [Add to Cart]*
 
 :::
-::: column
-### Fitness Tracker
+::: column Fitness Tracker
 ![Product](https://via.placeholder.com/250x250)
 
 **$149.99**
@@ -272,8 +256,7 @@ For large organizations
 
 **Rendered:**
 ::: columns-4 card
-::: column
-### Wireless Headphones
+::: column Wireless Headphones
 ![Product](https://via.placeholder.com/250x250)
 
 ~~$129.99~~ **$89.99**
@@ -283,8 +266,7 @@ For large organizations
 [Add to Cart]*
 
 :::
-::: column
-### Smart Watch
+::: column Smart Watch
 ![Product](https://via.placeholder.com/250x250)
 
 **$299.99**
@@ -294,8 +276,7 @@ For large organizations
 [Add to Cart]*
 
 :::
-::: column
-### Bluetooth Speaker
+::: column Bluetooth Speaker
 ![Product](https://via.placeholder.com/250x250)
 
 ~~$79.99~~ **$49.99**
@@ -305,8 +286,7 @@ For large organizations
 [Add to Cart]*
 
 :::
-::: column
-### Fitness Tracker
+::: column Fitness Tracker
 ![Product](https://via.placeholder.com/250x250)
 
 **$149.99**
@@ -321,12 +301,11 @@ For large organizations
 
 ## 5. Profile/Team Cards
 
-### Team Member Grid
+### Team Member Columns
 
 ```markdown
 ::: columns-4 card
-::: column
-### Sarah Johnson
+::: column Sarah Johnson
 ![Profile](https://via.placeholder.com/200x200)
 
 **CEO & Founder**
@@ -336,8 +315,7 @@ For large organizations
 [LinkedIn] [Twitter] [[email protected]]
 
 :::
-::: column
-### Michael Chen
+::: column Michael Chen
 ![Profile](https://via.placeholder.com/200x200)
 
 **CTO**
@@ -347,8 +325,7 @@ For large organizations
 [LinkedIn] [GitHub] [[email protected]]
 
 :::
-::: column
-### Emma Rodriguez
+::: column Emma Rodriguez
 ![Profile](https://via.placeholder.com/200x200)
 
 **Head of Design**
@@ -358,8 +335,7 @@ For large organizations
 [LinkedIn] [Dribbble] [[email protected]]
 
 :::
-::: column
-### David Kim
+::: column David Kim
 ![Profile](https://via.placeholder.com/200x200)
 
 **Lead Developer**
@@ -373,8 +349,7 @@ For large organizations
 
 **Rendered:**
 ::: columns-4 card
-::: column
-### Sarah Johnson
+::: column Sarah Johnson
 ![Profile](https://via.placeholder.com/200x200)
 
 **CEO & Founder**
@@ -384,8 +359,7 @@ For large organizations
 [LinkedIn] [Twitter] [[email protected]]
 
 :::
-::: column
-### Michael Chen
+::: column Michael Chen
 ![Profile](https://via.placeholder.com/200x200)
 
 **CTO**
@@ -395,8 +369,7 @@ For large organizations
 [LinkedIn] [GitHub] [[email protected]]
 
 :::
-::: column
-### Emma Rodriguez
+::: column Emma Rodriguez
 ![Profile](https://via.placeholder.com/200x200)
 
 **Head of Design**
@@ -406,8 +379,7 @@ For large organizations
 [LinkedIn] [Dribbble] [[email protected]]
 
 :::
-::: column
-### David Kim
+::: column David Kim
 ![Profile](https://via.placeholder.com/200x200)
 
 **Lead Developer**
@@ -422,12 +394,11 @@ For large organizations
 
 ## 6. Blog/Article Cards
 
-### Blog Post Grid
+### Blog Post Columns
 
 ```markdown
 ::: columns-3 card
-::: column
-### Getting Started with Wireframing
+::: column Getting Started with Wireframing
 ![Blog Post](https://via.placeholder.com/350x200)
 
 Learn the fundamentals of wireframing and how to create effective designs quickly.
@@ -437,8 +408,7 @@ Learn the fundamentals of wireframing and how to create effective designs quickl
 [Read More →]
 
 :::
-::: column
-### 10 UI Design Principles
+::: column 10 UI Design Principles
 ![Blog Post](https://via.placeholder.com/350x200)
 
 Essential principles every designer should know for creating intuitive interfaces.
@@ -448,8 +418,7 @@ Essential principles every designer should know for creating intuitive interface
 [Read More →]
 
 :::
-::: column
-### Accessibility Best Practices
+::: column Accessibility Best Practices
 ![Blog Post](https://via.placeholder.com/350x200)
 
 Make your designs inclusive and accessible to all users with these proven techniques.
@@ -463,8 +432,7 @@ Make your designs inclusive and accessible to all users with these proven techni
 
 **Rendered:**
 ::: columns-3 card
-::: column
-### Getting Started with Wireframing
+::: column Getting Started with Wireframing
 ![Blog Post](https://via.placeholder.com/350x200)
 
 Learn the fundamentals of wireframing and how to create effective designs quickly.
@@ -474,8 +442,7 @@ Learn the fundamentals of wireframing and how to create effective designs quickl
 [Read More →]
 
 :::
-::: column
-### 10 UI Design Principles
+::: column 10 UI Design Principles
 ![Blog Post](https://via.placeholder.com/350x200)
 
 Essential principles every designer should know for creating intuitive interfaces.
@@ -485,8 +452,7 @@ Essential principles every designer should know for creating intuitive interface
 [Read More →]
 
 :::
-::: column
-### Accessibility Best Practices
+::: column Accessibility Best Practices
 ![Blog Post](https://via.placeholder.com/350x200)
 
 Make your designs inclusive and accessible to all users with these proven techniques.
@@ -505,24 +471,21 @@ Make your designs inclusive and accessible to all users with these proven techni
 
 ```markdown
 ::: columns-3 card
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"This product completely transformed how we work. Best decision we made this year!"*
 
 **Sarah Johnson**
 CEO, TechStart Inc.
 
 :::
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"Outstanding support and incredible features. Highly recommended for any team."*
 
 **Michael Chen**
 CTO, DataCorp
 
 :::
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"Easy to use, powerful features, and great value. We couldn't be happier."*
 
 **Emily Rodriguez**
@@ -533,24 +496,21 @@ Operations Director
 
 **Rendered:**
 ::: columns-3 card
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"This product completely transformed how we work. Best decision we made this year!"*
 
 **Sarah Johnson**
 CEO, TechStart Inc.
 
 :::
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"Outstanding support and incredible features. Highly recommended for any team."*
 
 **Michael Chen**
 CTO, DataCorp
 
 :::
-::: column
-### :star::star::star::star::star:
+::: column :star::star::star::star::star:
 *"Easy to use, powerful features, and great value. We couldn't be happier."*
 
 **Emily Rodriguez**
@@ -566,26 +526,22 @@ Operations Director
 
 ```markdown
 ::: columns-4 card
-::: column
-### Total Users
+::: column Total Users
 **124,567**
 :chart: +12.5% this month
 
 :::
-::: column
-### Revenue
+::: column Revenue
 **$458,234**
 :chart: +18.3% this month
 
 :::
-::: column
-### Conversion Rate
+::: column Conversion Rate
 **3.2%**
 :chart: +0.8% this month
 
 :::
-::: column
-### Customer Satisfaction
+::: column Customer Satisfaction
 **4.8** / 5.0
 :star::star::star::star::star:
 :::
@@ -594,26 +550,22 @@ Operations Director
 
 **Rendered:**
 ::: columns-4 card
-::: column
-### Total Users
+::: column Total Users
 **124,567**
 :chart: +12.5% this month
 
 :::
-::: column
-### Revenue
+::: column Revenue
 **$458,234**
 :chart: +18.3% this month
 
 :::
-::: column
-### Conversion Rate
+::: column Conversion Rate
 **3.2%**
 :chart: +0.8% this month
 
 :::
-::: column
-### Customer Satisfaction
+::: column Customer Satisfaction
 **4.8** / 5.0
 :star::star::star::star::star:
 :::
@@ -627,8 +579,7 @@ Operations Director
 
 ```markdown
 ::: columns-2 card
-::: column
-### Normal Card
+::: column Normal Card
 ::: card
 Regular card in default state
 
@@ -636,8 +587,7 @@ Regular card in default state
 :::
 
 :::
-::: column
-### Highlighted Card
+::: column Highlighted Card
 ::: card {.highlight}
 **Featured!**
 
@@ -651,8 +601,7 @@ This card has special emphasis
 
 **Rendered:**
 ::: columns-2 card
-::: column
-### Normal Card
+::: column Normal Card
 ::: card
 Regular card in default state
 
@@ -660,8 +609,7 @@ Regular card in default state
 :::
 
 :::
-::: column
-### Highlighted Card
+::: column Highlighted Card
 ::: card
 **Featured!**
 
@@ -784,8 +732,7 @@ Use `::: columns-N` without `card` when items are form fields, text columns, or 
 
 ```markdown
 ::: columns-2
-::: column
-### Your Details
+::: column Your Details
 Name
 [_____________________________]{required}
 
@@ -793,8 +740,7 @@ Email
 [_____________________________]{type:email required}
 
 :::
-::: column
-### Message
+::: column Message
 Subject
 [_____________________________]{required}
 
@@ -805,8 +751,7 @@ Subject
 
 **Rendered:**
 ::: columns-2
-::: column
-### Your Details
+::: column Your Details
 Name
 [_____________________________]{required}
 
@@ -814,8 +759,7 @@ Email
 [_____________________________]{type:email required}
 
 :::
-::: column
-### Message
+::: column Message
 Subject
 [_____________________________]{required}
 
@@ -831,18 +775,15 @@ Add `card` to apply card borders and backgrounds to each item.
 
 ```markdown
 ::: columns-3 card
-::: column
-### :rocket: Fast
+::: column :rocket: Fast
 Renders in milliseconds.
 
 :::
-::: column
-### :shield: Secure
+::: column :shield: Secure
 Enterprise-grade by default.
 
 :::
-::: column
-### :gear: Flexible
+::: column :gear: Flexible
 Works with any stack.
 :::
 :::
@@ -850,18 +791,15 @@ Works with any stack.
 
 **Rendered:**
 ::: columns-3 card
-::: column
-### :rocket: Fast
+::: column :rocket: Fast
 Renders in milliseconds.
 
 :::
-::: column
-### :shield: Secure
+::: column :shield: Secure
 Enterprise-grade by default.
 
 :::
-::: column
-### :gear: Flexible
+::: column :gear: Flexible
 Works with any stack.
 :::
 :::
@@ -874,13 +812,11 @@ Add `.span-N` to a `::: column` opener to span multiple columns.
 
 ```markdown
 ::: columns-3 card
-::: column
-### Starter
+::: column Starter
 $9/month — up to 3 projects.
 
 :::
-::: column .span-2
-### Pro
+::: column Pro {.span-2}
 $29/month — unlimited projects, priority support, spans two columns.
 :::
 :::
@@ -888,13 +824,11 @@ $29/month — unlimited projects, priority support, spans two columns.
 
 **Rendered:**
 ::: columns-3 card
-::: column
-### Starter
+::: column Starter
 $9/month — up to 3 projects.
 
 :::
-::: column .span-2
-### Pro
+::: column Pro {.span-2}
 $29/month — unlimited projects, priority support, spans two columns.
 :::
 :::
@@ -908,7 +842,7 @@ $29/month — unlimited projects, priority support, spans two columns.
 
 1. **Consistent Spacing**
    - Maintain uniform padding
-   - Use consistent card heights in grids
+   - Use consistent card heights in columns
    - Balance content density
 
 2. **Clear Hierarchy**
@@ -917,7 +851,7 @@ $29/month — unlimited projects, priority support, spans two columns.
    - Group related information
 
 3. **Responsive Design**
-   - Use grid layouts (.grid-2, .grid-3, etc.)
+   - Use column layouts (`columns-2`, `columns-3`, etc.)
    - Cards should stack on mobile
    - Images should scale properly
 

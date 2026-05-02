@@ -17,26 +17,22 @@
 
 ---
 ::: columns-4 card
-::: column
-### Total Revenue
+::: column Total Revenue
 **$124,567**
 :chart: +18.5% vs last period
 
 :::
-::: column
-### Orders
+::: column Orders
 **2,456**
 :chart: +12.3% vs last period
 
 :::
-::: column
-### Avg Order Value
+::: column Avg Order Value
 **$50.72**
 :chart: +5.2% vs last period
 
 :::
-::: column
-### Conversion Rate
+::: column Conversion Rate
 **3.2%**
 :chart: +0.8% vs last period
 :::
@@ -44,8 +40,7 @@
 
 ---
 ::: columns-2 card
-::: column
-### Revenue Chart (30 Days)
+::: column Revenue Chart (30 Days)
 
 ![Line Chart](https://via.placeholder.com/600x300)
 
@@ -57,8 +52,7 @@
 [View Detailed Analytics →]
 
 :::
-::: column
-### Sales by Category
+::: column Sales by Category
 
 ![Pie Chart](https://via.placeholder.com/600x300)
 
@@ -94,8 +88,7 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 
 ---
 ::: columns-2 card
-::: column
-### Low Stock Alerts
+::: column Low Stock Alerts
 ::: alert warning
 ⚠️ **15 products** are running low on stock
 :::
@@ -111,8 +104,7 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 [Restock Now →] [View Full Inventory →]
 
 :::
-::: column
-### Top Selling Products
+::: column Top Selling Products
 
 | Product | Sales | Revenue | Stock |
 |---------|-------|---------|-------|
@@ -128,8 +120,7 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 
 ---
 ::: columns-3 card
-::: column
-### Total Customers
+::: column Total Customers
 **8,234**
 +456 new this month
 
@@ -139,8 +130,7 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 - VIP: 234 (3%)
 
 :::
-::: column
-### Lifetime Value
+::: column Lifetime Value
 **$487.23**
 Average per customer
 
@@ -150,8 +140,7 @@ Average per customer
 - New: $142 avg
 
 :::
-::: column
-### Customer Satisfaction
+::: column Customer Satisfaction
 **4.8** / 5.0
 Based on 1,234 reviews
 
@@ -168,36 +157,31 @@ Based on 1,234 reviews
 
 ## Order Status Overview
 ::: columns-5 card
-::: column
-### Pending
+::: column Pending
 **45** orders
 
 [View →]
 
 :::
-::: column
-### Processing
+::: column Processing
 **123** orders
 
 [View →]
 
 :::
-::: column
-### Shipped
+::: column Shipped
 **234** orders
 
 [Track →]
 
 :::
-::: column
-### Delivered
+::: column Delivered
 **1,789** orders
 
 [Archive →]
 
 :::
-::: column
-### Cancelled/Returned
+::: column Cancelled/Returned
 **23** orders
 
 [Review →]
@@ -224,8 +208,7 @@ Based on 1,234 reviews
 
 ---
 ::: columns-2 card
-::: column
-### Active Campaigns
+::: column Active Campaigns
 
 **Email Campaign: Spring Sale**
 - Sent: 10,000
@@ -247,8 +230,7 @@ Based on 1,234 reviews
 [Manage Ads →]
 
 :::
-::: column
-### Discount Codes
+::: column Discount Codes
 
 | Code | Uses | Revenue | Active |
 |------|------|---------|--------|
@@ -293,8 +275,7 @@ Based on 1,234 reviews
 
 ---
 ::: columns-2 card
-::: column
-### Shipping Methods
+::: column Shipping Methods
 
 | Method | Orders | Avg Cost | Delivery |
 |--------|--------|----------|----------|
@@ -304,8 +285,7 @@ Based on 1,234 reviews
 | Free Shipping | 677 | $0.00 | 5-7 days |
 
 :::
-::: column
-### Fulfillment Stats
+::: column Fulfillment Stats
 
 **Orders to Ship:** 123
 **Average Processing Time:** 1.2 days
@@ -346,32 +326,28 @@ Based on 1,234 reviews
 
 ## Customer Support
 ::: columns-4 card
-::: column
-### Open Tickets
+::: column Open Tickets
 **23**
 🔴 5 urgent
 
 [View →]
 
 :::
-::: column
-### Avg Response
+::: column Avg Response
 **2.5 hrs**
 Target: 4hrs
 
 [Improve →]
 
 :::
-::: column
-### Resolution Rate
+::: column Resolution Rate
 **94.5%**
 First contact
 
 [Details →]
 
 :::
-::: column
-### Satisfaction
+::: column Satisfaction
 **4.7** / 5.0
 1,234 ratings
 

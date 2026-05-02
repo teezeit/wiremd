@@ -12,18 +12,15 @@ button links — the foundation for any multi-page wiremd prototype.
 :::
 
 ::: columns-3 card
-::: column
-### :rocket: Fast
+::: column :rocket: Fast
 From idea to prototype in minutes.
 
 :::
-::: column
-### :shield: Reliable
+::: column :shield: Reliable
 Plain Markdown — version it, diff it, review it in a PR.
 
 :::
-::: column
-### :gear: Flexible
+::: column :gear: Flexible
 Swap styles with a single flag.
 
 :::

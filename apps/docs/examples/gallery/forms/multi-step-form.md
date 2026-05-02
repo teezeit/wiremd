@@ -75,8 +75,7 @@ Preferred Contact
 
 ---
 ::: columns-2
-::: column
-### Home Address
+::: column Home Address
 
 Street Address
 [_____________________________] {required:true}
@@ -102,8 +101,7 @@ Country
 [United States...v]
 
 :::
-::: column
-### Billing Address
+::: column Billing Address
 
 - [ ] Same as home address
 

@@ -179,18 +179,15 @@ Email
 **Input:**
 ```markdown
 ::: columns-3 card
-::: column
-### :rocket: Fast
+::: column :rocket: Fast
 Quick rendering
 
 :::
-::: column
-### :shield: Secure
+::: column :shield: Secure
 Enterprise security
 
 :::
-::: column
-### :zap: Powerful
+::: column :zap: Powerful
 Advanced features
 :::
 :::

@@ -17,18 +17,15 @@ Place a `[[ ... ]]` navbar above your content. No wrapper container needed — t
 Build faster with our platform.
 
 ::: columns-3 card
-::: column
-### Feature One
+::: column Feature One
 Description of the first feature goes here.
 
 :::
-::: column
-### Feature Two
+::: column Feature Two
 Description of the second feature goes here.
 
 :::
-::: column
-### Feature Three
+::: column Feature Three
 Description of the third feature goes here.
 
 :::
@@ -102,18 +99,15 @@ Welcome back! Here's what's happening.
 ## Overview
 
 ::: columns-3 card
-::: column
-### Tasks Done
+::: column Tasks Done
 **48** this week
 
 :::
-::: column
-### In Progress
+::: column In Progress
 **12** open
 
 :::
-::: column
-### Upcoming
+::: column Upcoming
 **5** due today
 
 :::
@@ -148,20 +142,17 @@ The most common dashboard pattern: combine a top navbar with a `::: sidebar` bel
 ## Dashboard
 
 ::: columns-3 card
-::: column
-### Revenue
+::: column Revenue
 **$12,400**
 +8% this month
 
 :::
-::: column
-### Users
+::: column Users
 **1,240**
 +23 this week
 
 :::
-::: column
-### Open Tasks
+::: column Open Tasks
 **34**
 5 due today
 

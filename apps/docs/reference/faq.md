@@ -244,13 +244,11 @@ Each column needs an explicit `::: column` child inside the `::: columns-N` cont
 
 ```markdown
 ::: columns-3 card
-::: column
-### Column 1
+::: column Column 1
 Content
 
 :::
-::: column
-### Column 2
+::: column Column 2
 Content
 :::
 :::

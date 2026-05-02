@@ -8,8 +8,7 @@
 Useful for multi-column forms or content — no visual borders on items.
 ::: demo
 ::: columns-2
-::: column
-### Billing address
+::: column Billing address
 First name
 [_____________________________]{required}
 
@@ -17,8 +16,7 @@ Last name
 [_____________________________]{required}
 
 :::
-::: column
-### Shipping address
+::: column Shipping address
 First name
 [_____________________________]{required}
 
@@ -33,18 +31,15 @@ Last name
 Add `card` after the column count to give each item card styling.
 ::: demo
 ::: columns-3 card
-::: column
-### Fast
+::: column Fast
 Renders in milliseconds. Works in any editor.
 
 :::
-::: column
-### Simple
+::: column Simple
 Plain Markdown syntax. No new tools to learn.
 
 :::
-::: column
-### Flexible
+::: column Flexible
 7 styles. Outputs HTML, React, JSON, or Tailwind.
 :::
 :::
@@ -55,13 +50,11 @@ Plain Markdown syntax. No new tools to learn.
 Add `.span-N` to a `::: column` opener to span multiple columns.
 ::: demo
 ::: columns-3 card
-::: column .span-1
-### Starter
+::: column Starter {.span-1}
 $9 / month
 
 :::
-::: column .span-2
-### Pro
+::: column Pro {.span-2}
 $29 / month — most popular, spans two columns
 :::
 :::
@@ -70,16 +63,14 @@ $29 / month — most popular, spans two columns
 ## Two-column Layout
 ::: demo
 ::: columns-2 card
-::: column
-### What you get
+::: column What you get
 - Unlimited wireframes
 - 7 visual styles
 - VS Code extension
 - CLI tool
 
 :::
-::: column
-### What you don't need
+::: column What you don't need
 - Figma licence
 - Design skills
 - Build step

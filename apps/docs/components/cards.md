@@ -25,8 +25,7 @@ Add `card` after `::: columns-N` to apply card styling to each column item.
 
 ::: demo
 ::: columns-3 card
-::: column
-### Free
+::: column Free
 $0 / month
 - 1 user
 - 5 projects
@@ -34,8 +33,7 @@ $0 / month
 [Get Started]
 
 :::
-::: column
-### Pro
+::: column Pro
 $12 / month
 - 10 users
 - Unlimited projects
@@ -43,8 +41,7 @@ $12 / month
 [Start Trial]*
 
 :::
-::: column
-### Enterprise
+::: column Enterprise
 Custom pricing
 - Unlimited users
 - SLA support

@@ -26,7 +26,7 @@ Page 1 of 12   [← Prev] [Next →]
 
 ## Split Layouts
 
-Use a grid when one side needs to stay left while another side aligns right.
+Use columns when one side needs to stay left while another side aligns right.
 ::: demo
 ::: columns-2
 ::: column

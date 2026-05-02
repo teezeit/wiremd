@@ -240,8 +240,7 @@ Containers can be nested — the parser handles them recursively:
 ```markdown
 ::: card
 ::: columns-2
-::: column
-### Sprint: Q2 Onboarding
+::: column Sprint: Q2 Onboarding
 
 :::
 ::: column .right
@@ -372,8 +371,7 @@ Add `.right`, `.left`, or `.center` to a `::: column` opener to align that colum
 ### Column spans
 
 ```markdown
-::: column .span-2
-### Featured Item
+::: column Featured Item {.span-2}
 Spans two columns.
 :::
 

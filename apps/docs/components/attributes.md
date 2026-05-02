@@ -48,13 +48,11 @@ The most popular choice for growing teams.
 Use `.span-N` on `::: column` openers inside columns:
 ::: demo
 ::: columns-3 card
-::: column .span-1
-### Starter
+::: column Starter {.span-1}
 $9/mo
 
 :::
-::: column .span-2
-### Pro
+::: column Pro {.span-2}
 $29/mo — spans two columns
 :::
 :::
@@ -86,8 +84,7 @@ $29/mo — spans two columns
 [Input]{.primary type:submit disabled}
 ::: container {.classname}
 ## Heading {.muted}
-::: column .span-2
-### Column item
+::: column Column item {.span-2}
 :::
 ```
 

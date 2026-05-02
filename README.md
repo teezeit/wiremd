@@ -54,18 +54,15 @@ Create a `features.md` file:
 
 ```markdown
 ::: columns-3 card
-::: column
-### :rocket: Fast
+::: column :rocket: Fast
 Lightning quick performance
 
 :::
-::: column
-### :shield: Secure
+::: column :shield: Secure
 Bank-level security
 
 :::
-::: column
-### :gear: Flexible
+::: column :gear: Flexible
 Fully customizable
 
 :::

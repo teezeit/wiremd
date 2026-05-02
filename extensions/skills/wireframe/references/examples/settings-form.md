@@ -16,8 +16,7 @@
 :::
 
 ::: columns-2
-::: column
-### Profile Settings
+::: column Profile Settings
 
 :::
 ::: column .right

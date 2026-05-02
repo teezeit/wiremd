@@ -5,8 +5,7 @@
 ![[_sidebar-nav.md]]
 
 ::: columns-2
-::: column
-### Monthly Reports
+::: column Monthly Reports
 
 :::
 ::: column .right
@@ -24,20 +23,17 @@ Data last updated 2 hours ago. [Refresh Now]
 ---
 
 ::: columns-3
-::: column
-### Total Revenue
+::: column Total Revenue
 **$124,500**
 ↑ 8% vs last period
 
 :::
-::: column
-### Active Users
+::: column Active Users
 **3,842**
 ↑ 12% vs last period
 
 :::
-::: column
-### Conversion Rate
+::: column Conversion Rate
 **4.2%**
 ↓ 0.3% vs last period
 
@@ -47,22 +43,19 @@ Data last updated 2 hours ago. [Refresh Now]
 ---
 
 ::: columns-3 card
-::: column
-### :rocket: Organic Search
+::: column :rocket: Organic Search
 **42%** of traffic
 
 `+12%` vs last month
 
 :::
-::: column
-### :chart: Paid Ads
+::: column :chart: Paid Ads
 **31%** of traffic
 
 `-3%` vs last month
 
 :::
-::: column
-### :bell: Email
+::: column :bell: Email
 **27%** of traffic
 
 `+8%` vs last month
@@ -73,8 +66,7 @@ Data last updated 2 hours ago. [Refresh Now]
 ---
 
 ::: columns-2
-::: column
-### Recent Transactions
+::: column Recent Transactions
 
 :::
 ::: column .right

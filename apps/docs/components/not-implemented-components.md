@@ -5,38 +5,32 @@ Components not yet in wiremd, with proposed syntax aligned to wiremd's design pr
 
 > **Already supported but easy to miss:** file upload (`[_____]{type:file}`), color input (`[_____]{type:color}`).
 ::: columns-3 card
-::: column
-### UI Components
+::: column UI Components
 Accordion
 [[Jump →](#ui-components)]
 
 :::
-::: column
-### Inputs
+::: column Inputs
 Switch, Slider, Rating, Autocomplete, Toggle Button Group, Chip Input
 [[Jump →](#inputs)]
 
 :::
-::: column
-### Feedback
+::: column Feedback
 Snackbar, Linear Progress, Skeleton, Tooltip, Backdrop
 [[Jump →](#feedback)]
 
 :::
-::: column
-### Navigation
+::: column Navigation
 Drawer, Menu, Pagination, Stepper, Bottom Navigation, Tree View
 [[Jump →](#navigation)]
 
 :::
-::: column
-### Data Display
+::: column Data Display
 Avatar, Chip, Timeline, DataGrid
 [[Jump →](#data-display)]
 
 :::
-::: column
-### Surfaces
+::: column Surfaces
 Paper, Speed Dial
 [[Jump →](#surfaces)]
 :::
@@ -46,8 +40,7 @@ Paper, Speed Dial
 
 ## UI Components
 ::: columns-2
-::: column
-### Accordion
+::: column Accordion
 
 Collapsible content sections. Used for FAQs, settings panels, and expandable detail rows.
 
@@ -71,8 +64,7 @@ Each `###` heading inside `::: accordion` would become a collapsible item.
 
 ## Inputs
 ::: columns-2
-::: column
-### Switch / Toggle
+::: column Switch / Toggle
 
 On/off toggle. Appears in settings panels, feature flags, and forms.
 
@@ -84,8 +76,7 @@ Extends input `{type:...}` pattern — consistent with how `{type:email}` and `{
 ```
 
 :::
-::: column
-### Slider / Range
+::: column Slider / Range
 
 Drag-to-select a value within a range. Used for price filters, volume, brightness.
 
@@ -97,8 +88,7 @@ ASCII track with thumb position — visually shows where the value sits:
 ```
 
 :::
-::: column
-### Rating
+::: column Rating
 
 Star rating. Used in reviews, feedback forms, dashboards.
 
@@ -110,8 +100,7 @@ Unicode stars inside brackets — follows the same pattern as emoji in buttons (
 ```
 
 :::
-::: column
-### Autocomplete
+::: column Autocomplete
 
 Text input with a filtered dropdown of suggestions. Common in search, address, and tagging flows.
 
@@ -125,8 +114,7 @@ Same as `[Select___v]` + list — the `v` suffix and following list already expr
 ```
 
 :::
-::: column
-### Toggle Button Group
+::: column Toggle Button Group
 
 Segmented control. Used for view-mode switches (list/grid), alignment, and filters.
 
@@ -139,8 +127,7 @@ A `::: row` with a class modifier — row already creates a flex container, `.to
 ```
 
 :::
-::: column
-### Chip Input
+::: column Chip Input
 
 Multi-value input where each value renders as a removable chip. Used for tags, recipients, filters.
 
@@ -156,8 +143,7 @@ Extends the badge `((...))` syntax — chips are badges with a `×` and the trai
 
 ## Feedback
 ::: columns-2
-::: column
-### Snackbar / Toast
+::: column Snackbar / Toast
 
 Temporary bottom-screen notification. Used for success/error confirmations after actions.
 
@@ -173,8 +159,7 @@ Something went wrong. [Retry]
 ```
 
 :::
-::: column
-### Linear Progress
+::: column Linear Progress
 
 Horizontal progress bar. Used for upload progress, form completion, loading states.
 
@@ -186,8 +171,7 @@ ASCII track is visually intuitive — `=` characters show completion, `-` shows 
 ```
 
 :::
-::: column
-### Skeleton
+::: column Skeleton
 
 Shimmer placeholders that match the shape of real content. Used during async loading.
 
@@ -203,8 +187,7 @@ __________________________________________
 ```
 
 :::
-::: column
-### Tooltip
+::: column Tooltip
 
 A small label that appears on hover. Describes icons, truncated text, and disabled elements.
 
@@ -217,8 +200,7 @@ Attribute on any existing element — follows the `{key:value}` progressive enha
 ```
 
 :::
-::: column
-### Backdrop
+::: column Backdrop
 
 Dimmed full-screen overlay behind modals and drawers. Currently implied by `:::modal` but not independently expressible.
 
@@ -240,8 +222,7 @@ Are you sure?
 
 ## Navigation
 ::: columns-2
-::: column
-### Drawer
+::: column Drawer
 
 Slide-in side panel for secondary navigation or detail views. Common in mobile and dashboard layouts.
 
@@ -256,8 +237,7 @@ New container type with positional class modifier — mirrors how `::: sidebar` 
 ```
 
 :::
-::: column
-### Menu
+::: column Menu
 
 Dropdown context menu — distinct from `[Select___v]`. Used for action menus, kebab menus, right-click menus.
 
@@ -271,8 +251,7 @@ Icon or button + following list — mirrors the dropdown pattern (element + list
 ```
 
 :::
-::: column
-### Pagination
+::: column Pagination
 
 Page-navigation controls. Used in tables, search results, feeds.
 
@@ -284,8 +263,7 @@ Button group — `[< Prev]` and `[Next >]` parse as plain buttons (no URL), `*` 
 ```
 
 :::
-::: column
-### Stepper
+::: column Stepper
 
 Multi-step progress indicator. Used in checkout flows, onboarding, multi-page forms.
 
@@ -300,8 +278,7 @@ New container using `###` items.
 ```
 
 :::
-::: column
-### Bottom Navigation
+::: column Bottom Navigation
 
 Mobile tab bar fixed to the bottom. Used in mobile-first apps.
 
@@ -317,8 +294,7 @@ New container type — button links with icons follow the existing `[[:icon: Lab
 ```
 
 :::
-::: column
-### Tree View
+::: column Tree View
 
 Collapsible hierarchical list. Used in file browsers, org charts, nested category navigation.
 
@@ -341,8 +317,7 @@ Container wrapping native Markdown nested lists — no new syntax for content, j
 
 ## Data Display
 ::: columns-2
-::: column
-### Avatar / AvatarGroup
+::: column Avatar / AvatarGroup
 
 User photo or initials placeholder. Used in comments, lists, headers, and assignments.
 
@@ -355,8 +330,7 @@ Extends image syntax — `![alt](src)` already works; avatar is an image with a 
 ```
 
 :::
-::: column
-### Chip
+::: column Chip
 
 Compact, optionally removable label. Distinct from badge — chips are interactive and can be dismissed. Used for tags, filters, selections.
 
@@ -368,8 +342,7 @@ Extends badge `((...))` syntax — static chip is a badge with `.chip` class; re
 ```
 
 :::
-::: column
-### Timeline
+::: column Timeline
 
 Vertical sequence of events with connectors. Used in activity feeds, changelogs, order tracking.
 
@@ -389,8 +362,7 @@ Deploy to staging
 ```
 
 :::
-::: column
-### DataGrid
+::: column DataGrid
 
 Table with sort/filter/row-select state indicators. Basic tables already work; DataGrid adds interactive markers.
 
@@ -409,8 +381,7 @@ Extends native Markdown table syntax — sort arrows and checkboxes are rendered
 
 ## Surfaces
 ::: columns-2
-::: column
-### Paper
+::: column Paper
 
 A plain elevated surface with shadow — no semantic type, used as a base for custom compositions.
 
@@ -423,8 +394,7 @@ Any content here
 ```
 
 :::
-::: column
-### Speed Dial
+::: column Speed Dial
 
 Floating action button that expands into a set of actions. Used in mobile and canvas UIs.
 

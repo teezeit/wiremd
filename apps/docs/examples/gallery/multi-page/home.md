@@ -2,7 +2,7 @@
 
 > **Use Case:** Home page of a multi-page wiremd app demonstrating cross-page navigation with button links.
 >
-> **Key Features:** Nav with active state, hero, feature grid, table, page links
+> **Key Features:** Nav with active state, hero, feature columns, table, page links
 ::: demo
 
 [[ :logo: MyApp | *Home* | [About](./about.md) | [Contact](./contact.md) ]]
@@ -17,18 +17,15 @@ The fastest way to prototype multi-page apps in Markdown.
 [[Get Started](./about.md)]* [[See Features](./about.md)]
 :::
 ::: columns-3 card
-::: column
-### :rocket: Fast
+::: column :rocket: Fast
 From idea to prototype in minutes, not hours.
 
 :::
-::: column
-### :shield: Reliable
+::: column :shield: Reliable
 Battle-tested across thousands of real projects.
 
 :::
-::: column
-### :gear: Flexible
+::: column :gear: Flexible
 Works with any workflow, any team size.
 :::
 :::
@@ -41,7 +38,7 @@ Works with any workflow, any team size.
 |---------|--------|---------|
 | Multi-file navigation | Released | v0.1.5 |
 | Button links | Released | v0.1.5 |
-| Grid card modifier | Released | v0.1.4 |
+| Column card modifier | Released | v0.1.4 |
 
 ---
 

@@ -17,26 +17,22 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 ::: columns-4 card
-::: column
-### Total Visitors
+::: column Total Visitors
 **458,234**
 :chart: +12.5% vs last period
 
 :::
-::: column
-### Page Views
+::: column Page Views
 **1,234,567**
 :chart: +8.3% vs last period
 
 :::
-::: column
-### Bounce Rate
+::: column Bounce Rate
 **42.3%**
 :chart: -3.2% vs last period
 
 :::
-::: column
-### Avg. Session
+::: column Avg. Session
 **3m 24s**
 :chart: +15.7% vs last period
 :::
@@ -44,8 +40,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 ::: columns-2 card
-::: column
-### Visitors Over Time
+::: column Visitors Over Time
 
 ![Line Chart](https://via.placeholder.com/600x300)
 
@@ -58,8 +53,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 [View Detailed Report →]
 
 :::
-::: column
-### Traffic Sources
+::: column Traffic Sources
 
 ![Pie Chart](https://via.placeholder.com/600x300)
 
@@ -101,8 +95,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 ::: columns-2 card
-::: column
-### Top Countries
+::: column Top Countries
 
 | Country | Visitors | Sessions | Conversion |
 |---------|----------|----------|------------|
@@ -115,8 +108,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 [View Full Report →]
 
 :::
-::: column
-### Top Cities
+::: column Top Cities
 
 | City | Visitors | Revenue |
 |------|----------|---------|
@@ -130,8 +122,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 ::: columns-2 card
-::: column
-### Device Types
+::: column Device Types
 
 ![Bar Chart](https://via.placeholder.com/500x250)
 
@@ -140,8 +131,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 - 📱 Tablet: 10% (45,823 visitors)
 
 :::
-::: column
-### Browser Distribution
+::: column Browser Distribution
 
 | Browser | Users | Percentage |
 |---------|-------|------------|
@@ -173,24 +163,21 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 ::: columns-3 card
-::: column
-### Step 1: Landing
+::: column Step 1: Landing
 **100,000** visitors
 100%
 
 [↓ 75%]
 
 :::
-::: column
-### Step 2: Engaged
+::: column Step 2: Engaged
 **75,000** visitors
 75%
 
 [↓ 40%]
 
 :::
-::: column
-### Step 3: Converted
+::: column Step 3: Converted
 **30,000** visitors
 30%
 :::
@@ -204,29 +191,25 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ## Goals & Events
 ::: columns-4 card
-::: column
-### Newsletter Signups
+::: column Newsletter Signups
 **8,234**
 Target: 10,000
 [######____] 82%
 
 :::
-::: column
-### Product Purchases
+::: column Product Purchases
 **2,456**
 Target: 3,000
 [######____] 82%
 
 :::
-::: column
-### Free Trial Starts
+::: column Free Trial Starts
 **5,678**
 Target: 5,000
 [##########] 114%
 
 :::
-::: column
-### Contact Forms
+::: column Contact Forms
 **1,234**
 Target: 2,000
 [#####_____] 62%

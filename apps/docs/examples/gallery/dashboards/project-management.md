@@ -47,28 +47,24 @@
 
 ---
 ::: columns-4 card
-::: column
-### Total Tasks
+::: column Total Tasks
 **48** tasks
 
 Sprint 12
 
 :::
-::: column
-### Completed
+::: column Completed
 **32** tasks
 [###############___] 67%
 
 :::
-::: column
-### In Progress
+::: column In Progress
 **12** tasks
 
 4 team members
 
 :::
-::: column
-### Blocked
+::: column Blocked
 **4** tasks
 
 Needs attention
@@ -219,8 +215,7 @@ Needs attention
 
 ---
 ::: columns-3 card
-::: column
-### Task Completion
+::: column Task Completion
 
 **This Sprint:**
 - @alex: 8 tasks
@@ -232,8 +227,7 @@ Needs attention
 ![Bar Chart](https://via.placeholder.com/350x200)
 
 :::
-::: column
-### Time Tracking
+::: column Time Tracking
 
 **Hours This Week:**
 - @alex: 32h
@@ -245,8 +239,7 @@ Needs attention
 **Avg: 30h/week**
 
 :::
-::: column
-### Velocity Trend
+::: column Velocity Trend
 
 **Last 5 Sprints:**
 - Sprint 8: 42 pts
@@ -336,8 +329,7 @@ I can help with the Redis setup if needed.
 
 ## Milestones & Deadlines
 ::: columns-3 card
-::: column
-### Milestone 1: Alpha Release ✅
+::: column Milestone 1: Alpha Release ✅
 **Completed:** Mar 1, 2025
 
 - User authentication
@@ -347,8 +339,7 @@ I can help with the Redis setup if needed.
 [View Details →]
 
 :::
-::: column
-### Milestone 2: Beta Release 🔄
+::: column Milestone 2: Beta Release 🔄
 **Due:** Mar 25, 2025 (8 days)
 
 - Advanced features
@@ -358,8 +349,7 @@ I can help with the Redis setup if needed.
 **Progress:** [###########___] 67%
 
 :::
-::: column
-### Milestone 3: Production Release
+::: column Milestone 3: Production Release
 **Due:** Apr 15, 2025 (29 days)
 
 - Final testing
@@ -433,8 +423,7 @@ I can help with the Redis setup if needed.
 
 ## Team Members
 ::: columns-5 card
-::: column
-### Jane Doe
+::: column Jane Doe
 ![Avatar](https://via.placeholder.com/100)
 
 **Product Owner**
@@ -443,8 +432,7 @@ I can help with the Redis setup if needed.
 [:email:] [:chat:]
 
 :::
-::: column
-### Alex Chen
+::: column Alex Chen
 ![Avatar](https://via.placeholder.com/100)
 
 **Tech Lead**
@@ -453,8 +441,7 @@ I can help with the Redis setup if needed.
 [:email:] [:chat:]
 
 :::
-::: column
-### Sarah Kim
+::: column Sarah Kim
 ![Avatar](https://via.placeholder.com/100)
 
 **UI/UX Designer**
@@ -463,8 +450,7 @@ I can help with the Redis setup if needed.
 [:email:] [:chat:]
 
 :::
-::: column
-### Mike Wilson
+::: column Mike Wilson
 ![Avatar](https://via.placeholder.com/100)
 
 **Backend Dev**
@@ -473,8 +459,7 @@ I can help with the Redis setup if needed.
 [:email:] [:chat:]
 
 :::
-::: column
-### Emma Davis
+::: column Emma Davis
 ![Avatar](https://via.placeholder.com/100)
 
 **QA Engineer**
@@ -488,29 +473,25 @@ I can help with the Redis setup if needed.
 
 ## Reports & Analytics
 ::: columns-4 card
-::: column
-### Completed Story Points
+::: column Completed Story Points
 **46** / 50 points
 
 92% complete
 
 :::
-::: column
-### Avg Cycle Time
+::: column Avg Cycle Time
 **3.2** days
 
 Target: 4 days
 
 :::
-::: column
-### Code Review Time
+::: column Code Review Time
 **4.5** hours
 
 Target: 8 hours
 
 :::
-::: column
-### Bug Fix Rate
+::: column Bug Fix Rate
 **95%**
 
 Same sprint resolution

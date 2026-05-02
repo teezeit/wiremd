@@ -2,7 +2,7 @@
 
 > **Use Case:** Personal portfolio for designers, developers, photographers, or creative professionals.
 >
-> **Key Features:** Hero introduction, project gallery, skills showcase, contact form, responsive grid
+> **Key Features:** Hero introduction, project gallery, skills showcase, contact form, responsive columns
 ::: demo
 
 [[ Jane Doe | *Work* | About | Contact ]]
@@ -26,8 +26,7 @@ I design beautiful, functional digital experiences that users love.
 
 ## Featured Work
 ::: columns-2 card
-::: column
-### E-Commerce Redesign
+::: column E-Commerce Redesign
 ![Project Screenshot](https://via.placeholder.com/500x350)
 
 **Mobile App Design** • 2024
@@ -39,8 +38,7 @@ Redesigned the shopping experience for 2M+ users, increasing conversion by 35%.
 [View Case Study →]
 
 :::
-::: column
-### SaaS Dashboard
+::: column SaaS Dashboard
 ![Project Screenshot](https://via.placeholder.com/500x350)
 
 **Web Application** • 2024
@@ -52,8 +50,7 @@ Analytics platform for B2B customers with real-time data visualization.
 [View Live Site →]
 
 :::
-::: column
-### Brand Identity
+::: column Brand Identity
 ![Project Screenshot](https://via.placeholder.com/500x350)
 
 **Branding & Marketing** • 2023
@@ -65,8 +62,7 @@ Complete brand identity for sustainable fashion startup including logo, guidelin
 [View Portfolio →]
 
 :::
-::: column
-### Mobile Banking App
+::: column Mobile Banking App
 ![Project Screenshot](https://via.placeholder.com/500x350)
 
 **Fintech Product** • 2023
@@ -98,8 +94,7 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 
 ## Skills & Expertise
 ::: columns-3 card
-::: column
-### UI/UX Design
+::: column UI/UX Design
 - User Research
 - Wireframing
 - Prototyping
@@ -109,8 +104,7 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 **Tools:** Figma, Sketch, Adobe XD
 
 :::
-::: column
-### Visual Design
+::: column Visual Design
 - Typography
 - Color Theory
 - Iconography
@@ -120,8 +114,7 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 **Tools:** Illustrator, Photoshop
 
 :::
-::: column
-### Development
+::: column Development
 - HTML/CSS
 - JavaScript
 - React/Vue
@@ -164,26 +157,22 @@ I'm a product designer with 8+ years of experience creating digital experiences 
 
 ## Recognition & Awards
 ::: columns-4 card
-::: column
-### Awwwards
+::: column Awwwards
 3x Site of the Day
 2x Mobile Excellence
 
 :::
-::: column
-### App Store
+::: column App Store
 5 Featured Apps
 4.8 Average Rating
 
 :::
-::: column
-### Dribbble
+::: column Dribbble
 Top 1% Designer
 50K+ Followers
 
 :::
-::: column
-### Speaking
+::: column Speaking
 10+ Conferences
 TEDx Speaker
 :::
@@ -236,22 +225,19 @@ Message
 ---
 ::: footer
 ::: columns-3 card
-::: column
-### Work
+::: column Work
 - [Portfolio](https://janedoe.design)
 - [Dribbble](https://dribbble.com/janedoe)
 - [Behance](https://behance.net/janedoe)
 
 :::
-::: column
-### Social
+::: column Social
 - [Twitter](https://twitter.com/janedoe)
 - [LinkedIn](https://linkedin.com/in/janedoe)
 - [Instagram](https://instagram.com/janedoe)
 
 :::
-::: column
-### Contact
+::: column Contact
 - [[email protected]](mailto:[email protected])
 - [+1 (555) 123-4567](tel:+15551234567)
 - San Francisco, CA

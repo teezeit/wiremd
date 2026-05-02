@@ -3,8 +3,7 @@
 [[ Home > Detail ]]
 
 ::: columns-2
-::: column
-### Launch Plan
+::: column Launch Plan
 
 :::
 ::: column .right

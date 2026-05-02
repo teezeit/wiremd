@@ -152,32 +152,28 @@ Email
 ::: demo
 ::: footer
 ::: columns-4 card
-::: column
-### Product
+::: column Product
 - Features
 - Pricing
 - Changelog
 - Roadmap
 
 :::
-::: column
-### Resources
+::: column Resources
 - Documentation
 - Tutorials
 - Blog
 - API Reference
 
 :::
-::: column
-### Company
+::: column Company
 - About
 - Careers
 - Press
 - Partners
 
 :::
-::: column
-### Legal
+::: column Legal
 - Privacy Policy
 - Terms of Service
 - Cookie Policy

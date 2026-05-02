@@ -15,8 +15,7 @@ Over 1 million items ready to ship
 
 ---
 ::: columns-4
-::: column
-### Main Search
+::: column Main Search
 
 Search products
 [Enter keywords...___________] {type:search}
@@ -24,8 +23,7 @@ Search products
 [Search]*
 
 :::
-::: column
-### Category
+::: column Category
 
 Product Type
 [All Categories...v]
@@ -37,8 +35,7 @@ Product Type
 - Toys & Games
 
 :::
-::: column
-### Price Range
+::: column Price Range
 
 Min Price
 [$___] {type:number min:0}
@@ -49,8 +46,7 @@ Max Price
 [Apply]
 
 :::
-::: column
-### More Filters
+::: column More Filters
 
 Condition
 - [x] New
