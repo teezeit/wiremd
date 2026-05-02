@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "env": ["DATABASE_URL"]
+      "env": ["DATABASE_URL", "CORS_ALLOWED_ORIGINS"]
     }
   }
 }
