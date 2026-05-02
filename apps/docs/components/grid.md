@@ -1,6 +1,5 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Grid
 
@@ -9,7 +8,6 @@
 ## Layout Grid (no card chrome)
 
 Useful for multi-column forms or content — no visual borders on items.
-
 ::: demo
 ::: grid-2
 ### Billing address
@@ -25,15 +23,12 @@ First name
 
 Last name
 [_____________________________]{required}
-
 :::
-
 :::
 
 ## Card Grid
 
 Add `card` after the column count to give each item card styling.
-
 ::: demo
 ::: grid-3 card
 ### Fast
@@ -44,15 +39,12 @@ Plain Markdown syntax. No new tools to learn.
 
 ### Flexible
 7 styles. Outputs HTML, React, JSON, or Tailwind.
-
 :::
-
 :::
 
 ## Column Spanning
 
 Add `{.col-span-N}` to a `###` heading to span multiple columns.
-
 ::: demo
 ::: grid-3 card
 ### Starter {.col-span-1}
@@ -60,13 +52,10 @@ $9 / month
 
 ### Pro {.col-span-2}
 $29 / month — most popular, spans two columns
-
 :::
-
 :::
 
 ## Two-column Grid
-
 ::: demo
 ::: grid-2 card
 ### What you get
@@ -79,15 +68,12 @@ $29 / month — most popular, spans two columns
 - Figma licence
 - Design skills
 - Build step
-
 :::
-
 :::
 
 ## Alignment
 
 Add `{.left}`, `{.right}`, or `{.center}` to a `###` heading to align its column. The heading text can be empty — it just defines the column boundary and alignment. Useful for action bars: filters on the left, primary action on the right.
-
 ::: demo
 ::: grid-2
 ###
@@ -97,9 +83,7 @@ Add `{.left}`, `{.right}`, or `{.center}` to a `###` heading to align its column
 ### {.right}
 
 [+ New Sprint]*
-
 :::
-
 :::
 
 ## Syntax
@@ -115,7 +99,5 @@ Add `{.left}`, `{.right}`, or `{.center}` to a `###` heading to align its column
 ### {.left}                    push to left edge
 ### {.center}                  center
 ```
-
 :::
-
 :::

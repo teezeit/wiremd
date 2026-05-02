@@ -39,7 +39,6 @@ Place the comment **above** the `:::card` block to outline the entire card. A co
 
 :::
 :::
-
 ::: demo
 ::: card
 ### Pro Plan

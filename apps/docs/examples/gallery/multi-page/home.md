@@ -3,13 +3,11 @@
 > **Use Case:** Home page of a multi-page wiremd app demonstrating cross-page navigation with button links.
 >
 > **Key Features:** Nav with active state, hero, feature grid, table, page links
-
 ::: demo
 
 [[ :logo: MyApp | *Home* | [About](./about.md) | [Contact](./contact.md) ]]
 
 ---
-
 ::: hero
 
 # Welcome to MyApp
@@ -17,9 +15,7 @@
 The fastest way to prototype multi-page apps in Markdown.
 
 [[Get Started](./about.md)]* [[See Features](./about.md)]
-
 :::
-
 ::: grid-3 card
 
 ### :rocket: Fast
@@ -30,7 +26,6 @@ Battle-tested across thousands of real projects.
 
 ### :gear: Flexible
 Works with any workflow, any team size.
-
 :::
 
 ---
@@ -46,5 +41,4 @@ Works with any workflow, any team size.
 ---
 
 [About →](./about.md)
-
 :::

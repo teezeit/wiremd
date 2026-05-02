@@ -3,13 +3,11 @@
 > **Use Case:** Personal portfolio for designers, developers, photographers, or creative professionals.
 >
 > **Key Features:** Hero introduction, project gallery, skills showcase, contact form, responsive grid
-
 ::: demo
 
 [[ Jane Doe | *Work* | About | Contact ]]
 
 ---
-
 ::: hero
 # Hi, I'm Jane Doe
 
@@ -18,7 +16,6 @@
 I design beautiful, functional digital experiences that users love.
 
 [View My Work ↓] [Download Resume] [[email protected]]
-
 :::
 
 ---
@@ -28,7 +25,6 @@ I design beautiful, functional digital experiences that users love.
 ---
 
 ## Featured Work
-
 ::: grid-2 card
 
 ### E-Commerce Redesign
@@ -74,7 +70,6 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 **Skills:** iOS, Swift, Accessibility, Security
 
 [View Case Study →]
-
 :::
 
 ---
@@ -95,7 +90,6 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 ---
 
 ## Skills & Expertise
-
 ::: grid-3 card
 
 ### UI/UX Design
@@ -124,7 +118,6 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 - Responsive Design
 
 **Tools:** VS Code, Git, Tailwind
-
 :::
 
 ---
@@ -136,7 +129,6 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 ---
 
 ## About Me
-
 ::: card
 
 ### My Story
@@ -154,13 +146,11 @@ I'm a product designer with 8+ years of experience creating digital experiences 
 - ✈️ Traveling to experience different cultures
 - 📚 Reading about psychology and human behavior
 - 🎨 Teaching design workshops for beginners
-
 :::
 
 ---
 
 ## Recognition & Awards
-
 ::: grid-4 card
 
 ### Awwwards
@@ -178,26 +168,22 @@ Top 1% Designer
 ### Speaking
 10+ Conferences
 TEDx Speaker
-
 :::
 
 ---
 
 ## Let's Work Together
-
 ::: hero
 # Have a Project in Mind?
 
 I'm currently available for freelance work and new opportunities.
 
 [Get in Touch]* [Schedule Call]
-
 :::
 
 ---
 
 ## Contact Me
-
 ::: card
 
 ### Send a Message
@@ -226,13 +212,10 @@ Message
 [Tell me about your project...] {rows:6 required:true}
 
 [Send Message]* [Clear]
-
 :::
 
 ---
-
 ::: footer
-
 ::: grid-3 card
 
 ### Work
@@ -249,13 +232,10 @@ Message
 - [[email protected]](mailto:[email protected])
 - [+1 (555) 123-4567](tel:+15551234567)
 - San Francisco, CA
-
 :::
 
 © 2025 Jane Doe. All rights reserved.
-
 :::
-
 :::
 
 ---

@@ -5,7 +5,6 @@ Use `::: demo` to show wiremd syntax side-by-side with its rendered output. Writ
 ---
 
 ## Form Components
-
 ::: demo
 
 ## Login Form
@@ -20,13 +19,11 @@ Password
 
 [Sign In]*
 [Forgot Password?]
-
 :::
 
 ---
 
 ## Buttons
-
 ::: demo
 [Primary]*
 [Secondary]
@@ -37,7 +34,6 @@ Password
 ---
 
 ## Inputs
-
 ::: demo
 Name
 [_____________________________]
@@ -53,13 +49,11 @@ Country
 - United States
 - United Kingdom
 - Germany
-
 :::
 
 ---
 
 ## Badges & Status
-
 ::: demo
 |New|{.primary} |Beta|{.warning} |Deprecated|{.error} |Stable|{.success}
 :::
@@ -67,7 +61,6 @@ Country
 ---
 
 ## Navigation
-
 ::: demo
 [[ Logo | Dashboard | Users | Settings | [Logout] ]]
 :::
@@ -75,9 +68,7 @@ Country
 ---
 
 ## Cards (Grid)
-
 ::: demo
-
 ::: grid-3 card
 
 ### Free
@@ -97,19 +88,14 @@ Custom
 - Unlimited users
 - SLA support
 [Contact Sales]
-
 :::
-
 :::
 
 ---
 
 ## Tabs
-
 ::: demo
-
 ::: tabs
-
 ::: tab Profile
 Name
 [_____________________________]
@@ -119,24 +105,18 @@ Bio
 
 [Save Changes]*
 :::
-
 ::: tab Security
 [Change Password]
 [Enable 2FA]
 :::
-
 :::
-
 :::
 
 ---
 
 ## Alert States
-
 ::: demo
-
 ::: alert
 Payment method saved successfully.
 :::
-
 :::

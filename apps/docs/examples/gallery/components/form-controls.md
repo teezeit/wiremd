@@ -9,7 +9,6 @@
 ## 1. Text Inputs
 
 ### Basic Text Inputs
-
 ::: demo
 Username
 [_____________________________]
@@ -25,7 +24,6 @@ Confirm Password
 :::
 
 ### Input Width Variations
-
 ::: demo
 Zip Code
 [_____]
@@ -38,7 +36,6 @@ Full Name
 :::
 
 ### Specialized Input Types
-
 ::: demo
 Website URL
 [https://___________] {type:url}
@@ -64,7 +61,6 @@ Search
 ## 2. Textarea
 
 ### Multi-line Text Areas
-
 ::: demo
 Short Comment
 [Enter your comment...] {rows:3}
@@ -81,14 +77,12 @@ Code Snippet
 ## 3. Checkboxes
 
 ### Single Checkbox
-
 ::: demo
 - [x] I agree to the Terms of Service
 - [ ] Subscribe to newsletter
 :::
 
 ### Checkbox Groups
-
 ::: demo
 Select your interests:
 - [x] Web Development
@@ -104,7 +98,6 @@ Select your interests:
 ## 4. Radio Buttons
 
 ### Basic Radio Group
-
 ::: demo
 Account Type:
 - (*) Personal
@@ -113,7 +106,6 @@ Account Type:
 :::
 
 ### Radio with Descriptions
-
 ::: demo
 Subscription Plan:
 - (*) Free - Basic features for individuals
@@ -127,7 +119,6 @@ Subscription Plan:
 ## 5. Select Dropdowns
 
 ### Basic Select
-
 ::: demo
 Country
 [Select country...v]
@@ -139,7 +130,6 @@ Country
 :::
 
 ### Multiple Selects
-
 ::: demo
 Skills (Select multiple)
 [Choose skills...v]
@@ -163,7 +153,6 @@ Time Zone
 ## 6. Buttons
 
 ### Button Types
-
 ::: demo
 [Default Button]
 
@@ -173,7 +162,6 @@ Time Zone
 :::
 
 ### Button Groups
-
 ::: demo
 [Save] [Cancel] [Reset]
 
@@ -187,7 +175,6 @@ Time Zone
 ## 7. Input States
 
 ### Required Fields
-
 ::: demo
 Full Name
 [_____________________________] {required:true}
@@ -197,7 +184,6 @@ Email
 :::
 
 ### Disabled Fields
-
 ::: demo
 Username (Cannot be changed)
 [johndoe___________] {state:disabled}
@@ -207,7 +193,6 @@ Email (Verified)
 :::
 
 ### Error States
-
 ::: demo
 Invalid Email
 [not-an-email___________] {state:error}
@@ -223,7 +208,6 @@ Password Too Short
 ## 8. Form Layouts
 
 ### Vertical Form (Default)
-
 ::: demo
 ::: card
 ### Contact Form
@@ -245,7 +229,6 @@ Message
 :::
 
 ### Two-Column Form Layout
-
 ::: demo
 ::: grid-2
 
@@ -270,7 +253,6 @@ Date of Birth
 
 Country
 [Select country...v]
-
 :::
 :::
 
@@ -279,11 +261,9 @@ Country
 ## 9. Complex Form Example
 
 ### Complete Registration Form
-
 ::: demo
 ::: card
 ### Create Account
-
 ::: grid-2
 
 ### Login Information
@@ -314,7 +294,6 @@ Phone Number
 
 Date of Birth
 [_____________________________] {type:date}
-
 :::
 
 ---
@@ -360,7 +339,6 @@ Newsletter Preferences
 - [ ] I want to receive marketing emails
 
 [Create Account]* [Cancel]
-
 :::
 :::
 
@@ -369,7 +347,6 @@ Newsletter Preferences
 ## 10. Form Validation & Help Text
 
 ### Input with Helper Text
-
 ::: demo
 Email Address
 [_____________________________] {type:email required:true}
@@ -383,7 +360,6 @@ Password
 ---
 
 ## Best Practices
-
 ::: card
 
 ### Form Control Design Guidelines
@@ -429,7 +405,6 @@ Password
    - Use appropriate input types for mobile keyboards
    - Consider single-column layouts
    - Test on actual devices
-
 :::
 
 ---

@@ -475,7 +475,6 @@ Try these examples in your browser:
 - [**Parse and Render Example**](https://stackblitz.com/edit/wiremd-parse-example) - Parse markdown and render to HTML
 - [**AST Manipulation**](https://stackblitz.com/edit/wiremd-ast-manipulation) - Modify the AST programmatically
 - [**Validation Example**](https://stackblitz.com/edit/wiremd-validation) - Validate wiremd documents
-
 ::: tip
 You can fork these examples and experiment with your own wiremd syntax!
 :::

@@ -3,11 +3,9 @@
 > **Use Case:** Application administration dashboard for managing users, content, and system settings.
 >
 > **Key Features:** User management, CRUD operations, permissions, system stats, activity logs
-
 ::: demo
 
 [[ :logo: AdminHub | *Dashboard* | Users | Content | Settings | :bell: (3) | :user: John Doe ]]
-
 ::: sidebar
 ### Main Menu
 - :home: **Dashboard**
@@ -37,13 +35,11 @@
 [[ Dashboard > Admin Panel ]]
 
 ---
-
 ::: alert warning
 ⚠️ **Scheduled Maintenance:** System will be down for 30 minutes on Sunday 3am EST. [View Details →]
 :::
 
 ---
-
 ::: grid-5 card
 
 ### Total Users
@@ -65,11 +61,9 @@ Current online
 ### Server Load
 **67%**
 Normal
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Latest Users
@@ -95,13 +89,11 @@ Normal
 | #12341 | Charlie Kim | $178.50 | Completed | 8h ago |
 
 [View All Orders →]
-
 :::
 
 ---
 
 ## User Management
-
 ::: card
 
 ### User Actions
@@ -118,7 +110,6 @@ Search Users
 
 **Filters:**
 Role: [All Roles...v] | Status: [All...v] | Date: [Last 30 days...v]
-
 :::
 
 ---
@@ -138,7 +129,6 @@ Showing 1-5 of 24,567 users
 [← Previous] [1] [2] [3] ... [4913] [Next →]
 
 ---
-
 ::: grid-2 card
 
 ### Published Content
@@ -159,13 +149,11 @@ Showing 1-5 of 24,567 users
 **Auto-saved:** 8
 
 [Review Drafts →]
-
 :::
 
 ---
 
 ## System Settings
-
 ::: card
 
 ### General Settings
@@ -236,13 +224,11 @@ From Email
 [[email protected]___________] {type:email}
 
 [Test Connection] [Save Settings]*
-
 :::
 
 ---
 
 ## Activity Log
-
 ::: card
 
 ### Recent System Events
@@ -260,11 +246,9 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 | 30m ago | Failed Login | unknown | 192.168.1.100 | Invalid credentials |
 
 [Export Log] [Clear Old Logs]
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Database Stats
@@ -296,11 +280,9 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 - Other: 2 GB (3%)
 
 [Cleanup Storage]
-
 :::
 
 ---
-
 ::: grid-3 card
 
 ### Open Tickets
@@ -328,13 +310,11 @@ Customer satisfaction:
 **4.8** / 5.0
 
 [View Reports →]
-
 :::
 
 ---
 
 ## Quick Actions
-
 ::: grid-4 card
 
 ### :user: Create User
@@ -356,13 +336,11 @@ Broadcast to users
 Download reports
 
 [Export]*
-
 :::
 
 ---
 
 ## Performance Metrics
-
 ::: card
 
 ### Server Performance (Last Hour)
@@ -390,15 +368,12 @@ Download reports
 ![API Chart](https://via.placeholder.com/600x200)
 
 [View API Dashboard →]
-
 :::
 
 ---
-
 ::: footer
 **System Version:** 2.5.0 • **Uptime:** 45 days • **Last Deploy:** 3 days ago • [Documentation] • [Support] • [Changelog]
 :::
-
 :::
 
 ---

@@ -3,13 +3,11 @@
 > **Use Case:** Mobile or web application marketing page with download buttons and features.
 >
 > **Key Features:** App screenshots, feature highlights, download CTAs, social proof, testimonials
-
 ::: demo
 
 [[ :mobile: TaskMaster | Features | Pricing | Support | [Login] | [Download]* ]]
 
 ---
-
 ::: hero
 # Your Personal Productivity Powerhouse
 
@@ -20,7 +18,6 @@ Stay organized, focused, and on top of your tasks with the #1 rated productivity
 :star::star::star::star::star: **4.9** • 500K+ Reviews • Featured by Apple & Google
 
 ![App Screenshots](https://via.placeholder.com/800x500)
-
 :::
 
 ---
@@ -30,7 +27,6 @@ Stay organized, focused, and on top of your tasks with the #1 rated productivity
 [[ :apple: App Store Featured | :android: Google Play Editors' Choice | :producthunt: Product Hunt #1 | :techcrunch: TechCrunch | :verge: The Verge ]]
 
 ---
-
 ::: grid-3 card
 
 ### :check: Smart Task Management
@@ -59,13 +55,11 @@ End-to-end encryption keeps your data safe and private.
 
 ### :palette: Customizable
 Themes, tags, and custom views let you personalize your experience.
-
 :::
 
 ---
 
 ## See It in Action
-
 ::: card
 
 ![App Interface Screenshot](https://via.placeholder.com/700x400)
@@ -82,13 +76,11 @@ TaskMaster combines elegant design with powerful productivity features. Manage y
 - ✅ Offline mode with sync when online
 
 [Watch Video Demo →]
-
 :::
 
 ---
 
 ## Loved by Millions
-
 ::: grid-2 card
 
 ### :star::star::star::star::star:
@@ -114,11 +106,9 @@ TaskMaster combines elegant design with powerful productivity features. Manage y
 
 **Emma Johnson** • Designer
 *Twitter*
-
 :::
 
 ---
-
 ::: grid-4 card
 
 ### 5M+
@@ -132,11 +122,9 @@ Countries
 
 ### 99.9%
 Uptime
-
 :::
 
 ---
-
 ::: grid-3 card
 
 ### Free
@@ -181,13 +169,11 @@ For businesses
 - SLA guarantee
 
 [Contact Sales]*
-
 :::
 
 ---
 
 ## Download Now
-
 ::: hero
 # Available on All Your Devices
 
@@ -196,13 +182,11 @@ For businesses
 [[ [Download iOS]* | [Download Android]* | [Web App] | [macOS] | [Windows] ]]
 
 **Works seamlessly across all platforms**
-
 :::
 
 ---
 
 ## Frequently Asked Questions
-
 ::: card
 
 ### Is TaskMaster really free?
@@ -228,7 +212,6 @@ Yes. We use end-to-end encryption and never sell your data. See our [privacy pol
 ### Can I cancel anytime?
 
 Yes, cancel anytime from your account settings. No questions asked.
-
 :::
 
 [View All FAQs →]
@@ -236,7 +219,6 @@ Yes, cancel anytime from your account settings. No questions asked.
 ---
 
 ## Ready to Get Organized?
-
 ::: hero
 # Start Being More Productive Today
 
@@ -245,13 +227,10 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 [Download for Free]* [Watch Demo]
 
 **No credit card required • Works offline • Cancel anytime**
-
 :::
 
 ---
-
 ::: footer
-
 ::: grid-4 card
 
 ### Product
@@ -281,7 +260,6 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 - Security
 - Licenses
 - Cookies
-
 :::
 
 ---
@@ -289,9 +267,7 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 [[ :twitter: Follow Us | :facebook: Like Us | :instagram: @taskmaster | :youtube: Subscribe ]]
 
 © 2025 TaskMaster Inc. Made with ❤️ in San Francisco
-
 :::
-
 :::
 
 ---

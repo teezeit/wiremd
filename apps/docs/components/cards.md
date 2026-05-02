@@ -184,7 +184,6 @@ Could not connect to the server. Check your connection and try again.
 ::: empty-state
 ::: loading-state
 ::: error-state
-
 ::: grid-3 card    card grid
 ::: grid-2         layout grid (no card chrome)
 ```

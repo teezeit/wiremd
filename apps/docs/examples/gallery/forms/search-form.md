@@ -3,20 +3,17 @@
 > **Use Case:** Advanced search interface for e-commerce, job boards, real estate, or content platforms.
 >
 > **Key Features:** Search input, filters, checkboxes, range inputs, date pickers, instant results
-
 ::: demo
 
 [[ :logo: SearchHub | Home | Categories | Deals | [Sign In] | [Cart (3)] ]]
 
 ---
-
 ::: hero
 # Find What You're Looking For
 Over 1 million items ready to ship
 :::
 
 ---
-
 ::: grid-4
 
 ### Main Search
@@ -63,13 +60,11 @@ Shipping
 Rating
 - [x] 4+ Stars
 - [ ] 3+ Stars
-
 :::
 
 ---
 
 ## Advanced Search Options
-
 ::: card
 
 ### Detailed Filters
@@ -109,13 +104,11 @@ Sort Results By
 - Most Popular
 
 [Apply Filters]* [Reset All]
-
 :::
 
 ---
 
 ## Search Results
-
 ::: alert info
 ℹ️ **Found 1,247 results** for your search criteria
 :::
@@ -130,12 +123,10 @@ Sort Results By
 [Load More Results]
 
 ---
-
 ::: footer
 [[ Help | Shipping Info | Returns | Contact ]]
 © 2025 SearchHub
 :::
-
 :::
 
 ---

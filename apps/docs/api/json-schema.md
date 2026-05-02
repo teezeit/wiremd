@@ -188,7 +188,6 @@ Enterprise security
 
 ### :zap: Powerful
 Advanced features
-
 :::
 ```
 

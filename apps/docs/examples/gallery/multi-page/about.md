@@ -3,7 +3,6 @@
 > **Use Case:** About page with team grid and story section, linked from the multi-page home.
 >
 > **Key Features:** Team profile cards, story card, alert, prev/next page navigation
-
 ::: demo
 
 [[ :logo: MyApp | [Home](./home.md) | *About* | [Contact](./contact.md) ]]
@@ -16,7 +15,6 @@ wiremd is a text-first UI design tool that generates wireframes from Markdown.
 Write your UI, see it instantly — no design software required.
 
 ---
-
 ::: grid-3 card
 
 ### :user: Alice Chen
@@ -27,13 +25,11 @@ Co-founder & CTO
 
 ### :user: Sara Kim
 Head of Design
-
 :::
 
 ---
 
 ## Our Story
-
 ::: card
 
 ### From frustration to tool
@@ -43,15 +39,12 @@ wiremd collapses those into one artifact: a `.md` file that
 *is* the design.
 
 [Read the full story](./home.md)
-
 :::
 
 ---
-
 ::: alert info
 Want to get in touch? Hit the **Contact** button in the nav.
 :::
 
 [← Home](./home.md) [Contact →](./contact.md)*
-
 :::

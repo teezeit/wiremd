@@ -1,6 +1,5 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Attributes & Classes
 
@@ -9,7 +8,6 @@ Any wiremd element accepts `{...}` after it to add classes, attributes, and modi
 ## CSS Classes
 
 Add `.classname` to attach a CSS class:
-
 ::: demo
 [Primary]* [Primary]{variant:primary} [Danger]{variant:danger} [Large]{.large}
 :::
@@ -19,14 +17,12 @@ Add `.classname` to attach a CSS class:
 ## Key-value Attributes
 
 Add `key:value` pairs for HTML attributes:
-
 ::: demo
 Email
 [_____________________________]{type:email required}
 :::
 
 ## Combining Classes and Attributes
-
 ::: demo
 [Submit]{variant:primary state:disabled}
 :::
@@ -36,18 +32,15 @@ Email
 ## On Containers
 
 Attributes on `:::` containers add classes to the wrapper element:
-
 ::: demo
 ::: card {.featured}
 ### Featured Plan
 The most popular choice for growing teams.
 [Get Started]*
 :::
-
 :::
 
 ## On Headings
-
 ::: demo
 ## Section Title {.muted}
 :::
@@ -55,7 +48,6 @@ The most popular choice for growing teams.
 ## On Grid Items
 
 Use `{.col-span-N}` on `###` headings inside a grid:
-
 ::: demo
 ::: grid-3 card
 ### Starter {.col-span-1}
@@ -63,9 +55,7 @@ $9/mo
 
 ### Pro {.col-span-2}
 $29/mo — spans two columns
-
 :::
-
 :::
 
 ## Common Modifiers
@@ -147,7 +137,5 @@ Inside a table cell, escape badge pipes: `\|Active\|{.success}`
 [Button] {.class}    one space is also valid
                      blank line before {}: NOT applied to element
 ```
-
 :::
-
 :::

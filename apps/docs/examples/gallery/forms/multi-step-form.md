@@ -3,7 +3,6 @@
 > **Use Case:** Complex onboarding flows, checkout processes, surveys, or application forms.
 >
 > **Key Features:** Progress indicator, step navigation, form validation, data persistence, review step
-
 ::: demo
 
 [[ :logo: OnboardFlow | Dashboard | [Sign Out] ]]
@@ -25,7 +24,6 @@ Complete your profile in 4 easy steps
 ---
 
 ## Step 2: Personal Information
-
 ::: card
 
 ### Tell Us About Yourself
@@ -73,11 +71,9 @@ Preferred Contact
 - (*) Email
 - ( ) Phone
 - ( ) SMS
-
 :::
 
 ---
-
 ::: grid-2
 
 ### Home Address
@@ -120,11 +116,9 @@ State/Province
 
 Zip/Postal Code
 [_____]
-
 :::
 
 ---
-
 ::: card
 
 ### Preferences
@@ -156,7 +150,6 @@ Newsletter Topics
 - [x] Industry News
 - [ ] Special Offers
 - [ ] Events & Webinars
-
 :::
 
 ---
@@ -164,7 +157,6 @@ Newsletter Topics
 ## Navigation
 
 [← Previous Step] [Save Draft] [Next Step →]* [Cancel]
-
 ::: alert info
 ℹ️ Your progress is automatically saved. You can return to this form anytime.
 :::
@@ -172,7 +164,6 @@ Newsletter Topics
 ---
 
 ## All Steps Overview
-
 ::: card {.minimal}
 
 ### Wizard Steps
@@ -188,15 +179,12 @@ Newsletter Topics
 
 4. **Review & Submit** *Pending*
    - Confirm all information and activate account
-
 :::
 
 ---
-
 ::: footer
 Need help? [Contact Support](https://example.com/support) | [Save & Exit]
 :::
-
 :::
 
 ---

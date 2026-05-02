@@ -3,13 +3,11 @@
 > **Use Case:** Software-as-a-Service product landing page with features, pricing, testimonials.
 >
 > **Key Features:** Hero section, feature grid, pricing tiers, CTA buttons, social proof, footer
-
 ::: demo
 
 [[ :logo: CloudFlow | Features | Pricing | Customers | Docs | Blog | [Sign In] | [Start Free Trial]* ]]
 
 ---
-
 ::: hero
 # Streamline Your Workflow in the Cloud
 
@@ -20,7 +18,6 @@ The all-in-one platform for modern teams to collaborate, automate, and scale the
 **No credit card required • 14-day free trial • Cancel anytime**
 
 ![Hero Dashboard Screenshot](https://via.placeholder.com/800x400)
-
 :::
 
 ---
@@ -30,7 +27,6 @@ The all-in-one platform for modern teams to collaborate, automate, and scale the
 [[ :logo: Company1 | :logo: Company2 | :logo: Company3 | :logo: Company4 | :logo: Company5 | :logo: Company6 ]]
 
 ---
-
 ::: grid-3 card
 
 ### :rocket: Lightning Fast
@@ -50,11 +46,9 @@ Built for teams with seamless sharing, commenting, and real-time updates.
 
 ### :support: 24/7 Support
 Expert support team available around the clock via chat, email, and phone.
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Automation That Just Works
@@ -80,11 +74,9 @@ Expert support team available around the clock via chat, email, and phone.
 - **Team Performance** - Track productivity metrics
 
 [See Examples →]
-
 :::
 
 ---
-
 ::: grid-3 card
 
 ### Starter
@@ -130,13 +122,11 @@ For large organizations
 - On-premise Option
 
 [Contact Sales]*
-
 :::
 
 ---
 
 ## What Our Customers Say
-
 ::: grid-3 card
 
 ### :star::star::star::star::star:
@@ -156,7 +146,6 @@ CTO, DataCorp
 
 **Emily Rodriguez**
 Operations Director, GlobalTech
-
 :::
 
 ---
@@ -172,7 +161,6 @@ Connect with tools you already love
 ---
 
 ## Frequently Asked Questions
-
 ::: card
 
 ### Do I need a credit card for the free trial?
@@ -190,7 +178,6 @@ You can export all your data anytime. We keep it for 30 days after cancellation.
 ### Do you offer refunds?
 
 Yes, 30-day money-back guarantee. No questions asked.
-
 :::
 
 [See All FAQs →]
@@ -198,20 +185,16 @@ Yes, 30-day money-back guarantee. No questions asked.
 ---
 
 ## Ready to Get Started?
-
 ::: hero
 # Join 50,000+ Teams Using CloudFlow
 
 Start your free trial today. No credit card required.
 
 [Start Free Trial]* [Schedule Demo] [View Pricing]
-
 :::
 
 ---
-
 ::: footer
-
 ::: grid-4 card
 
 ### Product
@@ -241,7 +224,6 @@ Start your free trial today. No credit card required.
 - Security
 - GDPR
 - Compliance
-
 :::
 
 ---
@@ -249,9 +231,7 @@ Start your free trial today. No credit card required.
 [[ :twitter: | :linkedin: | :github: | :youtube: ]]
 
 © 2025 CloudFlow Inc. All rights reserved.
-
 :::
-
 :::
 
 ---

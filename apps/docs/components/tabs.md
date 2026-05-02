@@ -16,7 +16,6 @@ This is the main overview content shown on the first tab.
 [Get Started]*
 
 :::
-
 ::: tab Features
 - Markdown-based wireframing
 - 7 visual styles
@@ -24,7 +23,6 @@ This is the main overview content shown on the first tab.
 - Live reload dev server
 
 :::
-
 ::: tab Pricing
 **Free** — 1 user, 5 projects
 **Pro** — $12/mo, unlimited
@@ -52,13 +50,11 @@ Bio
 
 [Save Changes]*
 :::
-
 ::: tab Security
 [Change Password]
 [Enable 2FA]*
 [View Active Sessions]
 :::
-
 ::: tab Notifications
 - [x] Email alerts
 - [ ] SMS alerts
@@ -75,11 +71,9 @@ Bio
 
 ```
 ::: tabs
-
 ::: tab Tab One
 Content for tab one
 :::
-
 ::: tab Tab Two
 Content for tab two
 :::

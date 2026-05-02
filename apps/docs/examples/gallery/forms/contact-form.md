@@ -3,7 +3,6 @@
 > **Use Case:** Standard contact form for websites, customer support pages, or inquiry forms.
 >
 > **Key Features:** Text inputs, email validation, textarea, required fields, button groups
-
 ::: demo
 
 ## Get in Touch
@@ -11,7 +10,6 @@
 We'd love to hear from you! Fill out the form below and we'll get back to you within 24 hours.
 
 ---
-
 ::: card
 
 ### Contact Us
@@ -45,9 +43,7 @@ Preferred Contact Method
 - [ ] Send me updates and newsletters
 
 [Submit Message]* [Clear Form]
-
 :::
-
 :::
 
 ---

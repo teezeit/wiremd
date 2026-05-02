@@ -3,7 +3,6 @@
 > **Use Case:** Web analytics platform for tracking website traffic, user behavior, and conversions.
 >
 > **Key Features:** KPI cards, charts/graphs, data tables, date filters, real-time stats
-
 ::: demo
 
 [[ :logo: Analytics Pro | *Dashboard* | Reports | Audiences | Campaigns | Settings | :user: Admin | [Export Data] ]]
@@ -17,7 +16,6 @@
 Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
-
 ::: grid-4 card
 
 ### Total Visitors
@@ -35,11 +33,9 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 ### Avg. Session
 **3m 24s**
 :chart: +15.7% vs last period
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Visitors Over Time
@@ -65,13 +61,11 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | Social Media | 67,890 | 15% |
 | Referral | 45,678 | 10% |
 | Email | 11,865 | 3% |
-
 :::
 
 ---
 
 ## Real-Time Activity
-
 ::: card
 
 ### Live Visitors: **1,234** 👁️
@@ -93,11 +87,9 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 - 🔔 Form submitted (12s ago)
 
 [View Real-Time Dashboard →]
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Top Countries
@@ -121,11 +113,9 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | Toronto | 23,456 | $45,678 |
 | Sydney | 19,234 | $38,901 |
 | Berlin | 15,678 | $29,456 |
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Device Types
@@ -145,13 +135,11 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | Firefox | 67,890 | 15% |
 | Edge | 23,456 | 5% |
 | Other | 8,865 | 2% |
-
 :::
 
 ---
 
 ## Content Performance
-
 ::: card
 
 ### Top Performing Pages
@@ -165,11 +153,9 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | /home | 198,456 | 145,678 | 1m 23s | 52% |
 
 [Analyze Content →]
-
 :::
 
 ---
-
 ::: grid-3 card
 
 ### Step 1: Landing
@@ -187,7 +173,6 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 ### Step 3: Converted
 **30,000** visitors
 30%
-
 :::
 
 **Conversion Rate:** 30% | **Drop-off:** 70%
@@ -197,7 +182,6 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 ---
 
 ## Goals & Events
-
 ::: grid-4 card
 
 ### Newsletter Signups
@@ -219,13 +203,11 @@ Target: 5,000
 **1,234**
 Target: 2,000
 [#####_____] 62%
-
 :::
 
 ---
 
 ## User Engagement
-
 ::: card
 
 ### Session Statistics
@@ -243,7 +225,6 @@ Target: 2,000
 
 **Peak Hours:** 2pm - 4pm EST
 **Lowest Activity:** 3am - 5am EST
-
 :::
 
 ---
@@ -263,7 +244,6 @@ Target: 2,000
 ---
 
 ## Filters & Segments
-
 ::: card
 
 ### Advanced Filters
@@ -291,15 +271,12 @@ Custom Segment
 [Select or create...v]
 
 [Apply Filters]* [Reset] [Save Segment]
-
 :::
 
 ---
-
 ::: footer
 Last updated: 2 minutes ago • [Export Report] • [Schedule Email] • [Share Dashboard]
 :::
-
 :::
 
 ---

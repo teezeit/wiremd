@@ -12,7 +12,7 @@
  * https://github.com/teezeit/wiremd/blob/main/LICENSE
  */
 
-import type { Plugin } from 'unified';
+import type { Plugin } from "unified";
 
 interface ContainerOpener {
   containerType: string;
@@ -23,31 +23,31 @@ interface ContainerOpener {
 /** Parse a paragraph node as a container opener. Returns null if not an opener. */
 function parseContainerOpener(node: any): ContainerOpener | null {
   if (
-    node.type !== 'paragraph' ||
+    node.type !== "paragraph" ||
     !node.children?.length ||
-    node.children[0].type !== 'text'
+    node.children[0].type !== "text"
   )
     return null;
 
-  const firstLine = (node.children[0].value as string).split('\n')[0].trim();
+  const firstLine = (node.children[0].value as string).split("\n")[0].trim();
   // Match ::: followed by a single-word type, optional {attrs}, optional inline content
   const match = firstLine.match(/^:::\s*(\S+)(?:\s*(\{[^}]+\}))?(?:\s+(.+))?$/);
   if (!match) return null;
 
   return {
-    containerType: (match[1] || 'section').trim(),
-    attrs: match[2] ? match[2].trim() : '',
-    inline: match[3] ? match[3].trim() : '',
+    containerType: (match[1] || "section").trim(),
+    attrs: match[2] ? match[2].trim() : "",
+    inline: match[3] ? match[3].trim() : "",
   };
 }
 
 /** Check if a node is a standalone closing ::: paragraph. */
 function isContainerCloser(node: any): boolean {
   return (
-    node.type === 'paragraph' &&
+    node.type === "paragraph" &&
     node.children?.length > 0 &&
-    node.children[0].type === 'text' &&
-    node.children[0].value.trim() === ':::'
+    node.children[0].type === "text" &&
+    node.children[0].value.trim() === ":::"
   );
 }
 
@@ -58,15 +58,15 @@ function makeContainerNode(
   position?: any,
 ): any {
   return {
-    type: 'wiremdContainer',
+    type: "wiremdContainer",
     containerType,
     attributes: attrs,
     children,
     position,
     data: {
-      hName: 'div',
+      hName: "div",
       hProperties: {
-        className: ['wiremd-container', `wiremd-${containerType}`],
+        className: ["wiremd-container", `wiremd-${containerType}`],
       },
     },
   };
@@ -76,10 +76,17 @@ function makeContainerNode(
  * Collect and build a container starting at nodes[startIdx] (the opener paragraph).
  * Returns the container node and the index of the first node after the container.
  */
-function finishContainer(containerType: string, attrs: string, inline: string, children: any[], nextIndex: number, position?: any): { node: any; nextIndex: number } {
+function finishContainer(
+  containerType: string,
+  attrs: string,
+  inline: string,
+  children: any[],
+  nextIndex: number,
+  position?: any,
+): { node: any; nextIndex: number } {
   const node = makeContainerNode(containerType, attrs, children, position);
   if (inline) node.inline = inline;
-  if (containerType === 'demo') {
+  if (containerType === "demo") {
     node.rawContent = mdastNodesToText(children);
   }
   return { node, nextIndex };
@@ -96,42 +103,68 @@ function collectContainer(
   // e.g. ":::card\ncontent\n:::" — no blank lines, no inline elements
   if (
     openerNode.children.length === 1 &&
-    openerNode.children[0].type === 'text'
+    openerNode.children[0].type === "text"
   ) {
     const fullText = openerNode.children[0].value as string;
-    const lines = fullText.split('\n');
+    const lines = fullText.split("\n");
+    // Depth-aware scan: find the FIRST `:::` that closes this container at
+    // depth 0. Scanning from the end (old approach) breaks when multiple
+    // nested containers are folded into the same paragraph — it picks up the
+    // wrong (outermost) closer.
     let closingIdx = -1;
-    for (let j = lines.length - 1; j >= 1; j--) {
-      if (lines[j].trim() === ':::') {
-        closingIdx = j;
-        break;
+    let depth = 0;
+    for (let j = 1; j < lines.length; j++) {
+      const trimmed = lines[j].trim();
+      if (/^:::\s+\S/.test(trimmed)) {
+        depth++;
+      } else if (trimmed === ":::") {
+        if (depth === 0) {
+          closingIdx = j;
+          break;
+        }
+        depth--;
       }
     }
     if (closingIdx > 0) {
-      const contentText = lines.slice(1, closingIdx).join('\n').trim();
+      const contentText = lines.slice(1, closingIdx).join("\n").trim();
       const children: any[] = [];
       if (opener.inline) {
         children.push({
-          type: 'paragraph',
-          children: [{ type: 'text', value: opener.inline }],
+          type: "paragraph",
+          children: [{ type: "text", value: opener.inline }],
         });
       }
       if (contentText) {
         children.push({
-          type: 'paragraph',
-          children: [{ type: 'text', value: contentText }],
+          type: "paragraph",
+          children: [{ type: "text", value: contentText }],
         });
       }
       // Preserve any text after the closer line as sibling node(s). Remark
       // folds the entire run of non-blank lines into the opener paragraph,
       // so trailing content here is content that lived after `::: ` on
       // disk and would otherwise be silently dropped.
-      const trailingText = lines.slice(closingIdx + 1).join('\n').trim();
+      const trailingText = lines
+        .slice(closingIdx + 1)
+        .join("\n")
+        .trim();
       const trailing = trailingText
-        ? [{ type: 'paragraph', children: [{ type: 'text', value: trailingText }] }]
+        ? [
+            {
+              type: "paragraph",
+              children: [{ type: "text", value: trailingText }],
+            },
+          ]
         : undefined;
       return {
-        ...finishContainer(opener.containerType, opener.attrs, opener.inline, children, startIdx + 1, openerNode.position),
+        ...finishContainer(
+          opener.containerType,
+          opener.attrs,
+          opener.inline,
+          children,
+          startIdx + 1,
+          openerNode.position,
+        ),
         trailing,
       };
     }
@@ -141,26 +174,26 @@ function collectContainer(
   // e.g. ":::card\nSome **bold** text\n:::" — last text child ends with \n:::
   const lastChild = openerNode.children[openerNode.children.length - 1];
   if (
-    lastChild?.type === 'text' &&
-    (lastChild.value.trim().endsWith(':::') ||
+    lastChild?.type === "text" &&
+    (lastChild.value.trim().endsWith(":::") ||
       /\n:::\s*$/.test(lastChild.value))
   ) {
     const processedChildren: any[] = [];
     let startChildIdx = 0;
-    if (openerNode.children[0].type === 'text') {
-      const firstLines = (openerNode.children[0].value as string).split('\n');
+    if (openerNode.children[0].type === "text") {
+      const firstLines = (openerNode.children[0].value as string).split("\n");
       if (firstLines.length > 1 && firstLines[1].trim()) {
         processedChildren.push({
-          type: 'text',
-          value: firstLines.slice(1).join('\n').trim(),
+          type: "text",
+          value: firstLines.slice(1).join("\n").trim(),
         });
       }
       startChildIdx = 1;
     }
     for (let j = startChildIdx; j < openerNode.children.length; j++) {
       const ch = openerNode.children[j];
-      if (j === openerNode.children.length - 1 && ch.type === 'text') {
-        const value = (ch.value as string).replace(/\n?:::$/, '').trim();
+      if (j === openerNode.children.length - 1 && ch.type === "text") {
+        const value = (ch.value as string).replace(/\n?:::$/, "").trim();
         if (value) processedChildren.push({ ...ch, value });
       } else {
         processedChildren.push(ch);
@@ -168,25 +201,53 @@ function collectContainer(
     }
     const contentChildren =
       processedChildren.length > 0
-        ? [{ type: 'paragraph', children: processedChildren }]
+        ? [{ type: "paragraph", children: processedChildren }]
         : [];
     if (opener.inline) {
       contentChildren.unshift({
-        type: 'paragraph',
-        children: [{ type: 'text', value: opener.inline }],
+        type: "paragraph",
+        children: [{ type: "text", value: opener.inline }],
       });
     }
-    return finishContainer(opener.containerType, opener.attrs, opener.inline, contentChildren, startIdx + 1, openerNode.position);
+    return finishContainer(
+      opener.containerType,
+      opener.attrs,
+      opener.inline,
+      contentChildren,
+      startIdx + 1,
+      openerNode.position,
+    );
   }
 
   // === CASE 3: Multi-block container — collect until matching closer ::: ===
   const containerChildren: any[] = [];
+  let i = startIdx + 1;
+
+  // Helper: build the finished container node and (optionally) trailing siblings.
+  // Hoisted above the opener-content branches so early returns from those
+  // branches (e.g. rcSplit and the leading-`\n:::` paths) can call it.
+  const finishWithTrailing = (trailing?: any[]) => {
+    const finished = makeContainerNode(
+      opener.containerType,
+      opener.attrs,
+      containerChildren,
+      openerNode.position,
+    );
+    if (opener.inline) finished.inline = opener.inline;
+    if (opener.containerType === "demo")
+      finished.rawContent = mdastNodesToText(containerChildren);
+    return {
+      node: finished,
+      trailing: trailing && trailing.length > 0 ? trailing : undefined,
+      nextIndex: i,
+    };
+  };
 
   // Opener-content extraction: inline text on the same line as the opener
   if (opener.inline) {
     containerChildren.push({
-      type: 'paragraph',
-      children: [{ type: 'text', value: opener.inline }],
+      type: "paragraph",
+      children: [{ type: "text", value: opener.inline }],
     });
   }
 
@@ -200,14 +261,14 @@ function collectContainer(
   let pendingAfterOpener: any = null;
   if (
     openerNode.children.length === 1 &&
-    openerNode.children[0].type === 'text'
+    openerNode.children[0].type === "text"
   ) {
     const fullText = openerNode.children[0].value as string;
-    const afterOpener = fullText.split('\n').slice(1).join('\n').trim();
+    const afterOpener = fullText.split("\n").slice(1).join("\n").trim();
     if (afterOpener) {
       const syntheticPara = {
-        type: 'paragraph',
-        children: [{ type: 'text', value: afterOpener }],
+        type: "paragraph",
+        children: [{ type: "text", value: afterOpener }],
       };
       if (parseContainerOpener(syntheticPara)) {
         pendingAfterOpener = syntheticPara;
@@ -217,27 +278,70 @@ function collectContainer(
     }
   } else if (
     openerNode.children.length > 1 &&
-    openerNode.children[0]?.type === 'text'
+    openerNode.children[0]?.type === "text"
   ) {
     // Trailing whitespace on the opener line (e.g. `::: card   `) makes remark
     // emit a hard `break` node, splitting the paragraph children into
     // [text:'::: card', break, text:'first content line', …]. Extract the
     // post-opener children as a synthetic paragraph so content isn't dropped.
     const firstText = openerNode.children[0].value as string;
-    const newlineIdx = firstText.indexOf('\n');
+    const newlineIdx = firstText.indexOf("\n");
     const restChildren: any[] = [];
     if (newlineIdx >= 0) {
       const remainder = firstText.slice(newlineIdx + 1);
-      if (remainder) restChildren.push({ type: 'text', value: remainder });
+      if (remainder) restChildren.push({ type: "text", value: remainder });
       restChildren.push(...openerNode.children.slice(1));
     } else {
       // First text is exactly the opener line; skip a leading hard break if present.
-      const startSliceIdx = openerNode.children[1]?.type === 'break' ? 2 : 1;
+      const startSliceIdx = openerNode.children[1]?.type === "break" ? 2 : 1;
       restChildren.push(...openerNode.children.slice(startSliceIdx));
     }
     if (restChildren.length > 0) {
+      // Check whether the inline children themselves contain an embedded
+      // implicit closer (e.g. `::: tab Security` opener that was folded into
+      // a mega-paragraph carries `\n:::\n::: tab Notifications` in its last
+      // text child).  If so, close this container immediately and return the
+      // post-closer inline content as trailing — no real sibling nodes are
+      // consumed, so i stays at startIdx + 1.
+      let rcSplitIdx = -1;
+      let rcSplitMatch: RegExpMatchArray | null = null;
+      for (let ci = 0; ci < restChildren.length; ci++) {
+        const ch = restChildren[ci];
+        if (ch?.type === "text") {
+          const m = (ch.value as string).match(
+            /^([\s\S]*?)\n:::[ \t]*(?:\n([\s\S]*))?$/,
+          );
+          if (m) {
+            rcSplitIdx = ci;
+            rcSplitMatch = m;
+            break;
+          }
+        }
+      }
+      if (rcSplitIdx >= 0 && rcSplitMatch) {
+        const beforeText = rcSplitMatch[1].trimEnd();
+        const afterText = (rcSplitMatch[2] ?? "").replace(/^\n+/, "");
+        const contentKids = restChildren.slice(0, rcSplitIdx);
+        if (beforeText)
+          contentKids.push({
+            ...restChildren[rcSplitIdx],
+            value: beforeText,
+          });
+        if (contentKids.length > 0)
+          containerChildren.push({ type: "paragraph", children: contentKids });
+        const trailingKids: any[] = [];
+        if (afterText) trailingKids.push({ type: "text", value: afterText });
+        trailingKids.push(...restChildren.slice(rcSplitIdx + 1));
+        i = startIdx + 1;
+        return finishWithTrailing(
+          trailingKids.length > 0
+            ? [{ type: "paragraph", children: trailingKids }]
+            : undefined,
+        );
+      }
+
       const syntheticPara = {
-        type: 'paragraph',
+        type: "paragraph",
         children: restChildren,
       };
       if (parseContainerOpener(syntheticPara)) {
@@ -248,27 +352,21 @@ function collectContainer(
     }
   }
 
-  let i = startIdx + 1;
-
   if (pendingAfterOpener) {
     // Build a virtual list so collectContainer can consume the nested opener
     // plus the real nodes that follow it.
     const virtualNodes = [pendingAfterOpener, ...nodes.slice(startIdx + 1)];
     const inner = collectContainer(virtualNodes, 0);
     containerChildren.push(inner.node);
-    if (inner.trailing) containerChildren.push(...inner.trailing);
+    if (inner.trailing && inner.trailing.length > 0) {
+      // Splice trailing back into nodes so the outer container loop re-processes
+      // them — they may be closers or new openers for this container.
+      nodes.splice(startIdx + inner.nextIndex, 0, ...inner.trailing);
+    }
     // inner.nextIndex is relative to virtualNodes whose [0] is the synthetic para;
     // real nodes start at startIdx+1, so advance i by (inner.nextIndex - 1).
     i = startIdx + inner.nextIndex;
   }
-
-  // Helper: build the finished container node and (optionally) trailing siblings.
-  const finishWithTrailing = (trailing?: any[]) => {
-    const finished = makeContainerNode(opener.containerType, opener.attrs, containerChildren, openerNode.position);
-    if (opener.inline) finished.inline = opener.inline;
-    if (opener.containerType === 'demo') finished.rawContent = mdastNodesToText(containerChildren);
-    return { node: finished, trailing: trailing && trailing.length > 0 ? trailing : undefined, nextIndex: i };
-  };
 
   while (i < nodes.length) {
     const child = nodes[i];
@@ -278,20 +376,40 @@ function collectContainer(
       break;
     }
 
-    // Leading-closer paragraph: a single-text paragraph whose first line is
-    // bare `:::` followed by more lines (sibling container with no blank line
-    // between, e.g. `:::\n::: card\nB`). The first line closes the current
-    // container; the remaining lines become a synthetic sibling that
-    // `processNodes` re-processes (and recognizes as a new opener).
-    if (child.type === 'paragraph' && child.children?.length === 1 && child.children[0].type === 'text') {
-      const value = child.children[0].value as string;
-      const lines = value.split('\n');
-      if (lines.length > 1 && lines[0].trim() === ':::') {
-        const after = lines.slice(1).join('\n');
+    // Leading-closer paragraph: a paragraph whose first child is a text node
+    // whose first line is bare `:::`, followed by more content (either more
+    // lines of text or additional inline children like strong/emphasis from
+    // bold markdown in the next container's content).
+    // e.g. `:::\n::: card\nB` or `:::\n::: tab X\n**bold** text`.
+    // The first line closes the current container; everything after it becomes
+    // a synthetic sibling that `processNodes` re-processes as a new opener.
+    if (
+      child.type === "paragraph" &&
+      child.children?.length > 0 &&
+      child.children[0].type === "text"
+    ) {
+      const firstText = child.children[0].value as string;
+      const firstNewline = firstText.indexOf("\n");
+      const firstLine = (
+        firstNewline >= 0 ? firstText.slice(0, firstNewline) : firstText
+      ).trim();
+      if (
+        firstLine === ":::" &&
+        (firstNewline >= 0 || child.children.length > 1)
+      ) {
+        const restOfFirstText =
+          firstNewline >= 0 ? firstText.slice(firstNewline + 1) : "";
+        const trailingChildren: any[] = [];
+        if (restOfFirstText) {
+          trailingChildren.push({ type: "text", value: restOfFirstText });
+        }
+        trailingChildren.push(...child.children.slice(1));
         i++;
-        return finishWithTrailing(after.trim()
-          ? [{ type: 'paragraph', children: [{ type: 'text', value: after }] }]
-          : undefined);
+        return finishWithTrailing(
+          trailingChildren.length > 0
+            ? [{ type: "paragraph", children: trailingChildren }]
+            : undefined,
+        );
       }
     }
 
@@ -299,14 +417,20 @@ function collectContainer(
     // the list item's text because there's no blank line between the list
     // and the `:::` line. Strip the closer, push the cleaned list, and
     // close this container.
-    if (child.type === 'list' && child.children?.length) {
+    if (child.type === "list" && child.children?.length) {
       const items = child.children;
       const last = items[items.length - 1];
       const para = last?.children?.[0];
-      if (para?.type === 'paragraph' && para.children?.length) {
+      if (para?.type === "paragraph" && para.children?.length) {
         const lastTextChild = para.children[para.children.length - 1];
-        if (lastTextChild?.type === 'text' && /\n:::\s*$/.test(lastTextChild.value as string)) {
-          const stripped = (lastTextChild.value as string).replace(/\n:::\s*$/, '');
+        if (
+          lastTextChild?.type === "text" &&
+          /\n:::\s*$/.test(lastTextChild.value as string)
+        ) {
+          const stripped = (lastTextChild.value as string).replace(
+            /\n:::\s*$/,
+            "",
+          );
           const newPara = {
             ...para,
             children: [
@@ -314,8 +438,14 @@ function collectContainer(
               { ...lastTextChild, value: stripped },
             ],
           };
-          const newLast = { ...last, children: [newPara, ...(last.children?.slice(1) || [])] };
-          const newList = { ...child, children: [...items.slice(0, -1), newLast] };
+          const newLast = {
+            ...last,
+            children: [newPara, ...(last.children?.slice(1) || [])],
+          };
+          const newList = {
+            ...child,
+            children: [...items.slice(0, -1), newLast],
+          };
           containerChildren.push(newList);
           i++;
           return finishWithTrailing();
@@ -328,28 +458,77 @@ function collectContainer(
     // blank line separates them). Split: text-before becomes a paragraph
     // child of this container; the opener line + any subsequent real
     // sibling nodes form a nested container.
-    if (child.type === 'paragraph' && child.children?.length === 1 && child.children[0].type === 'text') {
+    //
+    // SKIP this branch when the paragraph itself starts with an opener line —
+    // that case is handled by the nested-container-opener branch below, which
+    // recurses correctly. Otherwise text-before-nested-opener fires on
+    // `::: tab X\n...\n:::\n::: tab Y` paragraphs and pushes the inner tab
+    // X content as plain text instead of parsing it as a nested container.
+    if (
+      child.type === "paragraph" &&
+      child.children?.length === 1 &&
+      child.children[0].type === "text" &&
+      !parseContainerOpener(child)
+    ) {
       const value = child.children[0].value as string;
-      const lines = value.split('\n');
+      const lines = value.split("\n");
       let nestedOpenerLine = -1;
       for (let li = 1; li < lines.length; li++) {
-        const candidate = { type: 'paragraph', children: [{ type: 'text', value: lines[li] }] };
+        const candidate = {
+          type: "paragraph",
+          children: [{ type: "text", value: lines[li] }],
+        };
         if (parseContainerOpener(candidate)) {
           nestedOpenerLine = li;
           break;
         }
       }
       if (nestedOpenerLine > 0) {
-        const before = lines.slice(0, nestedOpenerLine).join('\n').trim();
-        if (before) {
-          containerChildren.push({ type: 'paragraph', children: [{ type: 'text', value: before }] });
+        const before = lines.slice(0, nestedOpenerLine).join("\n").trim();
+
+        // If `before` contains a `\n:::` implicit closer, the closer ends THIS
+        // container and the nested opener becomes trailing for the PARENT to
+        // handle as a sibling.  Example mega-paragraph inside ::: tab Profile:
+        //   "[Save Changes]*\n:::\n::: tab Security\n…\n::: tab Notifications"
+        // Here nestedOpenerLine=2, before="[Save Changes]*\n:::", and the
+        // trailing `::: tab Security\n…` must be a sibling tab, not a child.
+        const closerInBefore = before.search(/\n:::[ \t]*(?:\n|$)/);
+        if (closerInBefore >= 0) {
+          const contentBefore = before.slice(0, closerInBefore).trim();
+          if (contentBefore) {
+            containerChildren.push({
+              type: "paragraph",
+              children: [{ type: "text", value: contentBefore }],
+            });
+          }
+          const remainder = lines.slice(nestedOpenerLine).join("\n");
+          const syntheticOpener = {
+            type: "paragraph",
+            children: [{ type: "text", value: remainder }],
+          };
+          i++;
+          return finishWithTrailing([syntheticOpener]);
         }
-        const remainder = lines.slice(nestedOpenerLine).join('\n');
-        const syntheticOpener = { type: 'paragraph', children: [{ type: 'text', value: remainder }] };
+
+        if (before) {
+          containerChildren.push({
+            type: "paragraph",
+            children: [{ type: "text", value: before }],
+          });
+        }
+        const remainder = lines.slice(nestedOpenerLine).join("\n");
+        const syntheticOpener = {
+          type: "paragraph",
+          children: [{ type: "text", value: remainder }],
+        };
         const virtualNodes = [syntheticOpener, ...nodes.slice(i + 1)];
         const inner = collectContainer(virtualNodes, 0);
         containerChildren.push(inner.node);
-        if (inner.trailing) containerChildren.push(...inner.trailing);
+        if (inner.trailing && inner.trailing.length > 0) {
+          // Splice trailing back into nodes so the outer container loop re-processes
+          // them — they may be closers or new openers for this container.
+          nodes.splice(i + inner.nextIndex, 0, ...inner.trailing);
+        }
         i = i + 1 + (inner.nextIndex - 1);
         continue;
       }
@@ -361,7 +540,11 @@ function collectContainer(
     if (parseContainerOpener(child)) {
       const inner = collectContainer(nodes, i);
       containerChildren.push(inner.node);
-      if (inner.trailing) containerChildren.push(...inner.trailing);
+      if (inner.trailing && inner.trailing.length > 0) {
+        // Splice trailing back into nodes so the outer container loop re-processes
+        // them — they may be closers or new openers for this container.
+        nodes.splice(inner.nextIndex, 0, ...inner.trailing);
+      }
       i = inner.nextIndex;
       continue;
     }
@@ -370,35 +553,55 @@ function collectContainer(
     // either at the end (`text\n:::`) or mid-string with trailing content
     // (`text\n:::\ntrailing`). The trailing portion becomes a synthetic
     // sibling for re-processing by `processNodes`.
-    if (child.type === 'paragraph' && child.children?.length) {
-      const lastInline = child.children[child.children.length - 1];
-      if (lastInline?.type === 'text') {
-        const value = lastInline.value as string;
-        // `\n:::` followed by either end-of-string or a newline (so we don't
-        // confuse with `\n::: type` openers like `\n::: card`).
-        const m = value.match(/^([\s\S]*?)\n:::[ \t]*(?:\n([\s\S]*))?$/);
-        if (m) {
-          const beforeText = m[1].trimEnd();
-          const afterText = (m[2] ?? '').replace(/^\n+/, '');
-          if (beforeText) {
-            containerChildren.push({
-              ...child,
-              children: [
-                ...child.children.slice(0, -1),
-                { ...lastInline, value: beforeText },
-              ],
-            });
-          } else if (child.children.length > 1) {
-            containerChildren.push({
-              ...child,
-              children: child.children.slice(0, -1),
-            });
+    if (child.type === "paragraph" && child.children?.length) {
+      // Find the FIRST text child that contains an implicit closer `\n:::`.
+      // Searching only the last child (old approach) breaks when a blank-line-
+      // free sequence folds multiple tab closers and openers into one paragraph,
+      // e.g. `[Save Changes]*\n:::\n::: tab Security\n…\n::: tab Notifications`
+      // — the first `\n:::` (after [Save Changes]*) is in an earlier child.
+      let closingChildIdx = -1;
+      let closingMatch: RegExpMatchArray | null = null;
+      for (let ci = 0; ci < child.children.length; ci++) {
+        const ch = child.children[ci];
+        if (ch?.type === "text") {
+          // `\n:::` followed by end-of-string or more content (but NOT `\n::: type`
+          // openers — those have non-whitespace after `:::`).
+          const m = (ch.value as string).match(
+            /^([\s\S]*?)\n:::[ \t]*(?:\n([\s\S]*))?$/,
+          );
+          if (m) {
+            closingChildIdx = ci;
+            closingMatch = m;
+            break;
           }
-          i++;
-          return finishWithTrailing(afterText
-            ? [{ type: 'paragraph', children: [{ type: 'text', value: afterText }] }]
-            : undefined);
         }
+      }
+      if (closingChildIdx >= 0 && closingMatch) {
+        const beforeText = closingMatch[1].trimEnd();
+        const afterText = (closingMatch[2] ?? "").replace(/^\n+/, "");
+        const beforeKids = child.children.slice(0, closingChildIdx);
+        if (beforeText) {
+          containerChildren.push({
+            ...child,
+            children: [
+              ...beforeKids,
+              { ...child.children[closingChildIdx], value: beforeText },
+            ],
+          });
+        } else if (beforeKids.length > 0) {
+          containerChildren.push({ ...child, children: beforeKids });
+        }
+        // Children AFTER the closing text node become the trailing content.
+        const afterKids = child.children.slice(closingChildIdx + 1);
+        const trailingKids: any[] = [];
+        if (afterText) trailingKids.push({ type: "text", value: afterText });
+        trailingKids.push(...afterKids);
+        i++;
+        return finishWithTrailing(
+          trailingKids.length > 0
+            ? [{ type: "paragraph", children: trailingKids }]
+            : undefined,
+        );
       }
     }
 
@@ -411,74 +614,111 @@ function collectContainer(
 
 /** Reconstruct wiremd source text from MDAST inline children. */
 function mdastInlinesToText(children: any[]): string {
-  return (children || []).map((child: any) => {
-    switch (child.type) {
-      case 'text': return child.value;
-      case 'strong': return '**' + mdastInlinesToText(child.children) + '**';
-      case 'emphasis': return '_' + mdastInlinesToText(child.children) + '_';
-      case 'inlineCode': return '`' + child.value + '`';
-      case 'link': return '[' + mdastInlinesToText(child.children) + '](' + child.url + ')';
-      case 'image': return '![' + (child.alt || '') + '](' + child.url + ')';
-      default: return '';
-    }
-  }).join('');
+  return (children || [])
+    .map((child: any) => {
+      switch (child.type) {
+        case "text":
+          return child.value;
+        case "strong":
+          return "**" + mdastInlinesToText(child.children) + "**";
+        case "emphasis":
+          return "_" + mdastInlinesToText(child.children) + "_";
+        case "inlineCode":
+          return "`" + child.value + "`";
+        case "link":
+          return (
+            "[" + mdastInlinesToText(child.children) + "](" + child.url + ")"
+          );
+        case "image":
+          return "![" + (child.alt || "") + "](" + child.url + ")";
+        default:
+          return "";
+      }
+    })
+    .join("");
 }
 
 /** Reconstruct wiremd source text from a list of MDAST block nodes. */
 function mdastNodesToText(nodes: any[]): string {
-  return nodes.map((node: any) => {
-    switch (node.type) {
-      case 'heading':
-        return '#'.repeat(node.depth) + ' ' + mdastInlinesToText(node.children);
-      case 'paragraph':
-        return mdastInlinesToText(node.children);
-      case 'list':
-        return node.children.map((item: any) => {
-          const prefix = node.ordered
-            ? '1. '
-            : item.checked === true ? '- [x] '
-            : item.checked === false ? '- [ ] '
-            : '- ';
-          return prefix + mdastNodesToText(item.children || []).replace(/\n/g, '\n  ');
-        }).join('\n');
-      case 'table': {
-        const rows: string[][] = node.children.map((row: any) =>
-          row.children.map((cell: any) => mdastInlinesToText(cell.children || []))
-        );
-        if (!rows.length) return '';
-        const colWidths = rows[0].map((_: any, ci: number) =>
-          Math.max(...rows.map((r: string[]) => (r[ci] || '').length), 3)
-        );
-        const formatRow = (cells: string[]) =>
-          '| ' + cells.map((c, i) => c.padEnd(colWidths[i])).join(' | ') + ' |';
-        const separator = '| ' + colWidths.map(w => '-'.repeat(w)).join(' | ') + ' |';
-        return [formatRow(rows[0]), separator, ...rows.slice(1).map(formatRow)].join('\n');
-      }
-      case 'code':
-        return '```' + (node.lang || '') + '\n' + node.value + '\n```';
-      case 'blockquote':
-        return mdastNodesToText(node.children).split('\n').map((l: string) => '> ' + l).join('\n');
-      case 'wiremdContainer': {
-        const inlineSuffix = node.inline ? ' ' + node.inline : '';
-        const attrs = node.attributes ? ' ' + node.attributes : '';
-        const opener = '::: ' + node.containerType + inlineSuffix + attrs;
-        // Skip the first child if it was injected from opener.inline (it's on the opener line)
-        let children = node.children || [];
-        if (node.inline) {
-          const first = children[0];
-          if (first?.type === 'paragraph' &&
-              first.children?.length === 1 &&
-              first.children[0]?.type === 'text' &&
-              first.children[0].value?.trim() === node.inline) {
-            children = children.slice(1);
-          }
+  return nodes
+    .map((node: any) => {
+      switch (node.type) {
+        case "heading":
+          return (
+            "#".repeat(node.depth) + " " + mdastInlinesToText(node.children)
+          );
+        case "paragraph":
+          return mdastInlinesToText(node.children);
+        case "list":
+          return node.children
+            .map((item: any) => {
+              const prefix = node.ordered
+                ? "1. "
+                : item.checked === true
+                  ? "- [x] "
+                  : item.checked === false
+                    ? "- [ ] "
+                    : "- ";
+              return (
+                prefix +
+                mdastNodesToText(item.children || []).replace(/\n/g, "\n  ")
+              );
+            })
+            .join("\n");
+        case "table": {
+          const rows: string[][] = node.children.map((row: any) =>
+            row.children.map((cell: any) =>
+              mdastInlinesToText(cell.children || []),
+            ),
+          );
+          if (!rows.length) return "";
+          const colWidths = rows[0].map((_: any, ci: number) =>
+            Math.max(...rows.map((r: string[]) => (r[ci] || "").length), 3),
+          );
+          const formatRow = (cells: string[]) =>
+            "| " +
+            cells.map((c, i) => c.padEnd(colWidths[i])).join(" | ") +
+            " |";
+          const separator =
+            "| " + colWidths.map((w) => "-".repeat(w)).join(" | ") + " |";
+          return [
+            formatRow(rows[0]),
+            separator,
+            ...rows.slice(1).map(formatRow),
+          ].join("\n");
         }
-        return opener + '\n' + mdastNodesToText(children) + '\n:::';
+        case "code":
+          return "```" + (node.lang || "") + "\n" + node.value + "\n```";
+        case "blockquote":
+          return mdastNodesToText(node.children)
+            .split("\n")
+            .map((l: string) => "> " + l)
+            .join("\n");
+        case "wiremdContainer": {
+          const inlineSuffix = node.inline ? " " + node.inline : "";
+          const attrs = node.attributes ? " " + node.attributes : "";
+          const opener = "::: " + node.containerType + inlineSuffix + attrs;
+          // Skip the first child if it was injected from opener.inline (it's on the opener line)
+          let children = node.children || [];
+          if (node.inline) {
+            const first = children[0];
+            if (
+              first?.type === "paragraph" &&
+              first.children?.length === 1 &&
+              first.children[0]?.type === "text" &&
+              first.children[0].value?.trim() === node.inline
+            ) {
+              children = children.slice(1);
+            }
+          }
+          return opener + "\n" + mdastNodesToText(children) + "\n:::";
+        }
+        default:
+          return "";
       }
-      default:
-        return '';
-    }
-  }).filter(Boolean).join('\n\n');
+    })
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 /** Process a flat array of AST nodes and return nodes with containers properly nested. */
@@ -493,7 +733,11 @@ function processNodes(nodes: any[]): any[] {
     const node = queue[i];
 
     if (parseContainerOpener(node)) {
-      const { node: containerNode, trailing, nextIndex } = collectContainer(queue, i);
+      const {
+        node: containerNode,
+        trailing,
+        nextIndex,
+      } = collectContainer(queue, i);
       result.push(containerNode);
       if (trailing && trailing.length > 0) {
         // Insert trailing into the queue at the next position so the loop

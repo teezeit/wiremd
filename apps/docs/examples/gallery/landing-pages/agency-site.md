@@ -3,20 +3,17 @@
 > **Use Case:** Digital agency, creative studio, or consultancy website with portfolio and services.
 >
 > **Key Features:** Bold hero, service offerings, case studies, team showcase, contact form
-
 ::: demo
 
 [[ :logo: CreativeCo | Services | Work | About | Blog | Careers | [Get in Touch]* ]]
 
 ---
-
 ::: hero
 # We Build Digital Experiences That Matter
 
 Award-winning creative agency specializing in branding, web design, and digital marketing for forward-thinking companies.
 
 [View Our Work ↓] [Start a Project]* [Schedule Call]
-
 :::
 
 [View Our Work ↓] [Start a Project]* [Schedule Call] "hi there" | hello      [button]*
@@ -31,7 +28,6 @@ Award-winning creative agency specializing in branding, web design, and digital 
 **250+ brands trust us with their digital presence**
 
 ---
-
 ::: grid-3 card
 
 ### :art: Brand Strategy & Design
@@ -69,13 +65,11 @@ Data-driven marketing strategies that drive growth and measurable results.
 - Analytics & Reporting
 
 [Learn More →]
-
 :::
 
 ---
 
 ## Featured Work
-
 ::: grid-2 card
 
 ### TechStart - Brand Redesign
@@ -105,7 +99,6 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 - Awwwards Site of the Day
 
 [View Case Study →]
-
 :::
 
 [View All Projects →]
@@ -113,7 +106,6 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 ---
 
 ## Our Process
-
 ::: grid-4 card
 
 ### 1. Discovery
@@ -147,15 +139,12 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 - Back-end dev
 - QA testing
 - Launch & support
-
 :::
 
 ---
 
 ## Why Choose Us?
-
 ::: card
-
 ::: grid-4 card
 
 ### 250+
@@ -169,15 +158,12 @@ Industry Awards
 
 ### 12yrs
 In Business
-
 :::
-
 :::
 
 ---
 
 ## Client Testimonials
-
 ::: grid-3 card
 
 ### :star::star::star::star::star:
@@ -197,13 +183,11 @@ Marketing Director, GlobalCorp
 
 **Emily Rodriguez**
 Founder, EcoMarket
-
 :::
 
 ---
 
 ## Our Team
-
 ::: grid-4 card
 
 ### John Doe
@@ -233,7 +217,6 @@ Founder, EcoMarket
 **UX Designer**
 
 [LinkedIn] [Dribbble]
-
 :::
 
 [View Full Team →] [We're Hiring! →]
@@ -241,7 +224,6 @@ Founder, EcoMarket
 ---
 
 ## Recognition & Awards
-
 ::: grid-6 card
 
 ### Awwwards
@@ -261,13 +243,11 @@ Team of the Year
 
 ### Fast Company
 Innovation Award
-
 :::
 
 ---
 
 ## Our Expertise
-
 ::: grid-3 card
 
 ### Design
@@ -290,26 +270,22 @@ Innovation Award
 - HubSpot
 - Mailchimp
 - Hootsuite
-
 :::
 
 ---
 
 ## Let's Create Something Amazing
-
 ::: hero
 # Ready to Start Your Project?
 
 We'd love to hear about your vision and explore how we can help bring it to life.
 
 [Start a Project]* [Schedule Call] [View Pricing]
-
 :::
 
 ---
 
 ## Get in Touch
-
 ::: grid-2
 
 ### Send Us a Message
@@ -384,13 +360,11 @@ Sunday: Closed
 [Get Directions →]
 
 ![Office Photo](https://via.placeholder.com/500x300)
-
 :::
 
 ---
 
 ## Latest from Our Blog
-
 ::: grid-3 card
 
 ### The Future of Web Design
@@ -419,15 +393,12 @@ Latest strategies to improve your search rankings and organic traffic.
 **Marketing** • 6 min read • Mar 5, 2025
 
 [Read More →]
-
 :::
 
 [Visit Blog →]
 
 ---
-
 ::: footer
-
 ::: grid-4 card
 
 ### Services
@@ -461,7 +432,6 @@ Latest strategies to improve your search rankings and organic traffic.
 - Partnership
 - Press Kit
 - Support
-
 :::
 
 ---
@@ -476,9 +446,7 @@ Latest strategies to improve your search rankings and organic traffic.
 **Email:** [email protected] • **Phone:** +1 (555) 123-4567
 
 © 2025 CreativeCo Agency. All rights reserved. • [Privacy](https://example.com/privacy) • [Terms](https://example.com/terms)
-
 :::
-
 :::
 
 ---

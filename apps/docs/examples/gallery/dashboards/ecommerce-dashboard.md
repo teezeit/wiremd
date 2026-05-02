@@ -3,7 +3,6 @@
 > **Use Case:** Online store management dashboard for tracking sales, inventory, and customer data.
 >
 > **Key Features:** Sales metrics, product inventory, order management, customer insights
-
 ::: demo
 
 [[ :logo: ShopDash | *Dashboard* | Products | Orders | Customers | Marketing | Reports | Settings | :bell: (5) | :user: Store Owner ]]
@@ -17,7 +16,6 @@
 **Date Range:** [Last 30 days...v] [Compare to: Previous period...v] [Export Report]
 
 ---
-
 ::: grid-4 card
 
 ### Total Revenue
@@ -35,11 +33,9 @@
 ### Conversion Rate
 **3.2%**
 :chart: +0.8% vs last period
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Revenue Chart (30 Days)
@@ -64,13 +60,11 @@
 | Home & Garden | $23,456 | 456 | 19% |
 | Sports | $12,890 | 234 | 10% |
 | Other | $7,976 | 140 | 6% |
-
 :::
 
 ---
 
 ## Recent Orders
-
 ::: card
 
 ### Latest Transactions
@@ -86,15 +80,12 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 | #12452 | Charlie Kim | 4 items | $178.50 | 🟢 Delivered | 5h ago | [View] [Invoice] |
 
 [View All Orders →] [Export to CSV]
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Low Stock Alerts
-
 ::: alert warning
 ⚠️ **15 products** are running low on stock
 :::
@@ -120,11 +111,9 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 | ![IMG] Wireless Earbuds | 128 | $10,240 | 178 |
 
 [View All Products →]
-
 :::
 
 ---
-
 ::: grid-3 card
 
 ### Total Customers
@@ -155,13 +144,11 @@ Based on 1,234 reviews
 - ⭐⭐⭐ 3%
 - ⭐⭐ 1%
 - ⭐ 1%
-
 :::
 
 ---
 
 ## Order Status Overview
-
 ::: grid-5 card
 
 ### Pending
@@ -188,13 +175,11 @@ Based on 1,234 reviews
 **23** orders
 
 [Review →]
-
 :::
 
 ---
 
 ## Sales by Channel
-
 ::: card
 
 ### Multi-Channel Performance
@@ -208,11 +193,9 @@ Based on 1,234 reviews
 | Social Media | 76 | $3,087 | 1.9% | +45% ⬆️ |
 
 ![Channel Chart](https://via.placeholder.com/700x200)
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Active Campaigns
@@ -247,13 +230,11 @@ Based on 1,234 reviews
 | EXPIRED | 0 | $0 | ❌ No |
 
 [Create New Code →]
-
 :::
 
 ---
 
 ## Product Management
-
 ::: card
 
 ### Quick Actions
@@ -278,11 +259,9 @@ Based on 1,234 reviews
 | Sports | 87 | 567 | $34,567 |
 
 [Manage Categories →]
-
 :::
 
 ---
-
 ::: grid-2 card
 
 ### Shipping Methods
@@ -302,13 +281,11 @@ Based on 1,234 reviews
 **Return Rate:** 2.3%
 
 [Manage Shipping →]
-
 :::
 
 ---
 
 ## Financial Summary
-
 ::: card
 
 ### Revenue Breakdown (Last 30 Days)
@@ -330,13 +307,11 @@ Based on 1,234 reviews
 ![Profit Chart](https://via.placeholder.com/700x200)
 
 [View Financial Reports →]
-
 :::
 
 ---
 
 ## Customer Support
-
 ::: grid-4 card
 
 ### Open Tickets
@@ -362,7 +337,6 @@ First contact
 1,234 ratings
 
 [Reviews →]
-
 :::
 
 ---
@@ -380,7 +354,6 @@ First contact
 ---
 
 ## Tasks & Reminders
-
 ::: card
 
 ### Today's Tasks
@@ -397,15 +370,12 @@ First contact
 - Supplier payment due (5 days)
 
 [Manage Tasks →]
-
 :::
 
 ---
-
 ::: footer
 **Last Updated:** 2 minutes ago • [Refresh Data] • [Download Report] • [Help Center] • [Contact Support]
 :::
-
 :::
 
 ---

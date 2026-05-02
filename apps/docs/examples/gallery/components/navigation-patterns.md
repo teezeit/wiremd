@@ -7,31 +7,26 @@
 ## 1. Top Navigation Bars
 
 ### Basic Navigation
-
 ::: demo
 [[ Home | Products | Services | About | Contact ]]
 :::
 
 ### Navigation with Logo and Buttons
-
 ::: demo
 [[ :logo: Brand | Features | Pricing | Docs | [Sign In] | [Get Started]* ]]
 :::
 
 ### Navigation with Active State
-
 ::: demo
 [[ Logo | Home | *Products* | Services | About | Contact ]]
 :::
 
 ### Navigation with Icons
-
 ::: demo
 [[ :home: Home | :shopping: Shop | :info: About | :mail: Contact | :user: Account ]]
 :::
 
 ### Full Featured Navigation
-
 ::: demo
 [[ :logo: MyApp | Home | Features | Pricing | Resources | Blog | :search: | :bell: (3) | :user: John Doe | [Sign Out] ]]
 :::
@@ -41,19 +36,16 @@
 ## 2. Breadcrumb Navigation
 
 ### Simple Breadcrumbs
-
 ::: demo
 [[ Home > Products > Electronics > Laptops ]]
 :::
 
 ### Breadcrumbs with Icons
-
 ::: demo
 [[ :home: Home > :folder: Documents > :file: Report.pdf ]]
 :::
 
 ### Multi-Level Breadcrumbs
-
 ::: demo
 [[ Dashboard > Projects > Mobile App v2.0 > Sprint 12 > Tasks ]]
 :::
@@ -63,7 +55,6 @@
 ## 3. Sidebar Navigation
 
 ### Basic Sidebar
-
 ::: demo
 ::: sidebar
 #### Navigation
@@ -75,7 +66,6 @@
 :::
 
 ### Sidebar with Icons and Badges
-
 ::: demo
 ::: sidebar
 ### Main Menu
@@ -98,7 +88,6 @@
 :::
 
 ### Collapsible Sidebar Sections
-
 ::: demo
 ::: sidebar
 ### Projects
@@ -126,13 +115,11 @@
 ## 4. Tab-Style Navigation
 
 ### Horizontal Tab Nav
-
 ::: demo
 [[ *Overview* | Details | Settings | History ]]
 :::
 
 ### Tab Nav with Content Section
-
 ::: demo
 [[ :logo: App | *Profile* | Security | Notifications | Billing ]]
 
@@ -154,7 +141,6 @@ Email
 ## 5. Footer Navigation
 
 ### Simple Footer
-
 ::: demo
 ::: footer
 [[ Privacy | Terms | Contact ]]
@@ -163,10 +149,8 @@ Email
 :::
 
 ### Multi-Column Footer
-
 ::: demo
 ::: footer
-
 ::: grid-4 card
 
 ### Product
@@ -192,7 +176,6 @@ Email
 - Terms of Service
 - Cookie Policy
 - GDPR
-
 :::
 
 ---
@@ -200,7 +183,6 @@ Email
 [[ :twitter: Twitter | :facebook: Facebook | :linkedin: LinkedIn | :github: GitHub ]]
 
 © 2025 Company Inc. All rights reserved.
-
 :::
 :::
 
@@ -209,7 +191,6 @@ Email
 ## 6. Mobile Navigation
 
 ### Mobile Menu Structure
-
 ::: demo
 ::: sidebar
 ### Menu
@@ -232,7 +213,6 @@ Email
 ## 7. Pagination Navigation
 
 ### Basic Pagination
-
 ::: demo
 Showing 1-20 of 1,234 items
 
@@ -240,7 +220,6 @@ Showing 1-20 of 1,234 items
 :::
 
 ### Advanced Pagination
-
 ::: demo
 Page [3___] of 62 | Show [20...v] per page
 
@@ -254,7 +233,6 @@ Jump to page: [___] [Go]
 ## 8. Step Navigation (Wizard)
 
 ### Progress Steps
-
 ::: demo
 [########__________] Step 2 of 4
 
@@ -270,7 +248,6 @@ Currently on: **Personal Information**
 ## 9. Context Menu / Action Menu
 
 ### Action Menu
-
 ::: demo
 Actions:
 - :edit: Edit
@@ -285,7 +262,6 @@ Actions:
 ## 10. Tag / Filter Navigation
 
 ### Tag Cloud
-
 ::: demo
 Filter by tags:
 
@@ -297,7 +273,6 @@ Filter by tags:
 ---
 
 ## Best Practices
-
 ::: card
 
 ### Navigation Design Tips
@@ -326,7 +301,6 @@ Filter by tags:
    - Primary actions should stand out
    - Use icons sparingly and meaningfully
    - Group related items
-
 :::
 
 ---

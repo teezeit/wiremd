@@ -1,25 +1,21 @@
 ::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
 ::: main
 # Buttons
 
 Square brackets create a button. Add `*` for primary variant.
 
 ## Basic
-
 ::: demo
 [Cancel] [Save]*
 :::
 
 ## Variants
-
 ::: demo
 [Default] [Primary]* [Secondary]{variant:secondary} [Danger]{variant:danger}
 :::
 
 ## Disabled
-
 ::: demo
 [Submit]{disabled}
 :::
@@ -27,13 +23,11 @@ Square brackets create a button. Add `*` for primary variant.
 ## Sizes & Custom Classes
 
 > **TODO:** `{.large}` / `{.small}` classes are applied but no CSS rules exist for them
-
 ::: demo
 [Small]{.small} [Default] [Large]{.large}
 :::
 
 ## With Icons
-
 ::: demo
 [:search: Search] [+ New Item]* [Delete]{.danger}
 :::
@@ -52,7 +46,5 @@ Square brackets create a button. Add `*` for primary variant.
 ```
 
 > **Note:** `{.primary}` and `{.danger}` add raw CSS classes with no built-in styling — use `{variant:*}` instead.
-
 :::
-
 :::
