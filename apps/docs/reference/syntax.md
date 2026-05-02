@@ -170,7 +170,7 @@ Content for details tab
 :::
 ```
 
-For a simple button-group style switcher without panels, use `*` to mark the active item:
+For a simple switcher without panels, keep the buttons on one line and use `*` to mark the active item:
 
 ```markdown
 [Overview]* [Details] [Raw Data]
@@ -277,7 +277,7 @@ Content for the main area.
 
 ## Row
 
-`::: row` lays out its children horizontally — filter toolbars, search+action bars, button groups:
+`::: row` lays out its children horizontally — filter toolbars, search+action bars, and action rows:
 
 ```markdown
 ::: row

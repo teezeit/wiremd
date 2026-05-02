@@ -593,14 +593,6 @@ body {
   font-style: italic;
 }
 
-/* Button group */
-.${prefix}container-button-group {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 16px 0;
-}
-
 /* Form group */
 .${prefix}container-form-group {
   margin: 16px 0;

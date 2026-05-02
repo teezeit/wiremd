@@ -66,7 +66,7 @@ For the full syntax including all attributes, edge cases, and disambiguation rul
 
 ### Page Title
 
-# In-page tabs — use a button group, * marks the active tab
+# In-page tabs — keep buttons on one line, * marks the active tab
 [Overview]* [Details] [Raw Data]
 
 # Buttons
@@ -239,7 +239,7 @@ See the renderable version at `${CLAUDE_PLUGIN_ROOT}/references/examples/dashboa
 1. **Label directly above input.** No blank line between label text and `[_____]` — it breaks the association.
 2. **Blank line before `:::` when last line has inline elements.** Buttons, backtick code, bold, links, or list items on the final line of a container — add an empty line before `:::`.
 3. **`[[ ]]` nav hrefs require wiremd ≥ 0.1.7.** Earlier versions silently drop the URL and every item renders as `href="#"`. Mixed static + clickable works in 0.1.7+: `[[ *Home* | [About](./about.md) | [Contact](./contact.md) ]]`.
-4. **`:::accordion` doesn't exist.** Use `::: tabs` with `::: tab Label` children for tabbed panels. For a simple button-group switcher, use `[Tab]*  [Other]`.
+4. **`:::accordion` doesn't exist.** Use `::: tabs` with `::: tab Label` children for tabbed panels. For a simple switcher, use `[Tab]*  [Other]`.
 5. **Use `![[file.md]]` for includes, not `:::display`.** `:::display` is obsolete. `![[path/to/file.md]]` works in both the CLI and VS Code preview — path resolves relative to the current file.
 6. **Sandbox `--serve` is unreachable from the user's browser.** `wiremd --serve PORT` binds to `localhost` on Claude's host, not the user's. When Claude is running in co-work/Desktop and the user is elsewhere, use **display** mode instead.
 7. **Static HTML keeps `.md` hrefs — rewrite after build.** `wiremd x.md -o x.html` preserves `./page.md` link targets. For `file://` double-click delivery, rewrite with: `sed -i -E 's|href="\./([A-Za-z0-9_-]+)\.md"|href="./\1.html"|g' *.html`. On macOS without GNU sed, use `sed -i ''`.

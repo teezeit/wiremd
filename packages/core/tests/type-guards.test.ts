@@ -298,7 +298,7 @@ describe('Type Guards', () => {
 
       ast.children.forEach(traverse);
 
-      // Note: [Submit]{.primary} [Cancel] creates a button-group container with 2 buttons
+      // Note: [Submit]{.primary} [Cancel] creates a row with 2 buttons
       // Plus [Search...]{type:search} = 3 buttons total
       expect(buttonCount.count).toBe(3);
       expect(inputCount.count).toBe(0); // Search is a button with type:search, not an input

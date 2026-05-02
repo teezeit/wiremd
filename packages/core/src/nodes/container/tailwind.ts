@@ -46,9 +46,6 @@ export function renderContainerTailwind(
     case 'form-group':
       classes = 'mb-4';
       break;
-    case 'button-group':
-      classes = 'flex flex-wrap gap-2 my-4';
-      break;
     default:
       classes = 'p-4 my-4';
   }

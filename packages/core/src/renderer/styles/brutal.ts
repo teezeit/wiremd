@@ -604,14 +604,6 @@ body {
   background: linear-gradient(to right, rgba(255, 217, 61, 0.2), transparent);
 }
 
-/* Button group */
-.${prefix}container-button-group {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin: 20px 0;
-}
-
 /* Form group */
 .${prefix}container-form-group {
   margin: 20px 0;

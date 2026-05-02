@@ -11,13 +11,17 @@ Email
 Password
     <input type="password" className="wmd-input" required />
   </div>
-  <div className="wmd-container-button-group">
-    <button className="wmd-button wmd-button-primary">
-      Sign In
-    </button>
-    <button className="wmd-button">
-      Forgot password?
-    </button>
+  <div className="wmd-row">
+    <div className="wmd-grid-item">
+      <button className="wmd-button wmd-button-primary">
+        Sign In
+      </button>
+    </div>
+    <div className="wmd-grid-item">
+      <button className="wmd-button">
+        Forgot password?
+      </button>
+    </div>
   </div>
     </div>
   );

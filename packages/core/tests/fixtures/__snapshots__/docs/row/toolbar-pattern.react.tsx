@@ -12,16 +12,22 @@ export const WiremdComponent: React.FC = () => {
       </div>
     </div>
     <div className="wmd-grid-item wmd-align-right">
-      <div className="wmd-container-button-group">
-        <button className="wmd-button">
-          Filter
-        </button>
-        <button className="wmd-button">
-          Sort
-        </button>
-        <button className="wmd-button wmd-button-primary">
-          + New Project
-        </button>
+      <div className="wmd-row">
+        <div className="wmd-grid-item">
+          <button className="wmd-button">
+            Filter
+          </button>
+        </div>
+        <div className="wmd-grid-item">
+          <button className="wmd-button">
+            Sort
+          </button>
+        </div>
+        <div className="wmd-grid-item">
+          <button className="wmd-button wmd-button-primary">
+            + New Project
+          </button>
+        </div>
       </div>
     </div>
   </div>

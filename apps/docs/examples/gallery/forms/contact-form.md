@@ -2,7 +2,7 @@
 
 > **Use Case:** Standard contact form for websites, customer support pages, or inquiry forms.
 >
-> **Key Features:** Text inputs, email validation, textarea, required fields, button groups
+> **Key Features:** Text inputs, email validation, textarea, required fields, action rows
 ::: demo
 
 ## Get in Touch

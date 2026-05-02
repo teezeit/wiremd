@@ -7,14 +7,16 @@ export const WiremdComponent: React.FC = () => {
     <div className="wmd-grid-item">
       <p className="wmd-paragraph"><span className="wmd-icon" data-icon="user" aria-label="user">👤</span>
 John Doe <span className="wmd-badge wmd-badge-warning">Admin</span></p>
-      <div className="wmd-container-button-group">
-        <button className="wmd-button">
-          Edit
-        </button>
-        <button className="wmd-button wmd-danger">
-          Remove
-        </button>
-      </div>
+    </div>
+    <div className="wmd-grid-item">
+      <button className="wmd-button">
+        Edit
+      </button>
+    </div>
+    <div className="wmd-grid-item">
+      <button className="wmd-button wmd-danger">
+        Remove
+      </button>
     </div>
   </div>
     </div>

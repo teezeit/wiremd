@@ -1,10 +1,11 @@
 Document
   └─ row
+     ├─ grid-item
+     │  └─ paragraph
+     │     ├─ icon props={name="user"}
+     │     ├─ text "\nJohn Doe "
+     │     └─ badge "Admin" props={variant="warning"}
+     ├─ grid-item
+     │  └─ button "Edit"
      └─ grid-item
-        ├─ paragraph
-        │  ├─ icon props={name="user"}
-        │  ├─ text "\nJohn Doe "
-        │  └─ badge "Admin" props={variant="warning"}
-        └─ container[button-group]
-           ├─ button "Edit"
-           └─ button "Remove" props={classes=["danger"]}
+        └─ button "Remove" props={classes=["danger"]}

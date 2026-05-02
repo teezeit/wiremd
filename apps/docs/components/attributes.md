@@ -10,7 +10,7 @@ Add `.classname` to attach a CSS class:
 [Primary]* [Primary]{variant:primary} [Danger]{variant:danger} [Large]{.large}
 :::
 
-> **Note:** `{.primary}` and `{.danger}` on buttons add raw CSS classes (`wmd-primary`, `wmd-danger`), not variant classes (`wmd-button-primary`, `wmd-button-danger`). These classes have no built-in CSS definitions and produce unstyled buttons. Use `[Button]*` or `{variant:primary}` / `{variant:danger}` instead. Custom classes like `.large` are passed through but also have no built-in CSS definition.
+> **Note:** `{.primary}` and `{.danger}` on buttons add raw CSS classes (`wmd-primary`, `wmd-danger`), not variant classes (`wmd-button-primary`, `wmd-button-danger`). These classes have no built-in CSS definitions and produce unstyled buttons. Use `[Button]*` or `{variant:primary}` / `{variant:danger}` instead. Size classes like `.small` and `.large` are built in.
 
 ## Key-value Attributes
 

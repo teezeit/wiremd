@@ -1,8 +1,8 @@
 /**
  * Container — HTML render.
  *
- * 11 subtypes (hero, card, modal, sidebar, footer, alert, grid, layout,
- * section, form-group, button-group). The `layout` subtype with the
+ * Container subtypes include hero, card, modal, sidebar, footer, alert,
+ * grid, layout, section, and form-group. The `layout` subtype with the
  * `sidebar-main` class triggers a custom two-column extractor that
  * groups child nodes into named sections.
  *

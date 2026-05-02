@@ -72,6 +72,8 @@ John Doe ((Admin)){.warning}
 :::
 
 ## Toolbar Pattern
+
+Use a row for a simple toolbar. For a title on the left and actions on the right, use `::: columns-2` with an aligned column item.
 ::: demo
 ::: columns-2
 ::: column

@@ -24,6 +24,10 @@ function clean(): string {
   return getStyleCSS('clean', PREFIX);
 }
 
+function cssFor(style: string): string {
+  return getStyleCSS(style, PREFIX);
+}
+
 describe('clean style: known CSS gaps (it.fails until styles.ts grows the rule)', () => {
   it('adds a visual indicator for required inputs', () => {
     // [required] inputs render with the native attribute but no asterisk,
@@ -74,11 +78,13 @@ describe('clean style: known CSS gaps (it.fails until styles.ts grows the rule)'
     // matching rule must target the AND of both classes on the same element
     // (`.wmd-button.wmd-small`, no whitespace), not a descendant selector.
     // Assert each variant has a rule with at least one declaration.
-    const css = clean();
-    for (const size of ['small', 'large']) {
-      expect(css).toMatch(
-        new RegExp(`\\.wmd-button\\.wmd-${size}\\b[^{]*\\{[^}]*[a-z-]+\\s*:`)
-      );
+    for (const style of ['sketch', 'clean', 'wireframe', 'none', 'tailwind', 'material', 'brutal']) {
+      const css = cssFor(style);
+      for (const size of ['small', 'large']) {
+        expect(css).toMatch(
+          new RegExp(`\\.wmd-button\\.wmd-${size}\\b[^{]*\\{[^}]*[a-z-]+\\s*:`)
+        );
+      }
     }
   });
 

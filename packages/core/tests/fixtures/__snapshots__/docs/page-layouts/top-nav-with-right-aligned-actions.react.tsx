@@ -52,9 +52,7 @@ export const WiremdComponent: React.FC = () => {
           </tr>
           <tr>
               <td className="wmd-table-cell wmd-align-left">Gamma</td>
-              <td className="wmd-table-cell wmd-align-left"></td>
-              <td className="wmd-table-cell wmd-align-left">Draft</td>
-              <td className="wmd-table-cell wmd-align-left">&#123;&#125;</td>
+              <td className="wmd-table-cell wmd-align-left"><span className="wmd-badge">Draft</span></td>
               <td className="wmd-table-cell wmd-align-left">3 days ago</td>
           </tr>
     </tbody>

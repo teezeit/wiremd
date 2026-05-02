@@ -198,8 +198,7 @@ interface ContainerNode {
     | 'grid'
     | 'layout'
     | 'section'
-    | 'form-group'
-    | 'button-group';
+    | 'form-group';
 
   props: ComponentProps;
   children: WiremdNode[];
