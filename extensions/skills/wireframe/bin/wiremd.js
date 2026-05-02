@@ -19541,10 +19541,17 @@ function collectContainer(nodes, startIdx) {
     const fullText = openerNode.children[0].value;
     const lines = fullText.split("\n");
     let closingIdx = -1;
-    for (let j = lines.length - 1; j >= 1; j--) {
-      if (lines[j].trim() === ":::") {
-        closingIdx = j;
-        break;
+    let depth = 0;
+    for (let j = 1; j < lines.length; j++) {
+      const trimmed = lines[j].trim();
+      if (/^:::\s+\S/.test(trimmed)) {
+        depth++;
+      } else if (trimmed === ":::") {
+        if (depth === 0) {
+          closingIdx = j;
+          break;
+        }
+        depth--;
       }
     }
     if (closingIdx > 0) {
@@ -19563,9 +19570,21 @@ function collectContainer(nodes, startIdx) {
         });
       }
       const trailingText = lines.slice(closingIdx + 1).join("\n").trim();
-      const trailing = trailingText ? [{ type: "paragraph", children: [{ type: "text", value: trailingText }] }] : void 0;
+      const trailing = trailingText ? [
+        {
+          type: "paragraph",
+          children: [{ type: "text", value: trailingText }]
+        }
+      ] : void 0;
       return {
-        ...finishContainer(opener.containerType, opener.attrs, opener.inline, children, startIdx + 1, openerNode.position),
+        ...finishContainer(
+          opener.containerType,
+          opener.attrs,
+          opener.inline,
+          children,
+          startIdx + 1,
+          openerNode.position
+        ),
         trailing
       };
     }
@@ -19601,9 +19620,34 @@ function collectContainer(nodes, startIdx) {
         children: [{ type: "text", value: opener.inline }]
       });
     }
-    return finishContainer(opener.containerType, opener.attrs, opener.inline, contentChildren, startIdx + 1, openerNode.position);
+    return finishContainer(
+      opener.containerType,
+      opener.attrs,
+      opener.inline,
+      contentChildren,
+      startIdx + 1,
+      openerNode.position
+    );
   }
   const containerChildren = [];
+  let i = startIdx + 1;
+  const finishWithTrailing = (trailing) => {
+    const finished = makeContainerNode(
+      opener.containerType,
+      opener.attrs,
+      containerChildren,
+      openerNode.position
+    );
+    if (opener.inline)
+      finished.inline = opener.inline;
+    if (opener.containerType === "demo")
+      finished.rawContent = mdastNodesToText(containerChildren);
+    return {
+      node: finished,
+      trailing: trailing && trailing.length > 0 ? trailing : void 0,
+      nextIndex: i
+    };
+  };
   if (opener.inline) {
     containerChildren.push({
       type: "paragraph",
@@ -19639,6 +19683,41 @@ function collectContainer(nodes, startIdx) {
       restChildren.push(...openerNode.children.slice(startSliceIdx));
     }
     if (restChildren.length > 0) {
+      let rcSplitIdx = -1;
+      let rcSplitMatch = null;
+      for (let ci = 0; ci < restChildren.length; ci++) {
+        const ch = restChildren[ci];
+        if (ch?.type === "text") {
+          const m = ch.value.match(
+            /^([\s\S]*?)\n:::[ \t]*(?:\n([\s\S]*))?$/
+          );
+          if (m) {
+            rcSplitIdx = ci;
+            rcSplitMatch = m;
+            break;
+          }
+        }
+      }
+      if (rcSplitIdx >= 0 && rcSplitMatch) {
+        const beforeText = rcSplitMatch[1].trimEnd();
+        const afterText = (rcSplitMatch[2] ?? "").replace(/^\n+/, "");
+        const contentKids = restChildren.slice(0, rcSplitIdx);
+        if (beforeText)
+          contentKids.push({
+            ...restChildren[rcSplitIdx],
+            value: beforeText
+          });
+        if (contentKids.length > 0)
+          containerChildren.push({ type: "paragraph", children: contentKids });
+        const trailingKids = [];
+        if (afterText)
+          trailingKids.push({ type: "text", value: afterText });
+        trailingKids.push(...restChildren.slice(rcSplitIdx + 1));
+        i = startIdx + 1;
+        return finishWithTrailing(
+          trailingKids.length > 0 ? [{ type: "paragraph", children: trailingKids }] : void 0
+        );
+      }
       const syntheticPara = {
         type: "paragraph",
         children: restChildren
@@ -19650,36 +19729,36 @@ function collectContainer(nodes, startIdx) {
       }
     }
   }
-  let i = startIdx + 1;
   if (pendingAfterOpener) {
     const virtualNodes = [pendingAfterOpener, ...nodes.slice(startIdx + 1)];
     const inner = collectContainer(virtualNodes, 0);
     containerChildren.push(inner.node);
-    if (inner.trailing)
-      containerChildren.push(...inner.trailing);
+    if (inner.trailing && inner.trailing.length > 0) {
+      nodes.splice(startIdx + inner.nextIndex, 0, ...inner.trailing);
+    }
     i = startIdx + inner.nextIndex;
   }
-  const finishWithTrailing = (trailing) => {
-    const finished = makeContainerNode(opener.containerType, opener.attrs, containerChildren, openerNode.position);
-    if (opener.inline)
-      finished.inline = opener.inline;
-    if (opener.containerType === "demo")
-      finished.rawContent = mdastNodesToText(containerChildren);
-    return { node: finished, trailing: trailing && trailing.length > 0 ? trailing : void 0, nextIndex: i };
-  };
   while (i < nodes.length) {
     const child = nodes[i];
     if (isContainerCloser(child)) {
       i++;
       break;
     }
-    if (child.type === "paragraph" && child.children?.length === 1 && child.children[0].type === "text") {
-      const value = child.children[0].value;
-      const lines = value.split("\n");
-      if (lines.length > 1 && lines[0].trim() === ":::") {
-        const after = lines.slice(1).join("\n");
+    if (child.type === "paragraph" && child.children?.length > 0 && child.children[0].type === "text") {
+      const firstText = child.children[0].value;
+      const firstNewline = firstText.indexOf("\n");
+      const firstLine = (firstNewline >= 0 ? firstText.slice(0, firstNewline) : firstText).trim();
+      if (firstLine === ":::" && (firstNewline >= 0 || child.children.length > 1)) {
+        const restOfFirstText = firstNewline >= 0 ? firstText.slice(firstNewline + 1) : "";
+        const trailingChildren = [];
+        if (restOfFirstText) {
+          trailingChildren.push({ type: "text", value: restOfFirstText });
+        }
+        trailingChildren.push(...child.children.slice(1));
         i++;
-        return finishWithTrailing(after.trim() ? [{ type: "paragraph", children: [{ type: "text", value: after }] }] : void 0);
+        return finishWithTrailing(
+          trailingChildren.length > 0 ? [{ type: "paragraph", children: trailingChildren }] : void 0
+        );
       }
     }
     if (child.type === "list" && child.children?.length) {
@@ -19689,7 +19768,10 @@ function collectContainer(nodes, startIdx) {
       if (para?.type === "paragraph" && para.children?.length) {
         const lastTextChild = para.children[para.children.length - 1];
         if (lastTextChild?.type === "text" && /\n:::\s*$/.test(lastTextChild.value)) {
-          const stripped = lastTextChild.value.replace(/\n:::\s*$/, "");
+          const stripped = lastTextChild.value.replace(
+            /\n:::\s*$/,
+            ""
+          );
           const newPara = {
             ...para,
             children: [
@@ -19697,20 +19779,29 @@ function collectContainer(nodes, startIdx) {
               { ...lastTextChild, value: stripped }
             ]
           };
-          const newLast = { ...last, children: [newPara, ...last.children?.slice(1) || []] };
-          const newList = { ...child, children: [...items.slice(0, -1), newLast] };
+          const newLast = {
+            ...last,
+            children: [newPara, ...last.children?.slice(1) || []]
+          };
+          const newList = {
+            ...child,
+            children: [...items.slice(0, -1), newLast]
+          };
           containerChildren.push(newList);
           i++;
           return finishWithTrailing();
         }
       }
     }
-    if (child.type === "paragraph" && child.children?.length === 1 && child.children[0].type === "text") {
+    if (child.type === "paragraph" && child.children?.length === 1 && child.children[0].type === "text" && !parseContainerOpener(child)) {
       const value = child.children[0].value;
       const lines = value.split("\n");
       let nestedOpenerLine = -1;
       for (let li = 1; li < lines.length; li++) {
-        const candidate = { type: "paragraph", children: [{ type: "text", value: lines[li] }] };
+        const candidate = {
+          type: "paragraph",
+          children: [{ type: "text", value: lines[li] }]
+        };
         if (parseContainerOpener(candidate)) {
           nestedOpenerLine = li;
           break;
@@ -19718,16 +19809,40 @@ function collectContainer(nodes, startIdx) {
       }
       if (nestedOpenerLine > 0) {
         const before = lines.slice(0, nestedOpenerLine).join("\n").trim();
+        const closerInBefore = before.search(/\n:::[ \t]*(?:\n|$)/);
+        if (closerInBefore >= 0) {
+          const contentBefore = before.slice(0, closerInBefore).trim();
+          if (contentBefore) {
+            containerChildren.push({
+              type: "paragraph",
+              children: [{ type: "text", value: contentBefore }]
+            });
+          }
+          const remainder2 = lines.slice(nestedOpenerLine).join("\n");
+          const syntheticOpener2 = {
+            type: "paragraph",
+            children: [{ type: "text", value: remainder2 }]
+          };
+          i++;
+          return finishWithTrailing([syntheticOpener2]);
+        }
         if (before) {
-          containerChildren.push({ type: "paragraph", children: [{ type: "text", value: before }] });
+          containerChildren.push({
+            type: "paragraph",
+            children: [{ type: "text", value: before }]
+          });
         }
         const remainder = lines.slice(nestedOpenerLine).join("\n");
-        const syntheticOpener = { type: "paragraph", children: [{ type: "text", value: remainder }] };
+        const syntheticOpener = {
+          type: "paragraph",
+          children: [{ type: "text", value: remainder }]
+        };
         const virtualNodes = [syntheticOpener, ...nodes.slice(i + 1)];
         const inner = collectContainer(virtualNodes, 0);
         containerChildren.push(inner.node);
-        if (inner.trailing)
-          containerChildren.push(...inner.trailing);
+        if (inner.trailing && inner.trailing.length > 0) {
+          nodes.splice(i + inner.nextIndex, 0, ...inner.trailing);
+        }
         i = i + 1 + (inner.nextIndex - 1);
         continue;
       }
@@ -19735,36 +19850,52 @@ function collectContainer(nodes, startIdx) {
     if (parseContainerOpener(child)) {
       const inner = collectContainer(nodes, i);
       containerChildren.push(inner.node);
-      if (inner.trailing)
-        containerChildren.push(...inner.trailing);
+      if (inner.trailing && inner.trailing.length > 0) {
+        nodes.splice(inner.nextIndex, 0, ...inner.trailing);
+      }
       i = inner.nextIndex;
       continue;
     }
     if (child.type === "paragraph" && child.children?.length) {
-      const lastInline = child.children[child.children.length - 1];
-      if (lastInline?.type === "text") {
-        const value = lastInline.value;
-        const m = value.match(/^([\s\S]*?)\n:::[ \t]*(?:\n([\s\S]*))?$/);
-        if (m) {
-          const beforeText = m[1].trimEnd();
-          const afterText = (m[2] ?? "").replace(/^\n+/, "");
-          if (beforeText) {
-            containerChildren.push({
-              ...child,
-              children: [
-                ...child.children.slice(0, -1),
-                { ...lastInline, value: beforeText }
-              ]
-            });
-          } else if (child.children.length > 1) {
-            containerChildren.push({
-              ...child,
-              children: child.children.slice(0, -1)
-            });
+      let closingChildIdx = -1;
+      let closingMatch = null;
+      for (let ci = 0; ci < child.children.length; ci++) {
+        const ch = child.children[ci];
+        if (ch?.type === "text") {
+          const m = ch.value.match(
+            /^([\s\S]*?)\n:::[ \t]*(?:\n([\s\S]*))?$/
+          );
+          if (m) {
+            closingChildIdx = ci;
+            closingMatch = m;
+            break;
           }
-          i++;
-          return finishWithTrailing(afterText ? [{ type: "paragraph", children: [{ type: "text", value: afterText }] }] : void 0);
         }
+      }
+      if (closingChildIdx >= 0 && closingMatch) {
+        const beforeText = closingMatch[1].trimEnd();
+        const afterText = (closingMatch[2] ?? "").replace(/^\n+/, "");
+        const beforeKids = child.children.slice(0, closingChildIdx);
+        if (beforeText) {
+          containerChildren.push({
+            ...child,
+            children: [
+              ...beforeKids,
+              { ...child.children[closingChildIdx], value: beforeText }
+            ]
+          });
+        } else if (beforeKids.length > 0) {
+          containerChildren.push({ ...child, children: beforeKids });
+        }
+        const afterKids = child.children.slice(closingChildIdx + 1);
+        const trailingKids = [];
+        if (afterText)
+          trailingKids.push({ type: "text", value: afterText });
+        trailingKids.push(...afterKids);
+        i++;
+        return finishWithTrailing(
+          trailingKids.length > 0 ? [{ type: "paragraph", children: trailingKids }] : void 0
+        );
       }
     }
     containerChildren.push(child);
@@ -19806,7 +19937,9 @@ function mdastNodesToText(nodes) {
         }).join("\n");
       case "table": {
         const rows = node2.children.map(
-          (row2) => row2.children.map((cell) => mdastInlinesToText(cell.children || []))
+          (row2) => row2.children.map(
+            (cell) => mdastInlinesToText(cell.children || [])
+          )
         );
         if (!rows.length)
           return "";
@@ -19815,7 +19948,11 @@ function mdastNodesToText(nodes) {
         );
         const formatRow = (cells) => "| " + cells.map((c, i) => c.padEnd(colWidths[i])).join(" | ") + " |";
         const separator2 = "| " + colWidths.map((w) => "-".repeat(w)).join(" | ") + " |";
-        return [formatRow(rows[0]), separator2, ...rows.slice(1).map(formatRow)].join("\n");
+        return [
+          formatRow(rows[0]),
+          separator2,
+          ...rows.slice(1).map(formatRow)
+        ].join("\n");
       }
       case "code":
         return "```" + (node2.lang || "") + "\n" + node2.value + "\n```";
@@ -19846,7 +19983,11 @@ function processNodes(nodes) {
   while (i < queue.length) {
     const node2 = queue[i];
     if (parseContainerOpener(node2)) {
-      const { node: containerNode, trailing, nextIndex } = collectContainer(queue, i);
+      const {
+        node: containerNode,
+        trailing,
+        nextIndex
+      } = collectContainer(queue, i);
       result.push(containerNode);
       if (trailing && trailing.length > 0) {
         queue.splice(nextIndex, 0, ...trailing);
