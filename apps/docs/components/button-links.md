@@ -15,7 +15,7 @@ Wrap a Markdown link inside button brackets to create a clickable button that na
 ### Getting Started
 Install wiremd and create your first wireframe in minutes.
 
-[[Read the Guide](./index.md)]* [[View Examples](./grid.md)]
+[[Read the Guide](./index.md)]* [[View Examples](./columns.md)]
 :::
 :::
 
@@ -29,7 +29,7 @@ Install wiremd and create your first wireframe in minutes.
 
 Button links are the primary way to wire up multi-page prototypes. In `--serve` mode, clicking a button link renders the target `.md` file in the same browser tab.
 ::: demo
-[[ wiremd | [Home](./index.md) | [Components](./buttons.md) | [Layout](./grid.md) | [Get Started](./index.md)* ]]
+[[ wiremd | [Home](./index.md) | [Components](./buttons.md) | [Layout](./columns.md) | [Get Started](./index.md)* ]]
 :::
 
 ## Syntax
