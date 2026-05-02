@@ -919,8 +919,8 @@ Button
     });
   });
 
-  describe('Alignment on grid/row items', () => {
-    it('should add align-right class to grid-item when ### has {.right}', () => {
+  describe('Alignment on grid items', () => {
+    it('should ignore row item alignment via ### headings', () => {
       const input = `
 ::: row
 
@@ -935,11 +935,11 @@ Button
 
       const result = parse(input);
       const row = result.children[0] as any;
-      expect(row.children[0].props.classes).toContain('align-left');
-      expect(row.children[1].props.classes).toContain('align-right');
+      expect(row.children[0].props.classes).not.toContain('align-left');
+      expect(row.children[1].props.classes).not.toContain('align-right');
     });
 
-    it('should add align-center class to grid-item when ### has {.center}', () => {
+    it('should ignore center row item alignment via ### headings', () => {
       const input = `
 ::: row
 
@@ -951,7 +951,7 @@ Centered
 
       const result = parse(input);
       const row = result.children[0] as any;
-      expect(row.children[0].props.classes).toContain('align-center');
+      expect(row.children[0].props.classes).not.toContain('align-center');
     });
 
     it('should support alignment inside ::: grid-N as well', () => {
@@ -1950,7 +1950,7 @@ Some **bold** content
       });
 
       it('comment before a row item is a sibling before that item, not inside its children', () => {
-        const md = '::: row\n\n### {.left}\n[Search___]{type:search}\n\n<!-- fix label -->\n### {.right}\n[Filter v]\n\n:::';
+        const md = '::: row\n\n### Search\n[Search___]{type:search}\n\n<!-- fix label -->\n### Filter\n[Filter v]\n\n:::';
         const ast = parse(md);
         const row = ast.children[0] as any;
         // row.children = [grid-item-A, comment, grid-item-B]

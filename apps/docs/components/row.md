@@ -24,12 +24,12 @@ Page 1 of 12   [← Prev] [Next →]
 :::
 :::
 
-## Explicit Items with Per-item Alignment
+## Split Layouts
 
-Use `###` headings inside `::: row` to control each item's alignment independently.
+Use a grid when one side needs to stay left while another side aligns right.
 ::: demo
-::: row
-### {.left}
+::: grid-2
+###
 [All]* [Active] [Archived]
 
 ### {.right}
@@ -71,8 +71,8 @@ John Doe ((Admin)){.warning}
 
 ## Toolbar Pattern
 ::: demo
-::: row
-### {.left}
+::: grid-2
+###
 **Projects** ((12)){.primary}
 
 ### {.right}
@@ -88,10 +88,11 @@ John Doe ((Admin)){.warning}
 :::
 ::: row {.right}      right-align all content
 ::: row {.center}     center all content
-::: row
-### {.left}           explicit items with per-item alignment
-content
+
+::: grid-2           split left/right content into columns
+###
+[A] [B] [C]
 ### {.right}
-content
+[Save]*
 :::
 ```

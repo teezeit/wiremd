@@ -175,7 +175,7 @@ The list, with the agent's pre-discussion takes:
 
 3. **`:::columns` instead of `:::grid`** — yes. "Grid" implies CSS Grid (rows + columns + areas + spans); "columns" is what people actually want. Same internal AST node; rename only. Add `:::grid` as deprecated alias for one release. Touches container parsing and renderer-side classes.
 
-4. **Disallow `:::row` with `### {.right}`-style alignment** — yes. Rows are for inline arrangement; using `### {.right}` to push items inside a row is a smell. Force layout to use grids; force alignment to use direct attributes. Removes a class of bug reports. Touches container parsing.
+4. **Ignore `:::row` with `### {.right}`-style alignment** — landed as a no-op. Rows are for inline arrangement; using `### {.right}` to push items inside a row is a smell. Keep parsing tolerant, but do not emit row-item alignment classes. Use grids for split layouts and row-level attributes for whole-row alignment.
 
 5. **Free-floating `{.right} {.center} {.left}` ⚠️** — push back. The user's idea was "applies to nearest element until resolved by another alignment class" — this is **stateful** parsing (every block carries an ambient alignment that flows down until interrupted). Pandoc, CommonMark, every markdown extension that's tried this has either backed off or lived with the bugs. Hard no.
 

@@ -352,9 +352,9 @@ The most common `grid-2` pattern — title left, button right:
 :::
 ```
 
-### Item alignment
+### Grid item alignment
 
-Add `.right`, `.left`, or `.center` to any `###` item to align its content:
+Add `.right`, `.left`, or `.center` to a `###` heading inside `::: grid-N` to align that grid item's content:
 
 ```markdown
 ### {.right}
