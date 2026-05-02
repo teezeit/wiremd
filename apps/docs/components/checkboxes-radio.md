@@ -11,6 +11,20 @@ Standard Markdown task list syntax renders as checkboxes.
 - [x] Product updates
 :::
 
+## Switches
+
+Use label-first switch syntax for compact binary settings controls.
+::: demo
+::: card
+### Preferences
+
+[Email notifications]{switch checked}
+[SMS notifications]{switch}
+[Auto-save drafts]{switch checked}
+[Experimental features]{switch disabled}
+:::
+:::
+
 ## In a Form
 ::: demo
 ## Preferences
@@ -48,6 +62,10 @@ Notify me via
 ```
 - [ ] Unchecked checkbox
 - [x] Checked checkbox
+
+[Notifications]{switch}
+[Dark mode]{switch checked}
+[Auto-save]{switch disabled}
 
 - ( ) Unselected radio
 - (x) Selected radio

@@ -3,6 +3,7 @@ import { parse } from '../src/parser/index.js';
 import {
   isButtonNode,
   isInputNode,
+  isSwitchNode,
   isContainerNode,
   isHeadingNode,
   isTextNode,
@@ -75,6 +76,28 @@ describe('Type Guards', () => {
       if (isInputNode(node)) {
         expect(node.props.type).toBe('email');
       }
+    });
+  });
+
+  describe('isSwitchNode()', () => {
+    it('should identify switch nodes', () => {
+      const ast = parse('[Dark mode]{switch checked}');
+      const node = ast.children[0];
+
+      expect(isSwitchNode(node)).toBe(true);
+      expect(node.type).toBe('switch');
+
+      if (isSwitchNode(node)) {
+        expect(node.label).toBe('Dark mode');
+        expect(node.checked).toBe(true);
+      }
+    });
+
+    it('should return false for non-switch nodes', () => {
+      const ast = parse('[Button]');
+      const node = ast.children[0];
+
+      expect(isSwitchNode(node)).toBe(false);
     });
   });
 

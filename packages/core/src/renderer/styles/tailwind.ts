@@ -205,6 +205,59 @@ body {
   accent-color: #6366f1;
 }
 
+.${prefix}switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.${prefix}switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.${prefix}switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 2.25rem;
+  height: 1.25rem;
+  flex: 0 0 2.25rem;
+  align-items: center;
+  border: 1px solid #9ca3af;
+  border-radius: 9999px;
+  background: #f3f4f6;
+}
+
+.${prefix}switch-thumb {
+  position: absolute;
+  left: 0.125rem;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #9ca3af;
+  border-radius: 9999px;
+  background: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track {
+  border-color: #6366f1;
+  background: #6366f1;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track .${prefix}switch-thumb {
+  left: 1.125rem;
+  border-color: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:disabled + .${prefix}switch-track,
+.${prefix}switch:has(input[type="checkbox"]:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Cards and Containers */
 .${prefix}container-card {
   background: white;

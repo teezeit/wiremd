@@ -156,6 +156,54 @@ body.${prefix}root {
   cursor: pointer;
 }
 
+.${prefix}switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 6px 0;
+  cursor: pointer;
+}
+
+.${prefix}switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.${prefix}switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 38px;
+  height: 20px;
+  flex: 0 0 38px;
+  align-items: center;
+  border: 2px solid #000;
+  border-radius: 0;
+  background: #fff;
+}
+
+.${prefix}switch-thumb {
+  position: absolute;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track .${prefix}switch-thumb {
+  left: 18px;
+  background: #000;
+}
+
+.${prefix}switch input[type="checkbox"]:disabled + .${prefix}switch-track,
+.${prefix}switch:has(input[type="checkbox"]:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Icons */
 .${prefix}icon {
   display: inline-block;

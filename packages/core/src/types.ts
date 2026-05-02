@@ -69,6 +69,7 @@ export type WiremdNode =
   | { type: 'select'; props: ComponentProps & { placeholder?: string; required?: boolean; disabled?: boolean; multiple?: boolean; value?: string }; options: Array<{ type: 'option'; value: string; label: string; selected?: boolean; position?: Location }>; position?: Location }
   | { type: 'option'; value: string; label: string; selected?: boolean; position?: Location }
   | { type: 'checkbox'; label?: string; children?: WiremdNode[]; checked: boolean; props: ComponentProps & { required?: boolean; disabled?: boolean; value?: string }; position?: Location }
+  | { type: 'switch'; label?: string; children?: WiremdNode[]; checked: boolean; props: ComponentProps & { required?: boolean; disabled?: boolean; value?: string }; position?: Location }
   | { type: 'radio'; label: string; selected: boolean; props: ComponentProps & { name?: string; value?: string; required?: boolean; disabled?: boolean }; children?: WiremdNode[]; position?: Location }
   | { type: 'radio-group'; name?: string; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'form'; props: ComponentProps & { action?: string; method?: 'get' | 'post' }; children: WiremdNode[]; position?: Location }
@@ -121,6 +122,10 @@ export function isButtonNode(node: WiremdNode): node is Extract<WiremdNode, { ty
 
 export function isInputNode(node: WiremdNode): node is Extract<WiremdNode, { type: 'input' }> {
   return node.type === 'input';
+}
+
+export function isSwitchNode(node: WiremdNode): node is Extract<WiremdNode, { type: 'switch' }> {
+  return node.type === 'switch';
 }
 
 export function isContainerNode(node: WiremdNode): node is Extract<WiremdNode, { type: 'container' }> {

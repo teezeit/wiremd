@@ -84,6 +84,16 @@ describe('Tailwind Renderer', () => {
       expect(html).toContain('Accept terms');
     });
 
+    it('should render a switch', () => {
+      const ast = parse('[Dark mode]{switch checked}');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('role="switch"');
+      expect(html).toContain('class="sr-only"');
+      expect(html).toContain('checked');
+      expect(html).toContain('Dark mode');
+    });
+
     it('should render radio buttons', () => {
       const ast = parse('( ) Option A\n(x) Option B');
       const html = renderToTailwind(ast);

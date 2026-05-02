@@ -137,7 +137,7 @@ export function validate(ast: DocumentNode): ValidationError[] {
     // Validate component type is recognized
     const validTypes = [
       'container', 'nav', 'nav-item', 'brand', 'grid', 'grid-item', 'row',
-      'button', 'input', 'textarea', 'select', 'option', 'checkbox', 'radio', 'radio-group', 'form',
+      'button', 'input', 'textarea', 'select', 'option', 'checkbox', 'switch', 'radio', 'radio-group', 'form',
       'heading', 'paragraph', 'text', 'image', 'icon', 'link', 'list', 'list-item',
       'table', 'table-header', 'table-row', 'table-cell', 'blockquote', 'code',
       'tabs', 'tab', 'accordion', 'accordion-item', 'breadcrumbs', 'breadcrumb-item',
@@ -332,6 +332,30 @@ export function validate(ast: DocumentNode): ValidationError[] {
         if (!node.props || typeof node.props !== 'object') {
           errors.push({
             message: 'Checkbox must have a props object',
+            path,
+            code: 'MISSING_PROPS',
+          });
+        }
+        break;
+
+      case 'switch':
+        if (typeof node.checked !== 'boolean') {
+          errors.push({
+            message: 'Switch must have a boolean checked property',
+            path,
+            code: 'MISSING_CHECKED',
+          });
+        }
+        if (!node.label && node.label !== '' && !node.children) {
+          errors.push({
+            message: 'Switch must have a label property or children',
+            path,
+            code: 'MISSING_LABEL',
+          });
+        }
+        if (!node.props || typeof node.props !== 'object') {
+          errors.push({
+            message: 'Switch must have a props object',
             path,
             code: 'MISSING_PROPS',
           });
@@ -778,15 +802,15 @@ export function validate(ast: DocumentNode): ValidationError[] {
       }
     }
 
-    // List should contain list-item or checkbox/radio children
+    // List should contain list-item or checkbox/switch/radio children
     if (nodeType === 'list' && node.children) {
-      const validListChildren = ['list-item', 'checkbox', 'radio'];
+      const validListChildren = ['list-item', 'checkbox', 'switch', 'radio'];
       const hasInvalidChildren = node.children.some((child: any) =>
         !validListChildren.includes(child.type)
       );
       if (hasInvalidChildren) {
         errors.push({
-          message: 'List should only contain list-item, checkbox, or radio children',
+          message: 'List should only contain list-item, checkbox, switch, or radio children',
           path,
           code: 'INVALID_LIST_CHILDREN',
         });

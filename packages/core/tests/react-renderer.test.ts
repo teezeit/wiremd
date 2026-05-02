@@ -72,6 +72,16 @@ describe('React Renderer', () => {
       expect(jsx).toContain('Accept terms');
     });
 
+    it('should render a switch', () => {
+      const ast = parse('[Dark mode]{switch checked}');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('className="wmd-switch');
+      expect(jsx).toContain('role="switch"');
+      expect(jsx).toContain('defaultChecked');
+      expect(jsx).toContain('Dark mode');
+    });
+
     it('should render radio buttons', () => {
       const ast = parse('- (•) Option A\n- ( ) Option B');
       const jsx = renderToReact(ast);
