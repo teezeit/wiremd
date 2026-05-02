@@ -271,7 +271,7 @@ function transformColumnContainer(
   const contentChildren = [...(node.children || [])];
   const inlineParts =
     typeof node.inline === 'string' ? parseColumnInline(node.inline) : null;
-  let title = inlineParts?.title || '';
+  const title = inlineParts?.title || '';
 
   if (inlineParts) {
     props.classes = [...(props.classes || []), ...(inlineParts.props.classes || [])];
