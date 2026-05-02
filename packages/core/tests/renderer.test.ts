@@ -699,6 +699,53 @@ Content here
       expect(html).toContain('wmd-container-sidebar');
       expect(html).toMatch(/\.wmd-container-sidebar\s*\{/);
     });
+
+    it('should infer sidebar-main layout from standalone sidebar followed by content', () => {
+      const ast = parse(`
+::: sidebar
+[Dashboard]*
+[Projects]
+:::
+
+## Dashboard
+Content here
+      `.trim());
+      const html = renderToHTML(ast, { style: 'sketch' });
+      const bodyStart = html.indexOf('</style>');
+      const body = html.slice(bodyStart);
+      const layoutPos = body.indexOf('class="wmd-container-layout wmd-sidebar-main"');
+      const sidebarPos = body.indexOf('class="wmd-layout-sidebar"');
+      const mainPos = body.indexOf('class="wmd-layout-main"');
+      const dashboardButtonPos = body.indexOf('>Dashboard</button>');
+      const headingPos = body.indexOf('<h2');
+
+      expect(layoutPos).toBeGreaterThan(-1);
+      expect(sidebarPos).toBeGreaterThan(layoutPos);
+      expect(mainPos).toBeGreaterThan(sidebarPos);
+      expect(dashboardButtonPos).toBeGreaterThan(sidebarPos);
+      expect(dashboardButtonPos).toBeLessThan(mainPos);
+      expect(headingPos).toBeGreaterThan(mainPos);
+    });
+
+    it('should keep leading content above an inferred sidebar-main layout', () => {
+      const ast = parse(`
+[[ App | [Dashboard] | [Settings] ]]
+
+::: sidebar
+[Dashboard]*
+:::
+
+## Dashboard
+      `.trim());
+      const html = renderToHTML(ast, { style: 'sketch' });
+      const bodyStart = html.indexOf('</style>');
+      const body = html.slice(bodyStart);
+      const navPos = body.indexOf('class="wmd-nav"');
+      const layoutPos = body.indexOf('class="wmd-container-layout wmd-sidebar-main"');
+
+      expect(navPos).toBeGreaterThan(-1);
+      expect(layoutPos).toBeGreaterThan(navPos);
+    });
   });
 
   describe('Tabs', () => {

@@ -416,6 +416,7 @@ body {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.75em; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #6b7280; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 /* Grid */
 .${prefix}grid {

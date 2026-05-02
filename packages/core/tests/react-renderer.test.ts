@@ -133,6 +133,21 @@ describe('React Renderer', () => {
       expect(jsx).toContain('Home');
       expect(jsx).toContain('Products');
     });
+
+    it('should infer sidebar-main layout from standalone sidebar followed by content', () => {
+      const ast = parse(`
+::: sidebar
+[Dashboard]*
+:::
+
+## Dashboard
+      `.trim());
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('className="wmd-container-layout wmd-sidebar-main"');
+      expect(jsx).toContain('className="wmd-layout-sidebar"');
+      expect(jsx).toContain('className="wmd-layout-main"');
+    });
   });
 
   describe('Grid Layout', () => {

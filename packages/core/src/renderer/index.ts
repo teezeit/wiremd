@@ -196,7 +196,7 @@ export function renderToReact(
   };
 
   // Render all children
-  const childrenJSX = ast.children.map((child) => ReactRenderer.renderNode(child, context, 1)).join('\n');
+  const childrenJSX = ReactRenderer.renderChildrenList(ast.children, context, 1);
 
   // Build React component
   const typeAnnotation = typescript ? ': React.FC' : '';
@@ -246,7 +246,7 @@ export function renderToTailwind(
   };
 
   // Render all children
-  const childrenHTML = ast.children.map((child) => TailwindRenderer.renderNode(child, context)).join('\n  ');
+  const childrenHTML = TailwindRenderer.renderChildrenList(ast.children, context);
 
   // Build complete HTML document
   const html = `<!DOCTYPE html>

@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Alerts
 
 > **Not yet implemented.** The `::: alert` container parses correctly but has no dedicated renderer — it falls back to a generic `<div>`. Variants (`.success`, `.warning`, `.error`) are not visually distinguished. This page documents the intended syntax for when it is implemented.
@@ -55,5 +53,3 @@ Message text.
 Body content.
 :::
 ```
-:::
-:::

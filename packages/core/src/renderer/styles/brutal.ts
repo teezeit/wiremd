@@ -471,6 +471,7 @@ body {
 .${prefix}layout-sidebar .${prefix}h4 { margin: 12px 0 4px; font-size: 0.85em; font-weight: 900; text-transform: uppercase; }
 .${prefix}layout-sidebar .${prefix}separator { margin: 8px 0; }
 .${prefix}layout-main { min-width: 0; }
+.${prefix}layout-main > :first-child { margin-top: 0; }
 
 /* Brutal Grid */
 .${prefix}grid {

@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Not Implemented Components
 
 Components not yet in wiremd, with proposed syntax aligned to wiremd's design principles. All proposals follow the existing patterns: `{key:value}` attributes for progressive enhancement, `:::` containers for block components, and visually intuitive ASCII-like syntax.
@@ -381,6 +379,3 @@ Container with a primary button trigger and a list of action buttons — mirrors
 - [:delete: Delete]{.danger}
 :::
 ```
-:::
-:::
-:::

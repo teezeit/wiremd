@@ -4,7 +4,6 @@
 >
 > **Key Features:** Sidebar nav with sections, main content area, button links, grid cards, table
 ::: demo
-::: layout {.sidebar-main}
 ::: sidebar
 
 :folder: **Projects**
@@ -29,7 +28,6 @@
 
 [[+ New Project](./new-project.html)]*
 :::
-::: main
 
 ## Overview
 
@@ -56,6 +54,4 @@ A summary of your workspace activity and open tasks.
 | Design System | Dan W. | Planning | Feb 1 | 12% |
 
 [[View All Projects →](./projects.html)]
-:::
-:::
 :::

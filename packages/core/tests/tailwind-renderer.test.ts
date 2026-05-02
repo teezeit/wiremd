@@ -193,6 +193,20 @@ describe('Tailwind Renderer', () => {
       expect(html).toContain('class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors font-medium"');
       expect(html).toContain('Home');
     });
+
+    it('should infer sidebar-main layout from standalone sidebar followed by content', () => {
+      const ast = parse(`
+::: sidebar
+[Dashboard]*
+:::
+
+## Dashboard
+      `.trim());
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('class="grid grid-cols-[220px_1fr] gap-4 items-start"');
+      expect(html).toContain('Dashboard');
+    });
   });
 
   describe('Grid Layout', () => {

@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Checkboxes & Radio
 
 ## Checkboxes
@@ -54,5 +52,3 @@ Notify me via
 - ( ) Unselected radio
 - (x) Selected radio
 ```
-:::
-:::

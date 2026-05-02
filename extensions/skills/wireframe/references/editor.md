@@ -55,8 +55,7 @@ For the full syntax including all attributes, edge cases, and disambiguation rul
 [[ :logo: Brand | Home | *Active* | :user: Profile | [Sign Up]* ]]
 [[ Home > Section > Current Page ]]
 
-# Sidebar-main layout
-::: layout {.sidebar-main}
+# Sidebar layout
 
 ::: sidebar
 
@@ -65,11 +64,7 @@ For the full syntax including all attributes, edge cases, and disambiguation rul
 
 :::
 
-::: main
 ### Page Title
-:::
-
-:::
 
 # In-page tabs — use a button group, * marks the active tab
 [Overview]* [Details] [Raw Data]

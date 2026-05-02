@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Textarea & Select
 
 ## Textarea
@@ -64,5 +62,3 @@ Description
 - Option 1                         followed by list
 - Option 2
 ```
-:::
-:::

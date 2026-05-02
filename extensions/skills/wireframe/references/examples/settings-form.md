@@ -2,8 +2,6 @@
 
 [[ Settings > Profile ]]
 
-::: layout {.sidebar-main}
-
 ::: sidebar
 
 #### Account
@@ -16,8 +14,6 @@
 [[Integrations](#)]
 
 :::
-
-::: main
 
 ::: grid-2
 

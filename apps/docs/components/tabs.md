@@ -1,7 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
-::: main
 # Tabs
 
 `::: tabs` creates a tabbed panel. Child `::: tab Label` containers become panels. The first tab is active by default.
@@ -80,7 +77,3 @@ Content for tab two
 
 :::
 ```
-
-:::
-
-:::

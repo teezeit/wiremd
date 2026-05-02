@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Badge/pill syntax now uses `((Label))` / `((Label)){.variant}` as the primary notation; legacy pipe-delimited pills remain accepted as a migration alias.
+- Sidebar layouts now use standalone `::: sidebar` followed by page content; `::: layout {.sidebar-main}` / `::: main` remains supported for compatibility but is no longer documented as the preferred pattern.
 
 ## [0.2.1] - 2026-04-30
 

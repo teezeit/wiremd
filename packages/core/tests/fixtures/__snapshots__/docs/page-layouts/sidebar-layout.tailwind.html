@@ -7,8 +7,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 p-6">
-  <div class="p-4 my-4">
-  <div class="p-4 my-4">
+  <div class="grid grid-cols-[220px_1fr] gap-4 items-start">
+  <div class="min-w-0">
+    <div class="p-4 my-4">
   <p class="text-gray-700 my-3"><strong class="font-semibold">App</strong></p>
   <div class="flex flex-wrap gap-2 my-4">
   <button class="px-4 py-2 rounded-md font-medium transition-colors bg-indigo-600 text-white hover:bg-indigo-700">Dashboard</button>
@@ -16,10 +17,11 @@
   <button class="px-4 py-2 rounded-md font-medium transition-colors bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-300">Settings</button>
 </div>
 </div>
-  <div class="p-4 my-4">
-  <h2 class="text-3xl font-bold text-gray-900 mb-3 mt-6">Dashboard</h2>
+  </div>
+  <div class="min-w-0 [&>*:first-child]:mt-0">
+    <h2 class="text-3xl font-bold text-gray-900 mb-3 mt-6">Dashboard</h2>
   <p class="text-gray-700 my-3">Welcome back! Here&#039;s what&#039;s happening.</p>
-</div>
+  </div>
 </div>
 </body>
 </html>

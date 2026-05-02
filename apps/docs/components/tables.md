@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Tables
 
 Standard Markdown table syntax renders as a styled data table.
@@ -60,5 +58,3 @@ Use `:---`, `:---:`, and `---:` in the separator row.
 
 ((Badge)){.success}   badge inside cell
 ```
-:::
-:::

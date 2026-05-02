@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Inputs
 
 Underscores inside brackets create a text input. A label above the input binds to it as a form group.
@@ -113,5 +111,3 @@ Password
 [_____________________________]{placeholder:"hint text"}
 [_____________________________]{disabled}
 ```
-:::
-:::

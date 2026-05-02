@@ -2,11 +2,7 @@
 
 [[ Dashboard > Reports ]]
 
-::: layout {.sidebar-main}
-
 ![[_sidebar-nav.md]]
-
-::: main
 
 ::: grid-2
 
@@ -16,8 +12,6 @@
 
 ::: row {.right}
 [Export CSV] [Summary]* [Details]
-:::
-
 :::
 
 ---

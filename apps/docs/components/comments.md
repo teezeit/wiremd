@@ -1,7 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-
-::: main
 # Inline Comments
 
 Use standard HTML comment syntax to annotate components. Comments appear in a fixed side panel with numbered badges on annotated elements — keeping your wireframe clean while surfacing reviewer notes.
@@ -113,7 +110,3 @@ multiple lines.
 wiremd my-screen.md -o output.html                    # comments hidden
 wiremd my-screen.md --show-comments -o output.html    # comments visible
 ```
-
-:::
-
-:::

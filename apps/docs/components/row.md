@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Row
 
 `::: row` creates a horizontal flex row. Use it to align buttons, filters, or any inline elements.
@@ -97,5 +95,3 @@ content
 content
 :::
 ```
-:::
-:::

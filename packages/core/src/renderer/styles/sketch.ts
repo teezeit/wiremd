@@ -342,6 +342,9 @@ body.${prefix}root {
 .${prefix}layout-main {
   min-width: 0;
 }
+.${prefix}layout-main > :first-child {
+  margin-top: 0;
+}
 
 /* Grid */
 .${prefix}grid {

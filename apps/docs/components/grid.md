@@ -1,6 +1,4 @@
-::: layout {.sidebar-main}
 ![[_sidebar.md]]
-::: main
 # Grid
 
 `::: grid-N` creates an N-column layout. `###` headings inside become column items.
@@ -99,5 +97,3 @@ Add `{.left}`, `{.right}`, or `{.center}` to a `###` heading to align its column
 ### {.left}                    push to left edge
 ### {.center}                  center
 ```
-:::
-:::

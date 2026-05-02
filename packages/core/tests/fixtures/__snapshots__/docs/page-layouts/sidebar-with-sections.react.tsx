@@ -4,38 +4,40 @@ export const WiremdComponent: React.FC = () => {
   return (
     <div className="wmd-root">
   <div className="wmd-container-layout wmd-sidebar-main">
-    <div className="wmd-container-sidebar">
-      <p className="wmd-paragraph"><strong>Acme Co.</strong></p>
-      <h4 className="wmd-h4">Workspace</h4>
-      <div className="wmd-container-button-group">
-        <button className="wmd-button wmd-button-primary">
-          Overview
-        </button>
+    <div className="wmd-layout-sidebar">
+      <div className="wmd-container-sidebar">
+        <p className="wmd-paragraph"><strong>Acme Co.</strong></p>
+        <h4 className="wmd-h4">Workspace</h4>
+        <div className="wmd-container-button-group">
+          <button className="wmd-button wmd-button-primary">
+            Overview
+          </button>
+          <button className="wmd-button">
+            Projects
+          </button>
+          <button className="wmd-button">
+            Tasks
+          </button>
+          <button className="wmd-button">
+            Calendar
+          </button>
+        </div>
+        <h4 className="wmd-h4">Team</h4>
+        <div className="wmd-container-button-group">
+          <button className="wmd-button">
+            Members
+          </button>
+          <button className="wmd-button">
+            Roles
+          </button>
+        </div>
+        <hr className="wmd-separator" />
         <button className="wmd-button">
-          Projects
-        </button>
-        <button className="wmd-button">
-          Tasks
-        </button>
-        <button className="wmd-button">
-          Calendar
+          Logout
         </button>
       </div>
-      <h4 className="wmd-h4">Team</h4>
-      <div className="wmd-container-button-group">
-        <button className="wmd-button">
-          Members
-        </button>
-        <button className="wmd-button">
-          Roles
-        </button>
-      </div>
-      <hr className="wmd-separator" />
-      <button className="wmd-button">
-        Logout
-      </button>
     </div>
-    <div className="wmd-container-main">
+    <div className="wmd-layout-main">
       <h2 className="wmd-h2">Overview</h2>
       <div className="wmd-grid wmd-grid-3" style={{ '--grid-columns': 3 } as React.CSSProperties}>
         <div className="wmd-grid-item wmd-card">
