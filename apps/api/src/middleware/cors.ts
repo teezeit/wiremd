@@ -1,17 +1,23 @@
 import { cors } from "hono/cors";
 
-const ALLOWED_ORIGINS = [
+const DEFAULT_ALLOWED_ORIGINS = [
   "http://localhost:5174",
   "http://localhost:5173",
   "http://localhost:5175",
-  "https://teezeit.github.io",
-  "https://tobiashoelzer.com",
 ];
+
+function envAllowedOrigins(): string[] {
+  return (process.env.CORS_ALLOWED_ORIGINS ?? "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+}
 
 export const corsMiddleware = cors({
   origin: (origin) => {
     if (!origin) return undefined;
-    if (ALLOWED_ORIGINS.includes(origin)) return origin;
+    if (DEFAULT_ALLOWED_ORIGINS.includes(origin)) return origin;
+    if (envAllowedOrigins().includes(origin)) return origin;
     if (process.env.ALLOW_ALL_ORIGINS === "1") return origin;
     return undefined;
   },
