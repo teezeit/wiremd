@@ -1,0 +1,6 @@
+Document
+  └─ tabs
+     ├─ tab "" active=true
+     │  └─ code "first tab content" inline=false
+     └─ tab "" active=false
+        └─ code "second tab content" inline=false

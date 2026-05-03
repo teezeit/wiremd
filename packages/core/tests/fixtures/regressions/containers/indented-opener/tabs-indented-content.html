@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  
+</head>
+<body class="wmd-root wmd-clean">
+  <div class="wmd-tabs" data-wmd-tabs>
+  <div class="wmd-tab-headers" role="tablist"><button type="button" role="tab" class="wmd-tab-header wmd-active" data-wmd-tab="0"></button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="1"></button></div>
+  <div class="wmd-tab-panels">
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="0">
+    <pre class="wmd-code-block"><code>first tab content</code></pre>
+  </div>
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="1" hidden>
+    <pre class="wmd-code-block"><code>second tab content</code></pre>
+  </div>
+  </div>
+</div><script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.wmd-tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.wmd-tab-header').forEach(function(b){b.classList.toggle('wmd-active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>
+  
+  
+</body>
+</html>

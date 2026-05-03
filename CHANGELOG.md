@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-05-03
+
+### Fixed
+- Fixed `:::` container openers indented with 4+ spaces being silently consumed by CommonMark's indented code block rule and rendered as raw code instead of nested containers. `normalizeContainerDirectiveSpacing` now strips leading whitespace from `:::` directive lines before remark parses them (fenced code blocks are unaffected).
+
 ## [0.4.0] - 2026-05-02
 
 ### Added

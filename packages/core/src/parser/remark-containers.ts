@@ -57,7 +57,10 @@ export function normalizeContainerDirectiveSpacing(markdown: string): string {
       out.push("");
     }
 
-    out.push(line);
+    // Strip leading whitespace from ::: directive lines so that 4-space
+    // indented openers are not consumed by CommonMark's indented code block
+    // rule before remark-containers gets to process them.
+    out.push(directive ? line.trimStart() : line);
 
     const nextLine = lines[i + 1];
     if (
