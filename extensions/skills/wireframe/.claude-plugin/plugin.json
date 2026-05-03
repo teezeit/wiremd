@@ -1,6 +1,6 @@
 {
 	"name": "wireframe",
-	"version": "0.4.1",
+	"version": "0.4.2",
 	"description": "Create and render wireframes using wiremd — a text-first tool that converts Markdown into visual HTML mockups.",
 	"author": {
 		"name": "teezeit"
