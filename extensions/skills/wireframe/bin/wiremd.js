@@ -20694,7 +20694,7 @@ function normalizeContainerDirectiveSpacing(markdown) {
     if (directive && out.length > 0 && out[out.length - 1].trim() !== "") {
       out.push("");
     }
-    out.push(line);
+    out.push(directive ? line.trimStart() : line);
     const nextLine = lines[i + 1];
     if (directive && nextLine !== void 0 && nextLine.trim() !== "") {
       out.push("");
