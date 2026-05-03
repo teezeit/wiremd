@@ -44,9 +44,11 @@ const DOC_SOURCES = [
   'apps/docs/components/checkboxes-radio.md',
   'apps/docs/components/icons.md',
   'apps/docs/components/badges.md',
+  'apps/docs/components/images.md',
   // Layouts
   'apps/docs/components/columns.md',
   'apps/docs/components/row.md',
+  'apps/docs/components/alignment.md',
   'apps/docs/components/cards.md',
   'apps/docs/components/tabs.md',
   'apps/docs/components/page-layouts.md',

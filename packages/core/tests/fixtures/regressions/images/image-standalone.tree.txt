@@ -1,0 +1,3 @@
+Document
+  └─ container[form-group]
+     └─ image src="https://example.com/hero.jpg" alt="Hero image"

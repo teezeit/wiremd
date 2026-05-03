@@ -1,0 +1,6 @@
+Document
+  └─ container[card]
+     ├─ heading[2] "Product Shot"
+     ├─ container[form-group]
+     │  └─ image src="https://example.com/hero.jpg" alt="Hero image"
+     └─ button "Buy Now" props={variant="primary"}
