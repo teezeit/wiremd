@@ -28,6 +28,13 @@ Page 1 of 12   [← Prev] [Next →]
 
 Add `{top}` or `{bottom}` to align mixed-height row items on the cross axis.
 ::: demo
+::: row {top}
+[Notes...]{rows:3}
+
+[Cancel] [Save]*
+:::
+:::
+::: demo
 ::: row {bottom}
 [Notes...]{rows:3}
 
@@ -105,6 +112,7 @@ Use a row for a simple toolbar. For a title on the left and actions on the right
 :::
 ::: row {right}       right-align all content
 ::: row {center}      center all content
+::: row {top}         top-align mixed-height items
 ::: row {bottom}      bottom-align mixed-height items
 
 ::: columns-2           split left/right content into columns

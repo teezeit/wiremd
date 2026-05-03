@@ -54,6 +54,7 @@ export default defineConfig({
             items: [
               { text: "Badges", link: "/components/badges" },
               { text: "Icons", link: "/components/icons" },
+              { text: "Images", link: "/components/images" },
               { text: "Navigation", link: "/components/navigation" },
               { text: "Cards", link: "/components/cards" },
               { text: "Tabs", link: "/components/tabs" },
@@ -65,8 +66,9 @@ export default defineConfig({
             text: "Layout",
             collapsed: false,
             items: [
-              { text: "Grid", link: "/components/grid" },
+              { text: "Columns", link: "/components/columns" },
               { text: "Row", link: "/components/row" },
+              { text: "Alignment", link: "/components/alignment" },
               { text: "Page Layouts", link: "/components/page-layouts" },
             ],
           },

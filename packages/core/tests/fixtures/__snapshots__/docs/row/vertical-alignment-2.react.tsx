@@ -3,7 +3,7 @@ import React from 'react';
 export const WiremdComponent: React.FC = () => {
   return (
     <div className="wmd-root">
-  <div className="wmd-row wmd-align-top">
+  <div className="wmd-row wmd-align-bottom">
     <div className="wmd-grid-item">
       <textarea className="wmd-textarea" rows={3} placeholder="Notes...">
         
