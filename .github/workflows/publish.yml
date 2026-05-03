@@ -35,14 +35,20 @@ jobs:
       - name: Build
         run: pnpm turbo run build
 
+      - name: Build release artifacts
+        run: pnpm run bundle
+
       - name: Package wireframe skill
         run: pnpm run skill:zip
 
-      - name: Attach skill zip to GitHub release
+      - name: Attach artifacts to GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.release.tag_name || github.event.inputs.tag }}
-          files: releases/wireframe-skill.zip
+          files: |
+            releases/wireframe-skill.zip
+            releases/wiremd.js
+            releases/wiremd.vsix
 
       - name: Build VS Code extension
         run: pnpm --filter wiremd-preview run bundle

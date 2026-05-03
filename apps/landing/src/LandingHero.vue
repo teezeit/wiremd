@@ -4,8 +4,8 @@ import { docsUrl, editorUrl } from './urls.ts'
 
 <template>
   <section class="lh">
-    <h1 class="lh-headline">Mermaid for wireframes.</h1>
-    <p class="lh-tagline"><span class="lh-em">10×</span> cheaper than Claude Design. <span class="lh-em">10×</span> faster. Saved as <code>textfile.md</code>.</p>
+    <h1 class="lh-headline">Reusable wireframes for Claude.</h1>
+    <p class="lh-tagline">Sketch UI flows in plain text instead of one-off high-res images. <span class="lh-em">10×</span> fewer tokens, easy to edit, saved as <code>textfile.md</code>.</p>
     <div class="lh-ctas">
       <a :href="editorUrl()" class="lh-cta lh-cta--primary" target="_blank" rel="noopener">
         <img src="/wiremd/assets/logos/logo-chrome.jpg" class="lh-cta__logo" alt="" />

@@ -15,7 +15,7 @@
 | **Dropdown** | `[Text___v]` + list | `[Select...v]` |
 | **Checkbox** | `- [ ]` / `- [x]` | `- [x] Agree` |
 | **Radio** | `- ( )` / `- (*)` | `- (*) Option 1` |
-| **Icon** | `:name:` | `:home: :user: :gear:` |
+| **Icon** | `:name:` | `:home: :user: :settings:` |
 | **Nav Bar** | `[[ A \| B \| C ]]` | `[[ Home \| About \| [Login] ]]` |
 | **Nav Link** | `[[ [Text](url) \| ... ]]` | `[[ [About](./about.md) \| ... ]]` |
 | **Breadcrumbs** | `[[ A > B > C ]]` | `[[ Home > Products > Item ]]` |
@@ -258,10 +258,11 @@ wiremd supports **all standard Markdown** syntax:
 
 1. **Input width**: Number of `_` characters suggests visual width
 2. **Placeholder text**: Put text before underscores: `[Email___________]`
-3. **Button groups**: Put on same line: `[Save] [Cancel] [Reset]`
+3. **Button rows**: Put related buttons on the same line: `[Save] [Cancel] [Reset]`
 4. **Icons in text**: Use anywhere: `### :rocket: Fast Performance`
 5. **Columns**: Use explicit `::: column` blocks inside `::: columns-N`
 6. **Nested containers**: Containers can be nested inside each other
+7. **Blank lines**: No blank line between label and field; add one before closing `:::` after a final list, button/link line, badge, bold text, or inline code
 
 ## Quick Troubleshooting
 
@@ -270,5 +271,6 @@ wiremd supports **all standard Markdown** syntax:
 | Input has no label | Put label text directly above (no blank line) |
 | Dropdown has no options | Add list items directly after dropdown |
 | Columns not working | Use `::: column` child blocks inside `::: columns-N` |
+| Closing `:::` renders as text | Add a blank line before the closing `:::` |
 | Button looks wrong | Check for `(url)` - that makes it a link |
 | Attributes ignored | Put `{...}` immediately after element (space OK) |

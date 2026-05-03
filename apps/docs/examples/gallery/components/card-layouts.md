@@ -76,7 +76,7 @@ Enterprise-grade security with encryption, backups, and compliance certification
 [Learn More →]
 
 :::
-::: column :gear: Highly Customizable
+::: column :settings: Highly Customizable
 Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
@@ -98,7 +98,7 @@ Enterprise-grade security with encryption, backups, and compliance certification
 [Learn More →]
 
 :::
-::: column :gear: Highly Customizable
+::: column :settings: Highly Customizable
 Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
@@ -783,7 +783,7 @@ Renders in milliseconds.
 Enterprise-grade by default.
 
 :::
-::: column :gear: Flexible
+::: column :settings: Flexible
 Works with any stack.
 :::
 :::
@@ -799,7 +799,7 @@ Renders in milliseconds.
 Enterprise-grade by default.
 
 :::
-::: column :gear: Flexible
+::: column :settings: Flexible
 Works with any stack.
 :::
 :::

@@ -1,1 +1,1 @@
-[[ :logo: AppName | Dashboard | Reports | :gear: Settings | :user: Account ]]
+[[ :logo: AppName | Dashboard | Reports | :settings: Settings | :user: Account ]]

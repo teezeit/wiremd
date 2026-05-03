@@ -36,7 +36,7 @@ Deploy in seconds, not hours. Our infrastructure handles millions of requests wi
 Bank-level encryption, SOC 2 compliance, and advanced access controls keep your data safe.
 
 :::
-::: column :gear: Fully Customizable
+::: column :settings: Fully Customizable
 Powerful API, webhooks, and integrations with 500+ tools you already use.
 
 :::

@@ -12322,7 +12322,30 @@ ${indentStr}</div>`;
 
 // packages/core/src/nodes/grid-item/tailwind.ts
 function renderGridItemTailwind(node2, context) {
-  const classes = "bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow";
+  const propsClasses = node2.props?.classes || [];
+  const utilityClasses = [];
+  for (const className of propsClasses) {
+    const span = className.match(/^col-span-(\d+)$/);
+    if (span) {
+      utilityClasses.push(`lg:col-span-${span[1]}`);
+    }
+  }
+  if (propsClasses.includes("align-right")) {
+    utilityClasses.push("ml-auto", "text-right");
+  } else if (propsClasses.includes("align-center")) {
+    utilityClasses.push("mx-auto", "text-center");
+  } else if (propsClasses.includes("align-left")) {
+    utilityClasses.push("mr-auto", "text-left");
+  }
+  if (propsClasses.includes("align-top")) {
+    utilityClasses.push("self-start");
+  } else if (propsClasses.includes("align-bottom")) {
+    utilityClasses.push("self-end");
+  }
+  const classes = [
+    "bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow",
+    ...utilityClasses
+  ].join(" ");
   const childrenHTML = (node2.children || []).map((child) => renderNode3(child, context)).join("\n    ");
   return `<div class="${classes}">
     ${childrenHTML}
@@ -12364,7 +12387,13 @@ ${indentStr}</div>`;
 // packages/core/src/nodes/row/tailwind.ts
 function renderRowTailwind(node2, context) {
   const propsClasses = node2.props?.classes || [];
-  const classes = propsClasses.includes("right") ? "flex items-center gap-3 flex-wrap justify-end" : propsClasses.includes("center") ? "flex items-center gap-3 flex-wrap justify-center" : "flex items-center gap-3 flex-wrap";
+  const classes = [
+    "flex",
+    propsClasses.includes("align-top") ? "items-start" : propsClasses.includes("align-bottom") ? "items-end" : "items-center",
+    "gap-3",
+    "flex-wrap",
+    propsClasses.includes("right") ? "justify-end" : propsClasses.includes("center") ? "justify-center" : ""
+  ].filter(Boolean).join(" ");
   const childrenHTML = (node2.children || []).map((child) => {
     if (child.type === "grid-item") {
       return (child.children || []).map((grandchild) => renderNode3(grandchild, context)).join("\n  ");
@@ -12573,115 +12602,491 @@ var image2 = {
   render: { html: renderImageHTML, react: renderImageReact, tailwind: renderImageTailwind }
 };
 
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/activity.svg
+var activity_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-activity"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12h4l3 8l4 -16l3 8h4" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/alert-circle.svg
+var alert_circle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-circle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />\n  <path d="M12 8v4" />\n  <path d="M12 16h.01" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/alert-triangle.svg
+var alert_triangle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 9v4" />\n  <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />\n  <path d="M12 16h.01" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-down.svg
+var arrow_down_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-down"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 5l0 14" />\n  <path d="M18 13l-6 6" />\n  <path d="M6 13l6 6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-left.svg
+var arrow_left_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l14 0" />\n  <path d="M5 12l6 6" />\n  <path d="M5 12l6 -6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-right.svg
+var arrow_right_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l14 0" />\n  <path d="M13 18l6 -6" />\n  <path d="M13 6l6 6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-up.svg
+var arrow_up_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-up"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 5l0 14" />\n  <path d="M18 11l-6 -6" />\n  <path d="M6 11l6 -6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/bell.svg
+var bell_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-bell"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />\n  <path d="M9 17v1a3 3 0 0 0 6 0v-1" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/bookmark.svg
+var bookmark_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-bookmark"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-facebook.svg
+var brand_facebook_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-facebook"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-github.svg
+var brand_github_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-instagram.svg
+var brand_instagram_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-instagram"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4l0 -8" />\n  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />\n  <path d="M16.5 7.5v.01" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-linkedin.svg
+var brand_linkedin_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-linkedin"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M8 11v5" />\n  <path d="M8 8v.01" />\n  <path d="M12 16v-5" />\n  <path d="M16 16v-3a2 2 0 1 0 -4 0" />\n  <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-x.svg
+var brand_x_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-x"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 4l11.733 16h4.267l-11.733 -16l-4.267 0" />\n  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-youtube.svg
+var brand_youtube_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-youtube"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8" />\n  <path d="M10 9l5 3l-5 3l0 -6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/briefcase.svg
+var briefcase_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-briefcase"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />\n  <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />\n  <path d="M12 12l0 .01" />\n  <path d="M3 13a20 20 0 0 0 18 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/bulb.svg
+var bulb_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-bulb"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />\n  <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />\n  <path d="M9.7 17l4.6 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/building.svg
+var building_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-building"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 21l18 0" />\n  <path d="M9 8l1 0" />\n  <path d="M9 12l1 0" />\n  <path d="M9 16l1 0" />\n  <path d="M14 8l1 0" />\n  <path d="M14 12l1 0" />\n  <path d="M14 16l1 0" />\n  <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/calendar.svg
+var calendar_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" />\n  <path d="M16 3v4" />\n  <path d="M8 3v4" />\n  <path d="M4 11h16" />\n  <path d="M11 15h1" />\n  <path d="M12 15v3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/cash.svg
+var cash_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-cash"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 15h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v3" />\n  <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />\n  <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chart-bar.svg
+var chart_bar_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />\n  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />\n  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />\n  <path d="M4 20h14" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chart-line.svg
+var chart_line_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-line"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 19l16 0" />\n  <path d="M4 15l4 -6l4 2l4 -5l4 4" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chart-pie.svg
+var chart_pie_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-pie"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10 3.2a9 9 0 1 0 10.8 10.8a1 1 0 0 0 -1 -1h-6.8a2 2 0 0 1 -2 -2v-7a.9 .9 0 0 0 -1 -.8" />\n  <path d="M15 3.5a9 9 0 0 1 5.5 5.5h-4.5a1 1 0 0 1 -1 -1v-4.5" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/check.svg
+var check_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-check"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l5 5l10 -10" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-down.svg
+var chevron_down_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-down"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 9l6 6l6 -6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-left.svg
+var chevron_left_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M15 6l-6 6l6 6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-right.svg
+var chevron_right_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 6l6 6l-6 6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-up.svg
+var chevron_up_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-up"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 15l6 -6l6 6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/circle.svg
+var circle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-circle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/circle-check.svg
+var circle_check_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />\n  <path d="M9 12l2 2l4 -4" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/clipboard-list.svg
+var clipboard_list_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-list"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />\n  <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />\n  <path d="M9 12l.01 0" />\n  <path d="M13 12l2 0" />\n  <path d="M9 16l.01 0" />\n  <path d="M13 16l2 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/clock.svg
+var clock_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-clock"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />\n  <path d="M12 7v5l3 3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/cloud.svg
+var cloud_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-cloud"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6.657 18c-2.572 0 -4.657 -2.007 -4.657 -4.483c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486c0 1.927 -1.551 3.487 -3.465 3.487h-11.878" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/code.svg
+var code_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-code"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 8l-4 4l4 4" />\n  <path d="M17 8l4 4l-4 4" />\n  <path d="M14 4l-4 16" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/coin.svg
+var coin_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-coin"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />\n  <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" />\n  <path d="M12 7v10" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/copy.svg
+var copy_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-copy"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667l0 -8.666" />\n  <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/credit-card.svg
+var credit_card_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-credit-card"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -8" />\n  <path d="M3 10l18 0" />\n  <path d="M7 15l.01 0" />\n  <path d="M11 15l2 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/currency-dollar.svg
+var currency_dollar_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-currency-dollar"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />\n  <path d="M12 3v3m0 12v3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/currency-euro.svg
+var currency_euro_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-currency-euro"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M17.2 7a6 7 0 1 0 0 10" />\n  <path d="M13 10h-8m0 4h8" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/currency-pound.svg
+var currency_pound_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-currency-pound"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M17 18.5a6 6 0 0 1 -5 0a6 6 0 0 0 -5 .5a3 3 0 0 0 2 -2.5v-7.5a4 4 0 0 1 7.45 -2m-2.55 6h-7" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/database.svg
+var database_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-database"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />\n  <path d="M4 6v6a8 3 0 0 0 16 0v-6" />\n  <path d="M4 12v6a8 3 0 0 0 16 0v-6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/device-desktop.svg
+var device_desktop_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-device-desktop"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10" />\n  <path d="M7 20h10" />\n  <path d="M9 16v4" />\n  <path d="M15 16v4" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/device-mobile.svg
+var device_mobile_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-device-mobile"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14" />\n  <path d="M11 4h2" />\n  <path d="M12 17v.01" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/diamond.svg
+var diamond_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-diamond"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 5h12l3 5l-8.5 9.5a.7 .7 0 0 1 -1 0l-8.5 -9.5l3 -5" />\n  <path d="M10 12l-2 -2.2l.6 -1" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/dots.svg
+var dots_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-dots"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n  <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n  <path d="M18 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/download.svg
+var download_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-download"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />\n  <path d="M7 11l5 5l5 -5" />\n  <path d="M12 4l0 12" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/edit.svg
+var edit_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-edit"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />\n  <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415" />\n  <path d="M16 5l3 3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/external-link.svg
+var external_link_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-external-link"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />\n  <path d="M11 13l9 -9" />\n  <path d="M15 4h5v5" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/eye.svg
+var eye_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />\n  <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/eye-off.svg
+var eye_off_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />\n  <path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" />\n  <path d="M3 3l18 18" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/file.svg
+var file_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-file"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M14 3v4a1 1 0 0 0 1 1h4" />\n  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/file-text.svg
+var file_text_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-file-text"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M14 3v4a1 1 0 0 0 1 1h4" />\n  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />\n  <path d="M9 9l1 0" />\n  <path d="M9 13l6 0" />\n  <path d="M9 17l6 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/file-type-pdf.svg
+var file_type_pdf_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-file-type-pdf"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M14 3v4a1 1 0 0 0 1 1h4" />\n  <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />\n  <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" />\n  <path d="M17 18h2" />\n  <path d="M20 15h-3v6" />\n  <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/filter.svg
+var filter_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-filter"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/flag.svg
+var flag_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-flag"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9" />\n  <path d="M5 21v-7" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/folder.svg
+var folder_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-folder"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/gift.svg
+var gift_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-gift"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 9a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1l0 -2" />\n  <path d="M12 8l0 13" />\n  <path d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7" />\n  <path d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/heart.svg
+var heart_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-heart"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/home.svg
+var home_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-home"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l-2 0l9 -9l9 9l-2 0" />\n  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />\n  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/info-circle.svg
+var info_circle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-info-circle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />\n  <path d="M12 9h.01" />\n  <path d="M11 12h1v4h1" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/key.svg
+var key_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-key"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0" />\n  <path d="M15 9h.01" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/layout-dashboard.svg
+var layout_dashboard_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />\n  <path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />\n  <path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />\n  <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/link.svg
+var link_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-link"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 15l6 -6" />\n  <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />\n  <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/lock.svg
+var lock_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-lock"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />\n  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />\n  <path d="M8 11v-4a4 4 0 1 1 8 0v4" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/lock-open.svg
+var lock_open_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -6" />\n  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n  <path d="M8 11v-5a4 4 0 0 1 8 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/login.svg
+var login_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-login"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M15 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />\n  <path d="M21 12h-13l3 -3" />\n  <path d="M11 15l-3 -3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/logout.svg
+var logout_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />\n  <path d="M9 12h12l-3 -3" />\n  <path d="M18 15l3 -3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/mail.svg
+var mail_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" />\n  <path d="M3 7l9 6l9 -6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/map.svg
+var map_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-map"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />\n  <path d="M9 4v13" />\n  <path d="M15 7v13" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/map-pin.svg
+var map_pin_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />\n  <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/menu-2.svg
+var menu_2_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-menu-2"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 6l16 0" />\n  <path d="M4 12l16 0" />\n  <path d="M4 18l16 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/message-circle.svg
+var message_circle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-message-circle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/microphone.svg
+var microphone_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-microphone"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 5a3 3 0 0 1 3 -3a3 3 0 0 1 3 3v5a3 3 0 0 1 -3 3a3 3 0 0 1 -3 -3l0 -5" />\n  <path d="M5 10a7 7 0 0 0 14 0" />\n  <path d="M8 21l8 0" />\n  <path d="M12 17l0 4" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/minus.svg
+var minus_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l14 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/package.svg
+var package_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-package"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />\n  <path d="M12 12l8 -4.5" />\n  <path d="M12 12l0 9" />\n  <path d="M12 12l-8 -4.5" />\n  <path d="M16 5.25l-8 4.5" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/phone.svg
+var phone_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-phone"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/photo.svg
+var photo_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-photo"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M15 8h.01" />\n  <path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12" />\n  <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" />\n  <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/player-pause.svg
+var player_pause_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-player-pause"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -12" />\n  <path d="M14 6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -12" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/player-play.svg
+var player_play_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-player-play"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 4v16l13 -8l-13 -8" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/player-stop.svg
+var player_stop_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-player-stop"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 7a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -10" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/plus.svg
+var plus_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 5l0 14" />\n  <path d="M5 12l14 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/refresh.svg
+var refresh_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-refresh"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />\n  <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/rocket.svg
+var rocket_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-rocket"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3" />\n  <path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3" />\n  <path d="M14 9a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/search.svg
+var search_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-search"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />\n  <path d="M21 21l-6 -6" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/send.svg
+var send_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-send"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10 14l11 -11" />\n  <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/server.svg
+var server_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-server"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 7a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3" />\n  <path d="M3 15a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -2" />\n  <path d="M7 8l0 .01" />\n  <path d="M7 16l0 .01" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/settings.svg
+var settings_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-settings"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />\n  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/shield.svg
+var shield_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-shield"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/shopping-cart.svg
+var shopping_cart_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M15 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M17 17h-11v-14h-2" />\n  <path d="M6 5l14 1l-1 7h-13" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/sort-ascending.svg
+var sort_ascending_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-sort-ascending"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 6l7 0" />\n  <path d="M4 12l7 0" />\n  <path d="M4 18l9 0" />\n  <path d="M15 9l3 -3l3 3" />\n  <path d="M18 6l0 12" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/sort-descending.svg
+var sort_descending_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-sort-descending"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 6l9 0" />\n  <path d="M4 12l7 0" />\n  <path d="M4 18l7 0" />\n  <path d="M15 15l3 3l3 -3" />\n  <path d="M18 6l0 12" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/star.svg
+var star_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-star"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/tag.svg
+var tag_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-tag"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n  <path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/trash.svg
+var trash_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 7l16 0" />\n  <path d="M10 11l0 6" />\n  <path d="M14 11l0 6" />\n  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />\n  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/trophy.svg
+var trophy_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-trophy"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M8 21l8 0" />\n  <path d="M12 17l0 4" />\n  <path d="M7 4l10 0" />\n  <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />\n  <path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/truck.svg
+var truck_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-truck"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M5 17h-2v-11a1 1 0 0 1 1 -1h9v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/upload.svg
+var upload_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-upload"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />\n  <path d="M7 9l5 -5l5 5" />\n  <path d="M12 4l0 12" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/user.svg
+var user_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-user"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />\n  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/users.svg
+var users_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-users"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />\n  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />\n  <path d="M16 3.13a4 4 0 0 1 0 7.75" />\n  <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/video.svg
+var video_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-video"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4" />\n  <path d="M3 8a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -8" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/wallet.svg
+var wallet_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-wallet"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12" />\n  <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/wifi.svg
+var wifi_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-wifi"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 18l.01 0" />\n  <path d="M9.172 15.172a4 4 0 0 1 5.656 0" />\n  <path d="M6.343 12.343a8 8 0 0 1 11.314 0" />\n  <path d="M3.515 9.515c4.686 -4.687 12.284 -4.687 17 0" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/world.svg
+var world_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-world"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />\n  <path d="M3.6 9h16.8" />\n  <path d="M3.6 15h16.8" />\n  <path d="M11.5 3a17 17 0 0 0 0 18" />\n  <path d="M12.5 3a17 17 0 0 1 0 18" />\n</svg>';
+
+// svg-raw:/Users/tobiashoelzer/Desktop/areas_of_focus/coding_projects/tobias/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/x.svg
+var x_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-x"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M18 6l-12 12" />\n  <path d="M6 6l12 12" />\n</svg>';
+
 // packages/core/src/nodes/icon/_iconmap.ts
-var ICON_MAP_FULL = {
-  // Social media
-  twitter: "\u{1D54F}",
-  github: "\u2299",
-  linkedin: "in",
-  facebook: "f",
-  instagram: "\u25C9",
-  youtube: "\u25B6",
-  // Common UI icons
-  home: "\u{1F3E0}",
-  user: "\u{1F464}",
-  settings: "\u2699\uFE0F",
-  search: "\u{1F50D}",
-  star: "\u2B50",
-  heart: "\u2764\uFE0F",
-  mail: "\u2709\uFE0F",
-  phone: "\u{1F4DE}",
-  calendar: "\u{1F4C5}",
-  clock: "\u{1F550}",
-  location: "\u{1F4CD}",
-  link: "\u{1F517}",
-  download: "\u2B07\uFE0F",
-  upload: "\u2B06\uFE0F",
-  edit: "\u270F\uFE0F",
-  delete: "\u{1F5D1}\uFE0F",
-  plus: "\u2795",
-  minus: "\u2796",
-  check: "\u2713",
-  close: "\u2715",
-  menu: "\u2630",
-  more: "\u22EF",
-  info: "\u2139\uFE0F",
-  warning: "\u26A0\uFE0F",
-  error: "\u274C",
-  success: "\u2705",
-  // Arrows
-  "arrow-up": "\u2191",
-  "arrow-down": "\u2193",
-  "arrow-left": "\u2190",
-  "arrow-right": "\u2192",
-  // Business/Finance
-  chart: "\u{1F4CA}",
-  dollar: "$",
-  euro: "\u20AC",
-  pound: "\xA3",
-  // Tech
-  code: "</>",
-  database: "\u{1F5C4}\uFE0F",
-  cloud: "\u2601\uFE0F",
-  wifi: "\u{1F4F6}",
-  // Communication
-  chat: "\u{1F4AC}",
-  video: "\u{1F3A5}",
-  microphone: "\u{1F3A4}",
-  bell: "\u{1F514}",
-  // Files
-  file: "\u{1F4C4}",
-  folder: "\u{1F4C1}",
-  image: "\u{1F5BC}\uFE0F",
-  document: "\u{1F4C3}",
-  pdf: "\u{1F4D1}",
-  // Brand placeholders
-  logo: "\u25C8",
-  brand: "\u25C6",
-  // Activities
-  rocket: "\u{1F680}",
-  bulb: "\u{1F4A1}",
-  shield: "\u{1F6E1}\uFE0F",
-  lock: "\u{1F512}",
-  unlock: "\u{1F513}",
-  key: "\u{1F511}",
-  gift: "\u{1F381}",
-  trophy: "\u{1F3C6}",
-  flag: "\u{1F6A9}",
-  bookmark: "\u{1F516}",
-  tag: "\u{1F3F7}\uFE0F",
-  cart: "\u{1F6D2}",
-  "credit-card": "\u{1F4B3}",
-  // Default
-  default: "\u25CF"
+var TABLER_ICON_SVGS = {
+  activity: activity_default,
+  "alert-circle": alert_circle_default,
+  "alert-triangle": alert_triangle_default,
+  "arrow-down": arrow_down_default,
+  "arrow-left": arrow_left_default,
+  "arrow-right": arrow_right_default,
+  "arrow-up": arrow_up_default,
+  bell: bell_default,
+  bookmark: bookmark_default,
+  "brand-facebook": brand_facebook_default,
+  "brand-github": brand_github_default,
+  "brand-instagram": brand_instagram_default,
+  "brand-linkedin": brand_linkedin_default,
+  "brand-x": brand_x_default,
+  "brand-youtube": brand_youtube_default,
+  briefcase: briefcase_default,
+  bulb: bulb_default,
+  building: building_default,
+  calendar: calendar_default,
+  cash: cash_default,
+  "chart-bar": chart_bar_default,
+  "chart-line": chart_line_default,
+  "chart-pie": chart_pie_default,
+  check: check_default,
+  "chevron-down": chevron_down_default,
+  "chevron-left": chevron_left_default,
+  "chevron-right": chevron_right_default,
+  "chevron-up": chevron_up_default,
+  circle: circle_default,
+  "circle-check": circle_check_default,
+  "clipboard-list": clipboard_list_default,
+  clock: clock_default,
+  cloud: cloud_default,
+  code: code_default,
+  coin: coin_default,
+  copy: copy_default,
+  "credit-card": credit_card_default,
+  "currency-dollar": currency_dollar_default,
+  "currency-euro": currency_euro_default,
+  "currency-pound": currency_pound_default,
+  database: database_default,
+  "device-desktop": device_desktop_default,
+  "device-mobile": device_mobile_default,
+  diamond: diamond_default,
+  dots: dots_default,
+  download: download_default,
+  edit: edit_default,
+  "external-link": external_link_default,
+  eye: eye_default,
+  "eye-off": eye_off_default,
+  file: file_default,
+  "file-text": file_text_default,
+  "file-type-pdf": file_type_pdf_default,
+  filter: filter_default,
+  flag: flag_default,
+  folder: folder_default,
+  gift: gift_default,
+  heart: heart_default,
+  home: home_default,
+  "info-circle": info_circle_default,
+  key: key_default,
+  "layout-dashboard": layout_dashboard_default,
+  link: link_default,
+  lock: lock_default,
+  "lock-open": lock_open_default,
+  login: login_default,
+  logout: logout_default,
+  mail: mail_default,
+  map: map_default,
+  "map-pin": map_pin_default,
+  "menu-2": menu_2_default,
+  "message-circle": message_circle_default,
+  microphone: microphone_default,
+  minus: minus_default,
+  package: package_default,
+  phone: phone_default,
+  photo: photo_default,
+  "player-pause": player_pause_default,
+  "player-play": player_play_default,
+  "player-stop": player_stop_default,
+  plus: plus_default,
+  refresh: refresh_default,
+  rocket: rocket_default,
+  search: search_default,
+  send: send_default,
+  server: server_default,
+  settings: settings_default,
+  shield: shield_default,
+  "shopping-cart": shopping_cart_default,
+  "sort-ascending": sort_ascending_default,
+  "sort-descending": sort_descending_default,
+  star: star_default,
+  tag: tag_default,
+  trash: trash_default,
+  trophy: trophy_default,
+  truck: truck_default,
+  upload: upload_default,
+  user: user_default,
+  users: users_default,
+  video: video_default,
+  wallet: wallet_default,
+  wifi: wifi_default,
+  world: world_default,
+  x: x_default
 };
-var ICON_MAP_SMALL = {
-  home: "\u{1F3E0}",
-  user: "\u{1F464}",
-  settings: "\u2699\uFE0F",
-  search: "\u{1F50D}",
-  star: "\u2B50",
-  heart: "\u2764\uFE0F",
-  mail: "\u2709\uFE0F",
-  phone: "\u{1F4DE}",
-  check: "\u2713",
-  close: "\u2715",
-  menu: "\u2630",
-  more: "\u22EF",
-  default: "\u25CF"
+var ICON_ALIASES = {
+  brand: "diamond",
+  cart: "shopping-cart",
+  chart: "chart-bar",
+  chat: "message-circle",
+  close: "x",
+  delete: "trash",
+  document: "file-text",
+  dollar: "currency-dollar",
+  error: "alert-circle",
+  euro: "currency-euro",
+  facebook: "brand-facebook",
+  gear: "settings",
+  github: "brand-github",
+  image: "photo",
+  info: "info-circle",
+  instagram: "brand-instagram",
+  linkedin: "brand-linkedin",
+  location: "map-pin",
+  logo: "diamond",
+  menu: "menu-2",
+  more: "dots",
+  pdf: "file-type-pdf",
+  pound: "currency-pound",
+  success: "circle-check",
+  twitter: "brand-x",
+  unlock: "lock-open",
+  warning: "alert-triangle",
+  youtube: "brand-youtube"
 };
-var SOCIAL_ICONS = ["twitter", "github", "linkedin", "facebook", "instagram", "youtube"];
+function resolveIconName(iconName) {
+  return TABLER_ICON_SVGS[iconName] ? iconName : ICON_ALIASES[iconName] || "circle";
+}
+function escapeAttribute(value) {
+  return value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function compactSvg(svg) {
+  return svg.replace(/\sclass="[^"]*"/, "").replace(/\s+/g, " ").replace(/>\s+</g, "><").trim();
+}
+function toReactSvgAttributes(svg) {
+  return svg.replace(/\bstroke-width=/g, "strokeWidth=").replace(/\bstroke-linecap=/g, "strokeLinecap=").replace(/\bstroke-linejoin=/g, "strokeLinejoin=").replace(/\bfill-rule=/g, "fillRule=").replace(/\bclip-rule=/g, "clipRule=");
+}
+function renderTablerIcon(requestedIconName, classes, options = {}) {
+  const classAttribute = options.classAttribute || "class";
+  const resolvedIconName = resolveIconName(requestedIconName);
+  const svg = TABLER_ICON_SVGS[resolvedIconName] || TABLER_ICON_SVGS.circle;
+  const attrs = [
+    `${classAttribute}="${escapeAttribute(classes)}"`,
+    `data-icon="${escapeAttribute(requestedIconName)}"`,
+    `aria-label="${escapeAttribute(requestedIconName)}"`,
+    'role="img"'
+  ].join(" ");
+  const rendered = compactSvg(svg).replace("<svg ", `<svg ${attrs} `);
+  return options.react ? toReactSvgAttributes(rendered) : rendered;
+}
+var AVAILABLE_ICON_NAMES = Object.freeze([
+  ...Object.keys(TABLER_ICON_SVGS),
+  ...Object.keys(ICON_ALIASES)
+].sort());
 
 // packages/core/src/nodes/icon/html.ts
 function renderIconHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "icon", node2.props);
   const iconName = node2.props.name || "default";
-  const iconContent = ICON_MAP_FULL[iconName] || ICON_MAP_FULL["default"];
-  if (SOCIAL_ICONS.includes(iconName)) {
-    return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}" style="font-family: monospace; font-weight: bold; font-style: normal;">${iconContent}</span>`;
-  }
-  return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}">${iconContent}</span>`;
+  return renderTablerIcon(iconName, classes);
 }
 
 // packages/core/src/nodes/icon/react.ts
@@ -12691,16 +13096,14 @@ function renderIconReact(node2, context, indent2 = 0) {
   const classes = buildClasses2(prefix, "icon", node2.props);
   const iconName = node2.props.name || "default";
   const classAttr = context.useClassName ? "className" : "class";
-  const iconContent = ICON_MAP_SMALL[iconName] || ICON_MAP_SMALL["default"];
-  return `${indentStr}<span ${classAttr}="${classes}" data-icon="${iconName}" aria-label="${iconName}">${iconContent}</span>`;
+  return `${indentStr}${renderTablerIcon(iconName, classes, { classAttribute: classAttr, react: true })}`;
 }
 
 // packages/core/src/nodes/icon/tailwind.ts
 function renderIconTailwind(node2, _context) {
   const classes = "inline-block align-middle";
   const iconName = node2.props.name || "default";
-  const iconContent = ICON_MAP_SMALL[iconName] || ICON_MAP_SMALL["default"];
-  return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}">${iconContent}</span>`;
+  return renderTablerIcon(iconName, classes);
 }
 
 // packages/core/src/nodes/icon/index.ts
@@ -13215,18 +13618,25 @@ var textarea = {
 function renderSelectHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const props = node2.props;
-  const classes = buildClasses(prefix, "select", props);
+  const hasLinkedOptions = (node2.options || []).some((opt) => Boolean(opt.href));
+  const hasActionOptions = !hasLinkedOptions && (node2.options || []).some((opt) => Boolean(opt.action));
+  const variantClass = hasLinkedOptions ? ` ${prefix}navigation-select` : hasActionOptions ? ` ${prefix}action-select` : "";
+  const classes = `${buildClasses(prefix, "select", props)}${variantClass}`;
   const required = props.required ? " required" : "";
   const disabled = props.disabled ? " disabled" : "";
   const multiple = props.multiple ? " multiple" : "";
+  const navigationHandler = hasLinkedOptions ? ' onchange="if (this.value) window.location.href = this.value"' : "";
   const optionsHTML = (node2.options || []).map((opt) => {
     const selected = opt.selected ? " selected" : "";
-    return `<option value="${escapeHtml(opt.value)}"${selected}>${escapeHtml(opt.label)}</option>`;
+    const value = hasLinkedOptions ? opt.href || "" : opt.value;
+    const href = opt.href ? ` data-href="${escapeHtml(opt.href)}"` : "";
+    const action = opt.action ? ` data-action="${escapeHtml(opt.action)}"` : "";
+    return `<option value="${escapeHtml(value)}"${selected}${href}${action}>${escapeHtml(opt.label)}</option>`;
   }).join("\n    ");
   const placeholder = props.placeholder;
   const placeholderOption = placeholder ? `<option value="" disabled selected>${escapeHtml(placeholder)}</option>
     ` : "";
-  return `<select class="${classes}"${required}${disabled}${multiple}>
+  return `<select class="${classes}"${required}${disabled}${multiple}${navigationHandler}>
     ${placeholderOption}${optionsHTML}
   </select>`;
 }
@@ -13236,7 +13646,10 @@ function renderSelectReact(node2, context, indent2 = 0) {
   const indentStr = repeatString("  ", indent2);
   const { classPrefix: prefix } = context;
   const props = node2.props;
-  const classes = buildClasses2(prefix, "select", props);
+  const hasLinkedOptions = (node2.options || []).some((opt) => Boolean(opt.href));
+  const hasActionOptions = !hasLinkedOptions && (node2.options || []).some((opt) => Boolean(opt.action));
+  const variantClass = hasLinkedOptions ? ` ${prefix}navigation-select` : hasActionOptions ? ` ${prefix}action-select` : "";
+  const classes = `${buildClasses2(prefix, "select", props)}${variantClass}`;
   const classAttr = context.useClassName ? "className" : "class";
   const attrs = [];
   if (props.required)
@@ -13245,9 +13658,15 @@ function renderSelectReact(node2, context, indent2 = 0) {
     attrs.push("disabled");
   if (props.multiple)
     attrs.push("multiple");
+  if (hasLinkedOptions) {
+    attrs.push("onChange={(event) => { const target = event.currentTarget; if (target.value) window.location.href = target.value; }}");
+  }
   const optionsJSX = (node2.options || []).map((opt) => {
     const selected = opt.selected ? " defaultSelected" : "";
-    return `    <option value="${escapeJSX(opt.value)}"${selected}>${escapeJSX(opt.label)}</option>`;
+    const value = hasLinkedOptions ? opt.href || "" : opt.value;
+    const href = opt.href ? ` data-href="${escapeJSX(opt.href)}"` : "";
+    const action = opt.action ? ` data-action="${escapeJSX(opt.action)}"` : "";
+    return `    <option value="${escapeJSX(value)}"${selected}${href}${action}>${escapeJSX(opt.label)}</option>`;
   }).join("\n");
   const placeholder = props.placeholder;
   const placeholderOption = placeholder ? `    <option value="" disabled defaultSelected>${escapeJSX(placeholder)}</option>
@@ -13260,18 +13679,24 @@ ${indentStr}</select>`;
 // packages/core/src/nodes/select/tailwind.ts
 function renderSelectTailwind(node2, _context) {
   const props = node2.props;
-  const classes = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent";
+  const hasLinkedOptions = (node2.options || []).some((opt) => Boolean(opt.href));
+  const hasActionOptions = !hasLinkedOptions && (node2.options || []).some((opt) => Boolean(opt.action));
+  const classes = `w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent${hasLinkedOptions ? " wmd-navigation-select" : hasActionOptions ? " wmd-action-select" : ""}`;
   const required = props.required ? " required" : "";
   const disabled = props.disabled ? " disabled" : "";
   const multiple = props.multiple ? " multiple" : "";
+  const navigationHandler = hasLinkedOptions ? ' onchange="if (this.value) window.location.href = this.value"' : "";
   const optionsHTML = (node2.options || []).map((opt) => {
     const selected = opt.selected ? " selected" : "";
-    return `<option value="${escapeHtml2(opt.value)}"${selected}>${escapeHtml2(opt.label)}</option>`;
+    const value = hasLinkedOptions ? opt.href || "" : opt.value;
+    const href = opt.href ? ` data-href="${escapeHtml2(opt.href)}"` : "";
+    const action = opt.action ? ` data-action="${escapeHtml2(opt.action)}"` : "";
+    return `<option value="${escapeHtml2(value)}"${selected}${href}${action}>${escapeHtml2(opt.label)}</option>`;
   }).join("\n    ");
   const placeholder = props.placeholder;
   const placeholderOption = placeholder ? `<option value="" disabled selected>${escapeHtml2(placeholder)}</option>
     ` : "";
-  return `<select class="${classes}"${required}${disabled}${multiple}>
+  return `<select class="${classes}"${required}${disabled}${multiple}${navigationHandler}>
     ${placeholderOption}${optionsHTML}
   </select>`;
 }
@@ -13357,6 +13782,66 @@ var checkbox = {
     react: renderCheckboxReact,
     tailwind: renderCheckboxTailwind
   }
+};
+
+// packages/core/src/nodes/switch/html.ts
+function renderSwitchHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses(prefix, "switch", props);
+  const checked = node2.checked ? " checked" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const value = props.value ? ` value="${escapeHtml(props.value)}"` : "";
+  const labelHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.label || "");
+  return `<label class="${classes}">
+    <span class="${prefix}switch-label">${labelHTML}</span>
+    <input type="checkbox" role="switch"${checked}${disabled}${value} />
+    <span class="${prefix}switch-track"><span class="${prefix}switch-thumb"></span></span>
+  </label>`;
+}
+
+// packages/core/src/nodes/switch/react.ts
+function renderSwitchReact(node2, context, indent2 = 0) {
+  const indentStr = repeatString("  ", indent2);
+  const { classPrefix: prefix } = context;
+  const props = node2.props;
+  const classes = buildClasses2(prefix, "switch", props);
+  const classAttr = context.useClassName ? "className" : "class";
+  const attrs = [];
+  if (props.value)
+    attrs.push(`value="${escapeJSX(props.value)}"`);
+  if (props.disabled)
+    attrs.push("disabled");
+  const labelJSX = node2.children ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.label || "");
+  const attrText = attrs.length > 0 ? ` ${attrs.join(" ")}` : "";
+  return `${indentStr}<label ${classAttr}="${classes}">
+${indentStr}  <span ${classAttr}="${prefix}switch-label">${labelJSX}</span>
+${indentStr}  <input type="checkbox" role="switch"${node2.checked ? " defaultChecked" : ""}${attrText} />
+${indentStr}  <span ${classAttr}="${prefix}switch-track"><span ${classAttr}="${prefix}switch-thumb"></span></span>
+${indentStr}</label>`;
+}
+
+// packages/core/src/nodes/switch/tailwind.ts
+function renderSwitchTailwind(node2, context) {
+  const props = node2.props;
+  const checked = node2.checked ? " checked" : "";
+  const disabled = props.disabled ? " disabled" : "";
+  const value = props.value ? ` value="${escapeHtml2(props.value)}"` : "";
+  const labelClasses = props.disabled ? "flex items-center justify-between gap-3 opacity-50 cursor-not-allowed" : "flex items-center justify-between gap-3 cursor-pointer";
+  const trackClasses = node2.checked ? "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-indigo-600 bg-indigo-600 transition-colors" : "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-gray-400 bg-gray-100 transition-colors";
+  const thumbClasses = node2.checked ? "absolute right-0.5 h-4 w-4 rounded-full bg-white shadow" : "absolute left-0.5 h-4 w-4 rounded-full bg-white border border-gray-400 shadow-sm";
+  const labelHTML = node2.children ? node2.children.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.label || "");
+  return `<label class="${labelClasses}">
+    <span class="text-gray-900">${labelHTML}</span>
+    <input type="checkbox" role="switch" class="sr-only"${checked}${disabled}${value} />
+    <span class="${trackClasses}"><span class="${thumbClasses}"></span></span>
+  </label>`;
+}
+
+// packages/core/src/nodes/switch/index.ts
+var switchNode = {
+  type: "switch",
+  render: { html: renderSwitchHTML, react: renderSwitchReact, tailwind: renderSwitchTailwind }
 };
 
 // packages/core/src/nodes/radio/html.ts
@@ -13730,6 +14215,7 @@ var registry = {
   textarea,
   select,
   checkbox,
+  switch: switchNode,
   radio,
   "radio-group": radioGroup,
   badge,
@@ -13903,6 +14389,10 @@ function getStructuralCSS(prefix) {
 .${prefix}align-left { margin-right: auto; }
 .${prefix}align-right { margin-left: auto; }
 .${prefix}align-center { margin: auto; }
+.${prefix}align-top { align-self: start; }
+.${prefix}align-bottom { align-self: end; }
+.${prefix}row.${prefix}align-top { align-items: flex-start; }
+.${prefix}row.${prefix}align-bottom { align-items: flex-end; }
 .${prefix}container-hero .${prefix}row { justify-content: center; }
 .${prefix}container-sidebar .${prefix}row,
 .${prefix}layout-sidebar .${prefix}row { display: block; }
@@ -14148,6 +14638,55 @@ body.${prefix}root {
   width: 20px;
   height: 20px;
   cursor: pointer;
+}
+
+.${prefix}switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 6px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.${prefix}switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.${prefix}switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 40px;
+  height: 21px;
+  flex: 0 0 40px;
+  align-items: center;
+  border: 2px solid #333;
+  border-radius: 11px 9px 12px 10px;
+  background: #fff;
+}
+
+.${prefix}switch-thumb {
+  position: absolute;
+  left: 2px;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #333;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track .${prefix}switch-thumb {
+  left: 19px;
+  background: #333;
+}
+
+.${prefix}switch input[type="checkbox"]:disabled + .${prefix}switch-track,
+.${prefix}switch:has(input[type="checkbox"]:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 /* Icons */
@@ -14703,6 +15242,60 @@ body.${prefix}root {
   cursor: pointer;
 }
 
+.${prefix}switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.${prefix}switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.${prefix}switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 36px;
+  height: 20px;
+  flex: 0 0 36px;
+  align-items: center;
+  border: 1px solid #999;
+  border-radius: 999px;
+  background: #f4f4f4;
+}
+
+.${prefix}switch-thumb {
+  position: absolute;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #888;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.15s ease;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track {
+  border-color: #0066cc;
+  background: #0066cc;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track .${prefix}switch-thumb {
+  left: 17px;
+  border-color: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:disabled + .${prefix}switch-track,
+.${prefix}switch:has(input[type="checkbox"]:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 /* Icons */
 .${prefix}icon {
   display: inline-block;
@@ -15249,6 +15842,54 @@ body.${prefix}root {
   height: 18px;
   border: 2px solid #000;
   cursor: pointer;
+}
+
+.${prefix}switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 6px 0;
+  cursor: pointer;
+}
+
+.${prefix}switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.${prefix}switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 38px;
+  height: 20px;
+  flex: 0 0 38px;
+  align-items: center;
+  border: 2px solid #000;
+  border-radius: 0;
+  background: #fff;
+}
+
+.${prefix}switch-thumb {
+  position: absolute;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track .${prefix}switch-thumb {
+  left: 18px;
+  background: #000;
+}
+
+.${prefix}switch input[type="checkbox"]:disabled + .${prefix}switch-track,
+.${prefix}switch:has(input[type="checkbox"]:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Icons */
@@ -15891,6 +16532,59 @@ body {
   height: 1rem;
   cursor: pointer;
   accent-color: #6366f1;
+}
+
+.${prefix}switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.${prefix}switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.${prefix}switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 2.25rem;
+  height: 1.25rem;
+  flex: 0 0 2.25rem;
+  align-items: center;
+  border: 1px solid #9ca3af;
+  border-radius: 9999px;
+  background: #f3f4f6;
+}
+
+.${prefix}switch-thumb {
+  position: absolute;
+  left: 0.125rem;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #9ca3af;
+  border-radius: 9999px;
+  background: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track {
+  border-color: #6366f1;
+  background: #6366f1;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track .${prefix}switch-thumb {
+  left: 1.125rem;
+  border-color: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:disabled + .${prefix}switch-track,
+.${prefix}switch:has(input[type="checkbox"]:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Cards and Containers */
@@ -16547,6 +17241,57 @@ body {
   height: 18px;
   cursor: pointer;
   accent-color: #6200ee;
+}
+
+.${prefix}switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.${prefix}switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.${prefix}switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 36px;
+  height: 20px;
+  flex: 0 0 36px;
+  align-items: center;
+  border-radius: 999px;
+  background: #9e9e9e;
+}
+
+.${prefix}switch-thumb {
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track {
+  background: #bb86fc;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track .${prefix}switch-thumb {
+  left: 16px;
+  background: #6200ee;
+}
+
+.${prefix}switch input[type="checkbox"]:disabled + .${prefix}switch-track,
+.${prefix}switch:has(input[type="checkbox"]:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Material Cards - Elevation System */
@@ -17215,6 +17960,60 @@ body {
   accent-color: #ffd93d;
 }
 
+.${prefix}switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.${prefix}switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.${prefix}switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 42px;
+  height: 22px;
+  flex: 0 0 42px;
+  align-items: center;
+  border: 3px solid #000;
+  border-radius: 0;
+  background: #fff;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.${prefix}switch-thumb {
+  position: absolute;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border: 3px solid #000;
+  border-radius: 0;
+  background: #fff;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track {
+  background: #ffd93d;
+}
+
+.${prefix}switch input[type="checkbox"]:checked + .${prefix}switch-track .${prefix}switch-thumb {
+  left: 19px;
+  background: #000;
+}
+
+.${prefix}switch input[type="checkbox"]:disabled + .${prefix}switch-track,
+.${prefix}switch:has(input[type="checkbox"]:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 /* Brutal Cards and Containers */
 .${prefix}container-card {
   background: #ffffff;
@@ -17860,7 +18659,7 @@ var BADGE_TOKEN_SPLIT = new RegExp(`(${BADGE_TOKEN_PATTERN.source})`);
 var BADGE_TOKEN_SPLIT_GLOBAL = new RegExp(`(${BADGE_TOKEN_PATTERN.source})`, "g");
 var BADGE_TOKEN_EXACT = /^(?:\(\(([^()\n]+)\)\)|\|([^|\n]+)\|)(?:\s*(\{[^}]*\}))?$/;
 var INLINE_TEXT_TOKEN_SPLIT = new RegExp(
-  `(\\[[^\\]]+\\](?:\\*)?(?:\\s*\\{[^}]*\\})?|:[a-z-]+:|${BADGE_TOKEN_PATTERN.source})`
+  `(\\[[^\\]]+\\](?:\\*)?(?:\\s*\\{[^}]*\\})?|:[a-z0-9-]+:|${BADGE_TOKEN_PATTERN.source})`
 );
 function transformToWiremdAST(mdast, options = {}) {
   const meta = {
@@ -17868,11 +18667,13 @@ function transformToWiremdAST(mdast, options = {}) {
     viewport: "desktop",
     theme: "sketch"
   };
+  const children = processNodeList(mdast.children, options);
+  children.forEach(normalizeSemanticTokens);
   return {
     type: "document",
     version: SYNTAX_VERSION,
     meta,
-    children: processNodeList(mdast.children, options)
+    children
   };
 }
 var ctxDeps = {
@@ -17988,59 +18789,222 @@ function processNodeList(nodeChildren, options) {
 function isHtmlCommentNode(node2) {
   return node2.type === "html" && typeof node2.value === "string" && /^<!--[\s\S]*-->$/.test(node2.value.trim());
 }
-function collectGridItemsFromContainer(children, ctx, isCard) {
-  const gridItems = [];
-  const firstHeading = children.find((n) => n.type === "heading");
-  if (!firstHeading)
-    return gridItems;
-  const itemDepth = firstHeading.depth;
-  let pending = [];
-  let i = 0;
-  while (i < children.length) {
-    const child = children[i];
-    if (child.type === "heading" && child.depth === itemDepth) {
-      for (const c of pending) {
-        const m = c.value.match(/^<!--([\s\S]*?)-->$/);
-        if (m)
-          gridItems.push({ type: "comment", text: m[1].trim() });
-      }
-      pending = [];
-      const rawItemNodes = [child];
-      i++;
-      while (i < children.length) {
-        const next = children[i];
-        if (next.type === "heading" && next.depth <= itemDepth)
-          break;
-        rawItemNodes.push(next);
-        i++;
-      }
-      if (i < children.length) {
-        let split = rawItemNodes.length;
-        while (split > 0 && isHtmlCommentNode(rawItemNodes[split - 1]))
-          split--;
-        if (split < rawItemNodes.length)
-          pending = rawItemNodes.splice(split);
-      }
-      const headingContent = extractTextContent(child);
-      const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
-      const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
-      const itemProps = { classes: [] };
-      if (isCard)
-        itemProps.classes.push("card");
-      if (colSpanMatch)
-        itemProps.classes.push(`col-span-${colSpanMatch[1]}`);
-      if (alignMatch)
-        itemProps.classes.push(`align-${alignMatch[1]}`);
-      gridItems.push({
-        type: "grid-item",
-        props: itemProps,
-        children: ctx.transformChildren(rawItemNodes)
-      });
-    } else {
-      i++;
+var BUTTON_VARIANT_TOKENS = ["primary", "secondary", "danger"];
+var BUTTON_SIZE_TOKENS = ["small", "large"];
+var BUTTON_STATE_TOKENS = ["disabled", "loading"];
+var ALIGNMENT_TOKENS = ["left", "center", "right"];
+var VERTICAL_ALIGNMENT_TOKENS = ["top", "bottom"];
+var STATUS_CLASS_TOKENS = ["primary", "success", "warning", "error", "danger"];
+var FORM_STATE_TOKENS = ["error", "success", "warning"];
+function ensureClass(props, className) {
+  props.classes = Array.isArray(props.classes) ? props.classes : [];
+  if (!props.classes.includes(className))
+    props.classes.push(className);
+}
+function takeBooleanToken(props, token) {
+  if (props[token] !== true)
+    return false;
+  delete props[token];
+  return true;
+}
+function normalizeButtonProps(props) {
+  for (const token of BUTTON_VARIANT_TOKENS) {
+    if (takeBooleanToken(props, token) && !props.variant) {
+      props.variant = token;
     }
   }
-  return gridItems;
+  for (const token of BUTTON_STATE_TOKENS) {
+    if (takeBooleanToken(props, token) && !props.state) {
+      props.state = token;
+    }
+  }
+  for (const token of BUTTON_SIZE_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, token);
+    }
+  }
+}
+function normalizeBadgeProps(props) {
+  for (const token of BADGE_VARIANTS) {
+    if (takeBooleanToken(props, token) && !props.variant) {
+      props.variant = token === "danger" ? "error" : token;
+    }
+  }
+}
+function normalizeRowProps(props) {
+  for (const token of ALIGNMENT_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, token);
+    }
+  }
+  for (const token of VERTICAL_ALIGNMENT_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, `align-${token}`);
+    }
+  }
+}
+function normalizeContainerProps(props) {
+  for (const token of STATUS_CLASS_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, token === "danger" ? "error" : token);
+    }
+  }
+}
+function normalizeFormControlProps(props) {
+  for (const token of FORM_STATE_TOKENS) {
+    if (takeBooleanToken(props, token) && !props.state) {
+      props.state = token;
+    }
+  }
+}
+function normalizeVerticalAlignmentProps(props) {
+  for (const token of VERTICAL_ALIGNMENT_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, `align-${token}`);
+    }
+  }
+}
+function normalizeGridItemProps(props) {
+  for (const key of Object.keys(props)) {
+    const match = key.match(/^span-(\d+)$/);
+    if (match && props[key] === true) {
+      delete props[key];
+      ensureClass(props, `col-span-${match[1]}`);
+    }
+  }
+  for (const token of ALIGNMENT_TOKENS) {
+    if (takeBooleanToken(props, token)) {
+      ensureClass(props, `align-${token}`);
+    }
+  }
+  normalizeVerticalAlignmentProps(props);
+}
+function normalizeSemanticTokens(node2) {
+  if (!node2 || typeof node2 !== "object")
+    return;
+  if (node2.props) {
+    normalizeVerticalAlignmentProps(node2.props);
+    if (node2.type === "button")
+      normalizeButtonProps(node2.props);
+    if (node2.type === "badge")
+      normalizeBadgeProps(node2.props);
+    if (node2.type === "container")
+      normalizeContainerProps(node2.props);
+    if (["input", "select", "textarea"].includes(node2.type))
+      normalizeFormControlProps(node2.props);
+    if (node2.type === "row")
+      normalizeRowProps(node2.props);
+    if (node2.type === "grid-item")
+      normalizeGridItemProps(node2.props);
+  }
+  if (Array.isArray(node2.children)) {
+    node2.children.forEach(normalizeSemanticTokens);
+  }
+}
+function mapColumnClasses(classes = []) {
+  const mapped = [];
+  for (const className of classes) {
+    const span = className.match(/^span-(\d+)$/);
+    if (span) {
+      mapped.push(`col-span-${span[1]}`);
+    } else if (["left", "center", "right"].includes(className)) {
+      mapped.push(`align-${className}`);
+    } else if (["top", "bottom"].includes(className)) {
+      mapped.push(`align-${className}`);
+    } else {
+      mapped.push(className);
+    }
+  }
+  return mapped;
+}
+function parseBareColumnProps(value) {
+  const trimmed = value.trim();
+  if (!trimmed || !trimmed.split(/\s+/).every((part) => part.startsWith("."))) {
+    return null;
+  }
+  return parseAttributes(`{${trimmed}}`);
+}
+function parseColumnInline(value) {
+  const trimmed = value.trim();
+  const bareProps = parseBareColumnProps(trimmed);
+  if (bareProps) {
+    return { title: "", props: bareProps };
+  }
+  const attrMatch = trimmed.match(/^(.*?)(?:\s+(\{[^}]+\}))?$/);
+  return {
+    title: attrMatch?.[1]?.trim() || trimmed,
+    props: attrMatch?.[2] ? parseAttributes(attrMatch[2]) : { classes: [] }
+  };
+}
+function createColumnTitleHeading(title) {
+  const children = parseInlineToNodes(title);
+  const hasRichInline = children.some((child) => child.type !== "text" || "mark" in child);
+  if (hasRichInline) {
+    return {
+      type: "heading",
+      level: 3,
+      children,
+      props: { classes: [] }
+    };
+  }
+  return {
+    type: "heading",
+    level: 3,
+    content: title,
+    props: { classes: [] }
+  };
+}
+function transformColumnContainer(node2, ctx, isCard = false) {
+  const props = parseAttributes(node2.attributes || "");
+  const contentChildren = [...node2.children || []];
+  const inlineParts = typeof node2.inline === "string" ? parseColumnInline(node2.inline) : null;
+  const title = inlineParts?.title || "";
+  if (inlineParts) {
+    const baseClasses = props.classes || [];
+    const inlineClasses = inlineParts.props.classes || [];
+    Object.assign(props, inlineParts.props);
+    props.classes = [...baseClasses, ...inlineClasses];
+    if (contentChildren[0]?.type === "paragraph" && extractTextContent(contentChildren[0]).trim() === node2.inline.trim()) {
+      contentChildren.shift();
+    }
+  } else if (contentChildren[0]?.type === "paragraph") {
+    const firstText = extractTextContent(contentChildren[0]);
+    const firstParagraphProps = parseBareColumnProps(firstText);
+    if (firstParagraphProps) {
+      const baseClasses = props.classes || [];
+      const paragraphClasses = firstParagraphProps.classes || [];
+      Object.assign(props, firstParagraphProps);
+      props.classes = [...baseClasses, ...paragraphClasses];
+      contentChildren.shift();
+    }
+  }
+  const classes = mapColumnClasses(props.classes || []);
+  if (isCard)
+    classes.unshift("card");
+  const children = ctx.transformChildren(contentChildren);
+  if (title) {
+    children.unshift(createColumnTitleHeading(title));
+  }
+  return {
+    type: "grid-item",
+    props: { ...props, classes },
+    children
+  };
+}
+function collectColumnItemsFromContainer(children, ctx, isCard) {
+  const items = [];
+  for (const child of children) {
+    if (isHtmlCommentNode(child)) {
+      const m = child.value.match(/^<!--([\s\S]*?)-->$/);
+      if (m)
+        items.push({ type: "comment", text: m[1].trim() });
+      continue;
+    }
+    if (child.type === "wiremdContainer" && child.containerType === "column") {
+      items.push(transformColumnContainer(child, ctx, isCard));
+    }
+  }
+  return items;
 }
 function collectRowItemsFromContainer(children, ctx) {
   const items = [];
@@ -18092,9 +19056,9 @@ function collectRowItemsFromContainer(children, ctx) {
 function transformContainer(node2, ctx) {
   const props = parseAttributes(node2.attributes || "");
   const containerType = (node2.containerType || "").trim();
-  const gridMatch = containerType.match(/^grid-(\d+)$/);
-  if (gridMatch) {
-    const columns = parseInt(gridMatch[1], 10);
+  const columnsMatch = containerType.match(/^columns-(\d+)$/);
+  if (columnsMatch) {
+    const columns = parseInt(columnsMatch[1], 10);
     const firstChild = node2.children[0];
     const firstChildText = firstChild?.type === "paragraph" && firstChild.children?.[0]?.type === "text" ? firstChild.children[0].value : "";
     const firstWord = firstChildText.trim().split(/\s+/)[0];
@@ -18104,8 +19068,11 @@ function transformContainer(node2, ctx) {
       type: "grid",
       columns,
       props: { ...props, card: hasCard, classes: (props.classes || []).filter((c) => c !== "card") },
-      children: collectGridItemsFromContainer(contentChildren, ctx, hasCard)
+      children: collectColumnItemsFromContainer(contentChildren, ctx, hasCard)
     };
+  }
+  if (containerType === "column") {
+    return transformColumnContainer(node2, ctx);
   }
   if (containerType === "row") {
     return {
@@ -18219,7 +19186,7 @@ function transformInlineContainer(node2, _ctx) {
       });
       continue;
     }
-    const iconMatch = trimmed.match(/^:([a-z-]+):$/);
+    const iconMatch = trimmed.match(/^:([a-z0-9-]+):$/);
     if (iconMatch) {
       children.push({
         type: "icon",
@@ -18227,11 +19194,14 @@ function transformInlineContainer(node2, _ctx) {
       });
       continue;
     }
-    const iconTextMatch = trimmed.match(/^:([a-z-]+):\s*(.+)$/);
+    const iconTextMatch = trimmed.match(/^:([a-z0-9-]+):\s*(.+)$/);
     if (iconTextMatch) {
       const iconName = iconTextMatch[1];
       const text6 = iconTextMatch[2];
       const nodeType = iconName === "logo" ? "brand" : "nav-item";
+      if (nodeType === "brand") {
+        brandEmitted = true;
+      }
       children.push({
         type: nodeType,
         children: [
@@ -18272,8 +19242,8 @@ function transformHeading(node2, _ctx) {
     headingText = attrMatch[1].trim();
     props = parseAttributes(attrMatch[2]);
   }
-  if (/:([a-z-]+):/.test(headingText)) {
-    const iconPattern = /:([a-z-]+):/g;
+  if (/:([a-z0-9-]+):/.test(headingText)) {
+    const iconPattern = /:([a-z0-9-]+):/g;
     const parts = headingText.split(iconPattern);
     const children = [];
     for (let i = 0; i < parts.length; i++) {
@@ -18403,6 +19373,20 @@ function controlsAsNode(children, forceRow = false) {
     return children[0];
   return makeImplicitRow(children);
 }
+function switchNodeFromParts(text6, attrs) {
+  const props = parseAttributes(attrs || "");
+  if (!props.switch)
+    return null;
+  const checked = Boolean(props.checked);
+  delete props.switch;
+  delete props.checked;
+  return {
+    type: "switch",
+    label: text6.trim(),
+    checked,
+    props
+  };
+}
 function parseBracketControlsFromLine(line) {
   const trimmed = line.trim();
   if (!trimmed || !/\[/.test(trimmed))
@@ -18412,6 +19396,11 @@ function parseBracketControlsFromLine(line) {
   let match;
   while ((match = controlPattern.exec(trimmed)) !== null) {
     const [, text6, isPrimary, attrs] = match;
+    const switchNode2 = switchNodeFromParts(text6, attrs);
+    if (switchNode2) {
+      controls.push(switchNode2);
+      continue;
+    }
     const props = parseAttributes(attrs || "");
     if ("rows" in props)
       return null;
@@ -18433,8 +19422,8 @@ function parseBracketControlsFromLine(line) {
     }
     if (isPrimary)
       props.variant = "primary";
-    if (/:([a-z-]+):/.test(text6)) {
-      const iconPattern = /:([a-z-]+):/g;
+    if (/:([a-z0-9-]+):/.test(text6)) {
+      const iconPattern = /:([a-z0-9-]+):/g;
       const parts = text6.split(iconPattern);
       const children = [];
       for (let i = 0; i < parts.length; i++) {
@@ -18484,6 +19473,9 @@ function transformParagraph(node2, ctx) {
     content4 = content4.replace(/\s*:::\s*$/, "").trim();
     const buttonMatch = content4.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
     if (buttonMatch) {
+      const switchNode2 = switchNodeFromParts(buttonMatch[1], buttonMatch[3]);
+      if (switchNode2)
+        return switchNode2;
       const attrs = buttonMatch[3] ? parseAttributes(buttonMatch[3]) : {};
       return {
         type: "button",
@@ -18513,6 +19505,11 @@ function transformParagraph(node2, ctx) {
           const buttonMatch2 = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
           if (buttonMatch2 && !/^\[[_*]+\]/.test(part)) {
             flushText();
+            const switchNode2 = switchNodeFromParts(buttonMatch2[1], buttonMatch2[3]);
+            if (switchNode2) {
+              processedChildren.push(switchNode2);
+              continue;
+            }
             const attrs = buttonMatch2[3] ? parseAttributes(buttonMatch2[3]) : {};
             processedChildren.push({
               type: "button",
@@ -18522,9 +19519,9 @@ function transformParagraph(node2, ctx) {
                 variant: buttonMatch2[2] ? "primary" : void 0
               }
             });
-          } else if (part.match(/^:([a-z-]+):$/)) {
+          } else if (part.match(/^:([a-z0-9-]+):$/)) {
             flushText();
-            const iconMatch2 = part.match(/^:([a-z-]+):$/);
+            const iconMatch2 = part.match(/^:([a-z0-9-]+):$/);
             if (iconMatch2) {
               processedChildren.push({
                 type: "icon",
@@ -18632,6 +19629,12 @@ function transformParagraph(node2, ctx) {
       props
     };
   }
+  const standaloneSwitchMatch = content3.match(/^\[([^\]]+)\](?:\s*(\{[^}]*\}))$/);
+  if (standaloneSwitchMatch) {
+    const switchNode2 = switchNodeFromParts(standaloneSwitchMatch[1], standaloneSwitchMatch[2]);
+    if (switchNode2)
+      return switchNode2;
+  }
   const radioPattern = /\(([*•x ])\)\s+([^(]+?)(?=\s*\(|$)/g;
   const radioMatches = Array.from(content3.matchAll(radioPattern));
   if (radioMatches.length >= 2) {
@@ -18690,12 +19693,12 @@ function transformParagraph(node2, ctx) {
   }
   const lines = content3.split("\n").filter((line) => line.trim());
   if (lines.length > 1) {
-    const allWithIcons = lines.every((line) => /:([a-z-]+):/.test(line.trim()));
+    const allWithIcons = lines.every((line) => /:([a-z0-9-]+):/.test(line.trim()));
     if (allWithIcons) {
       const iconLines = [];
       for (const line of lines) {
         const trimmed = line.trim();
-        const iconPattern = /:([a-z-]+):/g;
+        const iconPattern = /:([a-z0-9-]+):/g;
         const parts = trimmed.split(iconPattern);
         const lineChildren = [];
         for (let i = 0; i < parts.length; i++) {
@@ -18745,8 +19748,8 @@ function transformParagraph(node2, ctx) {
     if (allButtons) {
       const out = [];
       for (const line of lines) {
-        const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === "button") || [];
-        const node3 = controlsAsNode(controls, lines.length > 1);
+        const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === "button" || child.type === "switch") || [];
+        const node3 = controls.length === 1 && controls[0].type === "switch" ? controls[0] : controlsAsNode(controls, lines.length > 1);
         if (node3)
           out.push(node3);
       }
@@ -18796,8 +19799,8 @@ function transformParagraph(node2, ctx) {
       for (const group of groups) {
         if (group.kind === "buttons") {
           for (const line of group.lines) {
-            const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === "button") || [];
-            const node3 = controlsAsNode(controls, group.lines.length > 1);
+            const controls = parseBracketControlsFromLine(line)?.filter((child) => child.type === "button" || child.type === "switch") || [];
+            const node3 = controls.length === 1 && controls[0].type === "switch" ? controls[0] : controlsAsNode(controls, group.lines.length > 1);
             if (node3)
               out.push(node3);
           }
@@ -18863,13 +19866,7 @@ function transformParagraph(node2, ctx) {
       const options = [];
       if (nextNode && nextNode.type === "list") {
         for (const item of nextNode.children || []) {
-          const itemText = extractTextContent(item);
-          options.push({
-            type: "option",
-            value: itemText,
-            label: itemText,
-            selected: false
-          });
+          options.push(selectOptionFromListItem(item));
         }
         if (options.length > 0)
           ctx.consumeNext();
@@ -18979,6 +19976,11 @@ function transformParagraph(node2, ctx) {
       const isInputTextMulti = (t) => /^[_*]+$/.test(t) || /_{3,}$/.test(t);
       while ((match = buttonPattern.exec(lastLine)) !== null) {
         const [, text6, isPrimary, attrs] = match;
+        const switchNode2 = switchNodeFromParts(text6, attrs);
+        if (switchNode2) {
+          buttons.push(switchNode2);
+          continue;
+        }
         const props = parseAttributes(attrs || "");
         if (isInputTextMulti(text6) || "rows" in props)
           continue;
@@ -19015,13 +20017,7 @@ function transformParagraph(node2, ctx) {
     const options = [];
     if (nextNode && nextNode.type === "list") {
       for (const item of nextNode.children || []) {
-        const itemText = extractTextContent(item);
-        options.push({
-          type: "option",
-          value: itemText,
-          label: itemText,
-          selected: false
-        });
+        options.push(selectOptionFromListItem(item));
       }
       ctx.consumeNext();
     }
@@ -19095,6 +20091,11 @@ function transformParagraph(node2, ctx) {
     const isSelectText = (t) => /_{1,}v$/.test(t);
     while ((match = buttonPattern.exec(content3)) !== null) {
       const [, text6, isPrimary, attrs] = match;
+      const switchNode2 = switchNodeFromParts(text6, attrs);
+      if (switchNode2) {
+        elements.push(switchNode2);
+        continue;
+      }
       const props = parseAttributes(attrs || "");
       if (isSelectText(text6)) {
         const placeholder = text6.replace(/_{1,}v$/, "").trim() || void 0;
@@ -19114,8 +20115,8 @@ function transformParagraph(node2, ctx) {
         continue;
       if (isPrimary)
         props.variant = "primary";
-      if (/:([a-z-]+):/.test(text6)) {
-        const iconPattern = /:([a-z-]+):/g;
+      if (/:([a-z0-9-]+):/.test(text6)) {
+        const iconPattern = /:([a-z0-9-]+):/g;
         const parts = text6.split(iconPattern);
         const children = [];
         for (let i = 0; i < parts.length; i++) {
@@ -19153,7 +20154,7 @@ function transformParagraph(node2, ctx) {
           if (textBefore.trim()) {
             children.push({ type: "text", content: textBefore, props: {} });
           }
-          children.push(buttons[idx]);
+          children.push(elements[idx]);
           lastIndex = match2.index + match2[0].length;
         });
         const textAfter = content3.substring(lastIndex);
@@ -19168,8 +20169,8 @@ function transformParagraph(node2, ctx) {
       }
     }
   }
-  if (/:([a-z-]+):/.test(content3)) {
-    const iconPattern = /:([a-z-]+):/g;
+  if (/:([a-z0-9-]+):/.test(content3)) {
+    const iconPattern = /:([a-z0-9-]+):/g;
     const textParts = content3.split(iconPattern);
     const children = [];
     for (let i = 0; i < textParts.length; i++) {
@@ -19218,7 +20219,7 @@ function transformParagraph(node2, ctx) {
       };
     }
   }
-  const iconMatch = content3.match(/^:([a-z-]+):$/);
+  const iconMatch = content3.match(/^:([a-z0-9-]+):$/);
   if (iconMatch) {
     return {
       type: "icon",
@@ -19270,8 +20271,8 @@ function transformListItem(node2, ctx) {
       label = attrMatch[1].trim();
       props = parseAttributes(attrMatch[2]);
     }
-    if (/:([a-z-]+):/.test(label)) {
-      const iconPattern = /:([a-z-]+):/g;
+    if (/:([a-z0-9-]+):/.test(label)) {
+      const iconPattern = /:([a-z0-9-]+):/g;
       const parts = label.split(iconPattern);
       const children = [];
       for (let i = 0; i < parts.length; i++) {
@@ -19327,8 +20328,8 @@ function transformListItem(node2, ctx) {
       children: nestedChildren.length > 0 ? nestedChildren : void 0
     };
   }
-  if (/:([a-z-]+):/.test(content3)) {
-    const iconPattern = /:([a-z-]+):/g;
+  if (/:([a-z0-9-]+):/.test(content3)) {
+    const iconPattern = /:([a-z0-9-]+):/g;
     const parts = content3.split(iconPattern);
     const children = [];
     for (let i = 0; i < parts.length; i++) {
@@ -19375,7 +20376,7 @@ function transformTable(node2, ctx) {
       const cellAlign = align[cellIndex] || "left";
       const cellChildren = [];
       const pushCellTextWithInline = (value) => {
-        const parts = value.split(new RegExp(`(${BADGE_TOKEN_PATTERN.source}|:[a-z-]+:)`, "g"));
+        const parts = value.split(new RegExp(`(${BADGE_TOKEN_PATTERN.source}|:[a-z0-9-]+:)`, "g"));
         for (const part of parts) {
           if (!part)
             continue;
@@ -19384,7 +20385,7 @@ function transformTable(node2, ctx) {
             cellChildren.push(badge2);
             continue;
           }
-          const iconOnly = part.match(/^:([a-z-]+):$/);
+          const iconOnly = part.match(/^:([a-z0-9-]+):$/);
           if (iconOnly) {
             cellChildren.push({ type: "icon", props: { name: iconOnly[1] } });
             continue;
@@ -19396,7 +20397,7 @@ function transformTable(node2, ctx) {
       };
       for (const child of cell.children || []) {
         if (child.type === "text") {
-          const iconMatch = /^:([a-z-]+):\s*([\s\S]*)$/.exec(child.value);
+          const iconMatch = /^:([a-z0-9-]+):\s*([\s\S]*)$/.exec(child.value);
           if (iconMatch) {
             cellChildren.push({
               type: "icon",
@@ -19486,6 +20487,41 @@ function extractTextContent(node2) {
   }
   return "";
 }
+function selectOptionFromListItem(item) {
+  const label = extractTextContent(item).trim();
+  const option = {
+    type: "option",
+    value: label,
+    label,
+    selected: false
+  };
+  const paragraph3 = item?.children?.find((child) => child.type === "paragraph") ?? item;
+  const inlineChildren = Array.isArray(paragraph3?.children) ? paragraph3.children : [];
+  const meaningfulChildren = inlineChildren.filter(
+    (child) => child.type !== "text" || child.value.trim() !== ""
+  );
+  if (meaningfulChildren.length === 1) {
+    const onlyChild = meaningfulChildren[0];
+    if (onlyChild.type === "link") {
+      return {
+        ...option,
+        value: onlyChild.url || "#",
+        label: extractTextContent(onlyChild).trim(),
+        href: onlyChild.url || "#"
+      };
+    }
+  }
+  const buttonMatch = label.match(/^\[([^\]]+)\](?:\*)?(?:\s*\{[^}]*\})?$/);
+  if (buttonMatch) {
+    return {
+      ...option,
+      value: buttonMatch[1].trim(),
+      label: buttonMatch[1].trim(),
+      action: buttonMatch[1].trim()
+    };
+  }
+  return option;
+}
 function parseBadgeToken(token) {
   const match = token.match(BADGE_TOKEN_EXACT);
   if (!match)
@@ -19514,7 +20550,7 @@ function parseInlineToNodes(content3) {
       nodes.push(badge2);
       continue;
     }
-    const iconSplit = part.split(/:([a-z-]+):/);
+    const iconSplit = part.split(/:([a-z0-9-]+):/);
     for (let i = 0; i < iconSplit.length; i++) {
       if (i % 2 === 0) {
         if (iconSplit[i])
@@ -19584,12 +20620,96 @@ function parseAttributes(attrString) {
   return props;
 }
 
+// packages/core/src/parser/remark-inline-containers.ts
+function serializeChild(c) {
+  if (c.type === "link") {
+    const text6 = (c.children || []).map((cc) => cc.value || "").join("");
+    return `[${text6}](${c.url})`;
+  }
+  if (c.type === "strong")
+    return `**${(c.children || []).map(serializeChild).join("")}**`;
+  if (c.type === "emphasis")
+    return `*${(c.children || []).map(serializeChild).join("")}*`;
+  return c.value || "";
+}
+var remarkWiremdInlineContainers = () => {
+  return (tree) => {
+    const newChildren = [];
+    for (const node2 of tree.children) {
+      if (node2.type === "paragraph" && node2.children && node2.children.length > 0) {
+        const text6 = node2.children.map(serializeChild).join("");
+        const match = text6.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?$/);
+        if (match) {
+          const content3 = match[1];
+          const attrs = match[2] || "";
+          const items = content3.split("|").map((item) => item.trim());
+          newChildren.push({
+            type: "wiremdInlineContainer",
+            content: content3,
+            items,
+            attributes: attrs.trim(),
+            position: node2.position,
+            children: node2.children,
+            data: {
+              hName: "nav",
+              hProperties: {
+                className: ["wiremd-nav"]
+              }
+            }
+          });
+          continue;
+        }
+      }
+      newChildren.push(node2);
+    }
+    tree.children = newChildren;
+  };
+};
+
 // packages/core/src/parser/remark-containers.ts
+function normalizeContainerDirectiveSpacing(markdown) {
+  const lines = markdown.split(/\r?\n/);
+  const out = [];
+  let inFence = false;
+  let fenceMarker = null;
+  const isFenceLine = (line) => {
+    const match = line.trim().match(/^(`{3,}|~{3,})/);
+    return match ? match[1] : null;
+  };
+  const isDirectiveLine = (line) => !inFence && /^:::(?:\s|$)/.test(line.trim());
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const fence = isFenceLine(line);
+    if (fence) {
+      const marker = fence[0];
+      if (!inFence) {
+        inFence = true;
+        fenceMarker = marker;
+      } else if (fenceMarker === marker) {
+        inFence = false;
+        fenceMarker = null;
+      }
+    }
+    const directive = isDirectiveLine(line);
+    if (directive && out.length > 0 && out[out.length - 1].trim() !== "") {
+      out.push("");
+    }
+    out.push(line);
+    const nextLine = lines[i + 1];
+    if (directive && nextLine !== void 0 && nextLine.trim() !== "") {
+      out.push("");
+    }
+  }
+  return out.join("\n");
+}
 function parseContainerOpener(node2) {
   if (node2.type !== "paragraph" || !node2.children?.length || node2.children[0].type !== "text")
     return null;
   const firstLine = node2.children[0].value.split("\n")[0].trim();
-  const match = firstLine.match(/^:::\s*(\S+)(?:\s*(\{[^}]+\}))?(?:\s+(.+))?$/);
+  return parseContainerOpenerLine(firstLine);
+}
+function parseContainerOpenerLine(line) {
+  const match = line.trim().match(/^:::\s*(\S+)(?:\s*(\{[^}]+\}))?(?:\s+(.+))?$/);
   if (!match)
     return null;
   return {
@@ -19597,6 +20717,9 @@ function parseContainerOpener(node2) {
     attrs: match[2] ? match[2].trim() : "",
     inline: match[3] ? match[3].trim() : ""
   };
+}
+function isContainerCloserLine(line) {
+  return line.trim() === ":::";
 }
 function isContainerCloser(node2) {
   return node2.type === "paragraph" && node2.children?.length > 0 && node2.children[0].type === "text" && node2.children[0].value.trim() === ":::";
@@ -19625,11 +20748,109 @@ function finishContainer(containerType, attrs, inline, children, nextIndex, posi
   }
   return { node: node2, nextIndex };
 }
+function parseMarkdownBlocks(markdown) {
+  const trimmed = normalizeContainerDirectiveSpacing(markdown.trim());
+  if (!trimmed)
+    return [];
+  const processor = unified().use(remarkParse).use(remarkGfm).use(remarkWiremdInlineContainers);
+  const parsed = processor.parse(trimmed);
+  const processed = processor.runSync(parsed);
+  return processed.children || [];
+}
+function collectPlainTextContainer(lines, startIdx, position2) {
+  const opener = parseContainerOpenerLine(lines[startIdx] || "");
+  if (!opener)
+    return null;
+  const children = [];
+  if (opener.inline) {
+    children.push({
+      type: "paragraph",
+      children: [{ type: "text", value: opener.inline }]
+    });
+  }
+  const flushContent = (buffer2) => {
+    const text6 = buffer2.join("\n").trim();
+    if (text6)
+      children.push(...parseMarkdownBlocks(text6));
+    buffer2.length = 0;
+  };
+  const buffer = [];
+  let i = startIdx + 1;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (isContainerCloserLine(line)) {
+      flushContent(buffer);
+      const node3 = makeContainerNode(
+        opener.containerType,
+        opener.attrs,
+        children,
+        position2
+      );
+      if (opener.inline)
+        node3.inline = opener.inline;
+      if (opener.containerType === "demo") {
+        node3.rawContent = mdastNodesToText(children);
+      }
+      return { node: node3, nextIndex: i + 1 };
+    }
+    if (parseContainerOpenerLine(line)) {
+      flushContent(buffer);
+      const nested = collectPlainTextContainer(lines, i);
+      if (nested) {
+        children.push(nested.node);
+        if (nested.nextIndex <= i) {
+          i++;
+          continue;
+        }
+        i = nested.nextIndex;
+        continue;
+      }
+    }
+    buffer.push(line);
+    i++;
+  }
+  flushContent(buffer);
+  const node2 = makeContainerNode(
+    opener.containerType,
+    opener.attrs,
+    children,
+    position2
+  );
+  if (opener.inline)
+    node2.inline = opener.inline;
+  if (opener.containerType === "demo") {
+    node2.rawContent = mdastNodesToText(children);
+  }
+  return { node: node2, nextIndex: i };
+}
+function collectPlainTextContainerRun(fullText, position2) {
+  const lines = fullText.split("\n");
+  if (!parseContainerOpenerLine(lines[0] || ""))
+    return null;
+  if (!lines.slice(1).some((line) => parseContainerOpenerLine(line)) || !lines.slice(1).some((line) => isContainerCloserLine(line))) {
+    return null;
+  }
+  const collected = collectPlainTextContainer(lines, 0, position2);
+  if (!collected)
+    return null;
+  const trailingText = lines.slice(collected.nextIndex).join("\n").trim();
+  return {
+    node: collected.node,
+    nextIndex: 1,
+    trailing: trailingText ? parseMarkdownBlocks(trailingText) : void 0
+  };
+}
 function collectContainer(nodes, startIdx) {
   const openerNode = nodes[startIdx];
   const opener = parseContainerOpener(openerNode);
   if (openerNode.children.length === 1 && openerNode.children[0].type === "text") {
     const fullText = openerNode.children[0].value;
+    const plainTextRun = collectPlainTextContainerRun(
+      fullText,
+      openerNode.position
+    );
+    if (plainTextRun)
+      return plainTextRun;
     const lines = fullText.split("\n");
     let closingIdx = -1;
     let depth = 0;
@@ -19655,10 +20876,14 @@ function collectContainer(nodes, startIdx) {
         });
       }
       if (contentText) {
-        children.push({
-          type: "paragraph",
-          children: [{ type: "text", value: contentText }]
-        });
+        children.push(
+          ...processNodes([
+            {
+              type: "paragraph",
+              children: [{ type: "text", value: contentText }]
+            }
+          ])
+        );
       }
       const trailingText = lines.slice(closingIdx + 1).join("\n").trim();
       const trailing = trailingText ? [
@@ -20097,52 +21322,6 @@ var remarkWiremdContainers = () => {
   };
 };
 
-// packages/core/src/parser/remark-inline-containers.ts
-function serializeChild(c) {
-  if (c.type === "link") {
-    const text6 = (c.children || []).map((cc) => cc.value || "").join("");
-    return `[${text6}](${c.url})`;
-  }
-  if (c.type === "strong")
-    return `**${(c.children || []).map(serializeChild).join("")}**`;
-  if (c.type === "emphasis")
-    return `*${(c.children || []).map(serializeChild).join("")}*`;
-  return c.value || "";
-}
-var remarkWiremdInlineContainers = () => {
-  return (tree) => {
-    const newChildren = [];
-    for (const node2 of tree.children) {
-      if (node2.type === "paragraph" && node2.children && node2.children.length > 0) {
-        const text6 = node2.children.map(serializeChild).join("");
-        const match = text6.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?$/);
-        if (match) {
-          const content3 = match[1];
-          const attrs = match[2] || "";
-          const items = content3.split("|").map((item) => item.trim());
-          newChildren.push({
-            type: "wiremdInlineContainer",
-            content: content3,
-            items,
-            attributes: attrs.trim(),
-            position: node2.position,
-            children: node2.children,
-            data: {
-              hName: "nav",
-              hProperties: {
-                className: ["wiremd-nav"]
-              }
-            }
-          });
-          continue;
-        }
-      }
-      newChildren.push(node2);
-    }
-    tree.children = newChildren;
-  };
-};
-
 // packages/core/src/parser/index.ts
 var INCLUDE_PATTERN = /!\[\[\s*([^\]]+?\.md)\s*\]\]/g;
 function resolveIncludes(markdown, basePath) {
@@ -20165,8 +21344,9 @@ function resolveIncludes(markdown, basePath) {
   }).join("");
 }
 function parse2(input2, options = {}) {
+  const normalizedInput = normalizeContainerDirectiveSpacing(input2);
   const processor = unified().use(remarkParse).use(remarkGfm).use(remarkWiremdInlineContainers).use(remarkWiremdContainers);
-  const mdast = processor.parse(input2);
+  const mdast = processor.parse(normalizedInput);
   const processed = processor.runSync(mdast);
   const wiremdAST = transformToWiremdAST(processed, options);
   return wiremdAST;

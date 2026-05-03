@@ -230,6 +230,7 @@ export const ICON_ALIASES: Record<string, string> = {
   error: 'alert-circle',
   euro: 'currency-euro',
   facebook: 'brand-facebook',
+  gear: 'settings',
   github: 'brand-github',
   image: 'photo',
   info: 'info-circle',

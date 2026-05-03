@@ -179,6 +179,7 @@ Icons render as inline Tabler SVGs. Existing names remain supported as aliases.
 | `:dollar:` | `:currency-dollar:` |
 | `:error:` | `:alert-circle:` |
 | `:euro:` | `:currency-euro:` |
+| `:gear:` | `:settings:` |
 | `:github:` | `:brand-github:` |
 | `:image:` | `:photo:` |
 | `:info:` | `:info-circle:` |

@@ -83,6 +83,15 @@ describe('HTML Renderer', () => {
       expect(html).toContain('wmd-icon');
       expect(html).toContain('data-icon="house"');
     });
+
+    it('should render gear as a settings icon compatibility alias', () => {
+      const gearHtml = renderToHTML(parse(':gear:'), { style: 'sketch' })
+        .replace(/data-icon="gear"/g, 'data-icon="settings"')
+        .replace(/aria-label="gear"/g, 'aria-label="settings"');
+      const settingsHtml = renderToHTML(parse(':settings:'), { style: 'sketch' });
+
+      expect(gearHtml).toBe(settingsHtml);
+    });
   });
 
   describe('Containers', () => {
@@ -149,6 +158,19 @@ Content
       expect(html).not.toContain('*About*');
       expect(html).toContain('About');
       expect(html).toContain('wmd-nav-item');
+    });
+
+    it('should render only one brand when logo brand is followed by plain nav items', () => {
+      const input = `[[ :logo: WireOps | *Dashboard* | Reports | :settings: Settings | [Profile] ]]`;
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html.match(/class="wmd-brand"/g)).toHaveLength(1);
+      expect(html).toContain('WireOps');
+      expect(html).toContain('wmd-nav-item wmd-active');
+      expect(html).toContain('Reports');
+      expect(html).toContain('data-icon="settings"');
+      expect(html).toContain('<button class="wmd-button">Profile</button>');
     });
 
     it('should render [Link](url)* nav item as primary button', () => {
@@ -423,6 +445,30 @@ First name
       expect(html).toContain('Shipping address');
       expect(html).toMatch(/class="[^"]*wmd-grid-item[^"]*wmd-align-right/);
       expect(html).not.toContain('column Billing address');
+    });
+
+    it('should render icons in column opener titles', () => {
+      const input = `
+::: columns-4 card
+::: column :users: Users
+**12,847**
+((+14.5%)){success}
+:::
+
+::: column :currency-dollar: Revenue
+**$45,230**
+((+8.2%)){success}
+:::
+:::
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('data-icon="users"');
+      expect(html).toContain('data-icon="currency-dollar"');
+      expect(html).not.toContain(':users: Users');
+      expect(html).not.toContain(':currency-dollar: Revenue');
     });
 
     it('should preserve nested headings inside columns as content', () => {

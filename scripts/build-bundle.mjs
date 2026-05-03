@@ -7,7 +7,7 @@
  * Also copies the CLI to the plugin:
  *   extensions/skills/wireframe/bin/wiremd.js
  */
-import { mkdirSync, copyFileSync, readdirSync } from 'fs';
+import { mkdirSync, copyFileSync, readdirSync, readFileSync } from 'fs';
 import { build } from 'esbuild';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -23,6 +23,26 @@ const extDir     = resolve(root, 'extensions/vscode');
 mkdirSync(releasesDir, { recursive: true });
 mkdirSync(resolve(root, 'extensions/skills/wireframe/bin'), { recursive: true });
 
+const svgRawPlugin = {
+  name: 'svg-raw',
+  setup(build) {
+    build.onResolve({ filter: /\.svg\?raw$/ }, async (args) => {
+      const result = await build.resolve(args.path.slice(0, -'?raw'.length), {
+        resolveDir: args.resolveDir,
+        kind: args.kind,
+      });
+
+      if (result.errors.length > 0) return { errors: result.errors };
+      return { path: result.path, namespace: 'svg-raw' };
+    });
+
+    build.onLoad({ filter: /.*/, namespace: 'svg-raw' }, (args) => ({
+      contents: `export default ${JSON.stringify(readFileSync(args.path, 'utf8'))};`,
+      loader: 'js',
+    }));
+  },
+};
+
 // ── CLI bundle ─────────────────────────────────────────────────────────────
 console.log('Building CLI bundle...');
 await build({
@@ -37,6 +57,7 @@ await build({
              'readline', 'module', 'worker_threads'],
   // import.meta.url is empty in CJS — call main() via footer instead
   footer: { js: '\nmain();' },
+  plugins: [svgRawPlugin],
   minify: false,
   sourcemap: false,
 });

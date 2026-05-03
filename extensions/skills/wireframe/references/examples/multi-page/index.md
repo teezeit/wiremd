@@ -20,7 +20,7 @@ From idea to prototype in minutes.
 Plain Markdown — version it, diff it, review it in a PR.
 
 :::
-::: column :gear: Flexible
+::: column :settings: Flexible
 Swap styles with a single flag.
 
 :::
