@@ -19093,6 +19093,8 @@ function transformContainer(node2, ctx) {
           n.children = [...pending, ...n.children || []];
           pending.length = 0;
         }
+        if (!n.label)
+          n.label = `Tab ${tabs2.length + 1}`;
         tabs2.push(n);
       }
     }
@@ -19102,16 +19104,17 @@ function transformContainer(node2, ctx) {
     return { type: "tabs", props, children: tabs2 };
   }
   if (containerType === "tab") {
-    const firstChild = node2.children[0];
     let label = "";
     let isActive = false;
     let contentChildren = node2.children || [];
-    if (firstChild?.type === "paragraph" && firstChild.children?.[0]?.type === "text") {
-      const raw = firstChild.children[0].value;
-      const m = raw.match(/^(.+?)(?:\s*(\{[^}]+\}))?$/);
-      label = m?.[1]?.trim() || raw.trim();
+    if (typeof node2.inline === "string" && node2.inline) {
+      const m = node2.inline.match(/^(.+?)(?:\s*(\{[^}]+\}))?$/);
+      label = m?.[1]?.trim() || node2.inline.trim();
       isActive = (m?.[2] || "").includes("active");
-      contentChildren = node2.children.slice(1);
+      const firstChild = contentChildren[0];
+      if (firstChild?.type === "paragraph" && extractTextContent(firstChild).trim() === node2.inline.trim()) {
+        contentChildren = contentChildren.slice(1);
+      }
     }
     return {
       type: "tab",
