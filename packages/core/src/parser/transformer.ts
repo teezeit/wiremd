@@ -593,6 +593,7 @@ function transformContainer(node: any, ctx: TransformContext): WiremdNode {
           n.children = [...pending, ...(n.children || [])];
           pending.length = 0;
         }
+        if (!n.label) n.label = `Tab ${tabs.length + 1}`;
         tabs.push(n);
       }
     }
@@ -604,19 +605,20 @@ function transformContainer(node: any, ctx: TransformContext): WiremdNode {
 
   // ::: tab Label  /  ::: tab Label {.active}
   if (containerType === 'tab') {
-    const firstChild = node.children[0];
     let label = '';
     let isActive = false;
     let contentChildren = node.children || [];
-    if (
-      firstChild?.type === 'paragraph' &&
-      firstChild.children?.[0]?.type === 'text'
-    ) {
-      const raw: string = firstChild.children[0].value;
-      const m = raw.match(/^(.+?)(?:\s*(\{[^}]+\}))?$/);
-      label = m?.[1]?.trim() || raw.trim();
+    if (typeof node.inline === 'string' && node.inline) {
+      const m = node.inline.match(/^(.+?)(?:\s*(\{[^}]+\}))?$/);
+      label = m?.[1]?.trim() || node.inline.trim();
       isActive = (m?.[2] || '').includes('active');
-      contentChildren = node.children.slice(1);
+      const firstChild = contentChildren[0];
+      if (
+        firstChild?.type === 'paragraph' &&
+        extractTextContent(firstChild).trim() === node.inline.trim()
+      ) {
+        contentChildren = contentChildren.slice(1);
+      }
     }
     return {
       type: 'tab',

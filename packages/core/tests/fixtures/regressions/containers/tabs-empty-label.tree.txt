@@ -1,0 +1,8 @@
+Document
+  └─ tabs
+     ├─ tab "Tab 1" active=true
+     │  └─ paragraph "First tab content"
+     ├─ tab "Second" active=false
+     │  └─ paragraph "Second tab content"
+     └─ tab "Tab 3" active=false
+        └─ paragraph "Third tab content"

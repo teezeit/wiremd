@@ -8,13 +8,16 @@
 </head>
 <body class="wmd-root wmd-clean">
   <div class="wmd-tabs" data-wmd-tabs>
-  <div class="wmd-tab-headers" role="tablist"><button type="button" role="tab" class="wmd-tab-header wmd-active" data-wmd-tab="0">Tab 1</button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="1">Tab 2</button></div>
+  <div class="wmd-tab-headers" role="tablist"><button type="button" role="tab" class="wmd-tab-header wmd-active" data-wmd-tab="0">Tab 1</button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="1">Second</button><button type="button" role="tab" class="wmd-tab-header" data-wmd-tab="2">Tab 3</button></div>
   <div class="wmd-tab-panels">
   <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="0">
-    <pre class="wmd-code-block"><code>first tab content</code></pre>
+    <p class="wmd-paragraph">First tab content</p>
   </div>
   <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="1" hidden>
-    <pre class="wmd-code-block"><code>second tab content</code></pre>
+    <p class="wmd-paragraph">Second tab content</p>
+  </div>
+  <div class="wmd-tab-panel" role="tabpanel" data-wmd-tab-panel="2" hidden>
+    <p class="wmd-paragraph">Third tab content</p>
   </div>
   </div>
 </div><script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.wmd-tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.wmd-tab-header').forEach(function(b){b.classList.toggle('wmd-active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>

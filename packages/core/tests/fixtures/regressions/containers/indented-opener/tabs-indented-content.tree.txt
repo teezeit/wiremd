@@ -1,6 +1,6 @@
 Document
   └─ tabs
-     ├─ tab "" active=true
+     ├─ tab "Tab 1" active=true
      │  └─ code "first tab content" inline=false
-     └─ tab "" active=false
+     └─ tab "Tab 2" active=false
         └─ code "second tab content" inline=false
