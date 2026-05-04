@@ -14165,6 +14165,56 @@ var tab = {
   render: { html: renderTabHTML }
 };
 
+// packages/core/src/nodes/accordion/html.ts
+function renderAccordionHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, "accordion", node2.props);
+  const hasExclusive = node2.props.classes?.includes("exclusive");
+  const items = node2.children || [];
+  const renderedItems = items.map((item) => {
+    const openAttr = item.expanded ? " open" : "";
+    const bodyContent = renderChildrenList3(item.children || [], context);
+    return `<details class="${prefix}accordion-item"${openAttr}>
+  <summary class="${prefix}accordion-summary">${item.summary}</summary>
+  <div class="${prefix}accordion-body">
+  ${bodyContent}
+  </div>
+</details>`;
+  }).join("\n");
+  const exclusiveAttr = hasExclusive ? " data-wmd-accordion-exclusive" : "";
+  return `<div class="${classes}"${sourceLine(node2)} data-wmd-accordion${exclusiveAttr}>
+${renderedItems}
+</div>${hasExclusive ? getExclusiveScript(prefix) : ""}`;
+}
+function getExclusiveScript(prefix) {
+  return `<script>(function(){if(window.__wmdAccordionExclusiveInit)return;window.__wmdAccordionExclusiveInit=true;document.addEventListener('toggle',function(e){var details=e.target;if(!details.open)return;var root=details.closest('[data-wmd-accordion-exclusive]');if(!root)return;root.querySelectorAll('.${prefix}accordion-item').forEach(function(d){if(d!==details)d.removeAttribute('open');});},{capture:true});})();</script>`;
+}
+
+// packages/core/src/nodes/accordion/index.ts
+var accordion = {
+  type: "accordion",
+  render: { html: renderAccordionHTML }
+};
+
+// packages/core/src/nodes/accordion-item/html.ts
+function renderAccordionItemHTML(node2, context) {
+  const { classPrefix: prefix } = context;
+  const openAttr = node2.expanded ? " open" : "";
+  const bodyContent = renderChildrenList3(node2.children || [], context);
+  return `<details class="${prefix}accordion-item"${openAttr}${sourceLine(node2)}>
+  <summary class="${prefix}accordion-summary">${node2.summary}</summary>
+  <div class="${prefix}accordion-body">
+  ${bodyContent}
+  </div>
+</details>`;
+}
+
+// packages/core/src/nodes/accordion-item/index.ts
+var accordionItem = {
+  type: "accordion-item",
+  render: { html: renderAccordionItemHTML }
+};
+
 // packages/core/src/nodes/demo/html.ts
 function renderDemoHTML(node2, context) {
   const { classPrefix: prefix } = context;
@@ -14224,6 +14274,8 @@ var registry = {
   breadcrumbs,
   tabs,
   tab,
+  accordion,
+  "accordion-item": accordionItem,
   demo
 };
 function getNodeDefinition(type) {
@@ -14482,7 +14534,20 @@ body.${prefix}root.${prefix}has-comments { padding-right: 276px; }
 .${prefix}comment-msg { font-size: 0.82em; color: #5d4037; line-height: 1.45; font-style: italic; }
 .${prefix}comment-msg-divider { height: 1px; background: #f0c040; margin: 6px 0; opacity: 0.6; }
 `;
-  return linkButtonReset + tabsStructural + rowStructural + demoStructural + commentStructural + commentPanelStructural;
+  const accordionStructural = `
+.${prefix}accordion { display: flex; flex-direction: column; margin: 1rem 0; }
+.${prefix}accordion-item { margin-bottom: 4px; }
+.${prefix}accordion-summary { display: flex; align-items: center; gap: 8px; padding: 12px 16px; cursor: pointer; font-weight: 500; font-size: 14px; user-select: none; list-style: none; }
+.${prefix}accordion-summary::-webkit-details-marker { display: none; }
+.${prefix}accordion-summary::before { content: '\u25B6'; font-size: 11px; color: #888; transition: transform 0.15s; flex-shrink: 0; }
+.${prefix}accordion-item[open] > .${prefix}accordion-summary::before { transform: rotate(90deg); }
+.${prefix}accordion-body { padding: 0 16px 12px; }
+.${prefix}accordion.${prefix}card { border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 1px solid #e0e0e0; border-radius: 0; margin-bottom: 0; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item:last-child { border-bottom: none; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 1px solid #e0e0e0; }
+`;
+  return linkButtonReset + tabsStructural + rowStructural + demoStructural + commentStructural + commentPanelStructural + accordionStructural;
 }
 
 // packages/core/src/renderer/styles/sketch.ts
@@ -15087,6 +15152,13 @@ body.${prefix}root {
 .${prefix}tab-header { color: #666; }
 .${prefix}tab-header:hover { color: #000; }
 .${prefix}tab-header.${prefix}active { border-bottom-color: #000; color: #000; }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #333; font-family: 'Comic Sans MS', 'Chalkboard SE', cursive; }
+.${prefix}accordion-summary::before { color: #555; }
+.${prefix}accordion.${prefix}card { border: 2px solid #333; border-radius: 0; box-shadow: 3px 3px 0 #999; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 2px solid #333; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 2px solid #333; }
 `;
 }
 
@@ -15686,6 +15758,14 @@ td.${prefix}align-right, th.${prefix}align-right { text-align: right; }
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #1a1a1a; }
+.${prefix}accordion-summary:hover { background: #f5f5f5; border-radius: 4px; }
+.${prefix}accordion-summary::before { color: #999; }
+.${prefix}accordion.${prefix}card { border-color: #e0e0e0; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom-color: #e0e0e0; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top-color: #e0e0e0; }
 `;
 }
 
@@ -16189,6 +16269,13 @@ body.${prefix}root {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #333; }
+.${prefix}accordion-summary::before { color: #666; }
+.${prefix}accordion.${prefix}card { border: 1px solid #999; border-radius: 0; box-shadow: none; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 1px solid #999; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 1px solid #999; }
 `;
 }
 
@@ -17745,6 +17832,14 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #212121; }
+.${prefix}accordion-summary:hover { background: rgba(0,0,0,0.04); border-radius: 4px; }
+.${prefix}accordion-summary::before { color: rgba(0,0,0,0.38); }
+.${prefix}accordion.${prefix}card { border: none; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08); }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 1px solid rgba(0,0,0,0.12); }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 1px solid rgba(0,0,0,0.12); }
 `;
 }
 
@@ -18523,6 +18618,13 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #000; font-weight: 700; }
+.${prefix}accordion-summary::before { color: #000; }
+.${prefix}accordion.${prefix}card { border: 3px solid #000; border-radius: 0; box-shadow: 4px 4px 0 #000; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 3px solid #000; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 3px solid #000; }
 `;
 }
 
@@ -19130,6 +19232,42 @@ function transformContainer(node2, ctx) {
       raw: node2.rawContent || "",
       props,
       children: ctx.transformChildren(node2.children || [])
+    };
+  }
+  if (containerType === "accordion") {
+    const inlineWord = (typeof node2.inline === "string" ? node2.inline : "").trim().split(/\s+/)[0];
+    const hasCard = inlineWord === "card" || (props.classes || []).includes("card") || !!props.card;
+    const hasExclusive = !!props.exclusive || (props.classes || []).includes("exclusive");
+    const hasOpen = !!props.open || (props.classes || []).includes("open");
+    const classes = [
+      ...(props.classes || []).filter((c) => !["card", "exclusive", "open"].includes(c)),
+      ...hasCard ? ["card"] : [],
+      ...hasExclusive ? ["exclusive"] : []
+    ];
+    const processed = ctx.transformChildren(node2.children || []);
+    const items = processed.filter((n) => n.type === "accordion-item").map((item) => hasOpen ? { ...item, expanded: true } : item);
+    const { card: _card, exclusive: _excl, open: _open, ...restProps } = props;
+    return { type: "accordion", props: { ...restProps, classes }, children: items };
+  }
+  if (containerType === "item") {
+    let summary = "";
+    let isExpanded = false;
+    let contentChildren = node2.children || [];
+    if (typeof node2.inline === "string" && node2.inline) {
+      const m = node2.inline.match(/^(.+?)(?:\s*(\{[^}]+\}))?$/);
+      summary = m?.[1]?.trim() || node2.inline.trim();
+      isExpanded = (m?.[2] || "").includes("open");
+      const firstChild = contentChildren[0];
+      if (firstChild?.type === "paragraph" && extractTextContent(firstChild).trim() === node2.inline.trim()) {
+        contentChildren = contentChildren.slice(1);
+      }
+    }
+    return {
+      type: "accordion-item",
+      summary,
+      expanded: isExpanded,
+      props,
+      children: ctx.transformChildren(contentChildren)
     };
   }
   return {
