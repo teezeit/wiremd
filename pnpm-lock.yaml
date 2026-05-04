@@ -23,6 +23,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@eclectic-ai/wiremd':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@hono/swagger-ui':
         specifier: ^0.5.0
         version: 0.5.3(hono@4.12.16)
