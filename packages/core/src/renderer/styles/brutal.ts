@@ -776,5 +776,12 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #000; font-weight: 700; }
+.${prefix}accordion-summary::before { color: #000; }
+.${prefix}accordion.${prefix}card { border: 3px solid #000; border-radius: 0; box-shadow: 4px 4px 0 #000; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 3px solid #000; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 3px solid #000; }
 `;
 }

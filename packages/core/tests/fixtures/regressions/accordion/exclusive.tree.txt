@@ -1,0 +1,8 @@
+Document
+  └─ accordion props={classes=["exclusive"]}
+     ├─ accordion-item summary="Option A" expanded=false
+     │  └─ paragraph "Content for option A."
+     ├─ accordion-item summary="Option B" expanded=false
+     │  └─ paragraph "Content for option B."
+     └─ accordion-item summary="Option C" expanded=false
+        └─ paragraph "Content for option C."

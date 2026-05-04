@@ -1,0 +1,11 @@
+Document
+  └─ accordion
+     ├─ accordion-item summary="What is wiremd?" expanded=false
+     │  └─ paragraph "wiremd converts Markdown into HTML wireframes."
+     ├─ accordion-item summary="Can I export to React?" expanded=false
+     │  └─ paragraph
+     │     ├─ text "Yes. Use "
+     │     ├─ code "--format react" inline=true
+     │     └─ text "."
+     └─ accordion-item summary="Is it free?" expanded=false
+        └─ paragraph "Yes, MIT licensed."

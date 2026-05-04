@@ -1,0 +1,6 @@
+Document
+  └─ accordion props={classes=["card"]}
+     ├─ accordion-item summary="Shipping" expanded=false
+     │  └─ paragraph "We ship within 2–3 business days."
+     └─ accordion-item summary="Returns" expanded=false
+        └─ paragraph "30-day return policy, no questions asked."

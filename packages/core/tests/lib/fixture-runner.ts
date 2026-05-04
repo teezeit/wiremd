@@ -51,6 +51,7 @@ const DOC_SOURCES = [
   'apps/docs/components/alignment.md',
   'apps/docs/components/cards.md',
   'apps/docs/components/tabs.md',
+  'apps/docs/components/accordion.md',
   'apps/docs/components/page-layouts.md',
   'apps/docs/components/navigation.md',
   // Content

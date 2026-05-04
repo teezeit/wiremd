@@ -1,0 +1,15 @@
+Document
+  └─ accordion
+     ├─ accordion-item summary="Contact us" expanded=false
+     │  ├─ container[form-group]
+     │  │  ├─ text "Name"
+     │  │  └─ input props={width=29}
+     │  ├─ container[form-group]
+     │  │  ├─ text "Email"
+     │  │  └─ input props={type="email", width=29}
+     │  └─ button "Send message" props={variant="primary"}
+     └─ accordion-item summary="FAQ" expanded=false
+        └─ list ordered=false
+           ├─ list-item "What formats are supported?"
+           ├─ list-item "Can I use the CLI?"
+           └─ list-item "Is there a VS Code extension?"
