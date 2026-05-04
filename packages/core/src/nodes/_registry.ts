@@ -45,6 +45,8 @@ import { comment } from './comment/index.js';
 import { breadcrumbs } from './breadcrumbs/index.js';
 import { tabs } from './tabs/index.js';
 import { tab } from './tab/index.js';
+import { accordion } from './accordion/index.js';
+import { accordionItem } from './accordion-item/index.js';
 import { demo } from './demo/index.js';
 
 export const registry: Partial<Record<string, AnyNodeDefinition>> = {
@@ -83,6 +85,8 @@ export const registry: Partial<Record<string, AnyNodeDefinition>> = {
   breadcrumbs: breadcrumbs as AnyNodeDefinition,
   tabs: tabs as AnyNodeDefinition,
   tab: tab as AnyNodeDefinition,
+  accordion: accordion as AnyNodeDefinition,
+  'accordion-item': accordionItem as AnyNodeDefinition,
   demo: demo as AnyNodeDefinition,
 };
 

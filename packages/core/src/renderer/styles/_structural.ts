@@ -128,12 +128,27 @@ body.${prefix}root.${prefix}has-comments { padding-right: 276px; }
 .${prefix}comment-msg-divider { height: 1px; background: #f0c040; margin: 6px 0; opacity: 0.6; }
 `;
 
+  const accordionStructural = `
+.${prefix}accordion { display: flex; flex-direction: column; margin: 1rem 0; }
+.${prefix}accordion-item { margin-bottom: 4px; }
+.${prefix}accordion-summary { display: flex; align-items: center; gap: 8px; padding: 12px 16px; cursor: pointer; font-weight: 500; font-size: 14px; user-select: none; list-style: none; }
+.${prefix}accordion-summary::-webkit-details-marker { display: none; }
+.${prefix}accordion-summary::before { content: '▶'; font-size: 11px; color: #888; transition: transform 0.15s; flex-shrink: 0; }
+.${prefix}accordion-item[open] > .${prefix}accordion-summary::before { transform: rotate(90deg); }
+.${prefix}accordion-body { padding: 0 16px 12px; }
+.${prefix}accordion.${prefix}card { border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 1px solid #e0e0e0; border-radius: 0; margin-bottom: 0; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item:last-child { border-bottom: none; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 1px solid #e0e0e0; }
+`;
+
   return (
     linkButtonReset +
     tabsStructural +
     rowStructural +
     demoStructural +
     commentStructural +
-    commentPanelStructural
+    commentPanelStructural +
+    accordionStructural
   );
 }

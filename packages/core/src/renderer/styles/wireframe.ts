@@ -501,5 +501,12 @@ body.${prefix}root {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #333; }
+.${prefix}accordion-summary::before { color: #666; }
+.${prefix}accordion.${prefix}card { border: 1px solid #999; border-radius: 0; box-shadow: none; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 1px solid #999; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 1px solid #999; }
 `;
 }

@@ -603,5 +603,12 @@ body.${prefix}root {
 .${prefix}tab-header { color: #666; }
 .${prefix}tab-header:hover { color: #000; }
 .${prefix}tab-header.${prefix}active { border-bottom-color: #000; color: #000; }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #333; font-family: 'Comic Sans MS', 'Chalkboard SE', cursive; }
+.${prefix}accordion-summary::before { color: #555; }
+.${prefix}accordion.${prefix}card { border: 2px solid #333; border-radius: 0; box-shadow: 3px 3px 0 #999; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 2px solid #333; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 2px solid #333; }
 `;
 }

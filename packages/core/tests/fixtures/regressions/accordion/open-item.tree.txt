@@ -1,0 +1,8 @@
+Document
+  └─ accordion
+     ├─ accordion-item summary="Collapsed item" expanded=false
+     │  └─ paragraph "This one starts closed."
+     ├─ accordion-item summary="Expanded item" expanded=true
+     │  └─ paragraph "This one starts open."
+     └─ accordion-item summary="Another collapsed item" expanded=false
+        └─ paragraph "Also closed by default."

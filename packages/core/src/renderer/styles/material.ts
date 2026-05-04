@@ -744,5 +744,13 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #212121; }
+.${prefix}accordion-summary:hover { background: rgba(0,0,0,0.04); border-radius: 4px; }
+.${prefix}accordion-summary::before { color: rgba(0,0,0,0.38); }
+.${prefix}accordion.${prefix}card { border: none; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08); }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom: 1px solid rgba(0,0,0,0.12); }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top: 1px solid rgba(0,0,0,0.12); }
 `;
 }

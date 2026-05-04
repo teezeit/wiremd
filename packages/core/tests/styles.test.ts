@@ -96,4 +96,46 @@ describe('clean style: known CSS gaps (it.fails until styles.ts grows the rule)'
       /\.wmd-state-error\b[^{]*\{[^}]*(?:border-color|color)\s*:/
     );
   });
+
+  it('styles accordion wrapper (.wmd-accordion)', () => {
+    // The renderer emits `<div class="wmd-accordion">`. The wrapper needs
+    // at minimum a display rule to stack items vertically.
+    expect(clean()).toMatch(
+      /\.wmd-accordion\b[^{]*\{[^}]*(?:display|border|padding)\s*:/
+    );
+  });
+
+  it('styles accordion-item <details> element (.wmd-accordion-item)', () => {
+    // Plain accordion items have no border (borderless by default); only
+    // .wmd-accordion.wmd-card items get borders. Assert the base item rule exists.
+    expect(clean()).toMatch(/\.wmd-accordion-item\b/);
+  });
+
+  it('styles accordion summary (.wmd-accordion-summary)', () => {
+    // <summary class="wmd-accordion-summary"> needs cursor:pointer and a
+    // display rule so it looks like a clickable header, not raw browser default.
+    const css = clean();
+    expect(css).toMatch(
+      /\.wmd-accordion-summary\b[^{]*\{[^}]*cursor\s*:/
+    );
+    expect(css).toMatch(
+      /\.wmd-accordion-summary\b[^{]*\{[^}]*(?:padding|font-weight|display)\s*:/
+    );
+  });
+
+  it('styles accordion body (.wmd-accordion-body)', () => {
+    // The body div inside each <details> needs padding so content doesn't
+    // sit flush against the summary border.
+    expect(clean()).toMatch(
+      /\.wmd-accordion-body\b[^{]*\{[^}]*padding\s*:/
+    );
+  });
+
+  it('styles accordion card variant (.wmd-accordion.wmd-card)', () => {
+    // `:::accordion card` adds a bordered outer wrapper. The combined
+    // selector must target the AND of both classes on the same element.
+    expect(clean()).toMatch(
+      /\.wmd-accordion\.wmd-card\b[^{]*\{[^}]*(?:border|box-shadow|border-radius)\s*:/
+    );
+  });
 });
