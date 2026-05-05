@@ -139,9 +139,24 @@ describe('App', () => {
     expect(lastPreviewProps.showComments).toBe(false);
   });
 
-  it('share button always shows "Share" label', () => {
+  it('shows Share button in solo mode', () => {
     render(<App />);
     expect(screen.getByRole('button', { name: /^share$/i })).toBeInTheDocument();
+  });
+
+  it('shows Live Session button instead of Share when a session is active', () => {
+    vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
+    render(<App />);
+    expect(screen.getByRole('button', { name: /live session/i })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^share$/i })).not.toBeInTheDocument();
+    vi.unstubAllGlobals();
+  });
+
+  it('Live Session button has a green corner badge', () => {
+    vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
+    const { container } = render(<App />);
+    expect(container.querySelector('.ed-btn__live-dot')).toBeInTheDocument();
+    vi.unstubAllGlobals();
   });
 
   // Share modal
@@ -157,7 +172,7 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /share/i }));
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /export to link/i }));
-      vi.runAllTimers();
+      vi.advanceTimersByTime(1);
     });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /copy link/i }));
@@ -172,7 +187,7 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /share/i }));
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /export to link/i }));
-      vi.runAllTimers();
+      vi.advanceTimersByTime(1);
     });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /copy link/i }));
