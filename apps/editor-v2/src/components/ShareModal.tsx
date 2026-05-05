@@ -15,6 +15,7 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
   const [generatedUrl, setGeneratedUrl] = useState('');
   const [copied, setCopied] = useState(false);
   const [starting, setStarting] = useState(false);
+  const [sessionError, setSessionError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isOpen) {
@@ -22,6 +23,7 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
       setGeneratedUrl('');
       setCopied(false);
       setStarting(false);
+      setSessionError(null);
     }
   }, [isOpen]);
 
@@ -51,8 +53,11 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
   async function handleStartSession() {
     if (!onStartSession) return;
     setStarting(true);
+    setSessionError(null);
     try {
       await onStartSession();
+    } catch (err) {
+      setSessionError(err instanceof Error ? err.message : 'Failed to start session');
     } finally {
       setStarting(false);
     }
@@ -135,6 +140,9 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
           >
             {starting ? 'Starting…' : 'Start Live Session'}
           </button>
+          {sessionError && (
+            <p className="ed-modal__error">Failed to start session — check your connection and try again.</p>
+          )}
         </div>
       </div>
     </div>

@@ -238,3 +238,41 @@ describe('ShareModal — live session', () => {
     resolve();
   });
 });
+
+describe('ShareModal — live session error state', () => {
+  it('shows error message when onStartSession throws', async () => {
+    const onStartSession = vi.fn().mockRejectedValue(new Error('Network error'));
+    render(
+      <ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} onStartSession={onStartSession} />,
+    );
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /start live session/i }));
+    });
+    expect(screen.getByText(/failed/i)).toBeInTheDocument();
+  });
+
+  it('re-enables the button after failure so user can retry', async () => {
+    const onStartSession = vi.fn().mockRejectedValue(new Error('Network error'));
+    render(
+      <ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} onStartSession={onStartSession} />,
+    );
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /start live session/i }));
+    });
+    expect(screen.getByRole('button', { name: /start live session/i })).not.toBeDisabled();
+  });
+
+  it('clears error when modal is closed and reopened', async () => {
+    const onStartSession = vi.fn().mockRejectedValue(new Error('Network error'));
+    const { rerender } = render(
+      <ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} onStartSession={onStartSession} />,
+    );
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /start live session/i }));
+    });
+    expect(screen.getByText(/failed/i)).toBeInTheDocument();
+    rerender(<ShareModal isOpen={false} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} onStartSession={onStartSession} />);
+    rerender(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} onStartSession={onStartSession} />);
+    expect(screen.queryByText(/failed/i)).not.toBeInTheDocument();
+  });
+});
