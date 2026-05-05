@@ -8,37 +8,102 @@ Rebuild of the wiremd web editor targeting UX/PM users who don't want to write m
 
 ## Architecture decisions
 
-- **Editor**: Monaco (multi-model for multi-file support — wiremd's `resolveIncludes()` makes multi-file a real user need, not a power-user edge case)
-- **Multi-file**: file tree in left sidebar, each file is a Monaco model; no StackBlitz dependency
+- **Editor**: CodeMirror 6 (replaced Monaco — lighter, no workers, better fit for markdown-only editing)
+- **Framework**: React 19 + Vite 6 (`apps/editor-v2/`)
+- **File tree**: react-arborist installed, not yet wired (multi-file is post-v4)
 - **Renderer**: existing wiremd core (`renderToHTML`) — no change
-- **Comments panel**: built into wiremd HTML renderer via `<!-- @wireframe: ... -->` annotations — no separate implementation needed
-- **Collaboration**: existing `/projects` API (`POST /api/projects`, `PUT /api/projects/:id`)
+- **File operations**: FileSystem Access API, manual open/save (no auto-sync by design)
+- **Sharing**: URL hash encoding via lz-string, on-demand only (not on every keystroke)
+- **Collaboration**: existing `/projects` API (`POST /api/projects`, `PUT /api/projects/:id`) — wired in v3
+- **Testing**: vitest + @testing-library/react, 98 tests covering all user stories
 
-## Layout
+## Layout (implemented)
 
 ```
-[ ☰ logo ]                          [ Share* ] [ Comments ]
-─────────────────────────────────────────────────────────────
-[ 👁 / edit* ]  │
-[ Templates* ]  │   Preview canvas (preview mode: full-width, sidebar collapsed)
-[ dismiss  ]    │   Edit mode: component selected → bottom border indicator
-                │
-[ card          │
-  tabs:         │
-  + Insert │ Markdown ]
+[ ☰ ]  [ ✏ ]                          wiremd    [ Share* ] [ 💬 ]
+────────────────────────────────────────────────────────────────────
+[ + Insert | Markdown ]  │
+                         │   Preview canvas (sidebar collapses in preview mode)
+  CodeMirror editor      │
+                         │
 ```
 
-### Sidebar tabs
+- **☰** hamburger: Reset, Open from file, Save to…, Style switcher, Live Collab (stub), GitHub, Docs
+- **✏** edit toggle: shows/hides sidebar (on = edit mode, off = preview mode)
+- **Sidebar tabs**: `+ Insert` (placeholder, v4) | `Markdown` (CodeMirror editor)
+- **Share modal**: Shareable link flow (Export to link → Generating → URL field + Copy link) + Live Collab stub
+- **Theme**: VitePress-matched palette (white/grey/black), floating header
 
-- **+ Insert**: search + component categories (Layout / Form / Content) — hidden in preview mode
-- **Markdown**: Monaco editor + component docs panel
+## Scroll preservation
 
-### Mode toggle (`👁 / edit`) — top of sidebar
+Preview iframe reports scroll position via `postMessage` (`wiremd-scroll`) on scroll (100ms debounce).
+On re-render, `Preview.tsx` restores position via `wiremd-set-scroll` after iframe `load`.
 
-- **Preview (default)**: sidebar collapses, full canvas, all HTML interactions live (links, tabs, toggles)
-- **Edit**: clicks capture components, selected component shows bottom-border indicator, bottom toolbar appears, sidebar collapses
+## Version roadmap
 
-### Bottom toolbar (edit mode, component selected)
+### v1 — Rewrite baseline ✅ Done
+- CodeMirror 6 editor with wiremd syntax highlighting
+- wiremd renderer + all 7 styles
+- URL hash share (on-demand: generate → copy)
+- Edit/Preview mode toggle
+- Insert/Markdown sidebar tabs (Insert is placeholder)
+- Comments toggle
+- Light theme matching landing/docs VitePress palette
+- 98 tests
+
+### v2 — File operations + sharing ✅ Done
+- Open from local file (FileSystem Access API, manual, no auto-sync)
+- Save to file (save-as only)
+- Share modal: Shareable link (Export to link → URL field → Copy) + Live Collab stub
+- Preview scroll position preserved across re-renders
+
+### v3 — Templates + collaboration
+- Template gallery (Load from Templates button, category browsing, preview pane)
+- Loading screen (recent file / blank canvas on first open)
+- Live collaboration — wire up existing `/projects` API (project-controller.ts already in apps/editor)
+
+### v4 — Edit mode (bridges to non-markdown users)
+- `data-wmd-id` attributes injected into rendered HTML for click-to-source mapping
+- Component selection in preview (click → bottom border indicator)
+- Bottom toolbar: edit / copy / trash / ↑↓ / comment / add below
+- Markdown ↔ preview cursor sync (click component → jump editor to that line)
+- `+ Insert` component library (currently placeholder)
+
+> GUI-first features (drag-to-insert, AI prompt bar) are deferred post-v4.
+> Multi-file support (react-arborist installed) is also post-v4.
+
+## Hamburger menu (implemented)
+
+```
+[ Reset ]
+[ Open from file ]       ← FileSystem Access API (disabled if unsupported)
+[ Save to… ]             ← save-as dialog
+[ Live Collaboration ]   ← stub (soon)
+───
+Style: [ Sketch ]* [ Clean ] [ Wireframe ] [ Material ] [ Tailwind ] [ Brutal ] [ None ]
+───
+[ GitHub ]
+[ Docs ]
+```
+
+## Share modal (implemented)
+
+```
+Share
+─────────────────────────────
+Shareable link
+Generates a link with your current wireframe encoded in the URL.
+Changes made after sharing won't be reflected — this is a snapshot.
+
+[ Export to link ]   →  Generating…  →  [url field (scrollable)] [Copy link] / [Copied! ✓]
+
+─────────────────────────────
+Live Collaboration             ((saves to cloud))
+Start a session — URL becomes a shareable project ID.
+[ Start Live Session ]  (disabled — coming soon)
+```
+
+## Bottom toolbar — v4 (not yet built)
 
 ```
 [ edit ]{secondary}  [ copy ]  [ trash ]  /  [ ↑ ]  [ ↓ ]  /  [ 💬 ]
@@ -46,109 +111,9 @@ Rebuild of the wiremd web editor targeting UX/PM users who don't want to write m
 [ + Add below ]*
 ```
 
-- **edit** → jumps to markdown editor at that component's line (cursor sync)
-- **copy** → duplicates component in markdown
-- **trash** → removes component
-- **↑ / ↓** → reorders component in markdown stack
-- **💬** → inserts `<!-- @wireframe: @user  -->` at component, opens markdown editor at that line
-- **+ Add below** → opens/focuses Insert tab
-
-## Screens & modals
-
-### Loading screen — with recent file
-Modal over blank canvas:
-```
-Edit File in Browser
-CONTINUE WITH A RECENT FILE
-[ dashboard.md ]*
-[ login.md ]*
-───
-[ Skip ]
-```
-
-### Loading screen — no recent file
-→ go directly to blank canvas (default template preloaded)
-
-### Hamburger menu `☰`
-```
-[ Reset ]
-[ Open from file ]
-[ Save to... ]       ← opens Save to modal
-[ Live Collaboration ]
-[ Export to link ]
-───
-Style: [ Sketch ]* [ Clean ] [ Material ] [ Brutalist ]
-───
-[ GitHub ]
-[ About ]
-```
-
-### Save to modal
-```
-Save to
-Format: [ Markdown .md ]* [ HTML ] [ Tailwind ] [ React / JSX ]
-→ opens native file save dialog
-[ Save ]* [ Cancel ]
-```
-
-### Share button states
-- Default: `[ Share ]*`
-- Live session active: `[ ⟳ Share ]*` (sync icon communicates status via color + tooltip)
-
-### Sharing modal — no active session
-```
-Live Collaboration                    ((saves to cloud))
-Start a session — URL becomes a shareable project ID.
-[ Start Live Session ]*
-───
-Copy Link
-Markdown encoded in URL — works offline, no account needed.
-[ Copy Link ]
-───
-Export
-[ Markdown ] [ HTML ] [ Tailwind ] [ React / JSX ]
-```
-
-### Sharing modal — live session active
-```
-Active session:
-wiremd.com/editor/?p=VQWDn3ew
-[ Copy project link ]  [ Stop Session ]{danger}
-```
-
-### Live session joined state (recipient)
-```
-((● Live session)) You're editing with @tobias — [ Copy link ] [ Leave ]{danger}
-```
-
-### Template gallery (triggered by `[ Load from Templates ]`)
-Same layout as + Insert sidebar — search + categories:
-- Auth: Sign In, Sign Up, Reset Password
-- Dashboard: Overview, Analytics, Data Table
-- Marketing: Landing Page, Pricing, Blog Post
-- Utility: Settings, Profile, Empty State
-
-Right panel: preview of selected template + `[ Load this template ]*`
-
-## Version roadmap
-
-### v1 — Rewrite baseline
-Editor + renderer + style switcher. Clean foundation, no legacy debt.
-
-### v2 — File operations + sharing
-- Open from local file / save to local file (native dialog)
-- Copy link (markdown encoded in URL)
-- Live collaboration (existing `/projects` API, new sharing modal UI)
-
-### v3 — Templates + UX polish
-- Template gallery
-- Loading screen (recent file / blank canvas)
-- Redesigned sharing modal
-
-### v4 — Edit mode (bridges to non-markdown users)
-- Preview / Edit mode toggle
-- Component selection (bottom border indicator)
-- Bottom toolbar: edit / copy / trash / ↑↓ / comment / add below
-- Markdown ↔ preview cursor sync (clicking component jumps editor to that line)
-
-> GUI-first features (drag-to-insert component library, AI prompt bar) are deferred post-v4.
+- **edit** → jump to that component's line in the markdown editor
+- **copy** → duplicate component in markdown
+- **trash** → remove component
+- **↑ / ↓** → reorder in markdown stack
+- **💬** → insert comment annotation, open editor at that line
+- **+ Add below** → open Insert tab
