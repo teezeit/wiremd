@@ -44,6 +44,7 @@ function fakeFileResult(name: string, content: string): LocalFileResult {
 
 beforeEach(() => {
   lastPreviewProps = {};
+  localStorage.clear();
   window.location.hash = '';
   window.history.replaceState(null, '', '/');
   Object.defineProperty(navigator, 'clipboard', {
@@ -233,5 +234,46 @@ describe('App', () => {
     render(<App />);
     expect(replaceState).toHaveBeenCalledWith(null, '', window.location.pathname);
     replaceState.mockRestore();
+  });
+
+  // localStorage auto-save
+  it('restores content from localStorage when no hash is present', () => {
+    localStorage.setItem('wiremd-content', '# From local storage');
+    render(<App />);
+    expect(screen.getByTestId('editor').textContent).toBe('# From local storage');
+  });
+
+  // conflict modal: hash + localStorage
+  it('shows conflict modal when hash and localStorage both have different content', () => {
+    localStorage.setItem('wiremd-content', '# My local work');
+    window.location.hash = encodeShareHash('# Shared content');
+    render(<App />);
+    expect(screen.getByRole('dialog', { name: /conflict/i })).toBeInTheDocument();
+  });
+
+  it('conflict modal: Keep my work loads localStorage content', () => {
+    localStorage.setItem('wiremd-content', '# My local work');
+    window.location.hash = encodeShareHash('# Shared content');
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /keep my work/i }));
+    expect(screen.getByTestId('editor').textContent).toBe('# My local work');
+    expect(screen.queryByRole('dialog', { name: /conflict/i })).not.toBeInTheDocument();
+  });
+
+  it('conflict modal: Load shared replaces with hash content', () => {
+    localStorage.setItem('wiremd-content', '# My local work');
+    window.location.hash = encodeShareHash('# Shared content');
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /load shared/i }));
+    expect(screen.getByTestId('editor').textContent).toBe('# Shared content');
+    expect(screen.queryByRole('dialog', { name: /conflict/i })).not.toBeInTheDocument();
+  });
+
+  it('no conflict when hash matches localStorage content', () => {
+    const content = '# Same content';
+    localStorage.setItem('wiremd-content', content);
+    window.location.hash = encodeShareHash(content);
+    render(<App />);
+    expect(screen.queryByRole('dialog', { name: /conflict/i })).not.toBeInTheDocument();
   });
 });

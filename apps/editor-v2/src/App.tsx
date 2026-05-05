@@ -4,8 +4,10 @@ import { Preview } from './components/Preview';
 import { HamburgerMenu } from './components/HamburgerMenu';
 import { ShareModal } from './components/ShareModal';
 import { SaveModal } from './components/SaveModal';
+import { ConflictModal } from './components/ConflictModal';
 import { Toast } from './components/Toast';
 import { useEditorState } from './hooks/useEditorState';
+import { useAutoSave, AUTO_SAVE_KEY } from './hooks/useAutoSave';
 import { decodeShareHash, encodeShareHash } from './lib/urlShare';
 import { examples } from './lib/examples';
 import {
@@ -16,25 +18,44 @@ import {
 import { renderForFormat, filenameForFormat } from './lib/exportFormat';
 import type { SaveFormat } from './lib/exportFormat';
 
-function getInitialMarkdown(): string {
+interface InitialContent {
+  markdown: string;
+  conflictContent: string | null; // hash content when conflict detected
+}
+
+function getInitialContent(): InitialContent {
   const fromHash = decodeShareHash(window.location.hash);
+  const fromLocal = localStorage.getItem(AUTO_SAVE_KEY);
+
   if (fromHash) {
     window.history.replaceState(null, '', window.location.pathname);
-    return fromHash;
+    if (fromLocal && fromLocal !== fromHash) {
+      // Show conflict modal — start with local content (safe default)
+      return { markdown: fromLocal, conflictContent: fromHash };
+    }
+    return { markdown: fromHash, conflictContent: null };
   }
-  return examples[0]?.code ?? '';
+
+  if (fromLocal) return { markdown: fromLocal, conflictContent: null };
+
+  return { markdown: examples[0]?.code ?? '', conflictContent: null };
 }
 
 const fileSupported = isFileSystemAccessSupported();
 
 export function App() {
+  const { markdown: initialMarkdown, conflictContent } = getInitialContent();
   const { markdown, setMarkdown, style, setStyle, showComments, setShowComments } =
-    useEditorState(getInitialMarkdown());
+    useEditorState(initialMarkdown);
+
+  useAutoSave(markdown);
 
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>('markdown');
   const [shareOpen, setShareOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
+  const [conflictOpen, setConflictOpen] = useState(conflictContent !== null);
+  const [pendingSharedContent] = useState(conflictContent);
   const [toast, setToast] = useState({ message: '', visible: false });
 
   const showToast = useCallback((message: string) => {
@@ -193,6 +214,15 @@ export function App() {
         isOpen={saveOpen}
         onClose={() => setSaveOpen(false)}
         onSave={handleSaveAs}
+      />
+
+      <ConflictModal
+        isOpen={conflictOpen}
+        onLoadShared={() => {
+          if (pendingSharedContent) setMarkdown(pendingSharedContent);
+          setConflictOpen(false);
+        }}
+        onKeepLocal={() => setConflictOpen(false)}
       />
 
       <Toast message={toast.message} visible={toast.visible} />
