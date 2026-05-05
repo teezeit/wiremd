@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { renderMarkup } from '../lib/renderMarkup';
 import type { StyleName } from '../lib/renderMarkup';
 
@@ -9,7 +9,7 @@ interface Props {
   showComments: boolean;
 }
 
-export function Preview({ markdown, style, activeTab, showComments }: Props) {
+export const Preview = memo(function Preview({ markdown, style, activeTab, showComments }: Props) {
   const result = useMemo(
     () => renderMarkup(markdown, style, showComments),
     [markdown, style, showComments],
@@ -44,4 +44,4 @@ export function Preview({ markdown, style, activeTab, showComments }: Props) {
       )}
     </div>
   );
-}
+});

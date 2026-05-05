@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { markdown } from '@codemirror/lang-markdown';
@@ -37,9 +37,11 @@ interface Props {
   onChange: (value: string) => void;
 }
 
-export function Editor({ value, onChange }: Props) {
+export const Editor = memo(function Editor({ value, onChange }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
+  // Tracks the last value emitted by CodeMirror so we can skip roundtrip dispatches
+  const lastEmittedValue = useRef(value);
   const debouncedOnChange = useDebounce(onChange, 200);
 
   useEffect(() => {
@@ -55,7 +57,9 @@ export function Editor({ value, onChange }: Props) {
           wiremdTheme,
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
-              debouncedOnChange(update.state.doc.toString());
+              const newValue = update.state.doc.toString();
+              lastEmittedValue.current = newValue; // track synchronously
+              debouncedOnChange(newValue);
             }
           }),
         ],
@@ -71,9 +75,12 @@ export function Editor({ value, onChange }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Only push external value changes (file load, reset) into CodeMirror.
+  // Skip if value is a roundtrip of what the editor just emitted.
   useEffect(() => {
     const view = viewRef.current;
     if (!view) return;
+    if (value === lastEmittedValue.current) return;
     if (view.state.doc.toString() === value) return;
     view.dispatch({
       changes: { from: 0, to: view.state.doc.length, insert: value },
@@ -81,4 +88,4 @@ export function Editor({ value, onChange }: Props) {
   }, [value]);
 
   return <div ref={containerRef} style={{ height: '100%' }} />;
-}
+});
