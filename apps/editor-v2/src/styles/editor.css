@@ -61,21 +61,31 @@ body {
 
 #app { display: flex; flex-direction: column; height: 100vh; }
 
-/* ── Header ─────────────────────────────────────────────── */
+/* ── Header — transparent strip, elements float ─────────── */
 .ed-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: var(--ed-header-h);
-  padding: 0 16px 0 12px;
-  background: var(--ed-bg-surface);
-  border-bottom: 1px solid var(--ed-border);
-  box-shadow: var(--ed-shadow-sm);
+  padding: 0 12px;
+  background: transparent;
+  border-bottom: none;
   flex-shrink: 0;
   z-index: 10;
+  pointer-events: none; /* let clicks pass through gaps */
 }
 
-.ed-header__brand-group { display: flex; align-items: center; gap: 4px; }
+.ed-header__brand-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--ed-bg-surface);
+  border: 1px solid var(--ed-border);
+  border-radius: var(--ed-radius-md);
+  padding: 4px 12px 4px 4px;
+  box-shadow: var(--ed-shadow-md);
+  pointer-events: all;
+}
 
 .ed-header__brand {
   font-size: 15px;
@@ -83,11 +93,21 @@ body {
   letter-spacing: -0.01em;
   color: var(--ed-text-primary);
   text-decoration: none;
-  padding: 0 4px;
+  padding: 0 2px;
 }
 .ed-header__brand:hover { opacity: 0.65; }
 
-.ed-header__actions { display: flex; align-items: center; gap: 6px; }
+.ed-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: all;
+}
+
+/* Individual floating buttons */
+.ed-header__actions .ed-btn {
+  box-shadow: var(--ed-shadow-md);
+}
 
 /* ── Buttons ─────────────────────────────────────────────── */
 .ed-btn {
@@ -116,7 +136,8 @@ body {
 
 .ed-btn--comments-on { background: var(--ed-accent-dim); border-color: rgba(99,102,241,0.2); color: var(--ed-accent); }
 
-.ed-hamburger { padding: 6px 9px; }
+.ed-hamburger { padding: 5px 8px; border-color: transparent; background: transparent; box-shadow: none; }
+.ed-hamburger:hover { border-color: var(--ed-border); background: var(--ed-bg-input); box-shadow: none; }
 
 /* ── Main Layout ─────────────────────────────────────────── */
 .ed-main { display: flex; flex: 1; overflow: hidden; }
