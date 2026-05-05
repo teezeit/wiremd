@@ -189,16 +189,24 @@ describe('App', () => {
     expect(screen.getByText('Opened notes.md')).toBeInTheDocument();
   });
 
-  it('save as shows a toast with the filename', async () => {
+  it('save as opens the save modal', () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /menu/i }));
+    fireEvent.click(screen.getByText('Save to…'));
+    expect(screen.getByRole('dialog', { name: /save as/i })).toBeInTheDocument();
+  });
+
+  it('save as shows a toast with the filename after confirming format', async () => {
     vi.mocked(localFile.saveAsLocalFile).mockResolvedValueOnce(
-      fakeFileResult('export.md', '# Hello'),
+      fakeFileResult('wireframe.md', '# Hello'),
     );
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
+    fireEvent.click(screen.getByText('Save to…'));
     await act(async () => {
-      fireEvent.click(screen.getByText('Save to…'));
+      fireEvent.click(screen.getByRole('button', { name: /^save$/i }));
     });
-    expect(screen.getByText('Saved as export.md')).toBeInTheDocument();
+    expect(screen.getByText('Saved as wireframe.md')).toBeInTheDocument();
   });
 
   it('cancelling file open (abort) does not change editor content', async () => {

@@ -55,9 +55,10 @@ export async function openLocalFile(picker: ShowOpenPicker): Promise<LocalFileRe
 export async function saveAsLocalFile(
   picker: ShowSavePicker,
   content: string,
+  suggestedName = 'wireframe.md',
 ): Promise<LocalFileResult | null> {
   try {
-    const handle = await picker({ suggestedName: 'wireframe.md', ...MD_TYPE });
+    const handle = await picker({ suggestedName, ...MD_TYPE });
     await writeFile(handle, content);
     const file = await handle.getFile();
     return { handle, content, lastModified: file.lastModified };

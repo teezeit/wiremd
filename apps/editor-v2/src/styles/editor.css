@@ -558,3 +558,14 @@ body {
   color: var(--ed-text-muted);
   font-style: italic;
 }
+
+.ed-modal__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-top: 8px;
+}
+
+.ed-modal__select {
+  width: 100%;
+}

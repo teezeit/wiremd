@@ -3,6 +3,7 @@ import { Editor } from './components/Editor';
 import { Preview } from './components/Preview';
 import { HamburgerMenu } from './components/HamburgerMenu';
 import { ShareModal } from './components/ShareModal';
+import { SaveModal } from './components/SaveModal';
 import { Toast } from './components/Toast';
 import { useEditorState } from './hooks/useEditorState';
 import { decodeShareHash, encodeShareHash } from './lib/urlShare';
@@ -12,6 +13,8 @@ import {
   openLocalFile,
   saveAsLocalFile,
 } from './lib/localFile';
+import { renderForFormat, filenameForFormat } from './lib/exportFormat';
+import type { SaveFormat } from './lib/exportFormat';
 
 function getInitialMarkdown(): string {
   const fromHash = decodeShareHash(window.location.hash);
@@ -31,6 +34,7 @@ export function App() {
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>('markdown');
   const [shareOpen, setShareOpen] = useState(false);
+  const [saveOpen, setSaveOpen] = useState(false);
   const [toast, setToast] = useState({ message: '', visible: false });
 
   const showToast = useCallback((message: string) => {
@@ -74,11 +78,12 @@ export function App() {
     }
   }, [setMarkdown, showToast]);
 
-  const handleSaveAs = useCallback(async () => {
+  const handleSaveAs = useCallback(async (format: SaveFormat) => {
     const w = window as unknown as Record<string, unknown>;
-    const result = await saveAsLocalFile(w.showSaveFilePicker as never, markdown);
+    const content = await renderForFormat(markdown, format, style);
+    const result = await saveAsLocalFile(w.showSaveFilePicker as never, content, filenameForFormat(format));
     if (result) showToast(`Saved as ${result.handle.name}`);
-  }, [markdown, showToast]);
+  }, [markdown, style, showToast]);
 
   const toggleEdit = useCallback(() => {
     setMode((m) => (m === 'edit' ? 'preview' : 'edit'));
@@ -93,7 +98,7 @@ export function App() {
             onStyleChange={setStyle}
             onReset={handleReset}
             onOpenFile={handleOpenFile}
-            onSaveAs={handleSaveAs}
+            onSaveAs={() => setSaveOpen(true)}
             fileSupported={fileSupported}
           />
           <button
@@ -182,6 +187,12 @@ export function App() {
         onClose={() => setShareOpen(false)}
         onGetLink={handleGetLink}
         onCopyLink={handleCopyLink}
+      />
+
+      <SaveModal
+        isOpen={saveOpen}
+        onClose={() => setSaveOpen(false)}
+        onSave={handleSaveAs}
       />
 
       <Toast message={toast.message} visible={toast.visible} />
