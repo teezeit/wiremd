@@ -682,3 +682,26 @@ body {
   color: #22c55e;
   letter-spacing: 0.04em;
 }
+
+/* ── Shared IdentityTag ──────────────────────────────────── */
+.ed-identity-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ed-identity-tag__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.ed-identity-tag__label {
+  font-size: 10px;
+  color: var(--ed-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.ed-identity-tag__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ed-text-secondary);
+}

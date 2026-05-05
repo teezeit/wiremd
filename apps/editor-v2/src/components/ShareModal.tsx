@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { IdentityTag } from './IdentityTag';
 
 interface Props {
   isOpen: boolean;
@@ -147,7 +148,7 @@ export function ShareModal({
           {isActiveSession && (
             <div className="ed-modal__live-row">
               <span className="ed-modal__live-badge" data-testid="live-badge">● LIVE</span>
-              {myName && <span className="ed-modal__identity-badge">{myName}</span>}
+              {myName && <IdentityTag name={myName} avatarSize={22} />}
             </div>
           )}
 

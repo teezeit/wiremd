@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { StyleName } from '../lib/renderMarkup';
-import { Avatar } from './Avatar';
+import { IdentityTag } from './IdentityTag';
 
 const STYLES: { value: StyleName; label: string }[] = [
   { value: 'sketch', label: 'Sketch' },
@@ -135,11 +135,7 @@ export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSav
           <div className="ed-menu__divider" />
 
           <div className="ed-menu__identity">
-            <Avatar name={name} size={28} />
-            <div className="ed-menu__identity-text">
-              <span className="ed-menu__identity-label">You are</span>
-              <span className="ed-menu__identity-name">{name}</span>
-            </div>
+            <IdentityTag name={name} />
           </div>
         </div>
       )}
