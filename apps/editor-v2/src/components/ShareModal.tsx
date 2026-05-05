@@ -8,7 +8,7 @@ interface Props {
   onCopyLink: (url: string) => Promise<void>;
   onStartSession?: () => Promise<void>;
   sessionUrl?: string;
-  onStopSession?: () => Promise<void>;
+  onLeaveSession?: () => Promise<void>;
   myName?: string;
 }
 
@@ -16,7 +16,7 @@ type LinkState = 'idle' | 'generating' | 'ready';
 
 export function ShareModal({
   isOpen, onClose, onGetLink, onCopyLink,
-  onStartSession, sessionUrl, onStopSession, myName,
+  onStartSession, sessionUrl, onLeaveSession, myName,
 }: Props) {
   const [linkState, setLinkState] = useState<LinkState>('idle');
   const [generatedUrl, setGeneratedUrl] = useState('');
@@ -170,9 +170,9 @@ export function ShareModal({
               <button
                 className="ed-btn ed-modal__action"
                 style={{ borderColor: 'var(--ed-error)', color: 'var(--ed-error)' }}
-                onClick={onStopSession}
+                onClick={onLeaveSession}
               >
-                Stop Session
+                Leave Session
               </button>
             </>
           ) : (

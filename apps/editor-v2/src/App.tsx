@@ -143,9 +143,8 @@ export function App() {
     // modal stays open — switches to active session view
   }, [markdown, sessionId, myName]);
 
-  const handleStopSession = useCallback(async () => {
-    // Force-unlock so joiner who doesn't hold the lock still clears it
-    if (projectId) await unlockProject(projectId, sessionId, true);
+  const handleLeaveSession = useCallback(async () => {
+    if (projectId) await unlockProject(projectId, sessionId);
     window.history.replaceState(null, '', window.location.pathname);
     setProjectId(null);
     setMode('edit');
@@ -305,7 +304,7 @@ export function App() {
         onCopyLink={handleCopyLink}
         onStartSession={projectId ? undefined : handleStartSession}
         sessionUrl={sessionUrl}
-        onStopSession={projectId ? handleStopSession : undefined}
+        onLeaveSession={projectId ? handleLeaveSession : undefined}
         myName={myName}
       />
 

@@ -63,7 +63,7 @@ describe('ShareModal', () => {
     expect(screen.getByText(/live collaboration/i)).toBeInTheDocument();
   });
 
-  it('Start Live Session is disabled (stub)', () => {
+  it('Start Live Session is disabled without a session starter', () => {
     setup();
     expect(screen.getByRole('button', { name: /start live session/i })).toBeDisabled();
   });
@@ -202,14 +202,14 @@ describe('ShareModal — live collaboration section layout', () => {
 
   it('shows green LIVE badge in a row below heading when session is active', () => {
     const sessionUrl = 'http://localhost/?p=abc123';
-    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onLeaveSession={vi.fn()} />);
     expect(screen.getByTestId('live-badge')).toBeInTheDocument();
     expect(screen.queryByTestId('saves-to-cloud')).not.toBeInTheDocument();
   });
 
   it('shows myName badge next to LIVE badge when session is active', () => {
     const sessionUrl = 'http://localhost/?p=abc123';
-    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} myName="Blue Fox" />);
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onLeaveSession={vi.fn()} myName="Blue Fox" />);
     expect(screen.getByText('Blue Fox')).toBeInTheDocument();
     expect(screen.getByTestId('live-badge')).toBeInTheDocument();
   });
@@ -331,37 +331,38 @@ describe('ShareModal — active session view', () => {
   const sessionUrl = 'http://localhost:5176/?p=abc123';
 
   it('shows the session URL when sessionUrl is provided', () => {
-    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onLeaveSession={vi.fn()} />);
     expect(screen.getByRole('textbox')).toHaveValue(sessionUrl);
   });
 
   it('hides Start Live Session when sessionUrl is set', () => {
-    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onLeaveSession={vi.fn()} />);
     expect(screen.queryByRole('button', { name: /start live session/i })).not.toBeInTheDocument();
   });
 
   it('shows "Copy link" button for the session URL', () => {
-    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onLeaveSession={vi.fn()} />);
     expect(screen.getByRole('button', { name: /copy link/i })).toBeInTheDocument();
   });
 
   it('calls onCopyLink with sessionUrl when "Copy link" is clicked', async () => {
     const onCopyLink = vi.fn().mockResolvedValue(undefined);
-    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={onCopyLink} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={onCopyLink} sessionUrl={sessionUrl} onLeaveSession={vi.fn()} />);
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: /copy link/i })); });
     expect(onCopyLink).toHaveBeenCalledWith(sessionUrl);
   });
 
-  it('shows Stop Session button', () => {
-    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
-    expect(screen.getByRole('button', { name: /stop session/i })).toBeInTheDocument();
+  it('shows Leave Session button', () => {
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onLeaveSession={vi.fn()} />);
+    expect(screen.getByRole('button', { name: /leave session/i })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /stop session/i })).not.toBeInTheDocument();
   });
 
-  it('calls onStopSession when Stop Session is clicked', async () => {
-    const onStopSession = vi.fn().mockResolvedValue(undefined);
-    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={onStopSession} />);
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /stop session/i })); });
-    expect(onStopSession).toHaveBeenCalledOnce();
+  it('calls onLeaveSession when Leave Session is clicked', async () => {
+    const onLeaveSession = vi.fn().mockResolvedValue(undefined);
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onLeaveSession={onLeaveSession} />);
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /leave session/i })); });
+    expect(onLeaveSession).toHaveBeenCalledOnce();
   });
 });
 

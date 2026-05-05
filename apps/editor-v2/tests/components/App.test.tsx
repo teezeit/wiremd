@@ -191,6 +191,25 @@ describe('App', () => {
     vi.unstubAllGlobals();
   });
 
+  it('leaves an active session without force-unlocking the project', async () => {
+    vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
+    const replaceState = vi.spyOn(window.history, 'replaceState');
+    render(<App />);
+
+    fireEvent.click(screen.getByRole('button', { name: /live session/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /leave session/i }));
+    });
+
+    expect(projectApi.unlockProject).toHaveBeenCalledOnce();
+    expect(vi.mocked(projectApi.unlockProject).mock.calls[0]).toEqual(['abc123', expect.any(String)]);
+    expect(replaceState).toHaveBeenCalledWith(null, '', window.location.pathname);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^share$/i })).toBeInTheDocument();
+    replaceState.mockRestore();
+    vi.unstubAllGlobals();
+  });
+
   // Share modal
   it('share button opens the share modal', () => {
     render(<App />);
