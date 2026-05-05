@@ -80,6 +80,7 @@ body {
   display: flex;
   align-items: center;
   gap: 4px;
+  padding-left: 8px;
 }
 
 .ed-header__brand {
@@ -88,6 +89,7 @@ body {
   letter-spacing: -0.01em;
   color: var(--ed-text-primary);
   text-decoration: none;
+  padding: 0 10px;
 }
 .ed-header__brand:hover { opacity: 0.65; }
 
