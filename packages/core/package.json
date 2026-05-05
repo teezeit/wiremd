@@ -1,6 +1,6 @@
 {
   "name": "@eclectic-ai/wiremd",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Text-first UI design tool - Create wireframes and mockups using Markdown syntax",
   "type": "module",
   "sideEffects": false,

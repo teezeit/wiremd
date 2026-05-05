@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-05-05
+
+### Added
+- Added `:::accordion` container with `:::item Summary` children for collapsible content sections. Renders as native `<details>`/`<summary>` with zero JavaScript. Supports `card` modifier for bordered card look, `{open}` on the wrapper or individual items, and `{exclusive}` for single-open behaviour. Arrow chevron before summary text, rotates on open. Per-theme styles for all 7 visual styles.
+
+## [0.4.2] - 2026-05-04
+
+### Added
+- Added first-class API endpoint `POST /api/render` for server-side rendering.
+
+### Fixed
+- Fixed Vercel `ignoreCommand` so preview deployments run correctly.
+
 ## [0.4.1] - 2026-05-03
 
 ### Fixed

@@ -638,6 +638,52 @@ function transformContainer(node: any, ctx: TransformContext): WiremdNode {
     };
   }
 
+  // ::: accordion [card] / ::: accordion {exclusive}  (children are ::: item containers)
+  if (containerType === 'accordion') {
+    // `card` arrives as bare word in node.inline; `exclusive`/`open` as boolean props
+    const inlineWord = (typeof node.inline === 'string' ? node.inline : '').trim().split(/\s+/)[0];
+    const hasCard = inlineWord === 'card' || (props.classes || []).includes('card') || !!props.card;
+    const hasExclusive = !!props.exclusive || (props.classes || []).includes('exclusive');
+    const hasOpen = !!props.open || (props.classes || []).includes('open');
+    const classes = [
+      ...(props.classes || []).filter((c: string) => !['card', 'exclusive', 'open'].includes(c)),
+      ...(hasCard ? ['card'] : []),
+      ...(hasExclusive ? ['exclusive'] : []),
+    ];
+    const processed = ctx.transformChildren(node.children || []) as any[];
+    const items = processed
+      .filter((n: any) => n.type === 'accordion-item')
+      .map((item: any) => hasOpen ? { ...item, expanded: true } : item);
+    const { card: _card, exclusive: _excl, open: _open, ...restProps } = props;
+    return { type: 'accordion', props: { ...restProps, classes }, children: items as any };
+  }
+
+  // ::: item Summary / ::: item Summary {open}
+  if (containerType === 'item') {
+    let summary = '';
+    let isExpanded = false;
+    let contentChildren = node.children || [];
+    if (typeof node.inline === 'string' && node.inline) {
+      const m = node.inline.match(/^(.+?)(?:\s*(\{[^}]+\}))?$/);
+      summary = m?.[1]?.trim() || node.inline.trim();
+      isExpanded = (m?.[2] || '').includes('open');
+      const firstChild = contentChildren[0];
+      if (
+        firstChild?.type === 'paragraph' &&
+        extractTextContent(firstChild).trim() === node.inline.trim()
+      ) {
+        contentChildren = contentChildren.slice(1);
+      }
+    }
+    return {
+      type: 'accordion-item',
+      summary,
+      expanded: isExpanded,
+      props,
+      children: ctx.transformChildren(contentChildren) as any,
+    };
+  }
+
   return {
     type: 'container',
     containerType: containerType as any,

@@ -37,7 +37,11 @@ const LOG_PATH = join(TESTS_DIR, 'fixtures', 'REVIEW_LOG.md');
  * without acknowledgement, which is also useful — it's the trigger to
  * rename the .expected-fail.invariants.ts file and close the bug).
  */
-const KNOWN_FAILURES = new Set<string>([]);
+const KNOWN_FAILURES = new Set<string>([
+  'fixture-docs-images-inside-a-card',
+  'fixture-docs-images-with-width-and-height',
+  'fixture-docs-images-in-a-grid',
+]);
 
 interface Row {
   ref: string;

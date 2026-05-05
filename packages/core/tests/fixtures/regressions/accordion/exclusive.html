@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  
+</head>
+<body class="wmd-root wmd-clean">
+  <div class="wmd-accordion wmd-exclusive" data-wmd-accordion data-wmd-accordion-exclusive>
+<details class="wmd-accordion-item">
+  <summary class="wmd-accordion-summary">Option A</summary>
+  <div class="wmd-accordion-body">
+  <p class="wmd-paragraph">Content for option A.</p>
+  </div>
+</details>
+<details class="wmd-accordion-item">
+  <summary class="wmd-accordion-summary">Option B</summary>
+  <div class="wmd-accordion-body">
+  <p class="wmd-paragraph">Content for option B.</p>
+  </div>
+</details>
+<details class="wmd-accordion-item">
+  <summary class="wmd-accordion-summary">Option C</summary>
+  <div class="wmd-accordion-body">
+  <p class="wmd-paragraph">Content for option C.</p>
+  </div>
+</details>
+</div><script>(function(){if(window.__wmdAccordionExclusiveInit)return;window.__wmdAccordionExclusiveInit=true;document.addEventListener('toggle',function(e){var details=e.target;if(!details.open)return;var root=details.closest('[data-wmd-accordion-exclusive]');if(!root)return;root.querySelectorAll('.wmd-accordion-item').forEach(function(d){if(d!==details)d.removeAttribute('open');});},{capture:true});})();</script>
+  
+  
+</body>
+</html>

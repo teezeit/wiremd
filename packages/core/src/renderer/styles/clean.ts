@@ -597,5 +597,13 @@ td.${prefix}align-right, th.${prefix}align-right { text-align: right; }
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Accordion */
+.${prefix}accordion-summary { color: #1a1a1a; }
+.${prefix}accordion-summary:hover { background: #f5f5f5; border-radius: 4px; }
+.${prefix}accordion-summary::before { color: #999; }
+.${prefix}accordion.${prefix}card { border-color: #e0e0e0; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.${prefix}accordion.${prefix}card .${prefix}accordion-item { border-bottom-color: #e0e0e0; }
+.${prefix}accordion.${prefix}card .${prefix}accordion-body { border-top-color: #e0e0e0; }
 `;
 }

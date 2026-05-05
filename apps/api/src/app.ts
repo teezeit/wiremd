@@ -11,6 +11,7 @@ import {
 } from "./middleware/error.js";
 import { healthRoute } from "./routes/health.js";
 import { projectsRoute } from "./routes/projects.js";
+import { renderRoute_ } from "./routes/render.js";
 import type { Db } from "./db/client.js";
 import type { AppEnv } from "./types.js";
 
@@ -32,10 +33,18 @@ export function createApp(db: Db) {
         maxSize: MAX_BODY_BYTES,
         onError: (c) => c.json({ error: "Payload too large" }, 413),
       }),
+    )
+    .use(
+      "/api/render/*",
+      bodyLimit({
+        maxSize: MAX_BODY_BYTES,
+        onError: (c) => c.json({ error: "Payload too large" }, 413),
+      }),
     );
 
   app.route("/api/health", healthRoute);
   app.route("/api/projects", projectsRoute);
+  app.route("/api/render", renderRoute_);
 
   app.doc("/api/openapi.json", {
     openapi: "3.0.0",
@@ -51,6 +60,7 @@ export function createApp(db: Db) {
         description: "Create, read, update wiremd projects.",
       },
       { name: "Meta", description: "Health check and operational endpoints." },
+      { name: "Render", description: "Render wiremd markdown to HTML." },
     ],
   });
 
