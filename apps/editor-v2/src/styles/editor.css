@@ -772,14 +772,20 @@ body {
 
 /* ── Sidebar lock banner ─────────────────────────────────── */
 .ed-sidebar-lock-banner {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   padding: 8px 16px;
   background: var(--ed-bg-input);
   border-bottom: 1px solid var(--ed-border);
   flex-shrink: 0;
   gap: 10px;
+}
+.ed-sidebar-lock-banner__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 .ed-sidebar-lock-banner__info {
   display: flex;
@@ -799,8 +805,18 @@ body {
   font-size: 11px;
   color: var(--ed-text-muted);
 }
+.ed-sidebar-lock-banner__lock {
+  width: 15px;
+  height: 15px;
+  color: var(--ed-text-muted);
+  justify-self: center;
+}
+/* steal button right-aligned */
+.ed-sidebar-lock-banner .ed-btn {
+  justify-self: end;
+}
 
-/* Lock banner icon */
+/* Lock banner icon (legacy, kept for compat) */
 .ed-sidebar-lock-banner__icon {
   width: 14px;
   height: 14px;
