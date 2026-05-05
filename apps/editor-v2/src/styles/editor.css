@@ -137,11 +137,25 @@ body {
 
 /* Square icon-only button */
 .ed-btn--icon { padding: 0; width: 34px; }
-.ed-btn--icon-active { background: var(--ed-accent); border-color: var(--ed-accent); color: #fff; }
-.ed-btn--icon-active:hover { background: var(--ed-accent-hover); border-color: var(--ed-accent-hover); color: #fff; }
 
-/* Hamburger — same height, transparent border */
-.ed-hamburger { padding: 0 9px; border-color: transparent; background: transparent; }
+/* Toggle ON — tinted bg, dark border, dark icon. Not a CTA. */
+.ed-btn--icon-active {
+  background: rgba(60,60,67,0.08);
+  border-color: rgba(60,60,67,0.3);
+  color: var(--ed-text-primary);
+}
+.ed-btn--icon-active:hover {
+  background: rgba(60,60,67,0.12);
+  border-color: rgba(60,60,67,0.4);
+}
+
+/* Hamburger — ghost, no border, recedes visually */
+.ed-hamburger {
+  padding: 0 9px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--ed-text-secondary);
+}
 .ed-hamburger:hover { border-color: var(--ed-border); background: var(--ed-bg-input); }
 
 /* ── Main Layout ─────────────────────────────────────────── */
