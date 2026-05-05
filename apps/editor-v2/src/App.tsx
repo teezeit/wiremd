@@ -17,8 +17,8 @@ export function App() {
   const { markdown, setMarkdown, style, setStyle, showComments, setShowComments } =
     useEditorState(getInitialMarkdown());
 
-  // v1 default: 'edit' — v4 flips to 'preview' once visual click-select exists
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
+  const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>('markdown');
   const [toast, setToast] = useState({ message: '', visible: false });
 
   const showToast = useCallback((message: string) => {
@@ -35,8 +35,7 @@ export function App() {
   );
 
   const handleReset = useCallback(() => {
-    const first = examples[0]?.code ?? '';
-    setMarkdown(first);
+    setMarkdown(examples[0]?.code ?? '');
     window.history.replaceState(null, '', window.location.pathname);
   }, [setMarkdown]);
 
@@ -49,6 +48,10 @@ export function App() {
       showToast('Copy failed');
     }
   }, [markdown, showToast]);
+
+  const toggleEdit = useCallback(() => {
+    setMode((m) => (m === 'edit' ? 'preview' : 'edit'));
+  }, []);
 
   return (
     <>
@@ -63,8 +66,6 @@ export function App() {
             wiremd
           </a>
         </div>
-
-        {/* right: Share first, Comments second */}
         <div className="ed-header__actions">
           <button className="ed-btn ed-btn--primary" onClick={handleShare}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -87,45 +88,59 @@ export function App() {
         </div>
       </header>
 
+      {/* ── Floating edit toggle — below hamburger ──────────── */}
+      <button
+        className={`ed-edit-toggle${mode === 'edit' ? ' ed-edit-toggle--active' : ''}`}
+        onClick={toggleEdit}
+        title={mode === 'edit' ? 'Hide editor' : 'Show editor'}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+        </svg>
+      </button>
+
       {/* ── Main ───────────────────────────────────────────── */}
       <main className={`ed-main${mode === 'preview' ? ' ed-main--preview' : ''}`}>
 
         {/* Left sidebar */}
         <aside className="ed-sidebar">
-          {/* Sidebar toolbar: label left, mode toggle right-bound */}
-          <div className="ed-sidebar__toolbar">
-            <span className="ed-sidebar__label">
+          {/* Tab bar */}
+          <div className="ed-sidebar__tabs">
+            <button
+              className={`ed-sidebar__tab${sidebarTab === 'insert' ? ' ed-sidebar__tab--active' : ''}`}
+              onClick={() => setSidebarTab('insert')}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Insert
+            </button>
+            <button
+              className={`ed-sidebar__tab${sidebarTab === 'markdown' ? ' ed-sidebar__tab--active' : ''}`}
+              onClick={() => setSidebarTab('markdown')}
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
               </svg>
               Markdown
-            </span>
-            <div className="ed-mode-toggle">
-              <button
-                className={`ed-mode-btn${mode === 'preview' ? ' ed-mode-btn--active' : ''}`}
-                onClick={() => setMode('preview')}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" />
-                </svg>
-                Preview
-              </button>
-              <button
-                className={`ed-mode-btn${mode === 'edit' ? ' ed-mode-btn--active' : ''}`}
-                onClick={() => setMode('edit')}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-                Edit
-              </button>
-            </div>
+            </button>
           </div>
 
-          <div className="ed-codemirror-wrap">
-            <Editor value={markdown} onChange={handleChange} />
-          </div>
+          {/* Tab content */}
+          {sidebarTab === 'insert' ? (
+            <div className="ed-sidebar__insert">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="9" y1="3" x2="9" y2="21" />
+              </svg>
+              <span>Component library</span>
+              <span className="ed-sidebar__insert-sub">Coming in v4</span>
+            </div>
+          ) : (
+            <div className="ed-codemirror-wrap">
+              <Editor value={markdown} onChange={handleChange} />
+            </div>
+          )}
         </aside>
 
         {/* Right canvas */}
