@@ -67,6 +67,8 @@ export function createApp(db: Db) {
   });
 
   app.get("/api/docs", swaggerUI({ url: "/api/openapi.json" }));
+  app.get("/", (c) => c.redirect("/api/docs", 302));
+  app.get("/api", (c) => c.redirect("/api/docs", 302));
 
   app.onError(onError);
   app.notFound(onNotFound);
