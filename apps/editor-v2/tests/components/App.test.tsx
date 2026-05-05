@@ -105,14 +105,22 @@ describe('App', () => {
     expect(screen.getByTestId('editor')).toBeInTheDocument();
   });
 
-  it('comments toggle reflects active state', () => {
+  it('comment button is disabled with "No comments yet" tooltip when there are no comments', () => {
+    localStorage.setItem('wiremd-content', '# Hello\n[Button]*');
+    render(<App />);
+    expect(screen.getByTitle('No comments yet')).toBeDisabled();
+  });
+
+  it('comments toggle reflects active state when comments exist', () => {
+    localStorage.setItem('wiremd-content', '# Hello\n<!-- a comment -->');
     render(<App />);
     expect(screen.getByTitle('Hide comments')).toHaveClass('ed-btn--icon-active');
     fireEvent.click(screen.getByTitle('Hide comments'));
     expect(screen.getByTitle('Show comments')).not.toHaveClass('ed-btn--icon-active');
   });
 
-  it('comments toggle updates showComments prop on Preview', () => {
+  it('comments toggle updates showComments prop on Preview when comments exist', () => {
+    localStorage.setItem('wiremd-content', '# Hello\n<!-- a comment -->');
     render(<App />);
     expect(lastPreviewProps.showComments).toBe(true);
     fireEvent.click(screen.getByTitle('Hide comments'));

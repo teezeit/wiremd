@@ -6,14 +6,20 @@ interface Props {
   onGetLink: () => string;
   onCopyLink: (url: string) => Promise<void>;
   onStartSession?: () => Promise<void>;
+  sessionUrl?: string;
+  onStopSession?: () => Promise<void>;
 }
 
 type LinkState = 'idle' | 'generating' | 'ready';
 
-export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSession }: Props) {
+export function ShareModal({
+  isOpen, onClose, onGetLink, onCopyLink,
+  onStartSession, sessionUrl, onStopSession,
+}: Props) {
   const [linkState, setLinkState] = useState<LinkState>('idle');
   const [generatedUrl, setGeneratedUrl] = useState('');
   const [copied, setCopied] = useState(false);
+  const [sessionCopied, setSessionCopied] = useState(false);
   const [starting, setStarting] = useState(false);
   const [sessionError, setSessionError] = useState<string | null>(null);
 
@@ -22,6 +28,7 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
       setLinkState('idle');
       setGeneratedUrl('');
       setCopied(false);
+      setSessionCopied(false);
       setStarting(false);
       setSessionError(null);
     }
@@ -45,9 +52,16 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
     }, 0);
   }
 
-  async function handleCopy() {
+  async function handleCopyGenerated() {
     await onCopyLink(generatedUrl);
     setCopied(true);
+  }
+
+  async function handleCopySession() {
+    if (!sessionUrl) return;
+    await onCopyLink(sessionUrl);
+    setSessionCopied(true);
+    setTimeout(() => setSessionCopied(false), 2000);
   }
 
   async function handleStartSession() {
@@ -56,12 +70,15 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
     setSessionError(null);
     try {
       await onStartSession();
+      // modal stays open — App will pass sessionUrl which triggers the active view
     } catch (err) {
       setSessionError(err instanceof Error ? err.message : 'Failed to start session');
     } finally {
       setStarting(false);
     }
   }
+
+  const isActiveSession = !!sessionUrl;
 
   return (
     <div className="ed-modal-backdrop" data-testid="modal-backdrop" onClick={onClose}>
@@ -81,14 +98,13 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
           </button>
         </div>
 
-        {/* Shareable link */}
+        {/* Shareable link — always shown */}
         <div className="ed-modal__section">
           <div className="ed-modal__section-title">Shareable link</div>
           <p className="ed-modal__section-desc">
             Generates a link with your current wireframe encoded in the URL.
             Changes made after sharing won't be reflected — this is a snapshot.
           </p>
-
           {linkState === 'idle' && (
             <button className="ed-btn ed-btn--primary ed-modal__action" onClick={handleExport}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -98,11 +114,7 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
               Export to link
             </button>
           )}
-
-          {linkState === 'generating' && (
-            <span className="ed-modal__generating">Generating…</span>
-          )}
-
+          {linkState === 'generating' && <span className="ed-modal__generating">Generating…</span>}
           {linkState === 'ready' && (
             <div className="ed-modal__link-row">
               <input
@@ -112,10 +124,10 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
                 readOnly
                 onClick={(e) => (e.target as HTMLInputElement).select()}
               />
-              <button className="ed-btn ed-btn--primary" onClick={handleCopy}>
-                {copied ? (
-                  <><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>Copied!</>
-                ) : 'Copy link'}
+              <button className="ed-btn ed-btn--primary" onClick={handleCopyGenerated}>
+                {copied
+                  ? <><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>Copied!</>
+                  : 'Copy link'}
               </button>
             </div>
           )}
@@ -129,19 +141,47 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
             Live Collaboration
             <span className="ed-modal__badge">saves to cloud</span>
           </div>
-          <p className="ed-modal__section-desc">
-            Saves your wireframe to the cloud and generates a shareable URL.
-            One person edits at a time — anyone with the link can view and take over the edit.
-          </p>
-          <button
-            className="ed-btn ed-btn--primary ed-modal__action"
-            disabled={!onStartSession || starting}
-            onClick={handleStartSession}
-          >
-            {starting ? 'Starting…' : 'Start Live Session'}
-          </button>
-          {sessionError && (
-            <p className="ed-modal__error">Failed to start session — check your connection and try again.</p>
+
+          {isActiveSession ? (
+            <>
+              <p className="ed-modal__section-desc">Active session — share this link with collaborators.</p>
+              <div className="ed-modal__link-row" style={{ marginBottom: 10 }}>
+                <input
+                  className="ed-modal__link-input"
+                  type="text"
+                  value={sessionUrl}
+                  readOnly
+                  onClick={(e) => (e.target as HTMLInputElement).select()}
+                />
+                <button className="ed-btn ed-btn--primary" onClick={handleCopySession}>
+                  {sessionCopied ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+              <button
+                className="ed-btn ed-modal__action"
+                style={{ borderColor: 'var(--ed-error)', color: 'var(--ed-error)' }}
+                onClick={onStopSession}
+              >
+                Stop Session
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="ed-modal__section-desc">
+                Saves your wireframe to the cloud and generates a shareable URL.
+                One person edits at a time — anyone with the link can view and take over the edit.
+              </p>
+              <button
+                className="ed-btn ed-btn--primary ed-modal__action"
+                disabled={!onStartSession || starting}
+                onClick={handleStartSession}
+              >
+                {starting ? 'Starting…' : 'Start Live Session'}
+              </button>
+              {sessionError && (
+                <p className="ed-modal__error">Failed to start session — check your connection and try again.</p>
+              )}
+            </>
           )}
         </div>
       </div>

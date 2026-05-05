@@ -138,6 +138,21 @@ body {
 /* Square icon-only button */
 .ed-btn--icon { padding: 0; width: 34px; }
 
+/* Comment button — fixed square, badge overlaid on corner */
+.ed-btn--comment { position: relative; }
+.ed-btn--comment:disabled { opacity: 0.5; cursor: not-allowed; }
+.ed-btn--comment:disabled:hover { background: transparent; border-color: var(--ed-border); color: var(--ed-text-secondary); transform: none; }
+
+.ed-comment-badge {
+  position: absolute; top: -5px; right: -5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 16px; height: 16px; padding: 0 3px;
+  border-radius: 8px; font-size: 10px; font-weight: 700; line-height: 1;
+  pointer-events: none;
+}
+.ed-comment-badge--grey { background: rgba(60,60,67,0.18); color: var(--ed-text-secondary); }
+.ed-comment-badge--yellow { background: #f5a623; color: #fff; }
+
 /* Toggle ON — tinted bg, dark border, dark icon. Not a CTA. */
 .ed-btn--icon-active {
   background: rgba(60,60,67,0.08);

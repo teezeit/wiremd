@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Editor } from './components/Editor';
 import { Preview } from './components/Preview';
 import { HamburgerMenu } from './components/HamburgerMenu';
+import { CommentButton } from './components/CommentButton';
 import { ShareModal } from './components/ShareModal';
 import { SaveModal } from './components/SaveModal';
 import { ConflictModal } from './components/ConflictModal';
@@ -9,6 +10,7 @@ import { LockModal } from './components/LockModal';
 import { Toast } from './components/Toast';
 import { useEditorState } from './hooks/useEditorState';
 import { useAutoSave, AUTO_SAVE_KEY } from './hooks/useAutoSave';
+import { useCommentCount } from './hooks/useCommentCount';
 import { useSessionIdentity } from './hooks/useSessionIdentity';
 import { useProjectLock } from './hooks/useProjectLock';
 import { decodeShareHash, encodeShareHash } from './lib/urlShare';
@@ -58,6 +60,7 @@ export function App() {
     useEditorState(initialMarkdown);
 
   useAutoSave(markdown);
+  const commentCount = useCommentCount(markdown);
 
   const { sessionId, name: myName } = useSessionIdentity();
   const [projectId, setProjectId] = useState<string | null>(getProjectId);
@@ -135,14 +138,20 @@ export function App() {
     setProjectId(id);
     await lockProject(id, sessionId, myName, false);
     setMode('edit');
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      showToast('Live session started — link copied!');
-    } catch {
-      showToast('Live session started!');
-    }
+    // modal stays open — switches to active session view
+  }, [markdown, sessionId, myName]);
+
+  const handleStopSession = useCallback(async () => {
+    if (projectId) await release();
+    window.history.replaceState(null, '', window.location.pathname);
+    setProjectId(null);
+    setMode('edit');
     setShareOpen(false);
-  }, [markdown, sessionId, myName, showToast]);
+  }, [projectId, release]);
+
+  const sessionUrl = projectId
+    ? `${window.location.origin}${window.location.pathname}?p=${projectId}`
+    : undefined;
 
   const toggleEdit = useCallback(async () => {
     if (lockState.status === 'solo') {
@@ -216,15 +225,11 @@ export function App() {
             </svg>
             Share
           </button>
-          <button
-            className={`ed-btn ed-btn--icon${showComments ? ' ed-btn--icon-active' : ''}`}
+          <CommentButton
+            commentCount={commentCount}
+            active={showComments}
             onClick={() => setShowComments(!showComments)}
-            title={showComments ? 'Hide comments' : 'Show comments'}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
-          </button>
+          />
         </div>
       </header>
 
@@ -282,6 +287,8 @@ export function App() {
         onGetLink={handleGetLink}
         onCopyLink={handleCopyLink}
         onStartSession={projectId ? undefined : handleStartSession}
+        sessionUrl={sessionUrl}
+        onStopSession={projectId ? handleStopSession : undefined}
       />
 
       <SaveModal

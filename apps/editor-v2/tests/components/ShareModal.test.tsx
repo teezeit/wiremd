@@ -276,3 +276,54 @@ describe('ShareModal — live session error state', () => {
     expect(screen.queryByText(/failed/i)).not.toBeInTheDocument();
   });
 });
+
+describe('ShareModal — active session view', () => {
+  const sessionUrl = 'http://localhost:5176/?p=abc123';
+
+  it('shows the session URL when sessionUrl is provided', () => {
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    expect(screen.getByRole('textbox')).toHaveValue(sessionUrl);
+  });
+
+  it('hides Start Live Session when sessionUrl is set', () => {
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    expect(screen.queryByRole('button', { name: /start live session/i })).not.toBeInTheDocument();
+  });
+
+  it('shows Copy button for the session URL', () => {
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    expect(screen.getByRole('button', { name: /copy/i })).toBeInTheDocument();
+  });
+
+  it('calls onCopyLink with sessionUrl when Copy is clicked', async () => {
+    const onCopyLink = vi.fn().mockResolvedValue(undefined);
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={onCopyLink} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /copy/i })); });
+    expect(onCopyLink).toHaveBeenCalledWith(sessionUrl);
+  });
+
+  it('shows Stop Session button', () => {
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    expect(screen.getByRole('button', { name: /stop session/i })).toBeInTheDocument();
+  });
+
+  it('calls onStopSession when Stop Session is clicked', async () => {
+    const onStopSession = vi.fn().mockResolvedValue(undefined);
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={onStopSession} />);
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /stop session/i })); });
+    expect(onStopSession).toHaveBeenCalledOnce();
+  });
+});
+
+describe('ShareModal — modal stays open after starting session', () => {
+  it('modal remains open after onStartSession resolves', async () => {
+    const onClose = vi.fn();
+    const onStartSession = vi.fn().mockResolvedValue(undefined);
+    render(<ShareModal isOpen={true} onClose={onClose} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} onStartSession={onStartSession} />);
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /start live session/i }));
+    });
+    // onClose should NOT be called — modal stays open
+    expect(onClose).not.toHaveBeenCalled();
+  });
+});
