@@ -132,6 +132,8 @@ body {
 
 .ed-btn--primary { background: var(--ed-accent); border-color: var(--ed-accent); color: #fff; }
 .ed-btn--primary:hover { background: var(--ed-accent-hover); border-color: var(--ed-accent-hover); color: #fff; }
+.ed-btn--live { background: #16a34a; border-color: #16a34a; }
+.ed-btn--live:hover { background: #15803d; border-color: #15803d; }
 
 .ed-btn--comments-on { background: var(--ed-accent-dim); border-color: rgba(99,102,241,0.2); color: var(--ed-accent); }
 
@@ -504,12 +506,19 @@ body {
 }
 
 .ed-modal__section-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   font-size: 13px;
   font-weight: 700;
   color: var(--ed-text-primary);
+}
+
+.ed-modal__section-sub {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ed-text-muted);
+  margin-top: 2px;
+  margin-bottom: 4px;
 }
 
 .ed-modal__section-desc {

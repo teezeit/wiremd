@@ -19,7 +19,7 @@ const LockBody = z.object({
   force: z.boolean().optional().default(false),
 });
 
-const UnlockBody = z.object({ clientId: z.string().min(1) });
+const UnlockBody = z.object({ clientId: z.string().min(1), force: z.boolean().optional().default(false) });
 
 const LockResponse = z.object({ lockedBy: z.string(), lockedName: z.string() });
 const ErrorResponse = z.object({ error: z.string() });
@@ -84,13 +84,13 @@ export const lockRoute = new OpenAPIHono<AppEnv>({ defaultHook: defaultValidatio
     const { id } = c.req.valid("param");
     if (!ID_PATTERN.test(id)) throw notFound();
 
-    const { clientId } = c.req.valid("json");
+    const { clientId, force } = c.req.valid("json");
 
     const row = await db.query.project.findFirst({ where: eq(project.id, id) });
     if (!row) throw notFound();
 
-    // Only release if this client holds the lock (idempotent otherwise)
-    if (row.lockedBy === clientId) {
+    // Release if caller holds the lock, OR if force:true (joiner leaving session)
+    if (row.lockedBy === clientId || force) {
       await db
         .update(project)
         .set({ lockedBy: null, lockedName: null })

@@ -183,7 +183,35 @@ describe('ShareModal — shareable link flow', () => {
   });
 });
 
+describe('ShareModal — live collaboration section layout', () => {
+  it('shows "Live Collaboration" heading', () => {
+    setup();
+    expect(screen.getByText('Live Collaboration')).toBeInTheDocument();
+  });
+
+  it('shows "saves to cloud" as a separate element from the heading', () => {
+    setup();
+    const badge = screen.getByTestId('saves-to-cloud');
+    expect(badge).toBeInTheDocument();
+    // must NOT be inside the same text node as "Live Collaboration"
+    expect(badge.textContent).toMatch(/saves to cloud/i);
+  });
+});
+
 describe('ShareModal — live session', () => {
+  it('Start Live Session button has a users icon', () => {
+    render(
+      <ShareModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onGetLink={vi.fn(() => '')}
+        onCopyLink={vi.fn()}
+        onStartSession={vi.fn().mockResolvedValue(undefined)}
+      />,
+    );
+    expect(screen.getByTestId('users-icon')).toBeInTheDocument();
+  });
+
   it('Start Live Session is disabled when no onStartSession prop', () => {
     render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} />);
     expect(screen.getByRole('button', { name: /start live session/i })).toBeDisabled();

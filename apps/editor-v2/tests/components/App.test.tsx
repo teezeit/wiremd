@@ -26,7 +26,15 @@ vi.mock('../../src/lib/localFile', () => ({
   saveAsLocalFile: vi.fn(),
 }));
 
+vi.mock('../../src/lib/projectApi', () => ({
+  getProjectLockInfo: vi.fn().mockResolvedValue({ lockedBy: null, lockedName: null, lastEditorName: null, updatedAt: new Date().toISOString() }),
+  lockProject: vi.fn().mockResolvedValue(undefined),
+  unlockProject: vi.fn().mockResolvedValue(undefined),
+  createProject: vi.fn().mockResolvedValue({ id: 'test-proj', updatedAt: new Date().toISOString() }),
+}));
+
 import * as localFile from '../../src/lib/localFile';
+import * as projectApi from '../../src/lib/projectApi';
 
 const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
 
@@ -54,6 +62,10 @@ beforeEach(() => {
   clipboardWriteText.mockClear();
   vi.mocked(localFile.openLocalFile).mockReset();
   vi.mocked(localFile.saveAsLocalFile).mockReset();
+  vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({ lockedBy: null, lockedName: null, lastEditorName: null, updatedAt: new Date().toISOString() });
+  vi.mocked(projectApi.createProject).mockResolvedValue({ id: 'test-proj', updatedAt: new Date().toISOString() });
+  vi.mocked(projectApi.lockProject).mockResolvedValue(undefined);
+  vi.mocked(projectApi.unlockProject).mockResolvedValue(undefined);
 });
 
 afterEach(() => {
@@ -125,6 +137,19 @@ describe('App', () => {
     expect(lastPreviewProps.showComments).toBe(true);
     fireEvent.click(screen.getByTitle('Hide comments'));
     expect(lastPreviewProps.showComments).toBe(false);
+  });
+
+  // Live session — header button
+  it('share button shows "Share" label when no session is active', () => {
+    render(<App />);
+    expect(screen.getByRole('button', { name: /^share$/i })).toBeInTheDocument();
+  });
+
+  it('share button shows "Live" label when a session is active', () => {
+    vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
+    render(<App />);
+    expect(screen.getByRole('button', { name: /^live$/i })).toBeInTheDocument();
+    vi.unstubAllGlobals();
   });
 
   // Share modal

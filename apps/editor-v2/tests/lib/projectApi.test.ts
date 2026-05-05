@@ -77,3 +77,12 @@ describe('createProject', () => {
     expect(result.id).toBe('proj1');
   });
 });
+
+describe('unlockProject with force', () => {
+  it('sends force:true in body when force is passed', async () => {
+    mockFetch.mockResolvedValueOnce(new Response(null, { status: 200 }));
+    await unlockProject('abc', 'me', true);
+    const body = JSON.parse((mockFetch.mock.calls[0]![1] as RequestInit).body as string);
+    expect(body.force).toBe(true);
+  });
+});

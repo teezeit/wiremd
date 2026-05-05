@@ -26,7 +26,7 @@ import {
   saveAsLocalFile,
 } from './lib/localFile';
 import { renderForFormat, filenameForFormat } from './lib/exportFormat';
-import { createProject, lockProject } from './lib/projectApi';
+import { createProject, lockProject, unlockProject } from './lib/projectApi';
 import type { SaveFormat } from './lib/exportFormat';
 
 interface InitialContent {
@@ -142,12 +142,13 @@ export function App() {
   }, [markdown, sessionId, myName]);
 
   const handleStopSession = useCallback(async () => {
-    if (projectId) await release();
+    // Force-unlock so joiner who doesn't hold the lock still clears it
+    if (projectId) await unlockProject(projectId, sessionId, true);
     window.history.replaceState(null, '', window.location.pathname);
     setProjectId(null);
     setMode('edit');
     setShareOpen(false);
-  }, [projectId, release]);
+  }, [projectId, sessionId]);
 
   const sessionUrl = projectId
     ? `${window.location.origin}${window.location.pathname}?p=${projectId}`

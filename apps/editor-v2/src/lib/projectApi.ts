@@ -42,10 +42,10 @@ export async function lockProject(
   await json(res);
 }
 
-export async function unlockProject(id: string, clientId: string): Promise<void> {
+export async function unlockProject(id: string, clientId: string, force = false): Promise<void> {
   await fetch(`${API_BASE}/api/projects/${id}/lock`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ clientId }),
+    body: JSON.stringify({ clientId, force }),
   });
 }
