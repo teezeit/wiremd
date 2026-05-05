@@ -61,39 +61,33 @@ body {
 
 #app { display: flex; flex-direction: column; height: 100vh; }
 
-/* ── Header — transparent strip, elements float ─────────── */
+/* ── Header — matches landing .ln nav ───────────────────── */
 .ed-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: var(--ed-header-h);
-  padding: 0 12px;
-  background: transparent;
-  border-bottom: none;
+  padding: 0 20px 0 16px;
+  background: var(--ed-bg-surface);
+  border-bottom: 1px solid var(--ed-border);
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
   flex-shrink: 0;
   z-index: 10;
-  pointer-events: none; /* let clicks pass through gaps */
 }
 
 .ed-header__brand-group {
   display: flex;
   align-items: center;
-  gap: 2px;
-  background: var(--ed-bg-surface);
-  border: 1px solid var(--ed-border);
-  border-radius: var(--ed-radius-md);
-  padding: 4px 12px 4px 4px;
-  box-shadow: var(--ed-shadow-md);
-  pointer-events: all;
+  gap: 12px;   /* space between hamburger and logo */
 }
 
 .ed-header__brand {
-  font-size: 15px;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--ed-text-primary);
   text-decoration: none;
-  padding: 0 2px;
 }
 .ed-header__brand:hover { opacity: 0.65; }
 
@@ -101,12 +95,6 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  pointer-events: all;
-}
-
-/* Individual floating buttons */
-.ed-header__actions .ed-btn {
-  box-shadow: var(--ed-shadow-md);
 }
 
 /* ── Buttons ─────────────────────────────────────────────── */
@@ -136,8 +124,19 @@ body {
 
 .ed-btn--comments-on { background: var(--ed-accent-dim); border-color: rgba(99,102,241,0.2); color: var(--ed-accent); }
 
-.ed-hamburger { padding: 5px 8px; border-color: transparent; background: transparent; box-shadow: none; }
-.ed-hamburger:hover { border-color: var(--ed-border); background: var(--ed-bg-input); box-shadow: none; }
+.ed-hamburger {
+  padding: 5px 7px;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ed-text-secondary);
+}
+.ed-hamburger:hover {
+  border-color: var(--ed-border);
+  background: var(--ed-bg-input);
+  box-shadow: none;
+  color: var(--ed-text-primary);
+}
 
 /* ── Main Layout ─────────────────────────────────────────── */
 .ed-main { display: flex; flex: 1; overflow: hidden; }
