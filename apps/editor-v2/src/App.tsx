@@ -7,6 +7,7 @@ import { ShareModal } from './components/ShareModal';
 import { SaveModal } from './components/SaveModal';
 import { ConflictModal } from './components/ConflictModal';
 import { LockModal } from './components/LockModal';
+import { SidebarLockBanner } from './components/SidebarLockBanner';
 import { Avatar } from './components/Avatar';
 import { Toast } from './components/Toast';
 import { useEditorState } from './hooks/useEditorState';
@@ -80,7 +81,7 @@ export function App() {
     setTimeout(() => setToast((t) => ({ ...t, visible: false })), 2000);
   }, []);
 
-  const { lockState, acquire, release, steal } = useProjectLock({
+  const { lockState, steal } = useProjectLock({
     projectId,
     sessionId,
     name: myName,
@@ -155,24 +156,9 @@ export function App() {
     ? `${window.location.origin}${window.location.pathname}?p=${projectId}`
     : undefined;
 
-  const toggleEdit = useCallback(async () => {
-    if (lockState.status === 'solo') {
-      setMode((m) => (m === 'edit' ? 'preview' : 'edit'));
-      return;
-    }
-    if (lockState.status === 'taken') {
-      setLockModalOpen(true);
-      return;
-    }
-    if (lockState.status === 'mine') {
-      await release();
-      setMode('preview');
-      return;
-    }
-    // unlocked — acquire and enter edit
-    await acquire();
-    setMode('edit');
-  }, [lockState.status, acquire, release]);
+  const toggleEdit = useCallback(() => {
+    setMode((m) => (m === 'edit' ? 'preview' : 'edit'));
+  }, []);
 
   return (
     <>
@@ -186,6 +172,9 @@ export function App() {
             onSaveAs={() => setSaveOpen(true)}
             fileSupported={fileSupported}
             name={myName}
+            onLiveCollab={() => setShareOpen(true)}
+            hasActiveSession={!!projectId}
+            hasLock={lockState.status === 'mine'}
           />
           <button
             className={`ed-btn ed-btn--icon${
@@ -271,6 +260,14 @@ export function App() {
               Markdown
             </button>
           </div>
+
+          {lockState.status === 'taken' && (
+            <SidebarLockBanner
+              lockedByName={lockState.lockedByName ?? 'Someone'}
+              lastEditedAt={lockState.lastEditedAt}
+              onSteal={() => setLockModalOpen(true)}
+            />
+          )}
 
           {sidebarTab === 'insert' ? (
             <div className="ed-sidebar__insert">

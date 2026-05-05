@@ -97,6 +97,38 @@ describe('App', () => {
     expect(container.querySelector('.ed-main')).not.toHaveClass('ed-main--preview');
   });
 
+  it('edit toggle always toggles mode even when lock is taken', async () => {
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
+      lockedBy: 'other-session', lockedName: 'Red Bear', lastEditorName: 'Red Bear',
+      updatedAt: new Date().toISOString(),
+    });
+    vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
+    const { container } = render(<App />);
+    // Give polling time to run
+    await vi.waitFor(() => {});
+    fireEvent.click(screen.getByTitle('Hide editor'));
+    expect(container.querySelector('.ed-main')).toHaveClass('ed-main--preview');
+    vi.unstubAllGlobals();
+  });
+
+  it('shows sidebar lock banner when someone else has the lock', async () => {
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
+      lockedBy: 'other-session', lockedName: 'Red Bear', lastEditorName: 'Red Bear',
+      updatedAt: new Date().toISOString(),
+    });
+    vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
+    render(<App />);
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: /steal edit/i })).toBeInTheDocument();
+    });
+    vi.unstubAllGlobals();
+  });
+
+  it('does not show sidebar lock banner when no lock is held', () => {
+    render(<App />);
+    expect(screen.queryByRole('button', { name: /steal edit/i })).not.toBeInTheDocument();
+  });
+
   it('sidebar defaults to Markdown tab', () => {
     render(<App />);
     expect(screen.getByTestId('editor')).toBeInTheDocument();

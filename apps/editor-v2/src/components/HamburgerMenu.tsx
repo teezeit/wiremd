@@ -20,9 +20,12 @@ interface Props {
   onSaveAs: () => void;
   fileSupported: boolean;
   name: string;
+  onLiveCollab?: () => void;
+  hasActiveSession?: boolean;
+  canReset?: boolean;
 }
 
-export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSaveAs, fileSupported, name }: Props) {
+export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSaveAs, fileSupported, name, onLiveCollab, hasActiveSession = false, canReset = true }: Props) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -64,7 +67,12 @@ export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSav
       {open && (
         <div className="ed-menu" onClick={(e) => e.stopPropagation()}>
           {/* Actions */}
-          <button className="ed-menu__item" onClick={() => { onReset(); setOpen(false); }}>
+          <button
+            className={`ed-menu__item${hasLock ? ' ed-menu__item--disabled' : ''}`}
+            disabled={hasLock}
+            title={hasLock ? 'Stop editing before resetting' : undefined}
+            onClick={() => { onReset(); setOpen(false); }}
+          >
             Reset
           </button>
           <button
@@ -85,9 +93,24 @@ export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSav
             Save to…
             {!fileSupported && <span className="ed-menu__badge">unsupported</span>}
           </button>
-          <button className="ed-menu__item ed-menu__item--disabled" disabled>
-            Live Collaboration
-            <span className="ed-menu__badge">soon</span>
+          <button
+            className={`ed-menu__item ed-menu__item--live${hasActiveSession ? ' ed-menu__item--live-active' : ''}`}
+            onClick={() => { onLiveCollab?.(); setOpen(false); }}
+          >
+            {hasActiveSession ? (
+              <>
+                <svg data-testid="users-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                Live Session
+                <span className="ed-menu__live-dot" />
+              </>
+            ) : (
+              'Live Collaboration'
+            )}
           </button>
 
           <div className="ed-menu__divider" />

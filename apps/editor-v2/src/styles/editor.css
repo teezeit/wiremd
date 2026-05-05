@@ -413,6 +413,14 @@ body {
 .ed-menu__item:hover { background: var(--ed-bg-input); color: var(--ed-text-primary); }
 .ed-menu__item--disabled { opacity: 0.4; cursor: default; }
 .ed-menu__item--disabled:hover { background: transparent; color: var(--ed-text-secondary); }
+.ed-menu__item--live svg { width: 14px; height: 14px; flex-shrink: 0; }
+.ed-menu__item--live-active { color: var(--ed-text-primary); }
+
+.ed-menu__live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #16a34a; flex-shrink: 0; margin-left: auto;
+}
+.ed-menu__item--disabled:hover { background: transparent; color: var(--ed-text-secondary); }
 
 .ed-menu__badge {
   margin-left: auto;
@@ -760,4 +768,34 @@ body {
   font-weight: 600;
   color: var(--ed-text-secondary);
   white-space: nowrap;
+}
+
+/* ── Sidebar lock banner ─────────────────────────────────── */
+.ed-sidebar-lock-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: var(--ed-bg-input);
+  border-bottom: 1px solid var(--ed-border);
+  flex-shrink: 0;
+  gap: 10px;
+}
+.ed-sidebar-lock-banner__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.ed-sidebar-lock-banner__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ed-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ed-sidebar-lock-banner__sub {
+  font-size: 11px;
+  color: var(--ed-text-muted);
 }

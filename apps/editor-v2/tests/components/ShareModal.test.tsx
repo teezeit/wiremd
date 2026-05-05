@@ -189,9 +189,15 @@ describe('ShareModal — live collaboration section layout', () => {
     expect(screen.getByText('Live Collaboration')).toBeInTheDocument();
   });
 
-  it('shows saves-to-cloud badge when no session is active', () => {
+  it('shows "saves to cloud and sync" badge when no session is active', () => {
     setup();
-    expect(screen.getByTestId('saves-to-cloud')).toBeInTheDocument();
+    expect(screen.getByTestId('saves-to-cloud')).toHaveTextContent('saves to cloud and sync');
+  });
+
+  it('"saves to cloud and sync" badge is not inside the heading element', () => {
+    setup();
+    const heading = screen.getByText('Live Collaboration');
+    expect(heading).not.toContainElement(screen.getByTestId('saves-to-cloud'));
   });
 
   it('shows green LIVE badge in a row below heading when session is active', () => {
@@ -334,15 +340,15 @@ describe('ShareModal — active session view', () => {
     expect(screen.queryByRole('button', { name: /start live session/i })).not.toBeInTheDocument();
   });
 
-  it('shows Copy button for the session URL', () => {
+  it('shows "Copy link" button for the session URL', () => {
     render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
-    expect(screen.getByRole('button', { name: /copy/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /copy link/i })).toBeInTheDocument();
   });
 
-  it('calls onCopyLink with sessionUrl when Copy is clicked', async () => {
+  it('calls onCopyLink with sessionUrl when "Copy link" is clicked', async () => {
     const onCopyLink = vi.fn().mockResolvedValue(undefined);
     render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={onCopyLink} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /copy/i })); });
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /copy link/i })); });
     expect(onCopyLink).toHaveBeenCalledWith(sessionUrl);
   });
 

@@ -139,12 +139,10 @@ export function ShareModal({
 
         {/* Live Collaboration */}
         <div className="ed-modal__section">
-          <div className="ed-modal__section-title">
-            Live Collaboration
-            {!isActiveSession && (
-              <span className="ed-modal__badge" data-testid="saves-to-cloud">saves to cloud</span>
-            )}
-          </div>
+          <div className="ed-modal__section-title">Live Collaboration</div>
+          {!isActiveSession && (
+            <span className="ed-modal__badge" data-testid="saves-to-cloud">saves to cloud and sync</span>
+          )}
           {isActiveSession && (
             <div className="ed-modal__live-row">
               {myName && <IdentityTag name={myName} avatarSize={22} />}
