@@ -4,6 +4,9 @@ export const project = pgTable("project", {
   id: text("id").primaryKey(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  lockedBy: text("locked_by"),
+  lockedName: text("locked_name"),
+  lastEditorName: text("last_editor_name"),
 });
 
 export const projectFile = pgTable(
