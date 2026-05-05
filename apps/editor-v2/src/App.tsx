@@ -5,11 +5,19 @@ import { HamburgerMenu } from './components/HamburgerMenu';
 import { ShareModal } from './components/ShareModal';
 import { SaveModal } from './components/SaveModal';
 import { ConflictModal } from './components/ConflictModal';
+import { LockModal } from './components/LockModal';
 import { Toast } from './components/Toast';
 import { useEditorState } from './hooks/useEditorState';
 import { useAutoSave, AUTO_SAVE_KEY } from './hooks/useAutoSave';
+import { useSessionIdentity } from './hooks/useSessionIdentity';
+import { useProjectLock } from './hooks/useProjectLock';
 import { decodeShareHash, encodeShareHash } from './lib/urlShare';
 import { examples } from './lib/examples';
+
+function getProjectId(): string | null {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('p');
+}
 import {
   isFileSystemAccessSupported,
   openLocalFile,
@@ -42,6 +50,7 @@ function getInitialContent(): InitialContent {
 }
 
 const fileSupported = isFileSystemAccessSupported();
+const projectId = getProjectId();
 
 export function App() {
   const { markdown: initialMarkdown, conflictContent } = getInitialContent();
@@ -50,11 +59,14 @@ export function App() {
 
   useAutoSave(markdown);
 
+  const { sessionId, name: myName } = useSessionIdentity();
+
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>('markdown');
   const [shareOpen, setShareOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(conflictContent !== null);
+  const [lockModalOpen, setLockModalOpen] = useState(false);
   const [pendingSharedContent] = useState(conflictContent);
   const [toast, setToast] = useState({ message: '', visible: false });
 
@@ -62,6 +74,16 @@ export function App() {
     setToast({ message, visible: true });
     setTimeout(() => setToast((t) => ({ ...t, visible: false })), 2000);
   }, []);
+
+  const { lockState, acquire, release, steal } = useProjectLock({
+    projectId,
+    sessionId,
+    name: myName,
+    onStolen: (byName) => {
+      setMode('preview');
+      showToast(`Edit was taken over by ${byName}`);
+    },
+  });
 
   const handleChange = useCallback(
     (value: string) => {
@@ -106,9 +128,24 @@ export function App() {
     if (result) showToast(`Saved as ${result.handle.name}`);
   }, [markdown, style, showToast]);
 
-  const toggleEdit = useCallback(() => {
-    setMode((m) => (m === 'edit' ? 'preview' : 'edit'));
-  }, []);
+  const toggleEdit = useCallback(async () => {
+    if (lockState.status === 'solo') {
+      setMode((m) => (m === 'edit' ? 'preview' : 'edit'));
+      return;
+    }
+    if (lockState.status === 'taken') {
+      setLockModalOpen(true);
+      return;
+    }
+    if (lockState.status === 'mine') {
+      await release();
+      setMode('preview');
+      return;
+    }
+    // unlocked — acquire and enter edit
+    await acquire();
+    setMode('edit');
+  }, [lockState.status, acquire, release]);
 
   return (
     <>
@@ -123,14 +160,34 @@ export function App() {
             fileSupported={fileSupported}
           />
           <button
-            className={`ed-btn ed-btn--icon${mode === 'edit' ? ' ed-btn--icon-active' : ''}`}
+            className={`ed-btn ed-btn--icon${
+              lockState.status === 'mine' || (lockState.status === 'solo' && mode === 'edit')
+                ? ' ed-btn--icon-active'
+                : lockState.status === 'taken'
+                  ? ' ed-btn--icon-locked'
+                  : ''
+            }`}
             onClick={toggleEdit}
-            title={mode === 'edit' ? 'Hide editor' : 'Show editor'}
+            title={
+              lockState.status === 'taken'
+                ? `${lockState.lockedByName ?? 'Someone'} is editing — click to steal`
+                : lockState.status === 'mine'
+                  ? `Editing as ${myName} — click to stop`
+                  : mode === 'edit'
+                    ? 'Hide editor'
+                    : 'Show editor'
+            }
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-            </svg>
+            {lockState.status === 'taken' ? (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            )}
           </button>
         </div>
 
@@ -223,6 +280,19 @@ export function App() {
           setConflictOpen(false);
         }}
         onKeepLocal={() => setConflictOpen(false)}
+      />
+
+      <LockModal
+        isOpen={lockModalOpen}
+        lockedByName={lockState.lockedByName ?? 'Someone'}
+        lastEditorName={lockState.lastEditorName}
+        lastEditedAt={lockState.lastEditedAt}
+        onSteal={async () => {
+          await steal();
+          setMode('edit');
+          setLockModalOpen(false);
+        }}
+        onClose={() => setLockModalOpen(false)}
       />
 
       <Toast message={toast.message} visible={toast.visible} />
