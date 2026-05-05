@@ -81,26 +81,26 @@ describe('HamburgerMenu', () => {
 });
 
 describe('HamburgerMenu — Reset with lock', () => {
-  it('Reset is enabled when canReset=true (user is the editor)', () => {
-    setup({ canReset: true });
+  it('Reset is enabled when isEditor=true (user is the editor)', () => {
+    setup({ isEditor: true });
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     expect(screen.getByRole('button', { name: /^reset$/i })).not.toBeDisabled();
   });
 
-  it('Reset is disabled when canReset=false (user is not the editor)', () => {
-    setup({ canReset: false });
+  it('Reset is disabled when isEditor=false (user is not the editor)', () => {
+    setup({ isEditor: false });
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     expect(screen.getByRole('button', { name: /^reset$/i })).toBeDisabled();
   });
 
   it('disabled Reset has a tooltip explaining why', () => {
-    setup({ canReset: false });
+    setup({ isEditor: false });
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     expect(screen.getByRole('button', { name: /^reset$/i })).toHaveAttribute('title');
   });
 
   it('does not call onReset when disabled', () => {
-    const { onReset } = setup({ canReset: false });
+    const { onReset } = setup({ isEditor: false });
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     fireEvent.click(screen.getByRole('button', { name: /^reset$/i }));
     expect(onReset).not.toHaveBeenCalled();

@@ -32,6 +32,16 @@ describe('LockModal', () => {
     expect(screen.getAllByText(/Red Bear/).length).toBeGreaterThan(0);
   });
 
+  it('shows an avatar in the title for the person editing', () => {
+    setup();
+    expect(screen.getByTestId('avatar')).toBeInTheDocument();
+  });
+
+  it('avatar initials match lockedByName', () => {
+    setup({ lockedByName: 'Red Bear' });
+    expect(screen.getByTestId('avatar')).toHaveTextContent('RB');
+  });
+
   it('shows last edited time', () => {
     setup();
     expect(screen.getByText(/ago/i)).toBeInTheDocument();

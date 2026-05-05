@@ -32,6 +32,9 @@ const UpdateBody = z
         "The updatedAt the client started from. If present and stale, the server returns 409 with the current state instead of overwriting.",
       example: "2026-05-01T12:00:00.000Z",
     }),
+    clientId: z.string().optional().openapi({
+      description: "Session ID of the caller. Required when a lock is held — rejected with 403 if caller does not hold the lock.",
+    }),
   })
   .openapi("UpdateProjectBody");
 
@@ -251,9 +254,20 @@ export const projectsRoute = new OpenAPIHono<AppEnv>({
     const { id } = c.req.valid("param");
     if (!ID_PATTERN.test(id)) throw notFound();
 
-    const { content, baseUpdatedAt } = c.req.valid("json");
+    const { content, baseUpdatedAt, clientId } = c.req.valid("json");
     const now = new Date();
     const baseDate = baseUpdatedAt ? new Date(baseUpdatedAt) : null;
+
+    // Enforce lock ownership: if a lock is held, only the lock holder may write
+    const proj = await db.query.project.findFirst({ where: eq(project.id, id) });
+    if (!proj) throw notFound();
+    if (proj.lockedBy && proj.lockedBy !== clientId) {
+      return c.json({
+        error: `Write rejected: project is locked by ${proj.lockedName ?? proj.lockedBy}. To acquire the lock, POST /api/projects/${id}/lock with your clientId and name, then retry the write.`,
+        lockedBy: proj.lockedBy,
+        lockedName: proj.lockedName,
+      }, 403);
+    }
 
     const result = await db.transaction(async (tx) => {
       const conditions = [

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
+import { Avatar } from './Avatar';
 
 interface Props {
   isOpen: boolean;
@@ -40,9 +41,7 @@ export function LockModal({ isOpen, lockedByName, lastEditorName, lastEditedAt, 
       >
         <div className="ed-modal__header">
           <h2 className="ed-modal__title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ width: 16, height: 16, marginRight: 6 }}>
-              <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
+            <Avatar name={lockedByName} size={24} />
             {lockedByName} is editing
           </h2>
         </div>

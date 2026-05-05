@@ -174,7 +174,7 @@ export function App() {
             name={myName}
             onLiveCollab={() => setShareOpen(true)}
             hasActiveSession={!!projectId}
-            hasLock={lockState.status === 'mine'}
+            isEditor={lockState.status === 'solo' || lockState.status === 'mine'}
           />
           <button
             className={`ed-btn ed-btn--icon${
@@ -279,7 +279,11 @@ export function App() {
             </div>
           ) : (
             <div className="ed-codemirror-wrap">
-              <Editor value={markdown} onChange={handleChange} />
+              <Editor
+                value={markdown}
+                onChange={handleChange}
+                readOnly={lockState.status === 'taken' && !!projectId}
+              />
             </div>
           )}
         </aside>

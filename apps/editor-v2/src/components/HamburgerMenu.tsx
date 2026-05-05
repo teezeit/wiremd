@@ -22,10 +22,10 @@ interface Props {
   name: string;
   onLiveCollab?: () => void;
   hasActiveSession?: boolean;
-  canReset?: boolean;
+  isEditor?: boolean;
 }
 
-export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSaveAs, fileSupported, name, onLiveCollab, hasActiveSession = false, canReset = true }: Props) {
+export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSaveAs, fileSupported, name, onLiveCollab, hasActiveSession = false, isEditor = true }: Props) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -68,9 +68,9 @@ export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSav
         <div className="ed-menu" onClick={(e) => e.stopPropagation()}>
           {/* Actions */}
           <button
-            className={`ed-menu__item${hasLock ? ' ed-menu__item--disabled' : ''}`}
-            disabled={hasLock}
-            title={hasLock ? 'Stop editing before resetting' : undefined}
+            className={`ed-menu__item${!isEditor ? ' ed-menu__item--disabled' : ''}`}
+            disabled={!isEditor}
+            title={!isEditor ? 'Take the edit lock to reset' : undefined}
             onClick={() => { onReset(); setOpen(false); }}
           >
             Reset

@@ -8,8 +8,8 @@ import type { LocalFileResult } from '../../src/lib/localFile';
 let lastPreviewProps: Record<string, unknown> = {};
 
 vi.mock('../../src/components/Editor', () => ({
-  Editor: ({ value }: { value: string; onChange: (v: string) => void }) => (
-    <div data-testid="editor">{value}</div>
+  Editor: ({ value, readOnly }: { value: string; onChange: (v: string) => void; readOnly?: boolean }) => (
+    <div data-testid="editor" data-readonly={readOnly || undefined}>{value}</div>
   ),
 }));
 
@@ -347,5 +347,25 @@ describe('App', () => {
     window.location.hash = encodeShareHash(content);
     render(<App />);
     expect(screen.queryByRole('dialog', { name: /conflict/i })).not.toBeInTheDocument();
+  });
+});
+
+describe('App — editor read-only in live session when not lock holder', () => {
+  it('editor is read-only when someone else holds the lock', async () => {
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
+      lockedBy: 'other-session', lockedName: 'Red Bear', lastEditorName: 'Red Bear',
+      updatedAt: new Date().toISOString(),
+    });
+    vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
+    const { container } = render(<App />);
+    await vi.waitFor(() => {
+      expect(container.querySelector('[data-readonly="true"]')).toBeInTheDocument();
+    });
+    vi.unstubAllGlobals();
+  });
+
+  it('editor is not read-only in solo mode', () => {
+    const { container } = render(<App />);
+    expect(container.querySelector('[data-readonly="true"]')).not.toBeInTheDocument();
   });
 });

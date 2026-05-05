@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from 'react';
 import { EditorView, basicSetup } from 'codemirror';
-import { EditorState } from '@codemirror/state';
+import { EditorState, Compartment } from '@codemirror/state';
 import { markdown } from '@codemirror/lang-markdown';
 import { wiremdLanguage } from '../lib/wiremdLanguage';
 import { useDebounce } from '../hooks/useDebounce';
@@ -35,12 +35,14 @@ const wiremdTheme = EditorView.theme({
 interface Props {
   value: string;
   onChange: (value: string) => void;
+  readOnly?: boolean;
 }
 
-export const Editor = memo(function Editor({ value, onChange }: Props) {
+const readOnlyCompartment = new Compartment();
+
+export const Editor = memo(function Editor({ value, onChange, readOnly = false }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
-  // Tracks the last value emitted by CodeMirror so we can skip roundtrip dispatches
   const lastEmittedValue = useRef(value);
   const debouncedOnChange = useDebounce(onChange, 200);
 
@@ -55,6 +57,7 @@ export const Editor = memo(function Editor({ value, onChange }: Props) {
           markdown({ addKeymap: true }),
           wiremdLanguage,
           wiremdTheme,
+          readOnlyCompartment.of(EditorState.readOnly.of(readOnly)),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
               const newValue = update.state.doc.toString();
@@ -87,5 +90,12 @@ export const Editor = memo(function Editor({ value, onChange }: Props) {
     });
   }, [value]);
 
-  return <div ref={containerRef} style={{ height: '100%' }} />;
+  // Sync readOnly changes without remounting
+  useEffect(() => {
+    const view = viewRef.current;
+    if (!view) return;
+    view.dispatch({ effects: readOnlyCompartment.reconfigure(EditorState.readOnly.of(readOnly)) });
+  }, [readOnly]);
+
+  return <div ref={containerRef} style={{ height: '100%' }} data-readonly={readOnly || undefined} />;
 });
