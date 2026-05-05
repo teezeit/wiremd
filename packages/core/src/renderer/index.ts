@@ -120,7 +120,7 @@ export function renderToHTML(
           `best.scrollIntoView({behavior:'smooth',block:'nearest'});` +
         `}` +
       `});` +
-      `var _st;window.addEventListener('scroll',function(){clearTimeout(_st);_st=setTimeout(function(){parent.postMessage({type:'wiremd-scroll',scrollY:window.scrollY},\"*\");},100);},true);` +
+      `var _st;window.addEventListener('scroll',function(){clearTimeout(_st);_st=setTimeout(function(){parent.postMessage({type:'wiremd-scroll',scrollY:window.scrollY},'*');},100);},true);` +
       `})();</script>`
     : '';
 
