@@ -2215,11 +2215,11 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
 
       // Transform cell content
       const pushCellTextWithInline = (value: string) => {
-        // Split text on inline patterns: badge `((text)){.cls}` and icon `:icon:`.
-        // Mirrors the rich-paragraph splitter so table cells render badges as
-        // proper nodes instead of leaking literal badge syntax to the
-        // rendered HTML.
-        const parts = value.split(new RegExp(`(${BADGE_TOKEN_PATTERN.source}|:[a-z0-9-]+:)`, 'g'));
+        // Split text on all inline wiremd tokens: buttons/inputs/switches
+        // `[Label]*{attrs}`, badges `((text)){.cls}`, and icons `:icon:`.
+        // Mirrors the rich-paragraph splitter so table cells render all
+        // inline elements as proper nodes instead of leaking literal syntax.
+        const parts = value.split(INLINE_TEXT_TOKEN_SPLIT);
         for (const part of parts) {
           if (!part) continue;
           const badge = parseBadgeToken(part);
@@ -2230,6 +2230,45 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
           const iconOnly = part.match(/^:([a-z0-9-]+):$/);
           if (iconOnly) {
             cellChildren.push({ type: 'icon', props: { name: iconOnly[1] } });
+            continue;
+          }
+          // Button / input / switch / checkbox: [text]*{attrs}
+          const bracketMatch = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
+          if (bracketMatch) {
+            const [, text, isPrimary, attrs] = bracketMatch;
+            // Labelless checkbox: [ ] (unchecked) or [x]/[X] (checked)
+            if (/^\s*$/.test(text) || /^[xX]$/.test(text)) {
+              cellChildren.push({
+                type: 'checkbox',
+                checked: /^[xX]$/i.test(text.trim()),
+                label: '',
+                props: parseAttributes(attrs || ''),
+              } as any);
+              continue;
+            }
+            const switchNode = switchNodeFromParts(text, attrs);
+            if (switchNode) {
+              cellChildren.push(switchNode);
+              continue;
+            }
+            const props = parseAttributes(attrs || '');
+            if (/_{1,}v$/.test(text)) {
+              const placeholder = text.replace(/_{1,}v$/, '').trim() || undefined;
+              cellChildren.push({
+                type: 'select',
+                props: { ...props, ...(placeholder ? { placeholder } : {}) },
+                options: [],
+              } as any);
+              continue;
+            }
+            if (/^[_*]+$/.test(text) || /_{3,}$/.test(text)) {
+              const placeholderMatch = text.match(/^([^_*]+)_{3,}$/);
+              if (placeholderMatch) props.placeholder = placeholderMatch[1].trim();
+              cellChildren.push({ type: 'input', props });
+              continue;
+            }
+            if (isPrimary) props.variant = 'primary';
+            cellChildren.push({ type: 'button', content: text, props });
             continue;
           }
           if (part.trim()) {
@@ -2249,8 +2288,8 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
             if (remainder) {
               pushCellTextWithInline(remainder);
             }
-          } else if (BADGE_TOKEN_SPLIT.test(child.value)) {
-            // Cell text contains badge syntax — split into text + badge nodes.
+          } else if (INLINE_TEXT_TOKEN_SPLIT.test(child.value)) {
+            // Cell text contains inline wiremd syntax — split into proper nodes.
             pushCellTextWithInline(child.value);
           } else {
             cellChildren.push({
