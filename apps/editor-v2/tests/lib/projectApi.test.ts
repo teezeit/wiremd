@@ -5,7 +5,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.stubGlobal('fetch', vi.fn());
 
-import { getProjectLockInfo, lockProject, unlockProject } from '../../src/lib/projectApi';
+import { getProjectLockInfo, lockProject, unlockProject, createProject } from '../../src/lib/projectApi';
 
 const mockFetch = vi.mocked(fetch);
 
@@ -62,5 +62,18 @@ describe('unlockProject', () => {
     const [url, init] = mockFetch.mock.calls[0]!;
     expect(String(url)).toContain('/api/projects/abc/lock');
     expect((init as RequestInit).method).toBe('DELETE');
+  });
+});
+
+describe('createProject', () => {
+  it('posts to /api/projects with content', async () => {
+    mockFetch.mockResolvedValueOnce(ok({ id: 'proj1', updatedAt: '2026-01-01T00:00:00Z' }));
+    const result = await createProject('# Hello');
+    const [url, init] = mockFetch.mock.calls[0]!;
+    expect(String(url)).toContain('/api/projects');
+    expect((init as RequestInit).method).toBe('POST');
+    const body = JSON.parse((init as RequestInit).body as string);
+    expect(body.content).toBe('# Hello');
+    expect(result.id).toBe('proj1');
   });
 });

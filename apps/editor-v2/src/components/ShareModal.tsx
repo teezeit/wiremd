@@ -5,21 +5,23 @@ interface Props {
   onClose: () => void;
   onGetLink: () => string;
   onCopyLink: (url: string) => Promise<void>;
+  onStartSession?: () => Promise<void>;
 }
 
 type LinkState = 'idle' | 'generating' | 'ready';
 
-export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink }: Props) {
+export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSession }: Props) {
   const [linkState, setLinkState] = useState<LinkState>('idle');
   const [generatedUrl, setGeneratedUrl] = useState('');
   const [copied, setCopied] = useState(false);
+  const [starting, setStarting] = useState(false);
 
-  // Reset when closed
   useEffect(() => {
     if (!isOpen) {
       setLinkState('idle');
       setGeneratedUrl('');
       setCopied(false);
+      setStarting(false);
     }
   }, [isOpen]);
 
@@ -46,12 +48,18 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink }: Props) {
     setCopied(true);
   }
 
+  async function handleStartSession() {
+    if (!onStartSession) return;
+    setStarting(true);
+    try {
+      await onStartSession();
+    } finally {
+      setStarting(false);
+    }
+  }
+
   return (
-    <div
-      className="ed-modal-backdrop"
-      data-testid="modal-backdrop"
-      onClick={onClose}
-    >
+    <div className="ed-modal-backdrop" data-testid="modal-backdrop" onClick={onClose}>
       <div
         className="ed-modal"
         role="dialog"
@@ -101,15 +109,8 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink }: Props) {
               />
               <button className="ed-btn ed-btn--primary" onClick={handleCopy}>
                 {copied ? (
-                  <>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    Copied!
-                  </>
-                ) : (
-                  'Copy link'
-                )}
+                  <><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>Copied!</>
+                ) : 'Copy link'}
               </button>
             </div>
           )}
@@ -126,9 +127,12 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink }: Props) {
           <p className="ed-modal__section-desc">
             Start a session — URL becomes a shareable project ID. Multiple people can edit simultaneously.
           </p>
-          <button className="ed-btn ed-modal__action" disabled>
-            Start Live Session
-            <span className="ed-modal__coming">— coming soon</span>
+          <button
+            className="ed-btn ed-btn--primary ed-modal__action"
+            disabled={!onStartSession || starting}
+            onClick={handleStartSession}
+          >
+            {starting ? 'Starting…' : 'Start Live Session'}
           </button>
         </div>
       </div>

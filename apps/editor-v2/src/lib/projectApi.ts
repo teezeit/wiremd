@@ -12,6 +12,15 @@ async function json<T>(res: Response): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+export async function createProject(content: string): Promise<{ id: string; updatedAt: string }> {
+  const res = await fetch(`${API_BASE}/api/projects`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content }),
+  });
+  return json<{ id: string; updatedAt: string }>(res);
+}
+
 export async function getProjectLockInfo(id: string): Promise<ProjectLockInfo> {
   const res = await fetch(`${API_BASE}/api/projects/${id}`, {
     headers: { 'Content-Type': 'application/json' },

@@ -182,3 +182,59 @@ describe('ShareModal — shareable link flow', () => {
     expect(screen.getByRole('button', { name: /export to link/i })).toBeInTheDocument();
   });
 });
+
+describe('ShareModal — live session', () => {
+  it('Start Live Session is disabled when no onStartSession prop', () => {
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} />);
+    expect(screen.getByRole('button', { name: /start live session/i })).toBeDisabled();
+  });
+
+  it('Start Live Session is enabled when onStartSession is provided', () => {
+    render(
+      <ShareModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onGetLink={vi.fn(() => '')}
+        onCopyLink={vi.fn()}
+        onStartSession={vi.fn().mockResolvedValue(undefined)}
+      />,
+    );
+    expect(screen.getByRole('button', { name: /start live session/i })).not.toBeDisabled();
+  });
+
+  it('calls onStartSession when button is clicked', async () => {
+    const onStartSession = vi.fn().mockResolvedValue(undefined);
+    render(
+      <ShareModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onGetLink={vi.fn(() => '')}
+        onCopyLink={vi.fn()}
+        onStartSession={onStartSession}
+      />,
+    );
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /start live session/i }));
+    });
+    expect(onStartSession).toHaveBeenCalledOnce();
+  });
+
+  it('shows loading state while starting session', async () => {
+    let resolve!: () => void;
+    const onStartSession = vi.fn(
+      () => new Promise<void>((r) => { resolve = r; }),
+    );
+    render(
+      <ShareModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onGetLink={vi.fn(() => '')}
+        onCopyLink={vi.fn()}
+        onStartSession={onStartSession}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /start live session/i }));
+    expect(screen.getByRole('button', { name: /starting/i })).toBeDisabled();
+    resolve();
+  });
+});

@@ -24,6 +24,7 @@ import {
   saveAsLocalFile,
 } from './lib/localFile';
 import { renderForFormat, filenameForFormat } from './lib/exportFormat';
+import { createProject, lockProject } from './lib/projectApi';
 import type { SaveFormat } from './lib/exportFormat';
 
 interface InitialContent {
@@ -50,7 +51,6 @@ function getInitialContent(): InitialContent {
 }
 
 const fileSupported = isFileSystemAccessSupported();
-const projectId = getProjectId();
 
 export function App() {
   const { markdown: initialMarkdown, conflictContent } = getInitialContent();
@@ -60,6 +60,7 @@ export function App() {
   useAutoSave(markdown);
 
   const { sessionId, name: myName } = useSessionIdentity();
+  const [projectId, setProjectId] = useState<string | null>(getProjectId);
 
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>('markdown');
@@ -127,6 +128,21 @@ export function App() {
     const result = await saveAsLocalFile(w.showSaveFilePicker as never, content, filenameForFormat(format));
     if (result) showToast(`Saved as ${result.handle.name}`);
   }, [markdown, style, showToast]);
+
+  const handleStartSession = useCallback(async () => {
+    const { id } = await createProject(markdown);
+    window.history.pushState(null, '', `${window.location.pathname}?p=${id}`);
+    setProjectId(id);
+    await lockProject(id, sessionId, myName, false);
+    setMode('edit');
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      showToast('Live session started — link copied!');
+    } catch {
+      showToast('Live session started!');
+    }
+    setShareOpen(false);
+  }, [markdown, sessionId, myName, showToast]);
 
   const toggleEdit = useCallback(async () => {
     if (lockState.status === 'solo') {
@@ -265,6 +281,7 @@ export function App() {
         onClose={() => setShareOpen(false)}
         onGetLink={handleGetLink}
         onCopyLink={handleCopyLink}
+        onStartSession={projectId ? undefined : handleStartSession}
       />
 
       <SaveModal
