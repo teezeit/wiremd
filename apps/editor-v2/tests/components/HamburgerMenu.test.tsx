@@ -7,6 +7,10 @@ function setup(overrides = {}) {
     style: 'sketch' as const,
     onStyleChange: vi.fn(),
     onReset: vi.fn(),
+    onOpenFile: vi.fn(),
+    onSaveAs: vi.fn(),
+    fileSupported: true,
+    name: 'Blue Fox',
     ...overrides,
   };
   render(<HamburgerMenu {...props} />);

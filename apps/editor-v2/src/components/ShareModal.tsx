@@ -8,13 +8,14 @@ interface Props {
   onStartSession?: () => Promise<void>;
   sessionUrl?: string;
   onStopSession?: () => Promise<void>;
+  myName?: string;
 }
 
 type LinkState = 'idle' | 'generating' | 'ready';
 
 export function ShareModal({
   isOpen, onClose, onGetLink, onCopyLink,
-  onStartSession, sessionUrl, onStopSession,
+  onStartSession, sessionUrl, onStopSession, myName,
 }: Props) {
   const [linkState, setLinkState] = useState<LinkState>('idle');
   const [generatedUrl, setGeneratedUrl] = useState('');
@@ -137,8 +138,18 @@ export function ShareModal({
 
         {/* Live Collaboration */}
         <div className="ed-modal__section">
-          <div className="ed-modal__section-title">Live Collaboration</div>
-          <div className="ed-modal__section-sub" data-testid="saves-to-cloud">saves to cloud</div>
+          <div className="ed-modal__section-title">
+            Live Collaboration
+            {!isActiveSession && (
+              <span className="ed-modal__badge" data-testid="saves-to-cloud">saves to cloud</span>
+            )}
+          </div>
+          {isActiveSession && (
+            <div className="ed-modal__live-row">
+              <span className="ed-modal__live-badge" data-testid="live-badge">● LIVE</span>
+              {myName && <span className="ed-modal__identity-badge">{myName}</span>}
+            </div>
+          )}
 
           {isActiveSession ? (
             <>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { StyleName } from '../lib/renderMarkup';
+import { Avatar } from './Avatar';
 
 const STYLES: { value: StyleName; label: string }[] = [
   { value: 'sketch', label: 'Sketch' },
@@ -18,9 +19,10 @@ interface Props {
   onOpenFile: () => void;
   onSaveAs: () => void;
   fileSupported: boolean;
+  name: string;
 }
 
-export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSaveAs, fileSupported }: Props) {
+export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSaveAs, fileSupported, name }: Props) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -129,6 +131,16 @@ export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSav
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
             </svg>
           </a>
+
+          <div className="ed-menu__divider" />
+
+          <div className="ed-menu__identity">
+            <Avatar name={name} size={28} />
+            <div className="ed-menu__identity-text">
+              <span className="ed-menu__identity-label">You are</span>
+              <span className="ed-menu__identity-name">{name}</span>
+            </div>
+          </div>
         </div>
       )}
     </div>

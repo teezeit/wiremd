@@ -521,6 +521,14 @@ body {
   margin-bottom: 4px;
 }
 
+.ed-modal__live-badge {
+  display: inline-flex; align-items: center; align-self: flex-start;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.08em;
+  color: #fff; background: #16a34a;
+  border-radius: 4px; padding: 1px 6px;
+  margin-top: 3px; margin-bottom: 4px;
+}
+
 .ed-modal__section-desc {
   font-size: 13px;
   color: var(--ed-text-secondary);
@@ -627,4 +635,50 @@ body {
   font-size: 12px;
   color: var(--ed-error);
   margin-top: 6px;
+}
+
+.ed-menu__identity {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  gap: 10px;
+}
+.ed-menu__identity-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.ed-menu__identity-label {
+  font-size: 11px;
+  color: var(--ed-text-muted);
+}
+.ed-menu__identity-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ed-text-secondary);
+}
+
+.ed-modal__identity-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ed-text-muted);
+  background: var(--ed-bg-input);
+  border: 1px solid var(--ed-border);
+  border-radius: 4px;
+  padding: 1px 7px;
+  margin-left: 6px;
+}
+
+.ed-modal__live-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ed-modal__live-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #22c55e;
+  letter-spacing: 0.04em;
 }

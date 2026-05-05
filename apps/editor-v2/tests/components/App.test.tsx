@@ -139,17 +139,9 @@ describe('App', () => {
     expect(lastPreviewProps.showComments).toBe(false);
   });
 
-  // Live session — header button
-  it('share button shows "Share" label when no session is active', () => {
+  it('share button always shows "Share" label', () => {
     render(<App />);
     expect(screen.getByRole('button', { name: /^share$/i })).toBeInTheDocument();
-  });
-
-  it('share button shows "Live" label when a session is active', () => {
-    vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
-    render(<App />);
-    expect(screen.getByRole('button', { name: /^live$/i })).toBeInTheDocument();
-    vi.unstubAllGlobals();
   });
 
   // Share modal

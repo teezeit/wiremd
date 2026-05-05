@@ -189,12 +189,28 @@ describe('ShareModal — live collaboration section layout', () => {
     expect(screen.getByText('Live Collaboration')).toBeInTheDocument();
   });
 
-  it('shows "saves to cloud" as a separate element from the heading', () => {
+  it('shows saves-to-cloud badge when no session is active', () => {
     setup();
-    const badge = screen.getByTestId('saves-to-cloud');
-    expect(badge).toBeInTheDocument();
-    // must NOT be inside the same text node as "Live Collaboration"
-    expect(badge.textContent).toMatch(/saves to cloud/i);
+    expect(screen.getByTestId('saves-to-cloud')).toBeInTheDocument();
+  });
+
+  it('shows green LIVE badge in a row below heading when session is active', () => {
+    const sessionUrl = 'http://localhost/?p=abc123';
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} />);
+    expect(screen.getByTestId('live-badge')).toBeInTheDocument();
+    expect(screen.queryByTestId('saves-to-cloud')).not.toBeInTheDocument();
+  });
+
+  it('shows myName badge next to LIVE badge when session is active', () => {
+    const sessionUrl = 'http://localhost/?p=abc123';
+    render(<ShareModal isOpen={true} onClose={vi.fn()} onGetLink={vi.fn(() => '')} onCopyLink={vi.fn()} sessionUrl={sessionUrl} onStopSession={vi.fn()} myName="Blue Fox" />);
+    expect(screen.getByText('Blue Fox')).toBeInTheDocument();
+    expect(screen.getByTestId('live-badge')).toBeInTheDocument();
+  });
+
+  it('does not show myName badge when no session is active', () => {
+    setup();
+    expect(screen.queryByText('Blue Fox')).not.toBeInTheDocument();
   });
 });
 

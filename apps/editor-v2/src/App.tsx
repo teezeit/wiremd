@@ -184,6 +184,7 @@ export function App() {
             onOpenFile={handleOpenFile}
             onSaveAs={() => setSaveOpen(true)}
             fileSupported={fileSupported}
+            name={myName}
           />
           <button
             className={`ed-btn ed-btn--icon${
@@ -290,6 +291,7 @@ export function App() {
         onStartSession={projectId ? undefined : handleStartSession}
         sessionUrl={sessionUrl}
         onStopSession={projectId ? handleStopSession : undefined}
+        myName={myName}
       />
 
       <SaveModal
