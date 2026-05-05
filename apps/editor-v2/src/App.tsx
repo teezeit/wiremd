@@ -14,7 +14,7 @@ function getInitialMarkdown(): string {
 }
 
 export function App() {
-  const { markdown, setMarkdown, style, setStyle, activeTab, setActiveTab, showComments, setShowComments } =
+  const { markdown, setMarkdown, style, setStyle, showComments, setShowComments } =
     useEditorState(getInitialMarkdown());
 
   // v1 default: 'edit' — v4 flips to 'preview' once visual click-select exists
@@ -130,35 +130,10 @@ export function App() {
 
         {/* Right canvas */}
         <section className="ed-canvas">
-          <div className="ed-canvas__toolbar">
-            <div className="ed-canvas__toolbar-left">
-              <div className="ed-tabs">
-                <button
-                  className={`ed-tab${activeTab === 'preview' ? ' ed-tab--active' : ''}`}
-                  onClick={() => setActiveTab('preview')}
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" />
-                  </svg>
-                  Preview
-                </button>
-                <button
-                  className={`ed-tab${activeTab === 'html' ? ' ed-tab--active' : ''}`}
-                  onClick={() => setActiveTab('html')}
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
-                  </svg>
-                  HTML
-                </button>
-              </div>
-            </div>
-          </div>
-
           <Preview
             markdown={markdown}
             style={style}
-            activeTab={activeTab}
+            activeTab="preview"
             showComments={showComments}
           />
         </section>
