@@ -38,11 +38,12 @@ export function ShareModal({ isOpen, onClose, onCopyLink }: Props) {
           </button>
         </div>
 
-        {/* Copy Link */}
+        {/* Shareable link */}
         <div className="ed-modal__section">
-          <div className="ed-modal__section-title">Copy Link</div>
+          <div className="ed-modal__section-title">Shareable link</div>
           <p className="ed-modal__section-desc">
-            Markdown encoded in URL — works offline, no account needed.
+            Generates a link with your current wireframe encoded in the URL.
+            Changes made after sharing won't be reflected — this is a snapshot.
           </p>
           <button className="ed-btn ed-btn--primary ed-modal__action" onClick={onCopyLink}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

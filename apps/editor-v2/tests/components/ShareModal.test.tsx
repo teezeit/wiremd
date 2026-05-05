@@ -48,6 +48,11 @@ describe('ShareModal', () => {
     expect(onClose).toHaveBeenCalled();
   });
 
+  it('renders shareable link section', () => {
+    setup();
+    expect(screen.getByText(/shareable link/i)).toBeInTheDocument();
+  });
+
   it('renders Copy Link button', () => {
     setup();
     expect(screen.getByRole('button', { name: /copy link/i })).toBeInTheDocument();
