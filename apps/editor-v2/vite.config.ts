@@ -27,7 +27,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          "monaco-editor": ["monaco-editor"],
+          "codemirror": ["codemirror", "@codemirror/lang-markdown", "@codemirror/theme-one-dark"],
           "wiremd-core": ["@eclectic-ai/wiremd"],
         },
       },
