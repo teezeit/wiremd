@@ -105,3 +105,32 @@ describe('useProjectLock — shared project', () => {
     expect(onStolen).toHaveBeenCalledWith('Red Bear');
   });
 });
+
+describe('useProjectLock — session cleanup', () => {
+  it('resets lockState to solo when projectId changes to null', async () => {
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue(takenProject('me', 'Blue Fox'));
+    const { result, rerender } = renderHook(
+      ({ pid }: { pid: string | null }) => useProjectLock({ ...BASE, projectId: pid }),
+      { initialProps: { pid: 'proj1' } },
+    );
+    await act(async () => { await vi.advanceTimersByTimeAsync(100); });
+    expect(result.current.lockState.status).toBe('mine');
+
+    // Stop session — set projectId to null
+    rerender({ pid: null });
+    expect(result.current.lockState.status).toBe('solo');
+    expect(result.current.lockState.lockedByName).toBeNull();
+  });
+
+  it('stops polling when projectId becomes null', async () => {
+    const { rerender } = renderHook(
+      ({ pid }: { pid: string | null }) => useProjectLock({ ...BASE, projectId: pid }),
+      { initialProps: { pid: 'proj1' } },
+    );
+    await act(async () => { await vi.advanceTimersByTimeAsync(100); });
+    const callsBefore = vi.mocked(projectApi.getProjectLockInfo).mock.calls.length;
+    rerender({ pid: null });
+    await act(async () => { await vi.advanceTimersByTimeAsync(4000); });
+    expect(vi.mocked(projectApi.getProjectLockInfo).mock.calls.length).toBe(callsBefore);
+  });
+});

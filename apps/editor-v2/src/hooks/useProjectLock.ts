@@ -56,7 +56,12 @@ export function useProjectLock({ projectId, sessionId, name, onStolen }: Opts) {
   );
 
   useEffect(() => {
-    if (!projectId) return;
+    if (!projectId) {
+      // Session ended — reset everything to solo immediately
+      prevStatusRef.current = 'solo';
+      setLockState({ status: 'solo', lockedByName: null, lastEditorName: null, lastEditedAt: null });
+      return;
+    }
 
     let cancelled = false;
     async function poll() {
