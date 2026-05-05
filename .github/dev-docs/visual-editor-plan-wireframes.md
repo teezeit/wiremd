@@ -1,10 +1,11 @@
 ::: columns-2
 ::: column
-<!-- logo - link to landing page -->
-[☰] :logo: **wiremd**
+<!-- left: tool controls -->
+[☰] [:edit:]{secondary}
 :::
 ::: column {right}
- [Share]{primary} [:chat: comments]
+<!-- right: brand + actions -->
+**wiremd** [Share]{primary} [:chat:]
 :::
 :::
 
@@ -13,8 +14,7 @@
 > visible on load
 [Load from Templates]* [dismiss]
 
-<!-- toggle mode right bound -->
-[:eye:] / [edit]*
+<!-- mode toggle is now in the header (left side), not here -->
 
 
 ::: card
@@ -179,15 +179,14 @@ Password
 [Reset]
 [Open from file]
 [Save to...]
-[Live Collaboration]
-[Export to link]
+[Live Collaboration]{secondary}
 
 ---
-Style: [Sketch]{primary} [Clean] [Material] [Brutalist]
+Style: [Sketch]{primary} [Clean] [Wireframe] [Material] [Tailwind] [Brutal] [None]
 
 ---
 [GitHub]
-[About]
+[Docs]
 :::
 :::
 ::: column {span-1 top} Share button
@@ -199,24 +198,31 @@ Style: [Sketch]{primary} [Clean] [Material] [Brutalist]
 :::
 ::: column Sharing modal — no session
 ::: card
+**Share**
+
+---
+**Shareable link**
+
+Generates a link with your current wireframe encoded in the URL. Changes made after sharing won't be reflected — this is a snapshot.
+
+<!-- idle state -->
+[Export to link]{primary}
+
+<!-- after click: generating -->
+> Generating…
+
+<!-- ready state -->
+[wiremd.com/editor/#code=...____________]{readonly} [Copy link]{primary}
+
+((Copied! ✓)){success}
+
+---
 **Live Collaboration**
 ((saves to cloud)){primary}
 
-Start a session — URL becomes a shareable project ID. Multiple people can edit simultaneously.
+Start a session — URL becomes a shareable project ID.
 
-[Start Live Session]{primary}
-
----
-**Copy Link**
-
-Markdown encoded in URL — works offline, no account needed.
-
-[Copy Link]
-
----
-**Export**
-
-[Markdown] [HTML] [Tailwind] [React / JSX]
+[Start Live Session] (disabled — coming soon)
 :::
 :::
 ::: column {top} Sharing modal — live active
