@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
 import { renderMarkup } from '../lib/renderMarkup';
 import type { StyleName } from '../lib/renderMarkup';
 
@@ -18,14 +18,37 @@ export const Preview = memo(function Preview({ markdown, style, activeTab, showC
   const html = result.error === null ? result.html : '';
   const error = result.error;
 
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const savedScrollY = useRef(0);
+
+  // Listen for scroll position reports from the iframe before it reloads
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      if (e.data?.type === 'wiremd-scroll') {
+        savedScrollY.current = e.data.scrollY as number;
+      }
+    }
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
+
+  // After iframe loads, restore saved scroll position
+  function onIframeLoad() {
+    const win = iframeRef.current?.contentWindow;
+    if (!win || savedScrollY.current === 0) return;
+    win.postMessage({ type: 'wiremd-set-scroll', scrollY: savedScrollY.current }, '*');
+  }
+
   return (
     <div className="ed-preview__content">
       {activeTab === 'preview' ? (
         <iframe
+          ref={iframeRef}
           className="ed-preview__iframe"
           sandbox="allow-scripts"
           title="Preview"
           srcDoc={html}
+          onLoad={onIframeLoad}
         />
       ) : (
         <div className="ed-preview__html">
