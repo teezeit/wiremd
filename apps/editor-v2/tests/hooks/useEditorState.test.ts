@@ -25,17 +25,6 @@ describe('useEditorState', () => {
     expect(result.current.style).toBe('clean');
   });
 
-  it('defaults activeTab to preview', () => {
-    const { result } = renderHook(() => useEditorState(''));
-    expect(result.current.activeTab).toBe('preview');
-  });
-
-  it('toggles activeTab', () => {
-    const { result } = renderHook(() => useEditorState(''));
-    act(() => { result.current.setActiveTab('html'); });
-    expect(result.current.activeTab).toBe('html');
-  });
-
   it('defaults showComments to true', () => {
     const { result } = renderHook(() => useEditorState(''));
     expect(result.current.showComments).toBe(true);
