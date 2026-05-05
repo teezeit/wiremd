@@ -6,7 +6,54 @@ export interface Example {
   code: string;
 }
 
+const landingPageExample: Example = {
+  name: 'Landing Page',
+  description: 'Marketing hero with features',
+  code: `[[ :logo: wiremd | Features | Pricing | Docs | [Get Started] ]]
+
+::: hero
+# Design UI with Markdown
+### The fastest way to create wireframes and mockups
+
+> Write markdown. Get wireframes. Ship faster.
+
+[Get Started - Free]* [View Documentation]{secondary}
+:::
+
+::: columns-3 card
+::: column :rocket: Lightning Fast
+Write your UI in markdown and see it rendered instantly. No drag and drop needed.
+
+:::
+::: column :device-desktop: Multiple Styles
+Choose from Sketch, Clean, Material, Tailwind, Brutal, and more visual styles.
+
+<!-- Should this say "For Engineering Teams" with more specifics? @sara -->
+<!-- Agreed — mention CLI + VS Code explicitly. @tobias -->
+<!-- +1, updated copy sounds way stronger. @mike -->
+:::
+::: column :settings: Developer First
+CLI tool, VS Code extension, and npm package. Fits your existing workflow.
+
+:::
+:::
+
+::: row {right}
+[Install CLI] [Open Editor]*
+:::
+
+---
+
+## What developers are saying
+
+> "wiremd changed how our team communicates about UI. We sketch ideas in markdown during standup and everyone gets it."
+>
+> — **Sarah Chen**, Staff Engineer at Acme Corp
+`,
+};
+
 export const examples: Example[] = [
+  landingPageExample,
   {
     name: 'Login Form',
     description: 'Simple authentication page',
@@ -227,51 +274,6 @@ Security actions
 :::
 
 :::
-`,
-  },
-  {
-    name: 'Landing Page',
-    description: 'Marketing hero with features',
-    code: `[[ :logo: wiremd | Features | Pricing | Docs | [Get Started] ]]
-
-::: hero
-# Design UI with Markdown
-### The fastest way to create wireframes and mockups
-
-> Write markdown. Get wireframes. Ship faster.
-
-[Get Started - Free]* [View Documentation]{secondary}
-:::
-
-::: columns-3 card
-::: column :rocket: Lightning Fast
-Write your UI in markdown and see it rendered instantly. No drag and drop needed.
-
-:::
-::: column :device-desktop: Multiple Styles
-Choose from Sketch, Clean, Material, Tailwind, Brutal, and more visual styles.
-
-<!-- Should this say "For Engineering Teams" with more specifics? @sara -->
-<!-- Agreed — mention CLI + VS Code explicitly. @tobias -->
-<!-- +1, updated copy sounds way stronger. @mike -->
-:::
-::: column :settings: Developer First
-CLI tool, VS Code extension, and npm package. Fits your existing workflow.
-
-:::
-:::
-
-::: row {right}
-[Install CLI] [Open Editor]*
-:::
-
----
-
-## What developers are saying
-
-> "wiremd changed how our team communicates about UI. We sketch ideas in markdown during standup and everyone gets it."
->
-> — **Sarah Chen**, Staff Engineer at Acme Corp
 `,
   },
 ];

@@ -35,6 +35,7 @@ import type { SaveFormat } from './lib/exportFormat';
 interface InitialContent {
   markdown: string;
   conflictContent: string | null; // hash content when conflict detected
+  isFirstVisit: boolean;
 }
 
 function getInitialContent(): InitialContent {
@@ -45,20 +46,20 @@ function getInitialContent(): InitialContent {
     window.history.replaceState(null, '', window.location.pathname);
     if (fromLocal && fromLocal !== fromHash) {
       // Show conflict modal — start with local content (safe default)
-      return { markdown: fromLocal, conflictContent: fromHash };
+      return { markdown: fromLocal, conflictContent: fromHash, isFirstVisit: false };
     }
-    return { markdown: fromHash, conflictContent: null };
+    return { markdown: fromHash, conflictContent: null, isFirstVisit: false };
   }
 
-  if (fromLocal) return { markdown: fromLocal, conflictContent: null };
+  if (fromLocal) return { markdown: fromLocal, conflictContent: null, isFirstVisit: false };
 
-  return { markdown: examples[0]?.code ?? '', conflictContent: null };
+  return { markdown: examples[0]?.code ?? '', conflictContent: null, isFirstVisit: true };
 }
 
 const fileSupported = isFileSystemAccessSupported();
 
 export function App() {
-  const { markdown: initialMarkdown, conflictContent } = getInitialContent();
+  const { markdown: initialMarkdown, conflictContent, isFirstVisit } = getInitialContent();
   const { markdown, setMarkdown, style, setStyle, showComments, setShowComments } =
     useEditorState(initialMarkdown);
 
@@ -66,10 +67,11 @@ export function App() {
   const commentCount = useCommentCount(markdown);
 
   const { sessionId, name: myName } = useSessionIdentity();
-  const [projectId, setProjectId] = useState<string | null>(getProjectId);
+  const initialProjectId = getProjectId();
+  const [projectId, setProjectId] = useState<string | null>(initialProjectId);
 
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
-  const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>('markdown');
+  const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>(isFirstVisit && !initialProjectId ? 'insert' : 'markdown');
   const [shareOpen, setShareOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(conflictContent !== null);
@@ -123,6 +125,7 @@ export function App() {
     const result = await openLocalFile(w.showOpenFilePicker as never);
     if (result) {
       setMarkdown(result.content);
+      setSidebarTab('markdown');
       window.history.replaceState(null, '', window.location.pathname);
       showToast(`Opened ${result.handle.name}`);
     }
@@ -272,6 +275,7 @@ export function App() {
           {sidebarTab === 'insert' ? (
             <ComponentsPanel
               examples={examples}
+              style={style}
               disabled={lockState.status === 'taken' && !!projectId}
               onLoad={(code, name) => {
                 setMarkdown(code);

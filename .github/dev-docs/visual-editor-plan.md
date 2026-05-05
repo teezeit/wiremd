@@ -83,7 +83,12 @@ Preview iframe reports scroll via `postMessage` (`wiremd-scroll`) on scroll (100
 
 **Loading screen:** replaced by localStorage auto-save — no file picker prompt on startup.
 
-**Templates:** `+ Components` tab shows "Load Template" button (placeholder); full template gallery deferred to v4.
+**Template Gallery — first-time user story:**
+- As a first-time user with no shared link and no saved local work, I land in `+ Components` with the Template Gallery open so I can start visually instead of writing markdown first.
+- The Landing Page template is the first gallery example and the default starter content in the preview.
+- Template previews render with the active global visual style so the gallery matches the canvas.
+- Clicking `Load` on a template replaces the markdown with that template and switches to the Markdown tab.
+- Returning users with local autosave content, shared-link users, and conflict-modal users continue into the Markdown flow instead of being interrupted by the gallery.
 
 ### v4 — Visual edit mode (bridges to non-markdown users)
 - `data-wmd-id` attributes injected into rendered HTML for click-to-source mapping

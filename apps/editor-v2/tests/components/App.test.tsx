@@ -81,7 +81,7 @@ afterEach(() => {
 describe('App', () => {
   it('renders without crashing', () => {
     render(<App />);
-    expect(screen.getByTestId('editor')).toBeInTheDocument();
+    expect(screen.getByText('Template Gallery')).toBeInTheDocument();
     expect(screen.getByTestId('preview')).toBeInTheDocument();
   });
 
@@ -133,14 +133,18 @@ describe('App', () => {
     expect(screen.queryByRole('button', { name: /steal edit/i })).not.toBeInTheDocument();
   });
 
-  it('sidebar defaults to Markdown tab', () => {
+  it('first-time user story: opens Template Gallery with Landing Page loaded by default', () => {
     render(<App />);
-    expect(screen.getByTestId('editor')).toBeInTheDocument();
+    expect(screen.getByText('Template Gallery')).toBeInTheDocument();
+    expect(screen.getByText('Landing Page')).toBeInTheDocument();
+    expect(lastPreviewProps.markdown).toContain('Design UI with Markdown');
+    expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
   it('switches to Components tab showing template cards', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /components/i }));
+    expect(screen.getByText('Template Gallery')).toBeInTheDocument();
     // Each template has a Load button
     expect(screen.getAllByRole('button', { name: /^load$/i }).length).toBeGreaterThan(0);
     expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
@@ -155,10 +159,10 @@ describe('App', () => {
 
   it('loads a template into the editor when Load is clicked', () => {
     render(<App />);
-    fireEvent.click(screen.getByRole('button', { name: /components/i }));
     // Click the first Load button
     fireEvent.click(screen.getAllByRole('button', { name: /^load$/i })[0]!);
     expect(screen.getByTestId('editor')).toBeInTheDocument(); // switched back to markdown
+    expect(screen.getByTestId('editor')).toHaveTextContent('Design UI with Markdown');
   });
 
   it('comment button is disabled with "No comments yet" tooltip when there are no comments', () => {
@@ -319,12 +323,13 @@ describe('App', () => {
   it('cancelling file open (abort) does not change editor content', async () => {
     vi.mocked(localFile.openLocalFile).mockResolvedValueOnce(null);
     render(<App />);
-    const initialContent = screen.getByTestId('editor').textContent;
+    const initialContent = lastPreviewProps.markdown;
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     await act(async () => {
       fireEvent.click(screen.getByText('Open from file'));
     });
-    expect(screen.getByTestId('editor').textContent).toBe(initialContent);
+    expect(lastPreviewProps.markdown).toBe(initialContent);
+    expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
   // URL hash
@@ -332,6 +337,7 @@ describe('App', () => {
     window.location.hash = encodeShareHash('# From hash');
     render(<App />);
     expect(screen.getByTestId('editor').textContent).toBe('# From hash');
+    expect(screen.queryByText('Template Gallery')).not.toBeInTheDocument();
   });
 
   it('clears the hash from URL after loading', () => {
@@ -347,6 +353,7 @@ describe('App', () => {
     localStorage.setItem('wiremd-content', '# From local storage');
     render(<App />);
     expect(screen.getByTestId('editor').textContent).toBe('# From local storage');
+    expect(screen.queryByText('Template Gallery')).not.toBeInTheDocument();
   });
 
   // conflict modal: hash + localStorage

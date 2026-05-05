@@ -249,7 +249,7 @@ Active session:
 > 1. `#code=` hash + local content → conflict modal
 > 2. `#code=` hash only → load hash directly
 > 3. localStorage content → restore silently (no prompt)
-> 4. Nothing → load default example
+> 4. Nothing → load Landing Page starter and open Template Gallery
 > No recent-file startup screen
 :::
 ::: column {top}

@@ -224,11 +224,14 @@ body {
 /* Components panel */
 .ed-sidebar__components {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 12px;
   overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .ed-component-entry,
 .ed-template-item {
@@ -903,13 +906,18 @@ body {
 /* ── ComponentsPanel ─────────────────────────────────────── */
 .ed-components-panel {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 .ed-components-panel__section-label {
+  flex-shrink: 0;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -920,6 +928,7 @@ body {
 
 /* Template card */
 .ed-template-card {
+  flex: 0 0 auto;
   border: 1px solid var(--ed-border);
   border-radius: var(--ed-radius-md);
   overflow: hidden;
@@ -928,28 +937,14 @@ body {
 }
 .ed-template-card:hover { border-color: var(--ed-border-hover); }
 
-.ed-template-card__preview {
-  height: 160px;
-  overflow: hidden;
-  background: #fff;
-  position: relative;
-}
-.ed-template-card__iframe {
-  width: 200%;
-  height: 200%;
-  border: none;
-  transform: scale(0.5);
-  transform-origin: top left;
-  pointer-events: none;
-}
-
-.ed-template-card__footer {
+/* Header (top): name + description + buttons */
+.ed-template-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
   padding: 8px 10px;
-  border-top: 1px solid var(--ed-border);
+  border-bottom: 1px solid var(--ed-border);
 }
 .ed-template-card__info {
   display: flex;
@@ -976,4 +971,22 @@ body {
   display: flex;
   gap: 4px;
   flex-shrink: 0;
+}
+
+/* Preview thumbnail: render a wider virtual page, then scale it down. */
+.ed-template-card__preview {
+  min-height: 180px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+}
+.ed-template-card__iframe {
+  display: block;
+  width: 200%;
+  height: 200%;
+  min-height: 600px;
+  border: none;
+  transform: scale(0.5);
+  transform-origin: top left;
+  pointer-events: none;
 }
