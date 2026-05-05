@@ -2,7 +2,7 @@
 	"name": "wiremd-preview",
 	"displayName": "Wiremd Live Preview",
 	"description": "Live preview for Wiremd markdown mockups",
-	"version": "0.4.2",
+	"version": "0.5.0",
 	"publisher": "eclectic-ai",
 	"icon": "icon.png",
 	"engines": {
