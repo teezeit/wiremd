@@ -8,6 +8,7 @@ import { SaveModal } from './components/SaveModal';
 import { ConflictModal } from './components/ConflictModal';
 import { LockModal } from './components/LockModal';
 import { SidebarLockBanner } from './components/SidebarLockBanner';
+import { ComponentsPanel } from './components/ComponentsPanel';
 import { Avatar } from './components/Avatar';
 import { Toast } from './components/Toast';
 import { useEditorState } from './hooks/useEditorState';
@@ -69,7 +70,6 @@ export function App() {
 
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>('markdown');
-  const [templatesOpen, setTemplatesOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(conflictContent !== null);
@@ -270,45 +270,15 @@ export function App() {
           )}
 
           {sidebarTab === 'insert' ? (
-            <div className="ed-sidebar__components">
-              <button
-                className="ed-component-entry"
-                aria-label="Load Template"
-                aria-expanded={templatesOpen}
-                onClick={() => setTemplatesOpen((open) => !open)}
-              >
-                <span className="ed-component-entry__icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 5h16" /><path d="M4 12h16" /><path d="M4 19h16" />
-                  </svg>
-                </span>
-                <span>
-                  <span className="ed-component-entry__title">Load Template</span>
-                  <span className="ed-component-entry__desc">Replace markdown with a starter screen</span>
-                </span>
-              </button>
-
-              {templatesOpen && (
-                <div className="ed-template-list" aria-label="Templates">
-                  {examples.map((example) => (
-                    <button
-                      key={example.name}
-                      className="ed-template-item"
-                      aria-label={`${example.name} template`}
-                      disabled={lockState.status === 'taken' && !!projectId}
-                      onClick={() => {
-                        setMarkdown(example.code);
-                        setSidebarTab('markdown');
-                        showToast(`Loaded ${example.name}`);
-                      }}
-                    >
-                      <span className="ed-template-item__name">{example.name}</span>
-                      <span className="ed-template-item__desc">{example.description}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <ComponentsPanel
+              examples={examples}
+              disabled={lockState.status === 'taken' && !!projectId}
+              onLoad={(code, name) => {
+                setMarkdown(code);
+                setSidebarTab('markdown');
+                showToast(`Loaded ${name}`);
+              }}
+            />
           ) : (
             <div className={`ed-codemirror-wrap${lockState.status === 'taken' && projectId ? ' ed-codemirror-wrap--locked' : ''}`}>
               <Editor

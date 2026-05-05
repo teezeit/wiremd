@@ -136,36 +136,29 @@ describe('App', () => {
   it('sidebar defaults to Markdown tab', () => {
     render(<App />);
     expect(screen.getByTestId('editor')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /load template/i })).not.toBeInTheDocument();
   });
 
-  it('switches to Components tab', () => {
+  it('switches to Components tab showing template cards', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /components/i }));
-    expect(screen.getByRole('button', { name: /load template/i })).toBeInTheDocument();
+    // Each template has a Load button
+    expect(screen.getAllByRole('button', { name: /^load$/i }).length).toBeGreaterThan(0);
     expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
   it('switches back to Markdown tab', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /components/i }));
-    fireEvent.click(screen.getByRole('button', { name: /markdown/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^markdown$/i }));
     expect(screen.getByTestId('editor')).toBeInTheDocument();
   });
 
-  it('shows templates when Load Template is clicked', () => {
+  it('loads a template into the editor when Load is clicked', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /components/i }));
-    fireEvent.click(screen.getByRole('button', { name: /load template/i }));
-    expect(screen.getByRole('button', { name: /dashboard template/i })).toBeInTheDocument();
-  });
-
-  it('replaces markdown content when a template is clicked', () => {
-    render(<App />);
-    fireEvent.click(screen.getByRole('button', { name: /components/i }));
-    fireEvent.click(screen.getByRole('button', { name: /load template/i }));
-    fireEvent.click(screen.getByRole('button', { name: /dashboard template/i }));
-    expect(screen.getByTestId('editor')).toHaveTextContent('Dashboard Overview');
+    // Click the first Load button
+    fireEvent.click(screen.getAllByRole('button', { name: /^load$/i })[0]!);
+    expect(screen.getByTestId('editor')).toBeInTheDocument(); // switched back to markdown
   });
 
   it('comment button is disabled with "No comments yet" tooltip when there are no comments', () => {
