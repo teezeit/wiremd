@@ -50,15 +50,19 @@ export function App() {
     window.history.replaceState(null, '', window.location.pathname);
   }, [setMarkdown]);
 
-  const handleCopyLink = useCallback(async () => {
-    window.history.replaceState(null, '', window.location.pathname + encodeShareHash(markdown));
+  const handleGetLink = useCallback((): string => {
+    const hash = encodeShareHash(markdown);
+    return window.location.origin + window.location.pathname + hash;
+  }, [markdown]);
+
+  const handleCopyLink = useCallback(async (url: string) => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(url);
       showToast('Link copied!');
     } catch {
       showToast('Copy failed');
     }
-  }, [markdown, showToast]);
+  }, [showToast]);
 
   const handleOpenFile = useCallback(async () => {
     const w = window as unknown as Record<string, unknown>;
@@ -176,6 +180,7 @@ export function App() {
       <ShareModal
         isOpen={shareOpen}
         onClose={() => setShareOpen(false)}
+        onGetLink={handleGetLink}
         onCopyLink={handleCopyLink}
       />
 

@@ -126,21 +126,33 @@ describe('App', () => {
   });
 
   it('copy link copies URL to clipboard', async () => {
+    vi.useFakeTimers();
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /share/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /export to link/i }));
+      vi.runAllTimers();
+    });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /copy link/i }));
     });
     expect(clipboardWriteText).toHaveBeenCalledOnce();
+    vi.useRealTimers();
   });
 
   it('copy link shows "Link copied!" toast', async () => {
+    vi.useFakeTimers();
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /share/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /export to link/i }));
+      vi.runAllTimers();
+    });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /copy link/i }));
     });
     expect(screen.getByText('Link copied!')).toBeInTheDocument();
+    vi.useRealTimers();
   });
 
   // Style switcher

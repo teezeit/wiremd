@@ -529,3 +529,32 @@ body {
   background: var(--ed-border);
   margin: 0 0 16px;
 }
+
+.ed-modal__link-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.ed-modal__link-input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-family: var(--ed-font-mono);
+  color: var(--ed-text-secondary);
+  background: var(--ed-bg-input);
+  border: 1px solid var(--ed-border);
+  border-radius: var(--ed-radius-sm);
+  overflow-x: auto;
+  white-space: nowrap;
+  cursor: text;
+}
+.ed-modal__link-input:focus { outline: none; border-color: var(--ed-border-focus); }
+
+.ed-modal__generating {
+  font-size: 13px;
+  color: var(--ed-text-muted);
+  font-style: italic;
+}
