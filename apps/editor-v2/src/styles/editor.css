@@ -110,8 +110,10 @@ body {
 .ed-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 6px 12px;
+  height: 34px;
+  padding: 0 12px;
   font-size: 12px;
   font-weight: 600;
   font-family: var(--ed-font-ui);
@@ -134,23 +136,13 @@ body {
 .ed-btn--comments-on { background: var(--ed-accent-dim); border-color: rgba(99,102,241,0.2); color: var(--ed-accent); }
 
 /* Square icon-only button */
-.ed-btn--icon { padding: 6px; width: 34px; height: 34px; justify-content: center; }
+.ed-btn--icon { padding: 0; width: 34px; }
 .ed-btn--icon-active { background: var(--ed-accent); border-color: var(--ed-accent); color: #fff; }
 .ed-btn--icon-active:hover { background: var(--ed-accent-hover); border-color: var(--ed-accent-hover); color: #fff; }
 
-.ed-hamburger {
-  padding: 5px 7px;
-  border-color: transparent;
-  background: transparent;
-  box-shadow: none;
-  color: var(--ed-text-secondary);
-}
-.ed-hamburger:hover {
-  border-color: var(--ed-border);
-  background: var(--ed-bg-input);
-  box-shadow: none;
-  color: var(--ed-text-primary);
-}
+/* Hamburger — same height, transparent border */
+.ed-hamburger { padding: 0 9px; border-color: transparent; background: transparent; }
+.ed-hamburger:hover { border-color: var(--ed-border); background: var(--ed-bg-input); }
 
 /* ── Main Layout ─────────────────────────────────────────── */
 .ed-main { display: flex; flex: 1; overflow: hidden; }
