@@ -103,4 +103,12 @@ describe('App', () => {
     render(<App />);
     expect(screen.getByTestId('editor').textContent).toBe('# From hash');
   });
+
+  it('clears the hash from URL after loading', () => {
+    const replaceState = vi.spyOn(window.history, 'replaceState');
+    window.location.hash = encodeShareHash('# From hash');
+    render(<App />);
+    expect(replaceState).toHaveBeenCalledWith(null, '', window.location.pathname);
+    replaceState.mockRestore();
+  });
 });

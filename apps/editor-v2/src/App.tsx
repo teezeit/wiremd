@@ -15,7 +15,10 @@ import {
 
 function getInitialMarkdown(): string {
   const fromHash = decodeShareHash(window.location.hash);
-  if (fromHash) return fromHash;
+  if (fromHash) {
+    window.history.replaceState(null, '', window.location.pathname);
+    return fromHash;
+  }
   return examples[0]?.code ?? '';
 }
 
@@ -38,7 +41,6 @@ export function App() {
   const handleChange = useCallback(
     (value: string) => {
       setMarkdown(value);
-      window.history.replaceState(null, '', window.location.pathname + encodeShareHash(value));
     },
     [setMarkdown],
   );
