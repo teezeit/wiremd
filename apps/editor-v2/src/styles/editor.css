@@ -79,7 +79,7 @@ body {
 .ed-header__tools {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   padding-left: 8px;
 }
 
@@ -96,7 +96,7 @@ body {
 .ed-header__actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 }
 
 .ed-header__divider {
