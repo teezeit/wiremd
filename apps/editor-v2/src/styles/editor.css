@@ -676,6 +676,20 @@ body {
   margin-bottom: 8px;
 }
 
+.ed-modal__live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+  margin-right: 6px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
 .ed-modal__live-badge {
   font-size: 11px;
   font-weight: 700;

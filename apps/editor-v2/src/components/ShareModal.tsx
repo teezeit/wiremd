@@ -147,14 +147,16 @@ export function ShareModal({
           </div>
           {isActiveSession && (
             <div className="ed-modal__live-row">
-              <span className="ed-modal__live-badge" data-testid="live-badge">● LIVE</span>
               {myName && <IdentityTag name={myName} avatarSize={22} />}
             </div>
           )}
 
           {isActiveSession ? (
             <>
-              <p className="ed-modal__section-desc">Active session — share this link with collaborators.</p>
+              <p className="ed-modal__section-desc">
+                <span className="ed-modal__live-dot" data-testid="live-badge" />
+                Active session — share this link with collaborators.
+              </p>
               <div className="ed-modal__link-row" style={{ marginBottom: 10 }}>
                 <input
                   className="ed-modal__link-input"

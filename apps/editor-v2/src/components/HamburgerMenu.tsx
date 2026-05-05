@@ -99,7 +99,7 @@ export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSav
               <button
                 key={s.value}
                 className={`ed-menu__style-btn${style === s.value ? ' ed-menu__style-btn--active' : ''}`}
-                onClick={() => { onStyleChange(s.value); setOpen(false); }}
+                onClick={() => onStyleChange(s.value)}
               >
                 {s.label}
               </button>
