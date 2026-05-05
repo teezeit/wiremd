@@ -125,7 +125,8 @@ export function ShareModal({ isOpen, onClose, onGetLink, onCopyLink, onStartSess
             <span className="ed-modal__badge">saves to cloud</span>
           </div>
           <p className="ed-modal__section-desc">
-            Start a session — URL becomes a shareable project ID. Multiple people can edit simultaneously.
+            Saves your wireframe to the cloud and generates a shareable URL.
+            One person edits at a time — anyone with the link can view and take over the edit.
           </p>
           <button
             className="ed-btn ed-btn--primary ed-modal__action"
