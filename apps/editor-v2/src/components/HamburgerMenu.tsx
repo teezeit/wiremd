@@ -15,9 +15,12 @@ interface Props {
   style: StyleName;
   onStyleChange: (s: StyleName) => void;
   onReset: () => void;
+  onOpenFile: () => void;
+  onSaveAs: () => void;
+  fileSupported: boolean;
 }
 
-export function HamburgerMenu({ style, onStyleChange, onReset }: Props) {
+export function HamburgerMenu({ style, onStyleChange, onReset, onOpenFile, onSaveAs, fileSupported }: Props) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -62,21 +65,27 @@ export function HamburgerMenu({ style, onStyleChange, onReset }: Props) {
           <button className="ed-menu__item" onClick={() => { onReset(); setOpen(false); }}>
             Reset
           </button>
-          <button className="ed-menu__item ed-menu__item--disabled" disabled>
+          <button
+            className={`ed-menu__item${!fileSupported ? ' ed-menu__item--disabled' : ''}`}
+            disabled={!fileSupported}
+            onClick={() => { onOpenFile(); setOpen(false); }}
+            title={fileSupported ? undefined : 'Not supported in this browser'}
+          >
             Open from file
-            <span className="ed-menu__badge">v2</span>
+            {!fileSupported && <span className="ed-menu__badge">unsupported</span>}
           </button>
-          <button className="ed-menu__item ed-menu__item--disabled" disabled>
+          <button
+            className={`ed-menu__item${!fileSupported ? ' ed-menu__item--disabled' : ''}`}
+            disabled={!fileSupported}
+            onClick={() => { onSaveAs(); setOpen(false); }}
+            title={fileSupported ? undefined : 'Not supported in this browser'}
+          >
             Save to…
-            <span className="ed-menu__badge">v2</span>
+            {!fileSupported && <span className="ed-menu__badge">unsupported</span>}
           </button>
           <button className="ed-menu__item ed-menu__item--disabled" disabled>
             Live Collaboration
-            <span className="ed-menu__badge">v2</span>
-          </button>
-          <button className="ed-menu__item ed-menu__item--disabled" disabled>
-            Export to link
-            <span className="ed-menu__badge">v2</span>
+            <span className="ed-menu__badge">soon</span>
           </button>
 
           <div className="ed-menu__divider" />

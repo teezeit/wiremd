@@ -82,11 +82,18 @@ describe('App', () => {
     expect(screen.getByTitle('Show comments')).not.toHaveClass('ed-btn--icon-active');
   });
 
-  it('share button copies URL to clipboard', async () => {
+  it('share button opens the share modal', () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /share/i }));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('copy link in share modal copies URL to clipboard', async () => {
     const { act } = await import('@testing-library/react');
     render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /share/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /share/i }));
+      fireEvent.click(screen.getByRole('button', { name: /copy link/i }));
     });
     expect(clipboardWriteText).toHaveBeenCalledOnce();
   });
