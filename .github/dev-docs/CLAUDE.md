@@ -11,4 +11,12 @@ It covers:
 - VS Code extension dev workflow
 - Build, release, and publishing process
 
-Use the root `CLAUDE.md`. Anything in this directory other than `markdown-mockup-project-plan.md`, `LIVE_PREVIEW_GUIDE.md`, `FIGMA_EXPORT_INVESTIGATION.md`, and `syntax-research.md` is a historical artefact.
+Use the root `CLAUDE.md` for project instructions.
+
+Current active planning docs in this directory:
+
+- `visual-editor-plan.md`
+- `visual-editor-plan-wireframes.md`
+- `visual-editor-plan-wireframes.html` (rendered artifact, when present)
+
+Older architecture/research notes such as `markdown-mockup-project-plan.md`, `LIVE_PREVIEW_GUIDE.md`, `FIGMA_EXPORT_INVESTIGATION.md`, and `syntax-research.md` are retained for context, but should not override the root project guide or the current visual-editor plan.

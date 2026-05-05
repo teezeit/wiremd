@@ -69,6 +69,7 @@ export function App() {
 
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>('markdown');
+  const [templatesOpen, setTemplatesOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(conflictContent !== null);
@@ -247,7 +248,7 @@ export function App() {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
               </svg>
-              Insert
+              Components
             </button>
             <button
               className={`ed-sidebar__tab${sidebarTab === 'markdown' ? ' ed-sidebar__tab--active' : ''}`}
@@ -269,12 +270,44 @@ export function App() {
           )}
 
           {sidebarTab === 'insert' ? (
-            <div className="ed-sidebar__insert">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="9" y1="3" x2="9" y2="21" />
-              </svg>
-              <span>Component library</span>
-              <span className="ed-sidebar__insert-sub">Coming in v4</span>
+            <div className="ed-sidebar__components">
+              <button
+                className="ed-component-entry"
+                aria-label="Load Template"
+                aria-expanded={templatesOpen}
+                onClick={() => setTemplatesOpen((open) => !open)}
+              >
+                <span className="ed-component-entry__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 5h16" /><path d="M4 12h16" /><path d="M4 19h16" />
+                  </svg>
+                </span>
+                <span>
+                  <span className="ed-component-entry__title">Load Template</span>
+                  <span className="ed-component-entry__desc">Replace markdown with a starter screen</span>
+                </span>
+              </button>
+
+              {templatesOpen && (
+                <div className="ed-template-list" aria-label="Templates">
+                  {examples.map((example) => (
+                    <button
+                      key={example.name}
+                      className="ed-template-item"
+                      aria-label={`${example.name} template`}
+                      disabled={lockState.status === 'taken' && !!projectId}
+                      onClick={() => {
+                        setMarkdown(example.code);
+                        setSidebarTab('markdown');
+                        showToast(`Loaded ${example.name}`);
+                      }}
+                    >
+                      <span className="ed-template-item__name">{example.name}</span>
+                      <span className="ed-template-item__desc">{example.description}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           ) : (
             <div className={`ed-codemirror-wrap${lockState.status === 'taken' && projectId ? ' ed-codemirror-wrap--locked' : ''}`}>

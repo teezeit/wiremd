@@ -283,9 +283,13 @@ describe('ShareModal — live session', () => {
         onStartSession={onStartSession}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /start live session/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /start live session/i }));
+    });
     expect(screen.getByRole('button', { name: /starting/i })).toBeDisabled();
-    resolve();
+    await act(async () => {
+      resolve();
+    });
   });
 });
 

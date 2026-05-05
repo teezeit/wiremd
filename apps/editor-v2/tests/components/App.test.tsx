@@ -38,6 +38,12 @@ import * as projectApi from '../../src/lib/projectApi';
 
 const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
 
+async function flushProjectLockPoll() {
+  await act(async () => {
+    await Promise.resolve();
+  });
+}
+
 function fakeFileResult(name: string, content: string): LocalFileResult {
   return {
     handle: {
@@ -104,8 +110,7 @@ describe('App', () => {
     });
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     const { container } = render(<App />);
-    // Give polling time to run
-    await vi.waitFor(() => {});
+    await flushProjectLockPoll();
     fireEvent.click(screen.getByTitle('Hide editor'));
     expect(container.querySelector('.ed-main')).toHaveClass('ed-main--preview');
     vi.unstubAllGlobals();
@@ -118,9 +123,8 @@ describe('App', () => {
     });
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     render(<App />);
-    await vi.waitFor(() => {
-      expect(screen.queryByRole('button', { name: /steal edit/i })).toBeInTheDocument();
-    });
+    await flushProjectLockPoll();
+    expect(screen.queryByRole('button', { name: /steal edit/i })).toBeInTheDocument();
     vi.unstubAllGlobals();
   });
 
@@ -132,21 +136,36 @@ describe('App', () => {
   it('sidebar defaults to Markdown tab', () => {
     render(<App />);
     expect(screen.getByTestId('editor')).toBeInTheDocument();
-    expect(screen.queryByText('Component library')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /load template/i })).not.toBeInTheDocument();
   });
 
-  it('switches to Insert tab', () => {
+  it('switches to Components tab', () => {
     render(<App />);
-    fireEvent.click(screen.getByRole('button', { name: /insert/i }));
-    expect(screen.getByText('Component library')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /components/i }));
+    expect(screen.getByRole('button', { name: /load template/i })).toBeInTheDocument();
     expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
   it('switches back to Markdown tab', () => {
     render(<App />);
-    fireEvent.click(screen.getByRole('button', { name: /insert/i }));
+    fireEvent.click(screen.getByRole('button', { name: /components/i }));
     fireEvent.click(screen.getByRole('button', { name: /markdown/i }));
     expect(screen.getByTestId('editor')).toBeInTheDocument();
+  });
+
+  it('shows templates when Load Template is clicked', () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /components/i }));
+    fireEvent.click(screen.getByRole('button', { name: /load template/i }));
+    expect(screen.getByRole('button', { name: /dashboard template/i })).toBeInTheDocument();
+  });
+
+  it('replaces markdown content when a template is clicked', () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /components/i }));
+    fireEvent.click(screen.getByRole('button', { name: /load template/i }));
+    fireEvent.click(screen.getByRole('button', { name: /dashboard template/i }));
+    expect(screen.getByTestId('editor')).toHaveTextContent('Dashboard Overview');
   });
 
   it('comment button is disabled with "No comments yet" tooltip when there are no comments', () => {
@@ -176,17 +195,19 @@ describe('App', () => {
     expect(screen.getByRole('button', { name: /^share$/i })).toBeInTheDocument();
   });
 
-  it('shows Live Session button instead of Share when a session is active', () => {
+  it('shows Live Session button instead of Share when a session is active', async () => {
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     render(<App />);
+    await flushProjectLockPoll();
     expect(screen.getByRole('button', { name: /live session/i })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /^share$/i })).not.toBeInTheDocument();
     vi.unstubAllGlobals();
   });
 
-  it('Live Session button has a green corner badge', () => {
+  it('Live Session button has a green corner badge', async () => {
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     const { container } = render(<App />);
+    await flushProjectLockPoll();
     expect(container.querySelector('.ed-btn__live-dot')).toBeInTheDocument();
     vi.unstubAllGlobals();
   });
@@ -195,6 +216,7 @@ describe('App', () => {
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     const replaceState = vi.spyOn(window.history, 'replaceState');
     render(<App />);
+    await flushProjectLockPoll();
 
     fireEvent.click(screen.getByRole('button', { name: /live session/i }));
     await act(async () => {
@@ -377,9 +399,8 @@ describe('App — editor read-only in live session when not lock holder', () => 
     });
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     const { container } = render(<App />);
-    await vi.waitFor(() => {
-      expect(container.querySelector('[data-readonly="true"]')).toBeInTheDocument();
-    });
+    await flushProjectLockPoll();
+    expect(container.querySelector('[data-readonly="true"]')).toBeInTheDocument();
     vi.unstubAllGlobals();
   });
 

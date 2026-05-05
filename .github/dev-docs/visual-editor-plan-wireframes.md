@@ -12,17 +12,21 @@
 ::: columns-4
 ::: column {top span-2}
 > visible on load
-[Load from Templates]* [dismiss]
+[Load Template]* [dismiss]
 
 <!-- mode toggle is now in the header (left side), not here -->
 
 
 ::: card
 ::: tabs
-::: tab + Insert
+::: tab + Components
 <!--hidden while in preview mode - active in edit mode -->
-#### + Insert Component
+#### + Components
 [Search components...________]
+
+[Load Template]{primary}
+
+> Click to show templates; choosing one replaces the markdown content.
 
 ---
 **Layout**
@@ -222,7 +226,7 @@ Generates a link with your current wireframe encoded in the URL. Changes made af
 
 Start a session — URL becomes a shareable project ID.
 
-[Start Live Session] (disabled — coming soon)
+[Start Live Session]{primary}
 :::
 :::
 ::: column {top} Sharing modal — live active
@@ -231,13 +235,13 @@ Active session:
 
 [wiremd.com/editor/?p=VQWDn3ew]
 
-[Copy project link] [Stop Session]{danger}
+[Copy project link] [Leave Session]{danger}
 :::
 :::
 :::
 
 ---
-# Loading — startup behaviour
+# Startup behaviour
 
 ::: columns-2
 ::: column
@@ -246,6 +250,7 @@ Active session:
 > 2. `#code=` hash only → load hash directly
 > 3. localStorage content → restore silently (no prompt)
 > 4. Nothing → load default example
+> No recent-file startup screen
 :::
 ::: column {top}
 ## Auto-save
