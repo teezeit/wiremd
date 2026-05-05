@@ -205,16 +205,16 @@ export function App() {
           {/* Lock status — shown only in shared project mode */}
           {lockState.status === 'taken' && (
             <div className="ed-lock-status">
-              <span className="ed-lock-status__label">Is editing</span>
               <Avatar name={lockState.lockedByName ?? '?'} size={20} />
               <span className="ed-lock-status__name">{lockState.lockedByName}</span>
+              <span className="ed-lock-status__label">is already editing</span>
             </div>
           )}
           {lockState.status === 'mine' && (
             <div className="ed-lock-status ed-lock-status--mine">
-              <span className="ed-lock-status__label">You are editing</span>
               <Avatar name={myName} size={20} />
               <span className="ed-lock-status__name">{myName}</span>
+              <span className="ed-lock-status__label">(you) is editing</span>
             </div>
           )}
         </div>
