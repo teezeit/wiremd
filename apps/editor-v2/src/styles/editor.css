@@ -735,3 +735,29 @@ body {
   box-shadow: 0 0 6px rgba(34, 197, 94, 0.7);
   border: 2px solid var(--ed-bg-surface);
 }
+
+/* ── Lock status (next to edit button) ──────────────────── */
+.ed-lock-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  height: 34px;
+  border-radius: var(--ed-radius-sm);
+  background: var(--ed-bg-input);
+  border: 1px solid var(--ed-border);
+}
+.ed-lock-status--mine {
+  background: rgba(60,60,67,0.06);
+}
+.ed-lock-status__label {
+  font-size: 11px;
+  color: var(--ed-text-muted);
+  white-space: nowrap;
+}
+.ed-lock-status__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ed-text-secondary);
+  white-space: nowrap;
+}

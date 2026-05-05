@@ -7,6 +7,7 @@ import { ShareModal } from './components/ShareModal';
 import { SaveModal } from './components/SaveModal';
 import { ConflictModal } from './components/ConflictModal';
 import { LockModal } from './components/LockModal';
+import { Avatar } from './components/Avatar';
 import { Toast } from './components/Toast';
 import { useEditorState } from './hooks/useEditorState';
 import { useAutoSave, AUTO_SAVE_KEY } from './hooks/useAutoSave';
@@ -190,32 +191,32 @@ export function App() {
             className={`ed-btn ed-btn--icon${
               lockState.status === 'mine' || (lockState.status === 'solo' && mode === 'edit')
                 ? ' ed-btn--icon-active'
-                : lockState.status === 'taken'
-                  ? ' ed-btn--icon-locked'
-                  : ''
+                : ''
             }`}
             onClick={toggleEdit}
-            title={
-              lockState.status === 'taken'
-                ? `${lockState.lockedByName ?? 'Someone'} is editing — click to steal`
-                : lockState.status === 'mine'
-                  ? `Editing as ${myName} — click to stop`
-                  : mode === 'edit'
-                    ? 'Hide editor'
-                    : 'Show editor'
-            }
+            title={mode === 'edit' ? 'Hide editor' : 'Show editor'}
           >
-            {lockState.status === 'taken' ? (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-              </svg>
-            )}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+            </svg>
           </button>
+
+          {/* Lock status — shown only in shared project mode */}
+          {lockState.status === 'taken' && (
+            <div className="ed-lock-status">
+              <span className="ed-lock-status__label">Is editing</span>
+              <Avatar name={lockState.lockedByName ?? '?'} size={20} />
+              <span className="ed-lock-status__name">{lockState.lockedByName}</span>
+            </div>
+          )}
+          {lockState.status === 'mine' && (
+            <div className="ed-lock-status ed-lock-status--mine">
+              <span className="ed-lock-status__label">You are editing</span>
+              <Avatar name={myName} size={20} />
+              <span className="ed-lock-status__name">{myName}</span>
+            </div>
+          )}
         </div>
 
         <div className="ed-header__actions">

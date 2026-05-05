@@ -166,7 +166,7 @@ export function ShareModal({
                   onClick={(e) => (e.target as HTMLInputElement).select()}
                 />
                 <button className="ed-btn ed-btn--primary" onClick={handleCopySession}>
-                  {sessionCopied ? 'Copied!' : 'Copy'}
+                  {sessionCopied ? 'Copied!' : 'Copy link'}
                 </button>
               </div>
               <button
