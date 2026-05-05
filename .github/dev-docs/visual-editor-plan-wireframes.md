@@ -237,37 +237,49 @@ Active session:
 :::
 
 ---
-# Loading Screen
+# Loading — startup behaviour
 
 ::: columns-2
 ::: column
-## With recent file
-::: card
-### Edit File in Browser
-((CONTINUE WITH A RECENT FILE))
-
-[dashboard.md]*
-[login.md]*
-
----
-[Skip]
-:::
+## Priority order
+> 1. `#code=` hash + local content → conflict modal
+> 2. `#code=` hash only → load hash directly
+> 3. localStorage content → restore silently (no prompt)
+> 4. Nothing → load default example
 :::
 ::: column {top}
-## No recent file → canvas directly
+## Auto-save
+> Markdown saved to localStorage on every edit (1s debounce)
+> Restored silently on next open — Excalidraw style
 :::
 :::
 
 ---
-# Save to modal
+# Conflict modal — shared link vs local work
+
 ::: card
-### Save to
+**Shared link opened**
+
+You have locally saved work. Loading this shared link will replace it.
+Which would you like to keep?
+
+[Load shared link]{primary} [Keep my work]
+
+> Escape → Keep my work (safe default)
+> No backdrop dismiss — user must choose
+:::
+
+---
+# Save As modal
+::: card
+### Save as
 
 **Format**
 
-[Markdown .md]{primary} [HTML] [Tailwind] [React / JSX]
+[Markdown (.md) ▾]{primary}
+<!-- selector options: Markdown .md · HTML .html · React .tsx · Tailwind .tailwind.html · JSON .json -->
 
-<!-- opens native file save dialog -->
+<!-- opens native file save dialog with suggestedName matching format -->
 [Save]{primary} [Cancel]
 :::
 
