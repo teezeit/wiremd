@@ -16,6 +16,9 @@ Rebuild of the wiremd web editor targeting UX/PM users who don't want to write m
 - **Sharing**: URL hash encoding via lz-string, on-demand only (not on every keystroke)
 - **Collaboration**: existing `/projects` API (`POST /api/projects`, `PUT /api/projects/:id`) — wired in v3
 - **Testing**: vitest + @testing-library/react, 98 tests covering all user stories
+- **Linting**: Oxlint (type-aware, `pnpm lint`)
+- **Formatting**: no formatter configured yet — candidate: Prettier or dprint
+- **Editor theming**: VitePress-matched palette (`rgba(60,60,67,…)` text, `#f6f6f7` soft bg, `#ffffff` surfaces); CodeMirror uses a custom light theme matching the same variables; `oneDark` removed
 
 ## Layout (implemented)
 
