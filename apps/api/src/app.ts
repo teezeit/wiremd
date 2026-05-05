@@ -12,6 +12,7 @@ import {
 import { healthRoute } from "./routes/health.js";
 import { projectsRoute } from "./routes/projects.js";
 import { renderRoute_ } from "./routes/render.js";
+import { lockRoute } from "./routes/lock.js";
 import type { Db } from "./db/client.js";
 import type { AppEnv } from "./types.js";
 
@@ -44,6 +45,7 @@ export function createApp(db: Db) {
 
   app.route("/api/health", healthRoute);
   app.route("/api/projects", projectsRoute);
+  app.route("/api/projects", lockRoute);
   app.route("/api/render", renderRoute_);
 
   app.doc("/api/openapi.json", {

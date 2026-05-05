@@ -54,6 +54,9 @@ const ProjectResponse = z
     id: z.string().openapi({ example: "V1StGXR8_Z5jdHi6B-myT" }),
     content: z.string(),
     updatedAt: z.string().openapi({ example: "2026-05-01T12:00:00.000Z" }),
+    lockedBy: z.string().nullable(),
+    lockedName: z.string().nullable(),
+    lastEditorName: z.string().nullable(),
   })
   .openapi("Project");
 
@@ -210,19 +213,22 @@ export const projectsRoute = new OpenAPIHono<AppEnv>({
     const { id } = c.req.valid("param");
     if (!ID_PATTERN.test(id)) throw notFound();
 
-    const row = await db.query.projectFile.findFirst({
-      where: and(
-        eq(projectFile.projectId, id),
-        eq(projectFile.path, INDEX_PATH),
-      ),
-    });
-    if (!row) throw notFound();
+    const [row, proj] = await Promise.all([
+      db.query.projectFile.findFirst({
+        where: and(eq(projectFile.projectId, id), eq(projectFile.path, INDEX_PATH)),
+      }),
+      db.query.project.findFirst({ where: eq(project.id, id) }),
+    ]);
+    if (!row || !proj) throw notFound();
 
     return c.json(
       {
         id,
         content: row.content,
         updatedAt: row.updatedAt.toISOString(),
+        lockedBy: proj.lockedBy ?? null,
+        lockedName: proj.lockedName ?? null,
+        lastEditorName: proj.lastEditorName ?? null,
       },
       200,
     );
