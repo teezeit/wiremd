@@ -19,6 +19,12 @@ export default defineConfig({
     port: 5176,
     open: true,
     strictPort: true,
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_BASE_URL || 'http://localhost:3030',
+        changeOrigin: true,
+      },
+    },
   },
   build: {
     target: "esnext",
