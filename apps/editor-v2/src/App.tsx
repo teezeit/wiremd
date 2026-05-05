@@ -278,7 +278,7 @@ export function App() {
               <span className="ed-sidebar__insert-sub">Coming in v4</span>
             </div>
           ) : (
-            <div className="ed-codemirror-wrap">
+            <div className={`ed-codemirror-wrap${lockState.status === 'taken' && projectId ? ' ed-codemirror-wrap--locked' : ''}`}>
               <Editor
                 value={markdown}
                 onChange={handleChange}

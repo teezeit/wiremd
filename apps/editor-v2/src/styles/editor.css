@@ -799,3 +799,30 @@ body {
   font-size: 11px;
   color: var(--ed-text-muted);
 }
+
+/* Lock banner icon */
+.ed-sidebar-lock-banner__icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--ed-text-muted);
+}
+
+/* Striped editor when locked */
+.ed-codemirror-wrap--locked {
+  position: relative;
+}
+.ed-codemirror-wrap--locked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 8px,
+    rgba(60, 60, 67, 0.03) 8px,
+    rgba(60, 60, 67, 0.03) 16px
+  );
+}
