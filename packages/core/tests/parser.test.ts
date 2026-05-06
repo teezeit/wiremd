@@ -412,6 +412,149 @@ describe('Parser', () => {
     });
   });
 
+  describe('Visual elements in table cells', () => {
+    it('should parse a plain button in a table cell', () => {
+      const input = `
+| Actions |
+|---------|
+| [Edit] |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children).toBeDefined();
+      expect(cell.children[0]).toMatchObject({ type: 'button', content: 'Edit' });
+    });
+
+    it('should parse a primary button in a table cell', () => {
+      const input = `
+| Actions |
+|---------|
+| [Save]* |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'button', content: 'Save', props: { variant: 'primary' } });
+    });
+
+    it('should parse multiple buttons in a single cell', () => {
+      const input = `
+| Actions |
+|---------|
+| [Edit] [Delete] |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children).toHaveLength(2);
+      expect(cell.children[0]).toMatchObject({ type: 'button', content: 'Edit' });
+      expect(cell.children[1]).toMatchObject({ type: 'button', content: 'Delete' });
+    });
+
+    it('should parse a button with modifier attributes in a cell', () => {
+      const input = `
+| Actions |
+|---------|
+| [Delete]{danger} |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'button', content: 'Delete', props: { variant: 'danger' } });
+    });
+
+    it('should parse an unchecked checkbox in a table cell', () => {
+      const input = `
+| Select |
+|--------|
+| [ ] |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'checkbox', checked: false });
+    });
+
+    it('should parse a checked checkbox in a table cell', () => {
+      const input = `
+| Select |
+|--------|
+| [x] |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'checkbox', checked: true });
+    });
+
+    it('should parse a text input in a table cell', () => {
+      const input = `
+| Value |
+|-------|
+| [___] |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'input' });
+    });
+
+    it('should parse a select dropdown in a table cell', () => {
+      const input = `
+| Role |
+|------|
+| [Admin___v] |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'select', props: { placeholder: 'Admin' } });
+    });
+
+    it('should parse a switch in a table cell', () => {
+      const input = `
+| Active |
+|--------|
+| [Notifications]{switch checked} |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children[0]).toMatchObject({ type: 'switch', label: 'Notifications', checked: true });
+    });
+
+    it('should parse mixed text and buttons in a cell', () => {
+      const input = `
+| Actions |
+|---------|
+| Status: [Edit] |
+      `.trim();
+      const result = parse(input);
+      const cell = (result.children[0] as any).children[1].children[0];
+      expect(cell.children).toHaveLength(2);
+      expect(cell.children[0]).toMatchObject({ type: 'text', content: 'Status: ' });
+      expect(cell.children[1]).toMatchObject({ type: 'button', content: 'Edit' });
+    });
+
+    it('should parse a realistic user management table', () => {
+      const input = `
+| Select | Name | Actions |
+|--------|------|---------|
+| [ ] | Alice | [Edit] [Delete] |
+| [x] | Bob | [Edit]* [Delete] |
+      `.trim();
+      const result = parse(input);
+      expect(result.children[0].type).toBe('table');
+      const rows = (result.children[0] as any).children;
+      // header
+      expect(rows[0].type).toBe('table-header');
+      // first data row — Select cell
+      const selectCell = rows[1].children[0];
+      expect(selectCell.children[0]).toMatchObject({ type: 'checkbox', checked: false });
+      // first data row — Actions cell
+      const actionsCell1 = rows[1].children[2];
+      expect(actionsCell1.children).toHaveLength(2);
+      expect(actionsCell1.children[0]).toMatchObject({ type: 'button', content: 'Edit' });
+      expect(actionsCell1.children[1]).toMatchObject({ type: 'button', content: 'Delete' });
+      // second data row — Select cell (checked)
+      expect(rows[2].children[0].children[0]).toMatchObject({ type: 'checkbox', checked: true });
+      // second data row — Actions cell (primary Edit)
+      expect(rows[2].children[2].children[0]).toMatchObject({ type: 'button', content: 'Edit', props: { variant: 'primary' } });
+    });
+  });
+
   describe('Complex Forms', () => {
     it('should parse a simple contact form', () => {
       const input = `
