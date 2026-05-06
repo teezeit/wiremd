@@ -995,6 +995,34 @@ function switchNodeFromParts(text: string, attrs?: string): WiremdNode | null {
   };
 }
 
+// Dispatch a single bracket token `[text]*{attrs}` to the appropriate node type.
+// Handles checkbox, switch, select, input, and button — shared by the table cell
+// and any other inline context that splits on INLINE_TEXT_TOKEN_SPLIT.
+function parseBracketToken(text: string, isPrimary: string | undefined, attrs: string | undefined): WiremdNode {
+  if (/^\s*$/.test(text) || /^[xX]$/.test(text)) {
+    return {
+      type: 'checkbox',
+      checked: /^[xX]$/i.test(text.trim()),
+      label: '',
+      props: parseAttributes(attrs || ''),
+    } as unknown as WiremdNode;
+  }
+  const switchNode = switchNodeFromParts(text, attrs);
+  if (switchNode) return switchNode;
+  const props = parseAttributes(attrs || '');
+  if (/_{1,}v$/.test(text)) {
+    const placeholder = text.replace(/_{1,}v$/, '').trim() || undefined;
+    return { type: 'select', props: { ...props, ...(placeholder ? { placeholder } : {}) }, options: [] } as unknown as WiremdNode;
+  }
+  if (/^[_*]+$/.test(text) || /_{3,}$/.test(text)) {
+    const placeholderMatch = text.match(/^([^_*]+)_{3,}$/);
+    if (placeholderMatch) props.placeholder = placeholderMatch[1].trim();
+    return { type: 'input', props } as unknown as WiremdNode;
+  }
+  if (isPrimary) props.variant = 'primary';
+  return { type: 'button', content: text, props };
+}
+
 function parseBracketControlsFromLine(line: string): WiremdNode[] | null {
   const trimmed = line.trim();
   if (!trimmed || !/\[/.test(trimmed)) return null;
@@ -2235,40 +2263,7 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
           // Button / input / switch / checkbox: [text]*{attrs}
           const bracketMatch = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
           if (bracketMatch) {
-            const [, text, isPrimary, attrs] = bracketMatch;
-            // Labelless checkbox: [ ] (unchecked) or [x]/[X] (checked)
-            if (/^\s*$/.test(text) || /^[xX]$/.test(text)) {
-              cellChildren.push({
-                type: 'checkbox',
-                checked: /^[xX]$/i.test(text.trim()),
-                label: '',
-                props: parseAttributes(attrs || ''),
-              } as any);
-              continue;
-            }
-            const switchNode = switchNodeFromParts(text, attrs);
-            if (switchNode) {
-              cellChildren.push(switchNode);
-              continue;
-            }
-            const props = parseAttributes(attrs || '');
-            if (/_{1,}v$/.test(text)) {
-              const placeholder = text.replace(/_{1,}v$/, '').trim() || undefined;
-              cellChildren.push({
-                type: 'select',
-                props: { ...props, ...(placeholder ? { placeholder } : {}) },
-                options: [],
-              } as any);
-              continue;
-            }
-            if (/^[_*]+$/.test(text) || /_{3,}$/.test(text)) {
-              const placeholderMatch = text.match(/^([^_*]+)_{3,}$/);
-              if (placeholderMatch) props.placeholder = placeholderMatch[1].trim();
-              cellChildren.push({ type: 'input', props });
-              continue;
-            }
-            if (isPrimary) props.variant = 'primary';
-            cellChildren.push({ type: 'button', content: text, props });
+            cellChildren.push(parseBracketToken(bracketMatch[1], bracketMatch[2], bracketMatch[3]));
             continue;
           }
           if (part.trim()) {
