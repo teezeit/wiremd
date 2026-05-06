@@ -134,3 +134,13 @@ describe('useProjectLock — session cleanup', () => {
     expect(vi.mocked(projectApi.getProjectLockInfo).mock.calls.length).toBe(callsBefore);
   });
 });
+
+describe('useProjectLock — acquire conflict', () => {
+  it('does not change status to mine when lockProject rejects (409)', async () => {
+    vi.mocked(projectApi.lockProject).mockRejectedValueOnce(new Error('Locked by someone else'));
+    const { result } = renderHook(() => useProjectLock({ ...BASE, projectId: 'proj1' }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(100); });
+    try { await act(async () => { await result.current.acquire(); }); } catch {}
+    expect(result.current.lockState.status).not.toBe('mine');
+  });
+});

@@ -382,3 +382,33 @@ describe('ShareModal — modal stays open after starting session', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 });
+
+describe('ShareModal — session URL reset', () => {
+  it('live section shows "Start Live Session" after sessionUrl is removed', () => {
+    const { rerender } = render(
+      <ShareModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onGetLink={vi.fn(() => '')}
+        onCopyLink={vi.fn()}
+        sessionUrl="http://localhost/?p=abc"
+        onStopSession={vi.fn()}
+      />,
+    );
+    // Active session visible
+    expect(screen.getByTestId('live-badge')).toBeInTheDocument();
+
+    // Session ends — sessionUrl removed
+    rerender(
+      <ShareModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onGetLink={vi.fn(() => '')}
+        onCopyLink={vi.fn()}
+        onStartSession={vi.fn()}
+      />,
+    );
+    expect(screen.queryByTestId('live-badge')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /start live session/i })).toBeInTheDocument();
+  });
+});

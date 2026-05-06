@@ -35,3 +35,26 @@ describe('SidebarLockBanner', () => {
     expect(onSteal).toHaveBeenCalledOnce();
   });
 });
+
+describe('SidebarLockBanner — avatar', () => {
+  it('renders an avatar for the person editing', () => {
+    render(<SidebarLockBanner lockedByName="Red Bear" lastEditedAt={null} onSteal={vi.fn()} />);
+    expect(screen.getByTestId('avatar')).toBeInTheDocument();
+  });
+
+  it('avatar initials match the lockedByName', () => {
+    render(<SidebarLockBanner lockedByName="Red Bear" lastEditedAt={null} onSteal={vi.fn()} />);
+    expect(screen.getByTestId('avatar')).toHaveTextContent('RB');
+  });
+
+  it('shows "is already editing" text', () => {
+    render(<SidebarLockBanner lockedByName="Red Bear" lastEditedAt={null} onSteal={vi.fn()} />);
+    expect(screen.getByText(/is already editing/i)).toBeInTheDocument();
+  });
+
+  it('shows relative time when lastEditedAt is provided', () => {
+    const recent = new Date(Date.now() - 3 * 60 * 1000).toISOString();
+    render(<SidebarLockBanner lockedByName="Red Bear" lastEditedAt={recent} onSteal={vi.fn()} />);
+    expect(screen.getByText(/ago/i)).toBeInTheDocument();
+  });
+});
