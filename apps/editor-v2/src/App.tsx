@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { Editor } from './components/Editor';
 import { Preview } from './components/Preview';
 import { HamburgerMenu } from './components/HamburgerMenu';
@@ -17,7 +17,7 @@ import { useCommentCount } from './hooks/useCommentCount';
 import { useSessionIdentity } from './hooks/useSessionIdentity';
 import { useProjectLock } from './hooks/useProjectLock';
 import { decodeShareHash, encodeShareHash } from './lib/urlShare';
-import { examples } from './lib/examples';
+import { componentExamples, examples } from './lib/examples';
 
 function getProjectId(): string | null {
   const params = new URLSearchParams(window.location.search);
@@ -36,6 +36,31 @@ interface InitialContent {
   markdown: string;
   conflictContent: string | null; // hash content when conflict detected
   isFirstVisit: boolean;
+}
+
+interface MarkdownSelection {
+  from: number;
+  to: number;
+}
+
+function insertMarkdownSnippet(
+  markdown: string,
+  snippet: string,
+  selection: MarkdownSelection | null,
+): { markdown: string; cursor: number } {
+  const start = selection ? Math.max(0, Math.min(selection.from, markdown.length)) : markdown.length;
+  const end = selection ? Math.max(start, Math.min(selection.to, markdown.length)) : markdown.length;
+  const before = markdown.slice(0, start);
+  const after = markdown.slice(end);
+  const trimmedSnippet = snippet.trim();
+  const prefix = before.length === 0 || before.endsWith('\n') ? '' : '\n\n';
+  const suffix = after.length === 0 || after.startsWith('\n') ? '' : '\n\n';
+  const inserted = `${prefix}${trimmedSnippet}`;
+
+  return {
+    markdown: `${before}${inserted}${suffix}${after}`,
+    cursor: before.length + inserted.length,
+  };
 }
 
 function getInitialContent(): InitialContent {
@@ -78,6 +103,7 @@ export function App() {
   const [lockModalOpen, setLockModalOpen] = useState(false);
   const [pendingSharedContent] = useState(conflictContent);
   const [toast, setToast] = useState({ message: '', visible: false });
+  const selectionRef = useRef<MarkdownSelection | null>(null);
 
   const showToast = useCallback((message: string) => {
     setToast({ message, visible: true });
@@ -100,6 +126,17 @@ export function App() {
     },
     [setMarkdown],
   );
+
+  const handleSelectionChange = useCallback((range: MarkdownSelection) => {
+    selectionRef.current = range;
+  }, []);
+
+  const handleAddComponent = useCallback((code: string, name: string) => {
+    const result = insertMarkdownSnippet(markdown, code, selectionRef.current);
+    selectionRef.current = { from: result.cursor, to: result.cursor };
+    setMarkdown(result.markdown);
+    showToast(`Added ${name}`);
+  }, [markdown, setMarkdown, showToast]);
 
   const handleReset = useCallback(() => {
     setMarkdown(examples[0]?.code ?? '');
@@ -274,20 +311,23 @@ export function App() {
 
           {sidebarTab === 'insert' ? (
             <ComponentsPanel
-              examples={examples}
+              templates={examples}
+              components={componentExamples}
               style={style}
               disabled={lockState.status === 'taken' && !!projectId}
-              onLoad={(code, name) => {
+              onLoadTemplate={(code, name) => {
                 setMarkdown(code);
                 setSidebarTab('markdown');
                 showToast(`Loaded ${name}`);
               }}
+              onAddComponent={handleAddComponent}
             />
           ) : (
             <div className={`ed-codemirror-wrap${lockState.status === 'taken' && projectId ? ' ed-codemirror-wrap--locked' : ''}`}>
               <Editor
                 value={markdown}
                 onChange={handleChange}
+                onSelectionChange={handleSelectionChange}
                 readOnly={lockState.status === 'taken' && !!projectId}
               />
             </div>

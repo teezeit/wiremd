@@ -4,27 +4,30 @@ import type { Example } from '../lib/examples';
 import type { StyleName } from '../lib/renderMarkup';
 
 interface Props {
-  examples: Example[];
+  templates: Example[];
+  components: Example[];
   style: StyleName;
-  onLoad: (code: string, name: string) => void;
+  onLoadTemplate: (code: string, name: string) => void;
+  onAddComponent: (code: string, name: string) => void;
   disabled?: boolean;
 }
 
 interface CardProps {
-  example: Example;
+  item: Example;
   style: StyleName;
-  onLoad: () => void;
+  actionLabel: 'Load' | 'Add';
+  onAction: () => void;
   disabled?: boolean;
 }
 
-function TemplateCard({ example, style, onLoad, disabled }: CardProps) {
+function GalleryCard({ item, style, actionLabel, onAction, disabled }: CardProps) {
   const [copied, setCopied] = useState(false);
   const [previewHeight, setPreviewHeight] = useState(240);
-  const result = renderMarkup(example.code, style);
+  const result = renderMarkup(item.code, style);
   const html = result.error === null ? result.html : '';
 
   async function handleCopy() {
-    await navigator.clipboard.writeText(example.code);
+    await navigator.clipboard.writeText(item.code);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   }
@@ -44,8 +47,8 @@ function TemplateCard({ example, style, onLoad, disabled }: CardProps) {
       {/* Header: name + description + buttons */}
       <div className="ed-template-card__header">
         <div className="ed-template-card__info">
-          <span className="ed-template-card__name">{example.name}</span>
-          <span className="ed-template-card__desc">{example.description}</span>
+          <span className="ed-template-card__name">{item.name}</span>
+          <span className="ed-template-card__desc">{item.description}</span>
         </div>
         <div className="ed-template-card__actions">
           <button className="ed-btn ed-btn--sm" onClick={handleCopy} title="Copy markdown">
@@ -55,8 +58,23 @@ function TemplateCard({ example, style, onLoad, disabled }: CardProps) {
               </svg>
             )}
           </button>
-          <button className="ed-btn ed-btn--primary ed-btn--sm" onClick={onLoad} disabled={disabled}>
-            Load
+          <button className="ed-btn ed-btn--primary ed-btn--sm" onClick={onAction} disabled={disabled}>
+            {actionLabel === 'Load' ? (
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 8h.01" />
+                <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
+                <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l4 4" />
+                <path d="M14 14l1 -1c.653 -.629 1.413 -.815 2.13 -.559" />
+                <path d="M19 16v6" />
+                <path d="M22 19l-3 3l-3 -3" />
+              </svg>
+            ) : (
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v14" />
+                <path d="M5 12h14" />
+              </svg>
+            )}
+            {actionLabel}
           </button>
         </div>
       </div>
@@ -67,7 +85,7 @@ function TemplateCard({ example, style, onLoad, disabled }: CardProps) {
           className="ed-template-card__iframe"
           srcDoc={html}
           sandbox="allow-scripts allow-same-origin"
-          title={example.name}
+          title={item.name}
           onLoad={handlePreviewLoad}
         />
       </div>
@@ -75,16 +93,31 @@ function TemplateCard({ example, style, onLoad, disabled }: CardProps) {
   );
 }
 
-export function ComponentsPanel({ examples, style, onLoad, disabled }: Props) {
+export function ComponentsPanel({ templates, components, style, onLoadTemplate, onAddComponent, disabled }: Props) {
   return (
     <div className="ed-components-panel">
       <div className="ed-components-panel__section-label">Template Gallery</div>
-      {examples.map((example) => (
-        <TemplateCard
-          key={example.name}
-          example={example}
+      {templates.map((template) => (
+        <GalleryCard
+          key={template.name}
+          item={template}
           style={style}
-          onLoad={() => onLoad(example.code, example.name)}
+          actionLabel="Load"
+          onAction={() => onLoadTemplate(template.code, template.name)}
+          disabled={disabled}
+        />
+      ))}
+
+      <div className="ed-components-panel__section-label ed-components-panel__section-label--spaced">
+        Component Library
+      </div>
+      {components.map((component) => (
+        <GalleryCard
+          key={component.name}
+          item={component}
+          style={style}
+          actionLabel="Add"
+          onAction={() => onAddComponent(component.code, component.name)}
           disabled={disabled}
         />
       ))}

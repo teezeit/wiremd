@@ -277,3 +277,70 @@ Security actions
 `,
   },
 ];
+
+export const componentExamples: Example[] = [
+  {
+    name: 'Hero Section',
+    description: 'Headline, supporting copy, and primary actions',
+    code: `::: hero
+# Launch faster with wiremd
+### Turn product ideas into shareable UI drafts
+
+> Start with markdown, then refine the interface visually.
+
+[Start drafting]* [See examples]{secondary}
+:::
+`,
+  },
+  {
+    name: 'Stats Cards',
+    description: 'Four metric cards for dashboards',
+    code: `::: columns-4 card
+::: column :users: Users
+**12,847**
+((+14.5%)){success}
+:::
+
+::: column :currency-dollar: Revenue
+**$45,230**
+((+8.2%)){success}
+:::
+
+::: column :activity: Sessions
+**1,429**
+((-3.1%)){warning}
+:::
+
+::: column :circle-check: Uptime
+**99.98%**
+((Healthy)){success}
+:::
+:::
+`,
+  },
+  {
+    name: 'Form Fields',
+    description: 'Two-column contact form fields',
+    code: `::: columns-2
+::: column First Name
+[_____________________________]{required}
+:::
+
+::: column Last Name
+[_____________________________]{required}
+:::
+:::
+
+Email
+[name@company.com_____________]{type:email required}
+`,
+  },
+  {
+    name: 'Action Row',
+    description: 'Right-aligned primary and secondary actions',
+    code: `::: row {right}
+[Cancel]{secondary} [Save Changes]*
+:::
+`,
+  },
+];

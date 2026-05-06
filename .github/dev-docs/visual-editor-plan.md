@@ -16,7 +16,7 @@ Rebuild of the wiremd web editor targeting UX/PM users who don't want to write m
 - **Sharing**: URL hash encoding via lz-string, on-demand only (not on every keystroke)
 - **Collaboration**: `/projects` API with pessimistic locks — steal/leave flow, API write enforcement, lock state resets on session end
 - **Session identity**: `unique-names-generator` adjective+animal names (e.g. "Blue Fox"), persisted in localStorage, Avatar component (color-coded initials)
-- **Testing**: vitest + @testing-library/react — 257 editor-v2 tests + 54 API tests = 311 total
+- **Testing**: vitest + @testing-library/react — 261 editor-v2 tests + 54 API tests = 315 total
 - **Linting**: Oxlint (type-aware, `pnpm lint`)
 - **Editor theming**: VitePress-matched palette (`rgba(60,60,67,…)` text, `#f6f6f7` soft bg, `#ffffff` surfaces); CodeMirror custom light theme; `oneDark` removed
 
@@ -36,7 +36,7 @@ Rebuild of the wiremd web editor targeting UX/PM users who don't want to write m
 - **✏** edit toggle: always just shows/hides editor panel — no lock logic
 - **Lock status pill**: shows `[avatar] Name · is already editing` or `[avatar] Name · (you) is editing` when in a live session
 - **Live Session button**: replaces Share when session active — users icon + "Live Session" + green dot badge
-- **Sidebar tabs**: `+ Components` (Load Template placeholder, v4 library) | `Markdown` (CodeMirror editor)
+- **Sidebar tabs**: `+ Components` (Template Gallery + Component Library) | `Markdown` (CodeMirror editor)
 - **Sidebar lock banner**: `[avatar] Name · is already editing · 2m ago` | 🔒 | `[🔓 Steal edit]{primary}` — shown when someone else holds the lock
 - **Editor**: striped diagonal background when locked; CodeMirror read-only enforced
 - **Share modal**: Shareable link flow + Live Collaboration start/active-session flow
@@ -90,12 +90,19 @@ Preview iframe reports scroll via `postMessage` (`wiremd-scroll`) on scroll (100
 - Clicking `Load` on a template replaces the markdown with that template and switches to the Markdown tab.
 - Returning users with local autosave content, shared-link users, and conflict-modal users continue into the Markdown flow instead of being interrupted by the gallery.
 
+**Component Library — insertion story:**
+- Component cards live below the Template Gallery in `+ Components` and render with the active global visual style.
+- Clicking `Add` inserts the component markdown into the current document without leaving the Components panel.
+- Components insert at the last known Markdown cursor/selection; if no cursor is known, they append to the end.
+- Each card keeps `Copy markdown` as a secondary action for users who prefer manual placement.
+- Read-only shared-session users cannot `Load` or `Add`, but they can still copy snippets.
+
 ### v4 — Visual edit mode (bridges to non-markdown users)
 - `data-wmd-id` attributes injected into rendered HTML for click-to-source mapping
 - Component selection in preview (click → bottom border indicator)
 - Bottom toolbar: edit / copy / trash / ↑↓ / comment / add below
 - Markdown ↔ preview cursor sync (click component → jump editor to that line)
-- `+ Components` component library (drag-to-insert, search, categories)
+- `+ Components` component library follow-up: drag-to-insert, search, categories
 
 > GUI-first features (drag-to-insert, AI prompt bar) are v4 work.
 > Multi-file support (react-arborist installed) is post-v4.

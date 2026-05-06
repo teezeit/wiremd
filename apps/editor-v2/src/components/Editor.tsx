@@ -35,12 +35,13 @@ const wiremdTheme = EditorView.theme({
 interface Props {
   value: string;
   onChange: (value: string) => void;
+  onSelectionChange?: (range: { from: number; to: number }) => void;
   readOnly?: boolean;
 }
 
 const readOnlyCompartment = new Compartment();
 
-export const Editor = memo(function Editor({ value, onChange, readOnly = false }: Props) {
+export const Editor = memo(function Editor({ value, onChange, onSelectionChange, readOnly = false }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const lastEmittedValue = useRef(value);
@@ -64,6 +65,10 @@ export const Editor = memo(function Editor({ value, onChange, readOnly = false }
               lastEmittedValue.current = newValue; // track synchronously
               debouncedOnChange(newValue);
             }
+            if (update.selectionSet) {
+              const range = update.state.selection.main;
+              onSelectionChange?.({ from: range.from, to: range.to });
+            }
           }),
         ],
       }),
@@ -71,6 +76,8 @@ export const Editor = memo(function Editor({ value, onChange, readOnly = false }
     });
 
     viewRef.current = view;
+    const range = view.state.selection.main;
+    onSelectionChange?.({ from: range.from, to: range.to });
     return () => {
       view.destroy();
       viewRef.current = null;

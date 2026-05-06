@@ -925,6 +925,7 @@ body {
   color: var(--ed-text-muted);
   padding: 0 2px;
 }
+.ed-components-panel__section-label--spaced { margin-top: 4px; }
 
 /* Template card */
 .ed-template-card {

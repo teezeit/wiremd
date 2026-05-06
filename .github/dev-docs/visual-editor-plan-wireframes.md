@@ -289,7 +289,7 @@ Which would you like to keep?
 :::
 
 ---
-# Template Gallery — Examples panel
+# Components panel — Template Gallery + Component Library
 
 ::: columns-4
 ::: column {span-1}
@@ -352,6 +352,27 @@ Which would you like to keep?
 :::
 :::
 [Load this template]{primary} [Preview full screen]
+:::
+
+::: card
+**Component Library**
+
+> Click Add to insert at the Markdown cursor. If no cursor is known, append to the end.
+
+::: columns-2
+::: column
+**Hero Section**
+Headline, copy, and primary actions.
+
+[Add]{primary} [Copy markdown]{secondary}
+:::
+::: column
+**Stats Cards**
+Dashboard metrics row.
+
+[Add]{primary} [Copy markdown]{secondary}
+:::
+:::
 :::
 :::
 :::

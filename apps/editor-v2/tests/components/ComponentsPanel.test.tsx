@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ComponentsPanel } from '../../src/components/ComponentsPanel';
 import { renderMarkup } from '../../src/lib/renderMarkup';
@@ -17,13 +17,48 @@ const example: Example = {
 describe('ComponentsPanel', () => {
   it('renders template previews with the active global style', () => {
     const { rerender } = render(
-      <ComponentsPanel examples={[example]} style="clean" onLoad={vi.fn()} />,
+      <ComponentsPanel
+        templates={[example]}
+        components={[]}
+        style="clean"
+        onLoadTemplate={vi.fn()}
+        onAddComponent={vi.fn()}
+      />,
     );
 
     expect(renderMarkup).toHaveBeenLastCalledWith('# Landing', 'clean');
 
-    rerender(<ComponentsPanel examples={[example]} style="material" onLoad={vi.fn()} />);
+    rerender(
+      <ComponentsPanel
+        templates={[example]}
+        components={[]}
+        style="material"
+        onLoadTemplate={vi.fn()}
+        onAddComponent={vi.fn()}
+      />,
+    );
 
     expect(renderMarkup).toHaveBeenLastCalledWith('# Landing', 'material');
+  });
+
+  it('uses Load for templates and Add for components', () => {
+    const onLoadTemplate = vi.fn();
+    const onAddComponent = vi.fn();
+
+    render(
+      <ComponentsPanel
+        templates={[example]}
+        components={[{ ...example, name: 'Hero Section', code: '# Hero' }]}
+        style="clean"
+        onLoadTemplate={onLoadTemplate}
+        onAddComponent={onAddComponent}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /^load$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^add$/i }));
+
+    expect(onLoadTemplate).toHaveBeenCalledWith('# Landing', 'Landing Page');
+    expect(onAddComponent).toHaveBeenCalledWith('# Hero', 'Hero Section');
   });
 });

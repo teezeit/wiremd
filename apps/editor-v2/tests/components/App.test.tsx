@@ -6,11 +6,23 @@ import type { LocalFileResult } from '../../src/lib/localFile';
 
 // Capture Preview props to assert on style/showComments changes
 let lastPreviewProps: Record<string, unknown> = {};
+let lastEditorProps: {
+  value: string;
+  onChange: (v: string) => void;
+  onSelectionChange?: (range: { from: number; to: number }) => void;
+  readOnly?: boolean;
+} | null = null;
 
 vi.mock('../../src/components/Editor', () => ({
-  Editor: ({ value, readOnly }: { value: string; onChange: (v: string) => void; readOnly?: boolean }) => (
-    <div data-testid="editor" data-readonly={readOnly || undefined}>{value}</div>
-  ),
+  Editor: (props: {
+    value: string;
+    onChange: (v: string) => void;
+    onSelectionChange?: (range: { from: number; to: number }) => void;
+    readOnly?: boolean;
+  }) => {
+    lastEditorProps = props;
+    return <div data-testid="editor" data-readonly={props.readOnly || undefined}>{props.value}</div>;
+  },
 }));
 
 vi.mock('../../src/components/Preview', () => ({
@@ -58,6 +70,7 @@ function fakeFileResult(name: string, content: string): LocalFileResult {
 
 beforeEach(() => {
   lastPreviewProps = {};
+  lastEditorProps = null;
   localStorage.clear();
   window.location.hash = '';
   window.history.replaceState(null, '', '/');
@@ -150,6 +163,13 @@ describe('App', () => {
     expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
+  it('shows a photo-down icon in template Load buttons', () => {
+    render(<App />);
+    const loadButton = screen.getAllByRole('button', { name: /^load$/i })[0]!;
+    expect(loadButton.querySelector('svg')).toBeInTheDocument();
+    expect(loadButton.querySelector('path[d="M22 19l-3 3l-3 -3"]')).toBeInTheDocument();
+  });
+
   it('switches back to Markdown tab', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /components/i }));
@@ -163,6 +183,30 @@ describe('App', () => {
     fireEvent.click(screen.getAllByRole('button', { name: /^load$/i })[0]!);
     expect(screen.getByTestId('editor')).toBeInTheDocument(); // switched back to markdown
     expect(screen.getByTestId('editor')).toHaveTextContent('Design UI with Markdown');
+  });
+
+  it('adds a component to the current document without leaving the Components tab', () => {
+    render(<App />);
+    fireEvent.click(screen.getAllByRole('button', { name: /^add$/i })[0]!);
+    expect(lastPreviewProps.markdown).toContain('Design UI with Markdown');
+    expect(lastPreviewProps.markdown).toContain('Launch faster with wiremd');
+    expect(screen.getByText('Component Library')).toBeInTheDocument();
+    expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
+  });
+
+  it('adds a component at the last known markdown cursor', () => {
+    localStorage.setItem('wiremd-content', '# Hello\n\nGoodbye');
+    render(<App />);
+    act(() => {
+      lastEditorProps?.onSelectionChange?.({ from: 7, to: 7 });
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /components/i }));
+    fireEvent.click(screen.getAllByRole('button', { name: /^add$/i })[0]!);
+
+    const markdown = String(lastPreviewProps.markdown);
+    expect(markdown.indexOf('Launch faster with wiremd')).toBeGreaterThan(markdown.indexOf('# Hello'));
+    expect(markdown.indexOf('Launch faster with wiremd')).toBeLessThan(markdown.indexOf('Goodbye'));
   });
 
   it('comment button is disabled with "No comments yet" tooltip when there are no comments', () => {
