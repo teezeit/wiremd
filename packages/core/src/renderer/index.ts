@@ -106,6 +106,7 @@ export function renderToHTML(
       `window.addEventListener('message',function(e){` +
         `if(!e.data)return;` +
         `if(e.data.type==='wiremd-cursor-blur'){document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});return;}` +
+        `if(e.data.type==='wiremd-set-scroll'){window.scrollTo(0,e.data.scrollY);return;}` +
         `if(e.data.type!=='wiremd-cursor')return;` +
         `var line=e.data.line;` +
         `document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});` +
@@ -119,6 +120,7 @@ export function renderToHTML(
           `best.scrollIntoView({behavior:'smooth',block:'nearest'});` +
         `}` +
       `});` +
+      `var _st;window.addEventListener('scroll',function(){clearTimeout(_st);_st=setTimeout(function(){parent.postMessage({type:'wiremd-scroll',scrollY:window.scrollY},'*');},100);},true);` +
       `})();</script>`
     : '';
 

@@ -69,12 +69,13 @@ jobs:
         pnpm --filter @eclectic-ai/wiremd build
         pnpm --filter @eclectic-ai/wiremd test:coverage
         pnpm --filter wiremd-editor test:coverage
+        pnpm --filter wiremd-editor-v2 test:coverage
         pnpm --filter wiremd-figma-plugin test:coverage
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
-        files: ./packages/core/coverage/lcov.info,./apps/editor/coverage/lcov.info,./extensions/figma/coverage/lcov.info
+        files: ./packages/core/coverage/lcov.info,./apps/editor/coverage/lcov.info,./apps/editor-v2/coverage/lcov.info,./extensions/figma/coverage/lcov.info
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: false

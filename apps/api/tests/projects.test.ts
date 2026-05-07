@@ -256,6 +256,54 @@ describe("projects API", () => {
       });
     });
 
+    describe("lock enforcement", () => {
+      async function lock(ctx: TestContext, id: string, clientId: string) {
+        await callApp(ctx.app, `/api/projects/${id}/lock`, {
+          method: "POST",
+          json: { clientId, name: "Blue Fox" },
+        });
+      }
+
+      it("allows write when no lock is held (no clientId required)", async () => {
+        const { id } = await createProject(ctx);
+        const r = await callApp(ctx.app, `/api/projects/${id}`, {
+          method: "PUT",
+          json: { content: "updated" },
+        });
+        expect(r.status).toBe(200);
+      });
+
+      it("allows write when caller holds the lock", async () => {
+        const { id } = await createProject(ctx);
+        await lock(ctx, id, "abc");
+        const r = await callApp(ctx.app, `/api/projects/${id}`, {
+          method: "PUT",
+          json: { content: "updated", clientId: "abc" },
+        });
+        expect(r.status).toBe(200);
+      });
+
+      it("rejects write when someone else holds the lock — 403", async () => {
+        const { id } = await createProject(ctx);
+        await lock(ctx, id, "abc");
+        const r = await callApp(ctx.app, `/api/projects/${id}`, {
+          method: "PUT",
+          json: { content: "updated", clientId: "xyz" },
+        });
+        expect(r.status).toBe(403);
+      });
+
+      it("rejects write with no clientId when lock is held — 403", async () => {
+        const { id } = await createProject(ctx);
+        await lock(ctx, id, "abc");
+        const r = await callApp(ctx.app, `/api/projects/${id}`, {
+          method: "PUT",
+          json: { content: "updated" },
+        });
+        expect(r.status).toBe(403);
+      });
+    });
+
     it("does not update other projects (isolation)", async () => {
       const a = await createProject(ctx, "AAA");
       const b = await createProject(ctx, "BBB");
