@@ -56,7 +56,7 @@ export const examples: Example[] = [
   {
     name: 'Start from Scratch',
     description: 'Blank page — just a title',
-    code: '# Anything is possible',
+    code: '# wiremd\n\nThe possibilities are endless',
   },
   landingPageExample,
   {
