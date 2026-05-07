@@ -45,6 +45,14 @@ const ConflictResponse = z
   })
   .openapi("Conflict");
 
+const LockRejectedResponse = z
+  .object({
+    error: z.string(),
+    lockedBy: z.string(),
+    lockedName: z.string().nullable(),
+  })
+  .openapi("LockRejected");
+
 const IdResponse = z
   .object({
     id: z.string().openapi({ example: "V1StGXR8_Z5jdHi6B-myT" }),
@@ -165,6 +173,10 @@ const updateProjectRoute = createRoute({
     404: {
       description: "Not found",
       content: { "application/json": { schema: ErrorResponse } },
+    },
+    403: {
+      description: "Write rejected — project is locked by another client.",
+      content: { "application/json": { schema: LockRejectedResponse } },
     },
     409: {
       description:
