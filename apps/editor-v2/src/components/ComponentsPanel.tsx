@@ -7,8 +7,7 @@ interface Props {
   templates: Example[];
   components: Example[];
   style: StyleName;
-  onLoadTemplate: (code: string, name: string) => void;
-  onAddComponent: (code: string, name: string) => void;
+  onAdd: (code: string, name: string) => void;
   disabled?: boolean;
 }
 
@@ -93,7 +92,7 @@ function GalleryCard({ item, style, actionLabel, onAction, disabled }: CardProps
   );
 }
 
-export function ComponentsPanel({ templates, components, style, onLoadTemplate, onAddComponent, disabled }: Props) {
+export function ComponentsPanel({ templates, components, style, onAdd, disabled }: Props) {
   return (
     <div className="ed-components-panel">
       <div className="ed-components-panel__section-label">Template Gallery</div>
@@ -102,8 +101,8 @@ export function ComponentsPanel({ templates, components, style, onLoadTemplate, 
           key={template.name}
           item={template}
           style={style}
-          actionLabel="Load"
-          onAction={() => onLoadTemplate(template.code, template.name)}
+          actionLabel="Add"
+          onAction={() => onAdd(template.code, template.name)}
           disabled={disabled}
         />
       ))}
@@ -111,16 +110,18 @@ export function ComponentsPanel({ templates, components, style, onLoadTemplate, 
       <div className="ed-components-panel__section-label ed-components-panel__section-label--spaced">
         Component Library
       </div>
-      {components.map((component) => (
-        <GalleryCard
-          key={component.name}
-          item={component}
-          style={style}
-          actionLabel="Add"
-          onAction={() => onAddComponent(component.code, component.name)}
-          disabled={disabled}
-        />
-      ))}
+      <div data-testid="component-gallery">
+        {components.map((component) => (
+          <GalleryCard
+            key={component.name}
+            item={component}
+            style={style}
+            actionLabel="Add"
+            onAction={() => onAdd(component.code, component.name)}
+            disabled={disabled}
+          />
+        ))}
+      </div>
     </div>
   );
 }

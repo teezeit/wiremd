@@ -315,12 +315,7 @@ export function App() {
               components={componentExamples}
               style={style}
               disabled={lockState.status === 'taken' && !!projectId}
-              onLoadTemplate={(code, name) => {
-                setMarkdown(code);
-                setSidebarTab('markdown');
-                showToast(`Loaded ${name}`);
-              }}
-              onAddComponent={handleAddComponent}
+              onAdd={handleAddComponent}
             />
           ) : (
             <div className={`ed-codemirror-wrap${lockState.status === 'taken' && projectId ? ' ed-codemirror-wrap--locked' : ''}`}>

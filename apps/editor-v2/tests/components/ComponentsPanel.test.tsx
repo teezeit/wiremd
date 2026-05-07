@@ -24,8 +24,7 @@ function setup(overrides = {}) {
     templates: [template],
     components: [component],
     style: 'clean' as const,
-    onLoadTemplate: vi.fn(),
-    onAddComponent: vi.fn(),
+    onAdd: vi.fn(),
     ...overrides,
   };
   render(<ComponentsPanel {...props} />);
@@ -45,9 +44,9 @@ describe('ComponentsPanel — rendering', () => {
     expect(screen.getByText('Full-width hero block')).toBeInTheDocument();
   });
 
-  it('shows Load button for templates', () => {
+  it('shows Add button for templates', () => {
     setup({ components: [] });
-    expect(screen.getByRole('button', { name: /^load$/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^add$/i })).toBeInTheDocument();
   });
 
   it('shows Add button for components', () => {
@@ -64,35 +63,36 @@ describe('ComponentsPanel — rendering', () => {
 
 describe('ComponentsPanel — style prop', () => {
   it('renders with the provided style', () => {
+    const noop = vi.fn();
     const { rerender } = render(
-      <ComponentsPanel templates={[template]} components={[]} style="clean" onLoadTemplate={vi.fn()} onAddComponent={vi.fn()} />,
+      <ComponentsPanel templates={[template]} components={[]} style="clean" onAdd={noop} />,
     );
     expect(renderMarkup).toHaveBeenLastCalledWith('# Landing', 'clean');
 
     rerender(
-      <ComponentsPanel templates={[template]} components={[]} style="material" onLoadTemplate={vi.fn()} onAddComponent={vi.fn()} />,
+      <ComponentsPanel templates={[template]} components={[]} style="material" onAdd={noop} />,
     );
     expect(renderMarkup).toHaveBeenLastCalledWith('# Landing', 'material');
   });
 });
 
 describe('ComponentsPanel — actions', () => {
-  it('calls onLoadTemplate with code and name when Load is clicked', () => {
-    const { onLoadTemplate } = setup();
-    fireEvent.click(screen.getByRole('button', { name: /^load$/i }));
-    expect(onLoadTemplate).toHaveBeenCalledWith('# Landing', 'Landing Page');
-  });
-
-  it('calls onAddComponent with code and name when Add is clicked', () => {
-    const { onAddComponent } = setup();
+  it('calls onAdd with code and name when Add is clicked on a template', () => {
+    const { onAdd } = setup({ components: [] });
     fireEvent.click(screen.getByRole('button', { name: /^add$/i }));
-    expect(onAddComponent).toHaveBeenCalledWith('::: hero\n# Title\n:::', 'Hero Section');
+    expect(onAdd).toHaveBeenCalledWith('# Landing', 'Landing Page');
   });
 
-  it('disables Load and Add when disabled=true', () => {
+  it('calls onAdd with code and name when Add is clicked on a component', () => {
+    const { onAdd } = setup({ templates: [] });
+    fireEvent.click(screen.getByRole('button', { name: /^add$/i }));
+    expect(onAdd).toHaveBeenCalledWith('::: hero\n# Title\n:::', 'Hero Section');
+  });
+
+  it('disables Add buttons when disabled=true', () => {
     setup({ disabled: true });
-    expect(screen.getByRole('button', { name: /^load$/i })).toBeDisabled();
-    expect(screen.getByRole('button', { name: /^add$/i })).toBeDisabled();
+    const addBtns = screen.getAllByRole('button', { name: /^add$/i });
+    addBtns.forEach((btn) => expect(btn).toBeDisabled());
   });
 });
 

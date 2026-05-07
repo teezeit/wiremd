@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, within } from '@testing-library/react';
 import { App } from '../../src/App';
 import { encodeShareHash } from '../../src/lib/urlShare';
 import type { LocalFileResult } from '../../src/lib/localFile';
@@ -146,11 +146,11 @@ describe('App', () => {
     expect(screen.queryByRole('button', { name: /steal edit/i })).not.toBeInTheDocument();
   });
 
-  it('first-time user story: opens Template Gallery with Landing Page loaded by default', () => {
+  it('first-time user story: opens Template Gallery with Start from Scratch loaded by default', () => {
     render(<App />);
     expect(screen.getByText('Template Gallery')).toBeInTheDocument();
-    expect(screen.getByText('Landing Page')).toBeInTheDocument();
-    expect(lastPreviewProps.markdown).toContain('Design UI with Markdown');
+    expect(screen.getByText('Start from Scratch')).toBeInTheDocument();
+    expect(lastPreviewProps.markdown).toContain('Anything is possible');
     expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
@@ -158,16 +158,15 @@ describe('App', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /components/i }));
     expect(screen.getByText('Template Gallery')).toBeInTheDocument();
-    // Each template has a Load button
-    expect(screen.getAllByRole('button', { name: /^load$/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /^add$/i }).length).toBeGreaterThan(0);
     expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
-  it('shows a photo-down icon in template Load buttons', () => {
+  it('shows a plus icon in template Add buttons', () => {
     render(<App />);
-    const loadButton = screen.getAllByRole('button', { name: /^load$/i })[0]!;
-    expect(loadButton.querySelector('svg')).toBeInTheDocument();
-    expect(loadButton.querySelector('path[d="M22 19l-3 3l-3 -3"]')).toBeInTheDocument();
+    const addButton = screen.getAllByRole('button', { name: /^add$/i })[0]!;
+    expect(addButton.querySelector('svg')).toBeInTheDocument();
+    expect(addButton.querySelector('path[d="M12 5v14"]')).toBeInTheDocument();
   });
 
   it('switches back to Markdown tab', () => {
@@ -177,18 +176,18 @@ describe('App', () => {
     expect(screen.getByTestId('editor')).toBeInTheDocument();
   });
 
-  it('loads a template into the editor when Load is clicked', () => {
+  it('adds a template to the document without switching tabs', () => {
     render(<App />);
-    // Click the first Load button
-    fireEvent.click(screen.getAllByRole('button', { name: /^load$/i })[0]!);
-    expect(screen.getByTestId('editor')).toBeInTheDocument(); // switched back to markdown
-    expect(screen.getByTestId('editor')).toHaveTextContent('Design UI with Markdown');
+    // Click the Landing Page (second template) Add button
+    fireEvent.click(screen.getAllByRole('button', { name: /^add$/i })[1]!);
+    expect(lastPreviewProps.markdown).toContain('Design UI with Markdown');
+    expect(screen.getByText('Template Gallery')).toBeInTheDocument();
+    expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
   it('adds a component to the current document without leaving the Components tab', () => {
     render(<App />);
-    fireEvent.click(screen.getAllByRole('button', { name: /^add$/i })[0]!);
-    expect(lastPreviewProps.markdown).toContain('Design UI with Markdown');
+    fireEvent.click(within(screen.getByTestId('component-gallery')).getAllByRole('button', { name: /^add$/i })[0]!);
     expect(lastPreviewProps.markdown).toContain('Launch faster with wiremd');
     expect(screen.getByText('Component Library')).toBeInTheDocument();
     expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
@@ -202,7 +201,7 @@ describe('App', () => {
     });
 
     fireEvent.click(screen.getByRole('button', { name: /components/i }));
-    fireEvent.click(screen.getAllByRole('button', { name: /^add$/i })[0]!);
+    fireEvent.click(within(screen.getByTestId('component-gallery')).getAllByRole('button', { name: /^add$/i })[0]!);
 
     const markdown = String(lastPreviewProps.markdown);
     expect(markdown.indexOf('Launch faster with wiremd')).toBeGreaterThan(markdown.indexOf('# Hello'));
