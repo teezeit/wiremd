@@ -11,7 +11,6 @@ import { SidebarLockBanner } from './components/SidebarLockBanner';
 import { ComponentsPanel } from './components/ComponentsPanel';
 import { Splitter } from './components/Splitter';
 import { useSplitter } from './hooks/useSplitter';
-import { Avatar } from './components/Avatar';
 import { Toast } from './components/Toast';
 import { useEditorState } from './hooks/useEditorState';
 import { useAutoSave, AUTO_SAVE_KEY } from './hooks/useAutoSave';
@@ -32,7 +31,7 @@ import {
   saveAsLocalFile,
 } from './lib/localFile';
 import { renderForFormat, filenameForFormat } from './lib/exportFormat';
-import { createProject, lockProject, unlockProject, updateProject } from './lib/projectApi';
+import { createProject, getProjectLockInfo, lockProject, unlockProject, updateProject } from './lib/projectApi';
 import type { SaveFormat } from './lib/exportFormat';
 
 interface InitialContent {
@@ -154,11 +153,9 @@ export function App() {
   // Load server content once when joining an existing session via URL
   useEffect(() => {
     if (!initialProjectId) return;
-    import('./lib/projectApi').then(({ getProjectLockInfo }) => {
-      getProjectLockInfo(initialProjectId).then((info) => {
-        if (info.content) setMarkdown(info.content);
-      }).catch(() => {});
-    });
+    getProjectLockInfo(initialProjectId).then((info) => {
+      if (info.content) setMarkdown(info.content);
+    }).catch(() => {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // intentionally empty — runs once on mount
 
