@@ -43,12 +43,12 @@ export function getEditorPanelStyle(
   horizontalSplit: number,
   verticalSplit: number,
 ): { width: string; height: string } {
-  if (layout === 'vertical') return { width: '100%', height: `${verticalSplit}%` };
+  if (layout === 'vertical') return { width: '100%', height: `${100 - verticalSplit}%` };
   return { width: `${horizontalSplit}%`, height: '' };
 }
 
 export function useSplitter() {
-  const [hSplit, setHSplit] = useState(50);
+  const [hSplit, setHSplit] = useState(33);
   const [vSplit, setVSplit] = useState(50);
   const dragging = useRef(false);
   const pointerId = useRef<number | null>(null);

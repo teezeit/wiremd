@@ -52,9 +52,14 @@ describe('getEditorPanelStyle', () => {
     expect(style.height).toBe('');
   });
 
-  it('returns height for vertical layout', () => {
+  it('returns inverted height for vertical layout (sidebar is at bottom)', () => {
     const style = getEditorPanelStyle('vertical', 40, 50);
     expect(style.width).toBe('100%');
-    expect(style.height).toBe('50%');
+    expect(style.height).toBe('50%'); // 100 - 50 = 50
+  });
+
+  it('inverts the vertical split so dragging down shrinks the sidebar', () => {
+    const style = getEditorPanelStyle('vertical', 40, 70);
+    expect(style.height).toBe('30%'); // 100 - 70 = 30
   });
 });
