@@ -282,6 +282,15 @@ body {
   transition: color 0.15s;
 }
 .ed-accordion__header:hover { color: var(--ed-text-primary); }
+.ed-accordion__help {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: var(--ed-text-muted);
+  transition: color 0.15s;
+}
+.ed-accordion__help svg { width: 13px; height: 13px; }
+.ed-accordion__help:hover { color: var(--ed-text-secondary); }
 .ed-accordion__header svg:not(.ed-accordion__chevron) { width: 14px; height: 14px; flex-shrink: 0; }
 .ed-accordion__chevron { width: 12px; height: 12px; flex-shrink: 0; transition: transform 0.15s; }
 .ed-accordion--open .ed-accordion__chevron { transform: rotate(90deg); }
@@ -1061,6 +1070,19 @@ body {
 }
 
 /* Preview thumbnail: render a wider virtual page, then scale it down. */
+.ed-template-card__code {
+  font-family: var(--ed-font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ed-text-secondary);
+  background: var(--ed-bg-input);
+  border-top: 1px solid var(--ed-border);
+  border-radius: 0 0 var(--ed-radius-md) var(--ed-radius-md);
+  padding: 8px 10px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
 .ed-template-card__preview {
   overflow: hidden;
   background: #fff;

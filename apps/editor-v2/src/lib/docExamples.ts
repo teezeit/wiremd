@@ -1,11 +1,13 @@
 import type { Example, ComponentGroup } from './examples';
 
-// Raw doc files — sourced directly from apps/docs/components/
 const rawDocs = import.meta.glob('../../../docs/components/*.md', {
   query: '?raw',
   import: 'default',
   eager: true,
 }) as Record<string, string>;
+
+// Files that are not insertable components
+const SKIP = new Set(['index', 'not-implemented-components', 'demo', 'styles']);
 
 function getDocBySlug(slug: string): string {
   const key = Object.keys(rawDocs).find((k) => k.endsWith(`/${slug}.md`));
@@ -17,88 +19,97 @@ function getTitle(md: string): string {
   return match ? match[1].trim() : '';
 }
 
-function parseFirstDemo(md: string): string | null {
+function parseAllDemos(md: string): Array<{ heading: string; code: string }> {
   const lines = md.split('\n');
+  const results: Array<{ heading: string; code: string }> = [];
+  let lastHeading = '';
   let i = 0;
+
   while (i < lines.length) {
-    if (/^::: demo/.test(lines[i]!)) {
+    const line = lines[i]!;
+    if (/^#{2,}\s/.test(line)) {
+      lastHeading = line.replace(/^#{2,}\s+/, '').trim();
+      i++;
+    } else if (/^::: demo/.test(line)) {
       let depth = 1;
       const contentLines: string[] = [];
       i++;
       while (i < lines.length && depth > 0) {
-        const line = lines[i]!;
-        if (/^:::\s*$/.test(line)) {
+        const l = lines[i]!;
+        if (/^:::\s*$/.test(l)) {
           depth--;
-          if (depth > 0) contentLines.push(line);
-        } else if (/^:::/.test(line)) {
+          if (depth > 0) contentLines.push(l);
+        } else if (/^:::/.test(l)) {
           depth++;
-          contentLines.push(line);
+          contentLines.push(l);
         } else {
-          contentLines.push(line);
+          contentLines.push(l);
         }
         i++;
       }
-      const content = contentLines.join('\n').trim();
-      if (content) return content;
+      const code = contentLines.join('\n').trim();
+      if (code) results.push({ heading: lastHeading, code });
     } else {
       i++;
     }
   }
-  return null;
+  return results;
 }
 
-function docExample(slug: string, description: string): Example | null {
-  const md = getDocBySlug(slug);
-  if (!md) return null;
-  const code = parseFirstDemo(md);
-  if (!code) return null;
-  return { name: getTitle(md) || slug, description, code };
-}
-
-function examples(pairs: Array<[string, string]>): Example[] {
-  return pairs.flatMap(([slug, desc]) => {
-    const ex = docExample(slug, desc);
-    return ex ? [ex] : [];
-  });
-}
-
-export const docComponentGroups: ComponentGroup[] = [
+// All slugs with their group assignment — covers every component doc page
+const GROUP_MAP: Array<{ name: string; slugs: string[] }> = [
+  {
+    name: 'Buttons',
+    slugs: ['buttons'],
+  },
   {
     name: 'Inputs',
-    items: examples([
-      ['buttons', 'Primary, secondary and danger variants'],
-      ['inputs', 'Single-line text fields'],
-      ['textarea-select', 'Multi-line input and dropdown'],
-      ['checkboxes-radio', 'Toggle and choice controls'],
-    ]),
+    slugs: ['inputs', 'textarea-select', 'checkboxes-radio'],
   },
   {
     name: 'Display',
-    items: examples([
-      ['cards', 'Bordered content containers'],
-      ['tabs', 'Tabbed content panels'],
-      ['badges', 'Status pills and labels'],
-      ['navigation', 'Top nav bar'],
-      ['tables', 'Data tables'],
-      ['icons', 'Inline icon tokens'],
-      ['images', 'Image placeholders'],
-    ]),
+    slugs: ['cards', 'tabs', 'accordion', 'badges', 'navigation', 'tables', 'alerts', 'icons', 'images'],
   },
   {
     name: 'Layout',
-    items: examples([
-      ['columns', 'Multi-column layouts'],
-      ['row', 'Horizontal action rows'],
-      ['alignment', 'Text and block alignment'],
-      ['page-layouts', 'Full page layout patterns'],
-    ]),
+    slugs: ['columns', 'row', 'alignment', 'page-layouts'],
   },
   {
     name: 'Advanced',
-    items: examples([
-      ['button-links', 'Buttons that navigate to a URL'],
-      ['attributes', 'Custom classes and key-value props'],
-      ['comments', 'Design annotations in the editor'],
-    ]),
+    slugs: ['button-links', 'includes', 'attributes'],
+  },
+  {
+    name: 'Comments',
+    slugs: ['comments'],
   },
 ];
+
+// Any slug in docs but not in GROUP_MAP gets added to a catch-all group
+const mappedSlugs = new Set(GROUP_MAP.flatMap((g) => g.slugs));
+
+const unmapped = Object.keys(rawDocs)
+  .map((k) => k.replace(/^.*\//, '').replace(/\.md$/, ''))
+  .filter((slug) => !slug.startsWith('_') && !SKIP.has(slug) && !mappedSlugs.has(slug));
+
+function buildGroup(name: string, slugs: string[]): ComponentGroup {
+  const items: Example[] = [];
+  for (const slug of slugs) {
+    const md = getDocBySlug(slug);
+    if (!md) continue;
+    const pageTitle = getTitle(md) || slug;
+    const demos = parseAllDemos(md);
+    for (const { heading, code } of demos) {
+      items.push({
+        name: heading ? `${pageTitle} — ${heading}` : pageTitle,
+        description: '',
+        code,
+      });
+    }
+  }
+  return { name, items };
+}
+
+export const docComponentGroups: ComponentGroup[] = [
+  ...GROUP_MAP.map((g) => buildGroup(g.name, g.slugs)),
+  ...(unmapped.length ? [buildGroup('Other', unmapped)] : []),
+].filter((g) => g.items.length > 0);

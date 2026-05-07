@@ -110,6 +110,7 @@ function GalleryCard({ item, style, onAction, disabled, compact }: CardProps) {
           onLoad={handlePreviewLoad}
         />
       </div>
+      {compact && <pre className="ed-template-card__code">{item.code}</pre>}
     </div>
   );
 }

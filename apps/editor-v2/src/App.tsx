@@ -392,12 +392,26 @@ export function App() {
           >
             <button className="ed-accordion__header" onClick={() => setComponentsOpen((o) => !o)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.856.497.926.968a.979.979 0 0 1-.277.817l-1.61 1.61a2.404 2.404 0 0 1-3.408 0l-1.518-1.518a.977.977 0 0 0-.895-.277 2.5 2.5 0 0 1-2.31-3.31c.207-.54.116-1.172-.24-1.527l-1.521-1.521a2.404 2.404 0 0 1 0-3.408l1.518-1.518a.976.976 0 0 0 .277-.895 2.5 2.5 0 0 1 3.31-2.31c.54.207 1.172.116 1.527-.24l1.521-1.521a2.404 2.404 0 0 1 3.408 0z" />
+                <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" />
               </svg>
               <svg className="ed-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6" />
               </svg>
               Components
+              <span
+                className="ed-accordion__help"
+                role="link"
+                tabIndex={0}
+                title="Component docs"
+                onClick={(e) => { e.stopPropagation(); window.open(import.meta.env.DEV ? 'http://localhost:5173/wiremd/components/' : '/wiremd/components/', '_blank'); }}
+                onKeyDown={(e) => e.key === 'Enter' && window.open(import.meta.env.DEV ? 'http://localhost:5173/wiremd/components/' : '/wiremd/components/', '_blank')}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              </span>
             </button>
             {componentsOpen && (
               <ComponentsPanel

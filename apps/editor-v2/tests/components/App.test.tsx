@@ -199,11 +199,11 @@ describe('App', () => {
   it('adds a component to the current document and keeps both accordions open', () => {
     render(<App />);
     // Expand the Inputs group first (groups are collapsed by default)
-    fireEvent.click(screen.getByTestId('group-Inputs'));
+    fireEvent.click(screen.getByTestId('group-Buttons'));
     fireEvent.click(within(screen.getByTestId('component-gallery')).getAllByRole('button', { name: /^add$/i })[0]!);
     // First demo in buttons.md is the basic example
     expect(lastPreviewProps.markdown).toContain('[Save]*');
-    expect(screen.getByTestId('group-Inputs')).toBeInTheDocument();
+    expect(screen.getByTestId('group-Buttons')).toBeInTheDocument();
     expect(screen.getByTestId('editor')).toBeInTheDocument();
   });
 
@@ -215,7 +215,7 @@ describe('App', () => {
     });
 
     // Expand the Inputs group and click the first Add button
-    fireEvent.click(screen.getByTestId('group-Inputs'));
+    fireEvent.click(screen.getByTestId('group-Buttons'));
     fireEvent.click(within(screen.getByTestId('component-gallery')).getAllByRole('button', { name: /^add$/i })[0]!);
 
     const markdown = String(lastPreviewProps.markdown);
@@ -534,5 +534,66 @@ describe('App — editor read-only in live session when not lock holder', () => 
   it('editor is not read-only in solo mode', () => {
     const { container } = render(<App />);
     expect(container.querySelector('[data-readonly="true"]')).not.toBeInTheDocument();
+  });
+});
+
+describe('App — initial content load for ?p= joiners', () => {
+  it('fetches and applies server content on mount when projectId is in URL', async () => {
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
+      lockedBy: null, lockedName: null, lastEditorName: null,
+      updatedAt: new Date().toISOString(), content: '# Loaded from server',
+    });
+    vi.stubGlobal('location', { ...window.location, search: '?p=proj-join' });
+    render(<App />);
+    await flushProjectLockPoll();
+    expect(lastPreviewProps.markdown).toBe('# Loaded from server');
+    vi.unstubAllGlobals();
+  });
+
+  it('does not overwrite local content when no projectId in URL', async () => {
+    localStorage.setItem('wiremd-content', '# My local work');
+    render(<App />);
+    await flushProjectLockPoll();
+    expect(lastPreviewProps.markdown).toBe('# My local work');
+  });
+});
+
+describe('App — inner split drag', () => {
+  it('inner divider is shown when both accordions are open', () => {
+    const { container } = render(<App />);
+    expect(container.querySelector('.ed-inner-divider')).toBeInTheDocument();
+  });
+
+  it('inner divider is hidden when Markdown accordion is collapsed', () => {
+    const { container } = render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /^markdown$/i }));
+    expect(container.querySelector('.ed-inner-divider')).not.toBeInTheDocument();
+  });
+
+  it('inner divider is hidden when Components accordion is collapsed', () => {
+    const { container } = render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /^components$/i }));
+    expect(container.querySelector('.ed-inner-divider')).not.toBeInTheDocument();
+  });
+
+  it('dragging inner divider updates split percentages', () => {
+    const { container } = render(<App />);
+    const divider = container.querySelector('.ed-inner-divider') as HTMLElement;
+
+    // happy-dom doesn't implement setPointerCapture
+    divider.setPointerCapture = vi.fn();
+
+    const sidebar = divider.parentElement!;
+    vi.spyOn(sidebar, 'getBoundingClientRect').mockReturnValue({
+      top: 0, height: 400, left: 0, width: 300, right: 300, bottom: 400,
+    } as DOMRect);
+
+    fireEvent.pointerDown(divider, { pointerId: 1, clientY: 0 });
+    act(() => {
+      window.dispatchEvent(new PointerEvent('pointermove', { pointerId: 1, clientY: 200 }));
+    });
+
+    const markdownAccordion = container.querySelector('.ed-accordion') as HTMLElement;
+    expect(markdownAccordion.style.height).toBe('50%');
   });
 });
