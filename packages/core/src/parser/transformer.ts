@@ -995,6 +995,34 @@ function switchNodeFromParts(text: string, attrs?: string): WiremdNode | null {
   };
 }
 
+// Dispatch a single bracket token `[text]*{attrs}` to the appropriate node type.
+// Handles checkbox, switch, select, input, and button — shared by the table cell
+// and any other inline context that splits on INLINE_TEXT_TOKEN_SPLIT.
+function parseBracketToken(text: string, isPrimary: string | undefined, attrs: string | undefined): WiremdNode {
+  if (/^\s*$/.test(text) || /^[xX]$/.test(text)) {
+    return {
+      type: 'checkbox',
+      checked: /^[xX]$/i.test(text.trim()),
+      label: '',
+      props: parseAttributes(attrs || ''),
+    } as unknown as WiremdNode;
+  }
+  const switchNode = switchNodeFromParts(text, attrs);
+  if (switchNode) return switchNode;
+  const props = parseAttributes(attrs || '');
+  if (/_{1,}v$/.test(text)) {
+    const placeholder = text.replace(/_{1,}v$/, '').trim() || undefined;
+    return { type: 'select', props: { ...props, ...(placeholder ? { placeholder } : {}) }, options: [] } as unknown as WiremdNode;
+  }
+  if (/^[_*]+$/.test(text) || /_{3,}$/.test(text)) {
+    const placeholderMatch = text.match(/^([^_*]+)_{3,}$/);
+    if (placeholderMatch) props.placeholder = placeholderMatch[1].trim();
+    return { type: 'input', props } as unknown as WiremdNode;
+  }
+  if (isPrimary) props.variant = 'primary';
+  return { type: 'button', content: text, props };
+}
+
 function parseBracketControlsFromLine(line: string): WiremdNode[] | null {
   const trimmed = line.trim();
   if (!trimmed || !/\[/.test(trimmed)) return null;
@@ -2215,11 +2243,11 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
 
       // Transform cell content
       const pushCellTextWithInline = (value: string) => {
-        // Split text on inline patterns: badge `((text)){.cls}` and icon `:icon:`.
-        // Mirrors the rich-paragraph splitter so table cells render badges as
-        // proper nodes instead of leaking literal badge syntax to the
-        // rendered HTML.
-        const parts = value.split(new RegExp(`(${BADGE_TOKEN_PATTERN.source}|:[a-z0-9-]+:)`, 'g'));
+        // Split text on all inline wiremd tokens: buttons/inputs/switches
+        // `[Label]*{attrs}`, badges `((text)){.cls}`, and icons `:icon:`.
+        // Mirrors the rich-paragraph splitter so table cells render all
+        // inline elements as proper nodes instead of leaking literal syntax.
+        const parts = value.split(INLINE_TEXT_TOKEN_SPLIT);
         for (const part of parts) {
           if (!part) continue;
           const badge = parseBadgeToken(part);
@@ -2230,6 +2258,12 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
           const iconOnly = part.match(/^:([a-z0-9-]+):$/);
           if (iconOnly) {
             cellChildren.push({ type: 'icon', props: { name: iconOnly[1] } });
+            continue;
+          }
+          // Button / input / switch / checkbox: [text]*{attrs}
+          const bracketMatch = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
+          if (bracketMatch) {
+            cellChildren.push(parseBracketToken(bracketMatch[1], bracketMatch[2], bracketMatch[3]));
             continue;
           }
           if (part.trim()) {
@@ -2249,8 +2283,8 @@ function transformTable(node: any, ctx: TransformContext): WiremdNode {
             if (remainder) {
               pushCellTextWithInline(remainder);
             }
-          } else if (BADGE_TOKEN_SPLIT.test(child.value)) {
-            // Cell text contains badge syntax — split into text + badge nodes.
+          } else if (INLINE_TEXT_TOKEN_SPLIT.test(child.value)) {
+            // Cell text contains inline wiremd syntax — split into proper nodes.
             pushCellTextWithInline(child.value);
           } else {
             cellChildren.push({

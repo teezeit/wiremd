@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Buttons, checkboxes, inputs, and selects inside table cells now render as proper wiremd nodes instead of leaking literal syntax (e.g. `[Edit]`, `[ ]`, `[___]`) into the HTML output.
+
 ## [0.5.0] - 2026-05-05
 
 ### Added

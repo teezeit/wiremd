@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup - Tailwind</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-6">
+  <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden my-6">
+  <thead class="bg-gray-50">
+    <tr>
+      <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Select</th>
+    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Name</th>
+    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Role</th>
+    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-gray-200">
+    <tr class="hover:bg-gray-50">
+    <td class="px-6 py-3 text-gray-900"><label class="flex items-center gap-2 cursor-pointer">
+    <input type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+    <span class="text-gray-900"></span>
+  </label></td>
+    <td class="px-6 py-3 text-gray-900">Alice</td>
+    <td class="px-6 py-3 text-gray-900"><select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+    <option value="" disabled selected>Admin</option>
+    
+  </select></td>
+    <td class="px-6 py-3 text-gray-900"><button class="px-4 py-2 rounded-md font-medium transition-colors bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-300">Edit</button><button class="px-4 py-2 rounded-md font-medium transition-colors bg-red-600 text-white hover:bg-red-700">Delete</button></td>
+  </tr>
+    <tr class="hover:bg-gray-50">
+    <td class="px-6 py-3 text-gray-900"><label class="flex items-center gap-2 cursor-pointer">
+    <input type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" checked />
+    <span class="text-gray-900"></span>
+  </label></td>
+    <td class="px-6 py-3 text-gray-900">Bob</td>
+    <td class="px-6 py-3 text-gray-900"><select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+    <option value="" disabled selected>Editor</option>
+    
+  </select></td>
+    <td class="px-6 py-3 text-gray-900"><button class="px-4 py-2 rounded-md font-medium transition-colors bg-indigo-600 text-white hover:bg-indigo-700">Edit</button><button class="px-4 py-2 rounded-md font-medium transition-colors bg-red-600 text-white hover:bg-red-700">Delete</button></td>
+  </tr>
+    <tr class="hover:bg-gray-50">
+    <td class="px-6 py-3 text-gray-900"><label class="flex items-center gap-2 cursor-pointer">
+    <input type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+    <span class="text-gray-900"></span>
+  </label></td>
+    <td class="px-6 py-3 text-gray-900">Carol</td>
+    <td class="px-6 py-3 text-gray-900"><select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+    <option value="" disabled selected>Viewer</option>
+    
+  </select></td>
+    <td class="px-6 py-3 text-gray-900"><button class="px-4 py-2 rounded-md font-medium transition-colors bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-300">Edit</button><button class="px-4 py-2 rounded-md font-medium transition-colors bg-red-600 text-white hover:bg-red-700">Delete</button></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
