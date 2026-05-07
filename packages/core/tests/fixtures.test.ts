@@ -31,7 +31,7 @@ const fixtures = loadFixtures();
  * noise — they shift on any input edit and are unrelated to correctness.
  */
 function stripPositionAttrs(html: string): string {
-  return html.replace(/\s+data-source-line="\d+"/g, '');
+  return html.replace(/\s+data-source-line(?:-end)?="\d+"/g, '');
 }
 
 interface InvariantsArgs {

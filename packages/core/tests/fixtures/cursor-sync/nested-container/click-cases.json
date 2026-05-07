@@ -1,0 +1,12 @@
+[
+  {
+    "clickSourceLine": 1,
+    "expectedEditorLine": 1,
+    "description": "click the card container"
+  },
+  {
+    "clickSourceLine": 2,
+    "expectedEditorLine": 2,
+    "description": "click the paragraph inside the card"
+  }
+]

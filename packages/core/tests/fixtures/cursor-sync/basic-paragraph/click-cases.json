@@ -1,0 +1,7 @@
+[
+  {
+    "clickSourceLine": 1,
+    "expectedEditorLine": 1,
+    "description": "clicking block at source line 1 → editor jumps to line 1"
+  }
+]

@@ -193,8 +193,11 @@ export function renderCommentsPanel(comments: Array<{ id: number; texts: string[
 }
 
 export function sourceLine(node: any): string {
-  const line = node?.position?.start?.line;
-  return line != null ? ` data-source-line="${line}"` : '';
+  const start = node?.position?.start?.line;
+  if (start == null) return '';
+  const end = node?.position?.end?.line;
+  const endAttr = end != null ? ` data-source-line-end="${end}"` : '';
+  return ` data-source-line="${start}"${endAttr}`;
 }
 
 /**

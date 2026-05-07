@@ -1,0 +1,12 @@
+[
+  {
+    "clickSourceLine": 1,
+    "expectedEditorLine": 1,
+    "description": "click the tabs container"
+  },
+  {
+    "clickSourceLine": 3,
+    "expectedEditorLine": 3,
+    "description": "click Alpha content paragraph inside the tab"
+  }
+]

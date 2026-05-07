@@ -1,0 +1,12 @@
+[
+  {
+    "cursorLine": 1,
+    "expectedAfterSourceLine": 1,
+    "description": "cursor on line 1 → indicator after the paragraph"
+  },
+  {
+    "cursorLine": 0,
+    "expectedAfterSourceLine": null,
+    "description": "cursor before any block → no indicator"
+  }
+]

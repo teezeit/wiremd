@@ -839,7 +839,7 @@ Strong
       const html = renderToHTML(ast, { style: 'sketch' });
       // Must produce an actual grid div, not just CSS class strings
       expect(html).toMatch(/<div class="[^"]*wmd-grid[^"]*wmd-grid-3[^"]*"/);
-      expect(html).toMatch(/<div class="[^"]*wmd-grid-item[^"]*">/);
+      expect(html).toMatch(/class="[^"]*wmd-grid-item/);
       expect(html).toContain('Fast');
       expect(html).toContain('Secure');
       expect(html).toContain('Powerful');
@@ -880,7 +880,7 @@ Nav
       const ast = parse(input);
       const html = renderToHTML(ast, { style: 'sketch' });
       expect(html).toMatch(/<div class="[^"]*wmd-grid[^"]*wmd-grid-3[^"]*"/);
-      expect(html).toMatch(/<div class="[^"]*wmd-grid-item[^"]*">/);
+      expect(html).toMatch(/class="[^"]*wmd-grid-item/);
       expect(html).toContain('Done');
       expect(html).toContain('Active');
       expect(html).toContain('Pending');
@@ -1533,25 +1533,31 @@ content
     it('cursorSync: false emits no cursor script or CSS', () => {
       const html = renderToHTML(parse('# Hello'), { style: 'sketch', cursorSync: false });
       expect(html).not.toContain('wiremd-cursor');
-      expect(html).not.toContain('data-cursor-active');
+      expect(html).not.toContain('wmd-cursor-indicator');
     });
 
-    it('cursorSync: true emits cursor script and CSS', () => {
+    it('cursorSync: true emits cursor script and indicator CSS', () => {
       const html = renderToHTML(parse('# Hello'), { style: 'sketch', cursorSync: true });
       expect(html).toContain('wiremd-cursor');
-      expect(html).toContain('data-cursor-active');
+      expect(html).toContain('wmd-cursor-indicator');
     });
 
-    it('cursorSync script handles wiremd-cursor-blur message', () => {
+    it('cursorSync script handles wiremd-cursor-blur by removing the indicator', () => {
       const html = renderToHTML(parse('# Hello'), { style: 'sketch', cursorSync: true });
       expect(html).toContain('wiremd-cursor-blur');
-      expect(html).toContain('removeAttribute(\'data-cursor-active\')');
+      expect(html).toContain('removeIndicator');
+    });
+
+    it('cursorSync script emits wiremd-visual-mode and wiremd-component-click', () => {
+      const html = renderToHTML(parse('# Hello'), { style: 'sketch', cursorSync: true });
+      expect(html).toContain('wiremd-visual-mode');
+      expect(html).toContain('wiremd-component-click');
     });
 
     it('cursorSync script does not set data-cursor-active on tab button', () => {
       const html = renderToHTML(parse('# Hello'), { style: 'sketch', cursorSync: true });
-      // activateTab must NOT call setAttribute('data-cursor-active') on tab buttons
-      const scriptMatch = html.match(/<script>[\s\S]*?<\/script>/g)?.find(s => s.includes('wiremd-cursor'));
+      // activateTab must NOT touch data-cursor-active (we use indicator div now)
+      const scriptMatch = [...(html.match(/<script>[\s\S]*?<\/script>/g) ?? [])].find(s => s.includes('wiremd-cursor'));
       expect(scriptMatch).toBeTruthy();
       const activateTabBody = scriptMatch!.match(/function activateTab[\s\S]*?\}/)?.[0] ?? '';
       expect(activateTabBody).not.toContain('data-cursor-active');
@@ -1595,17 +1601,15 @@ content
     });
 
     it('data-source-line values match actual source lines in nested containers', () => {
-      // ::: column (grid-item) does NOT receive data-source-line — only the
-      // outer columns container and the content paragraphs inside do.
+      // ::: column (grid-item) now also receives data-source-line for cursor sync.
       const md = '::: columns\n\n::: column\nContent A.\n\n:::\n\n::: column\nContent B.\n\n:::\n\n:::';
       //           1             2   3        4            5  6    7   8        9            10 11   12  13
       const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
       expect(html).toContain('data-source-line="1"');  // outer columns container
+      expect(html).toContain('data-source-line="3"');  // first grid-item (column)
       expect(html).toContain('data-source-line="4"');  // Content A paragraph
+      expect(html).toContain('data-source-line="8"');  // second grid-item (column)
       expect(html).toContain('data-source-line="9"');  // Content B paragraph
-      // grid-item nodes (lines 3 and 8) are not annotated — verify absence
-      expect(html).not.toContain('data-source-line="3"');
-      expect(html).not.toContain('data-source-line="8"');
     });
 
     it('node after a container has the correct source line', () => {

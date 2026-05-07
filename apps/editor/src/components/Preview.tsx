@@ -7,40 +7,78 @@ interface Props {
   style: StyleName;
   activeTab: 'preview' | 'html';
   showComments: boolean;
+  cursorLine: number | null;
+  visualEditing: boolean;
+  onComponentClick: (line: number) => void;
 }
 
-export const Preview = memo(function Preview({ markdown, style, activeTab, showComments }: Props) {
+export const Preview = memo(function Preview({
+  markdown,
+  style,
+  activeTab,
+  showComments,
+  cursorLine,
+  visualEditing,
+  onComponentClick,
+}: Props) {
   const result = useMemo(
     () => renderMarkup(markdown, style, showComments),
     [markdown, style, showComments],
   );
-
   const html = result.error === null ? result.html : '';
   const error = result.error;
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const savedScrollY = useRef(0);
 
-  // Listen for scroll position reports from the iframe before it reloads
+  function post(msg: unknown) {
+    iframeRef.current?.contentWindow?.postMessage(msg, '*');
+  }
+
+  // Listen for messages from the iframe (scroll reports + component clicks)
   useEffect(() => {
     function onMessage(e: MessageEvent) {
       if (e.data?.type === 'wiremd-scroll') {
         savedScrollY.current = e.data.scrollY as number;
+        return;
+      }
+      if (e.data?.type === 'wiremd-component-click') {
+        onComponentClick(e.data.line as number);
       }
     }
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
-  }, []);
+  }, [onComponentClick]);
 
-  // After iframe loads, restore saved scroll position
+  // Restore scroll and send current cursor/visual-mode state after iframe loads
   function onIframeLoad() {
-    const win = iframeRef.current?.contentWindow;
-    if (!win || savedScrollY.current === 0) return;
-    win.postMessage({ type: 'wiremd-set-scroll', scrollY: savedScrollY.current }, '*');
+    if (savedScrollY.current !== 0) {
+      post({ type: 'wiremd-set-scroll', scrollY: savedScrollY.current });
+    }
+    if (cursorLine !== null) {
+      post({ type: 'wiremd-cursor', line: cursorLine });
+    }
+    post({ type: 'wiremd-visual-mode', enabled: visualEditing });
   }
 
+  // Send cursor line to iframe whenever it changes
+  useEffect(() => {
+    if (cursorLine === null) {
+      post({ type: 'wiremd-cursor-blur' });
+    } else {
+      post({ type: 'wiremd-cursor', line: cursorLine });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cursorLine]);
+
+  // Send visual mode toggle to iframe whenever it changes
+  useEffect(() => {
+    post({ type: 'wiremd-visual-mode', enabled: visualEditing });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visualEditing]);
+
   return (
-    <div className="ed-preview__content">
+    <div className={`ed-preview__content${visualEditing ? ' ed-preview__content--visual-editing' : ''}`}>
       {activeTab === 'preview' ? (
         <iframe
           ref={iframeRef}

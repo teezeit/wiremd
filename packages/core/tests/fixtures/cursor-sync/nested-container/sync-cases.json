@@ -1,0 +1,12 @@
+[
+  {
+    "cursorLine": 1,
+    "expectedAfterSourceLine": 0,
+    "description": "cursor on container opener → indicator is first child inside the card (opener fix)"
+  },
+  {
+    "cursorLine": 2,
+    "expectedAfterSourceLine": 2,
+    "description": "cursor on line 2 (the paragraph inside the card) → indicator after the paragraph"
+  }
+]
