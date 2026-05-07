@@ -36,6 +36,17 @@ Use `((Badge))` syntax inside cells without escaping table pipes.
 [+ New Project]*
 :::
 
+## Interactive Elements in Cells
+
+Buttons, checkboxes, inputs, and selects render as proper components inside table cells.
+::: demo
+| Select | Name | Role | Actions |
+|--------|------|------|---------|
+| [ ] | Alice | [Admin___v] | [Edit] [Delete]{danger} |
+| [x] | Bob | [Editor___v] | [Edit]* [Delete]{danger} |
+| [ ] | Carol | [Viewer___v] | [Edit] [Delete]{danger} |
+:::
+
 ## Column Alignment
 
 Use `:---`, `:---:`, and `---:` in the separator row.
