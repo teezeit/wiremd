@@ -20847,6 +20847,7 @@ var remarkWiremdInlineContainers = () => {
 function normalizeContainerDirectiveSpacing(markdown) {
   const lines = markdown.split(/\r?\n/);
   const out = [];
+  const lineMap = [];
   let inFence = false;
   let fenceMarker = null;
   const isFenceLine = (line) => {
@@ -20854,6 +20855,10 @@ function normalizeContainerDirectiveSpacing(markdown) {
     return match ? match[1] : null;
   };
   const isDirectiveLine = (line) => !inFence && /^:::(?:\s|$)/.test(line.trim());
+  const pushSynthetic = () => {
+    out.push("");
+    lineMap.push(0);
+  };
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const fence = isFenceLine(line);
@@ -20869,15 +20874,39 @@ function normalizeContainerDirectiveSpacing(markdown) {
     }
     const directive = isDirectiveLine(line);
     if (directive && out.length > 0 && out[out.length - 1].trim() !== "") {
-      out.push("");
+      pushSynthetic();
     }
     out.push(directive ? line.trimStart() : line);
+    lineMap.push(i + 1);
     const nextLine = lines[i + 1];
     if (directive && nextLine !== void 0 && nextLine.trim() !== "") {
-      out.push("");
+      pushSynthetic();
     }
   }
-  return out.join("\n");
+  return { text: out.join("\n"), lineMap };
+}
+function remapMdastPositions(node2, lineMap) {
+  if (node2?.position) {
+    const remap = (line) => {
+      const mapped = lineMap[line - 1];
+      if (mapped)
+        return mapped;
+      for (let i = line - 2; i >= 0; i--) {
+        if (lineMap[i])
+          return lineMap[i];
+      }
+      return line;
+    };
+    if (node2.position.start?.line != null) {
+      node2.position.start = { ...node2.position.start, line: remap(node2.position.start.line) };
+    }
+    if (node2.position.end?.line != null) {
+      node2.position.end = { ...node2.position.end, line: remap(node2.position.end.line) };
+    }
+  }
+  for (const child of node2?.children ?? []) {
+    remapMdastPositions(child, lineMap);
+  }
 }
 function parseContainerOpener(node2) {
   if (node2.type !== "paragraph" || !node2.children?.length || node2.children[0].type !== "text")
@@ -20926,7 +20955,7 @@ function finishContainer(containerType, attrs, inline, children, nextIndex, posi
   return { node: node2, nextIndex };
 }
 function parseMarkdownBlocks(markdown) {
-  const trimmed = normalizeContainerDirectiveSpacing(markdown.trim());
+  const { text: trimmed } = normalizeContainerDirectiveSpacing(markdown.trim());
   if (!trimmed)
     return [];
   const processor = unified().use(remarkParse).use(remarkGfm).use(remarkWiremdInlineContainers);
@@ -21521,9 +21550,10 @@ function resolveIncludes(markdown, basePath) {
   }).join("");
 }
 function parse2(input2, options = {}) {
-  const normalizedInput = normalizeContainerDirectiveSpacing(input2);
+  const { text: normalizedInput, lineMap } = normalizeContainerDirectiveSpacing(input2);
   const processor = unified().use(remarkParse).use(remarkGfm).use(remarkWiremdInlineContainers).use(remarkWiremdContainers);
   const mdast = processor.parse(normalizedInput);
+  remapMdastPositions(mdast, lineMap);
   const processed = processor.runSync(mdast);
   const wiremdAST = transformToWiremdAST(processed, options);
   return wiremdAST;
