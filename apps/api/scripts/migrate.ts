@@ -6,8 +6,8 @@ import postgres from "postgres";
 
 const url = process.env.DATABASE_URL;
 if (!url) {
-  console.error("DATABASE_URL is required");
-  process.exit(1);
+  console.log("[migrate] No DATABASE_URL — skipping");
+  process.exit(0);
 }
 
 const client = postgres(url, { prepare: false, max: 1 });
