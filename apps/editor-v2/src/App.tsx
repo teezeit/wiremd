@@ -101,7 +101,7 @@ export function App() {
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [markdownOpen, setMarkdownOpen] = useState(true);
   const [componentsOpen, setComponentsOpen] = useState(true);
-  const [innerSplit, setInnerSplit] = useState(60);
+  const [innerSplit, setInnerSplit] = useState(20);
   const innerDividerRef = useRef<HTMLDivElement>(null);
   const { dividerRef, onPointerDown, panelStyle } = useSplitter();
 
@@ -283,14 +283,14 @@ export function App() {
             </button>
           )}
 
-          {/* Lock status — shown only in shared project mode */}
-          {lockState.status === 'taken' && (
+          {/* Lock status — only shown in header when sidebar is hidden */}
+          {mode === 'preview' && lockState.status === 'taken' && (
             <div className="ed-lock-status">
               <span className="ed-lock-status__name">{lockState.lockedByName}</span>
               <span className="ed-lock-status__label">is already editing</span>
             </div>
           )}
-          {lockState.status === 'mine' && (
+          {mode === 'preview' && lockState.status === 'mine' && (
             <div className="ed-lock-status">
               <span className="ed-lock-status__name">{myName}</span>
               <span className="ed-lock-status__label">(you) is editing</span>
@@ -341,6 +341,15 @@ export function App() {
           </button>
         )}
         <aside className="ed-sidebar">
+          {/* Lock banner — session-wide, always visible above accordions */}
+          {lockState.status === 'taken' && (
+            <SidebarLockBanner
+              lockedByName={lockState.lockedByName ?? 'Someone'}
+              lastEditedAt={lockState.lastEditedAt}
+              onSteal={() => setLockModalOpen(true)}
+            />
+          )}
+
           {/* Markdown accordion */}
           <div
             className={`ed-accordion${markdownOpen ? ' ed-accordion--open' : ''}`}
@@ -356,23 +365,14 @@ export function App() {
               Markdown
             </button>
             {markdownOpen && (
-              <>
-                {lockState.status === 'taken' && (
-                  <SidebarLockBanner
-                    lockedByName={lockState.lockedByName ?? 'Someone'}
-                    lastEditedAt={lockState.lastEditedAt}
-                    onSteal={() => setLockModalOpen(true)}
-                  />
-                )}
-                <div className={`ed-codemirror-wrap${isLockedByOther ? ' ed-codemirror-wrap--locked' : ''}`}>
-                  <Editor
-                    value={markdown}
-                    onChange={handleChange}
-                    onSelectionChange={handleSelectionChange}
-                    readOnly={isLockedByOther}
-                  />
-                </div>
-              </>
+              <div className={`ed-codemirror-wrap${isLockedByOther ? ' ed-codemirror-wrap--locked' : ''}`}>
+                <Editor
+                  value={markdown}
+                  onChange={handleChange}
+                  onSelectionChange={handleSelectionChange}
+                  readOnly={isLockedByOther}
+                />
+              </div>
             )}
           </div>
 
