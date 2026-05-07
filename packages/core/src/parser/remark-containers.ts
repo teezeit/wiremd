@@ -191,6 +191,12 @@ function finishContainer(
   return { node, nextIndex };
 }
 
+// NOTE: nodes returned here have positions relative to `markdown`, not the full
+// document. This path is currently unreachable in practice because
+// normalizeContainerDirectiveSpacing inserts blank lines around every :::
+// directive, preventing remark from folding container content into a single
+// paragraph (the only trigger for this function). If that ever changes, callers
+// must offset the returned positions by the content's start line in the source.
 function parseMarkdownBlocks(markdown: string): any[] {
   const { text: trimmed } = normalizeContainerDirectiveSpacing(markdown.trim());
   if (!trimmed) return [];
