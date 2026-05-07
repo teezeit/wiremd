@@ -1574,6 +1574,57 @@ content
       const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
       expect(html).toMatch(/data-wmd-tabs[^>]*data-source-line|data-source-line[^>]*data-wmd-tabs/);
     });
+
+    it('data-source-line values match actual source lines for plain markdown', () => {
+      // Regression guard: exact line numbers, not just presence.
+      const md = '## Title\n\nParagraph.\n\n> Quote.';
+      //           1          2  3          4   5
+      const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
+      expect(html).toContain('data-source-line="1"'); // heading
+      expect(html).toContain('data-source-line="3"'); // paragraph
+      expect(html).toContain('data-source-line="5"'); // blockquote
+    });
+
+    it('data-source-line values match actual source lines inside a container', () => {
+      const md = '::: card\n\n# Heading\n\nParagraph.\n\n:::';
+      //           1          2   3         4   5           6  7
+      const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
+      expect(html).toContain('data-source-line="1"'); // card container
+      expect(html).toContain('data-source-line="3"'); // heading inside card
+      expect(html).toContain('data-source-line="5"'); // paragraph inside card
+    });
+
+    it('data-source-line values match actual source lines in nested containers', () => {
+      // ::: column (grid-item) does NOT receive data-source-line — only the
+      // outer columns container and the content paragraphs inside do.
+      const md = '::: columns\n\n::: column\nContent A.\n\n:::\n\n::: column\nContent B.\n\n:::\n\n:::';
+      //           1             2   3        4            5  6    7   8        9            10 11   12  13
+      const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
+      expect(html).toContain('data-source-line="1"');  // outer columns container
+      expect(html).toContain('data-source-line="4"');  // Content A paragraph
+      expect(html).toContain('data-source-line="9"');  // Content B paragraph
+      // grid-item nodes (lines 3 and 8) are not annotated — verify absence
+      expect(html).not.toContain('data-source-line="3"');
+      expect(html).not.toContain('data-source-line="8"');
+    });
+
+    it('node after a container has the correct source line', () => {
+      const md = '::: card\nInside.\n:::\n\n## After\n\nText.';
+      //           1         2        3    4   5         6   7
+      const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
+      expect(html).toContain('data-source-line="5"'); // heading after card
+      expect(html).toContain('data-source-line="7"'); // paragraph after card
+    });
+
+    it('data-source-line does not exceed the document line count', () => {
+      const md = '::: card\n# H\n\nP.\n\n:::';
+      const lineCount = md.split('\n').length;
+      const html = renderToHTML(parse(md), { style: 'sketch', cursorSync: true });
+      const allLines = [...html.matchAll(/data-source-line="(\d+)"/g)].map((m) => parseInt(m[1], 10));
+      for (const n of allLines) {
+        expect(n).toBeLessThanOrEqual(lineCount);
+      }
+    });
   });
 });
 
