@@ -235,7 +235,7 @@ export function App() {
   }, [markdown, sessionId, myName]);
 
   const handleLeaveSession = useCallback(async () => {
-    if (projectId) await unlockProject(projectId, sessionId);
+    if (projectId) await unlockProject(projectId, sessionId).catch(() => {});
     window.history.replaceState(null, '', window.location.pathname);
     setProjectId(null);
     setMode('edit');
