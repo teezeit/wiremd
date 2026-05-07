@@ -5,6 +5,7 @@ export interface ProjectLockInfo {
   lockedName: string | null;
   lastEditorName: string | null;
   updatedAt: string;
+  content: string;
 }
 
 async function json<T>(res: Response): Promise<T> {
@@ -40,6 +41,19 @@ export async function lockProject(
     body: JSON.stringify({ clientId, name, force }),
   });
   await json(res);
+}
+
+export async function updateProject(
+  id: string,
+  content: string,
+  clientId: string,
+): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/projects/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content, clientId }),
+  });
+  if (!res.ok && res.status !== 403) throw new Error(`${res.status} ${res.statusText}`);
 }
 
 export async function unlockProject(id: string, clientId: string, force = false): Promise<void> {

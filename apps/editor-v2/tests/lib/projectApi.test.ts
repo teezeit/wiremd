@@ -5,7 +5,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.stubGlobal('fetch', vi.fn());
 
-import { getProjectLockInfo, lockProject, unlockProject, createProject } from '../../src/lib/projectApi';
+import { getProjectLockInfo, lockProject, unlockProject, createProject, updateProject } from '../../src/lib/projectApi';
 
 const mockFetch = vi.mocked(fetch);
 
@@ -26,6 +26,38 @@ describe('getProjectLockInfo', () => {
     expect(info.lockedName).toBe('Red Bear');
     expect(info.lastEditorName).toBe('Red Bear');
     expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/projects/abc'), expect.anything());
+  });
+
+  it('includes content in the returned info', async () => {
+    mockFetch.mockResolvedValueOnce(ok({
+      id: 'abc', content: '# Remote content', updatedAt: '2026-01-01T00:00:00Z',
+      lockedBy: null, lockedName: null, lastEditorName: null,
+    }));
+    const info = await getProjectLockInfo('abc');
+    expect(info.content).toBe('# Remote content');
+  });
+});
+
+describe('updateProject', () => {
+  it('sends PUT to /api/projects/:id with content and clientId', async () => {
+    mockFetch.mockResolvedValueOnce(ok({ updatedAt: '2026-01-01T00:00:00Z' }));
+    await updateProject('proj1', '# Updated', 'me');
+    const [url, init] = mockFetch.mock.calls[0]!;
+    expect(String(url)).toContain('/api/projects/proj1');
+    expect((init as RequestInit).method).toBe('PUT');
+    const body = JSON.parse((init as RequestInit).body as string);
+    expect(body.content).toBe('# Updated');
+    expect(body.clientId).toBe('me');
+  });
+
+  it('does not throw on 403 (lock stolen mid-edit)', async () => {
+    mockFetch.mockResolvedValueOnce(new Response(JSON.stringify({ error: 'Locked' }), { status: 403 }));
+    await expect(updateProject('proj1', '# Hi', 'me')).resolves.toBeUndefined();
+  });
+
+  it('throws on other non-ok responses', async () => {
+    mockFetch.mockResolvedValueOnce(new Response(null, { status: 500 }));
+    await expect(updateProject('proj1', '# Hi', 'me')).rejects.toThrow();
   });
 });
 

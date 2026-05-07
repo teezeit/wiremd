@@ -10,12 +10,12 @@ vi.mock('../../src/lib/projectApi', () => ({
 
 import * as projectApi from '../../src/lib/projectApi';
 
-function freeProject() {
-  return { lockedBy: null, lockedName: null, lastEditorName: 'Blue Fox', updatedAt: '2026-01-01T00:00:00Z' };
+function freeProject(content = '# Hello') {
+  return { lockedBy: null, lockedName: null, lastEditorName: 'Blue Fox', updatedAt: '2026-01-01T00:00:00Z', content };
 }
 
-function takenProject(by = 'xyz', name = 'Red Bear') {
-  return { lockedBy: by, lockedName: name, lastEditorName: name, updatedAt: '2026-01-01T00:00:00Z' };
+function takenProject(by = 'xyz', name = 'Red Bear', content = '# Hello') {
+  return { lockedBy: by, lockedName: name, lastEditorName: name, updatedAt: '2026-01-01T00:00:00Z', content };
 }
 
 beforeEach(() => {
@@ -142,5 +142,43 @@ describe('useProjectLock — acquire conflict', () => {
     await act(async () => { await vi.advanceTimersByTimeAsync(100); });
     try { await act(async () => { await result.current.acquire(); }); } catch {}
     expect(result.current.lockState.status).not.toBe('mine');
+  });
+});
+
+describe('useProjectLock — onRemoteContent', () => {
+  it('calls onRemoteContent with server content when lock is unlocked', async () => {
+    const onRemoteContent = vi.fn();
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue(freeProject('# From server'));
+    renderHook(() => useProjectLock({ ...BASE, projectId: 'proj1', onRemoteContent }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(100); });
+    expect(onRemoteContent).toHaveBeenCalledWith('# From server');
+  });
+
+  it('calls onRemoteContent when someone else holds the lock', async () => {
+    const onRemoteContent = vi.fn();
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue(takenProject('xyz', 'Red Bear', '# Writer content'));
+    renderHook(() => useProjectLock({ ...BASE, projectId: 'proj1', onRemoteContent }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(100); });
+    expect(onRemoteContent).toHaveBeenCalledWith('# Writer content');
+  });
+
+  it('does NOT call onRemoteContent when I hold the lock', async () => {
+    const onRemoteContent = vi.fn();
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue(takenProject('me', 'Blue Fox', '# My content'));
+    renderHook(() => useProjectLock({ ...BASE, projectId: 'proj1', onRemoteContent }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(100); });
+    expect(onRemoteContent).not.toHaveBeenCalled();
+  });
+
+  it('calls onRemoteContent on every poll when content changes', async () => {
+    const onRemoteContent = vi.fn();
+    vi.mocked(projectApi.getProjectLockInfo)
+      .mockResolvedValueOnce(takenProject('xyz', 'Red Bear', '# v1'))
+      .mockResolvedValueOnce(takenProject('xyz', 'Red Bear', '# v2'));
+    renderHook(() => useProjectLock({ ...BASE, projectId: 'proj1', onRemoteContent }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(100); });
+    expect(onRemoteContent).toHaveBeenLastCalledWith('# v1');
+    await act(async () => { await vi.advanceTimersByTimeAsync(2000); });
+    expect(onRemoteContent).toHaveBeenLastCalledWith('# v2');
   });
 });

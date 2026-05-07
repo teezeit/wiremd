@@ -38,11 +38,17 @@ vi.mock('../../src/lib/localFile', () => ({
   saveAsLocalFile: vi.fn(),
 }));
 
+const FIXED_SESSION_ID = 'fixed-test-session-id';
+vi.mock('../../src/hooks/useSessionIdentity', () => ({
+  useSessionIdentity: () => ({ sessionId: FIXED_SESSION_ID, name: 'Blue Fox' }),
+}));
+
 vi.mock('../../src/lib/projectApi', () => ({
-  getProjectLockInfo: vi.fn().mockResolvedValue({ lockedBy: null, lockedName: null, lastEditorName: null, updatedAt: new Date().toISOString() }),
+  getProjectLockInfo: vi.fn().mockResolvedValue({ lockedBy: null, lockedName: null, lastEditorName: null, updatedAt: new Date().toISOString(), content: '' }),
   lockProject: vi.fn().mockResolvedValue(undefined),
   unlockProject: vi.fn().mockResolvedValue(undefined),
   createProject: vi.fn().mockResolvedValue({ id: 'test-proj', updatedAt: new Date().toISOString() }),
+  updateProject: vi.fn().mockResolvedValue(undefined),
 }));
 
 import * as localFile from '../../src/lib/localFile';
@@ -81,10 +87,11 @@ beforeEach(() => {
   clipboardWriteText.mockClear();
   vi.mocked(localFile.openLocalFile).mockReset();
   vi.mocked(localFile.saveAsLocalFile).mockReset();
-  vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({ lockedBy: null, lockedName: null, lastEditorName: null, updatedAt: new Date().toISOString() });
+  vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({ lockedBy: null, lockedName: null, lastEditorName: null, updatedAt: new Date().toISOString(), content: '' });
   vi.mocked(projectApi.createProject).mockResolvedValue({ id: 'test-proj', updatedAt: new Date().toISOString() });
   vi.mocked(projectApi.lockProject).mockResolvedValue(undefined);
   vi.mocked(projectApi.unlockProject).mockResolvedValue(undefined);
+  vi.mocked(projectApi.updateProject).mockResolvedValue(undefined);
 });
 
 afterEach(() => {
@@ -119,7 +126,7 @@ describe('App', () => {
   it('edit toggle always toggles mode even when lock is taken', async () => {
     vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
       lockedBy: 'other-session', lockedName: 'Red Bear', lastEditorName: 'Red Bear',
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(), content: '',
     });
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     const { container } = render(<App />);
@@ -132,7 +139,7 @@ describe('App', () => {
   it('shows sidebar lock banner when someone else has the lock', async () => {
     vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
       lockedBy: 'other-session', lockedName: 'Red Bear', lastEditorName: 'Red Bear',
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(), content: '',
     });
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     render(<App />);
@@ -436,11 +443,61 @@ describe('App', () => {
   });
 });
 
+describe('App — live session content sync', () => {
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  it('pushes content to API after 1s debounce when holding the lock', async () => {
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
+      lockedBy: FIXED_SESSION_ID, lockedName: 'Blue Fox', lastEditorName: 'Blue Fox',
+      updatedAt: new Date().toISOString(), content: '',
+    });
+    vi.stubGlobal('location', { ...window.location, search: '?p=proj1' });
+    render(<App />);
+    await flushProjectLockPoll();
+
+    // Simulate typing and flush state before advancing timer
+    await act(async () => { lastEditorProps?.onChange?.('# Updated content'); });
+    vi.mocked(projectApi.updateProject).mockClear();
+
+    await act(async () => { await vi.advanceTimersByTimeAsync(1000); });
+    expect(projectApi.updateProject).toHaveBeenCalledWith('proj1', '# Updated content', expect.any(String));
+    vi.unstubAllGlobals();
+  });
+
+  it('does not push content when not holding the lock', async () => {
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
+      lockedBy: 'other-session', lockedName: 'Red Bear', lastEditorName: 'Red Bear',
+      updatedAt: new Date().toISOString(), content: '# Remote',
+    });
+    vi.stubGlobal('location', { ...window.location, search: '?p=proj1' });
+    render(<App />);
+    await flushProjectLockPoll();
+    vi.mocked(projectApi.updateProject).mockClear();
+
+    await act(async () => { await vi.advanceTimersByTimeAsync(2000); });
+    expect(projectApi.updateProject).not.toHaveBeenCalled();
+    vi.unstubAllGlobals();
+  });
+
+  it('applies remote content to the editor when someone else holds the lock', async () => {
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
+      lockedBy: 'other-session', lockedName: 'Red Bear', lastEditorName: 'Red Bear',
+      updatedAt: new Date().toISOString(), content: '# Live update from writer',
+    });
+    vi.stubGlobal('location', { ...window.location, search: '?p=proj1' });
+    render(<App />);
+    await flushProjectLockPoll();
+    expect(lastPreviewProps.markdown).toBe('# Live update from writer');
+    vi.unstubAllGlobals();
+  });
+});
+
 describe('App — editor read-only in live session when not lock holder', () => {
   it('editor is read-only when someone else holds the lock', async () => {
     vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
       lockedBy: 'other-session', lockedName: 'Red Bear', lastEditorName: 'Red Bear',
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(), content: '',
     });
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     const { container } = render(<App />);

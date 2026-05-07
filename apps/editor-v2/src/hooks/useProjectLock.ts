@@ -15,11 +15,12 @@ interface Opts {
   sessionId: string;
   name: string;
   onStolen: (byName: string) => void;
+  onRemoteContent?: (content: string) => void;
 }
 
 const POLL_MS = 2000;
 
-export function useProjectLock({ projectId, sessionId, name, onStolen }: Opts) {
+export function useProjectLock({ projectId, sessionId, name, onStolen, onRemoteContent }: Opts) {
   const [lockState, setLockState] = useState<LockState>({
     status: projectId ? 'unlocked' : 'solo',
     lockedByName: null,
@@ -30,6 +31,8 @@ export function useProjectLock({ projectId, sessionId, name, onStolen }: Opts) {
   const prevStatusRef = useRef<LockStatus>(projectId ? 'unlocked' : 'solo');
   const onStolenRef = useRef(onStolen);
   onStolenRef.current = onStolen;
+  const onRemoteContentRef = useRef(onRemoteContent);
+  onRemoteContentRef.current = onRemoteContent;
 
   const applyInfo = useCallback(
     (info: Awaited<ReturnType<typeof getProjectLockInfo>>) => {
@@ -51,6 +54,11 @@ export function useProjectLock({ projectId, sessionId, name, onStolen }: Opts) {
         lastEditorName: info.lastEditorName,
         lastEditedAt: info.updatedAt,
       });
+
+      // Apply remote content for readers (anyone not holding the lock)
+      if (status !== 'mine' && info.content !== undefined) {
+        onRemoteContentRef.current?.(info.content);
+      }
     },
     [sessionId],
   );

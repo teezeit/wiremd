@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Editor } from './components/Editor';
 import { Preview } from './components/Preview';
 import { HamburgerMenu } from './components/HamburgerMenu';
@@ -9,6 +9,8 @@ import { ConflictModal } from './components/ConflictModal';
 import { LockModal } from './components/LockModal';
 import { SidebarLockBanner } from './components/SidebarLockBanner';
 import { ComponentsPanel } from './components/ComponentsPanel';
+import { Splitter } from './components/Splitter';
+import { useSplitter } from './hooks/useSplitter';
 import { Avatar } from './components/Avatar';
 import { Toast } from './components/Toast';
 import { useEditorState } from './hooks/useEditorState';
@@ -29,7 +31,7 @@ import {
   saveAsLocalFile,
 } from './lib/localFile';
 import { renderForFormat, filenameForFormat } from './lib/exportFormat';
-import { createProject, lockProject, unlockProject } from './lib/projectApi';
+import { createProject, lockProject, unlockProject, updateProject } from './lib/projectApi';
 import type { SaveFormat } from './lib/exportFormat';
 
 interface InitialContent {
@@ -98,6 +100,7 @@ export function App() {
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [markdownOpen, setMarkdownOpen] = useState(true);
   const [componentsOpen, setComponentsOpen] = useState(true);
+  const { dividerRef, onPointerDown, panelStyle } = useSplitter();
   const [shareOpen, setShareOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(conflictContent !== null);
@@ -119,7 +122,17 @@ export function App() {
       setMode('preview');
       showToast(`Edit was taken over by ${byName}`);
     },
+    onRemoteContent: setMarkdown,
   });
+
+  // Push content to API while holding the lock (debounced)
+  useEffect(() => {
+    if (!projectId || lockState.status !== 'mine') return;
+    const timer = setTimeout(() => {
+      updateProject(projectId, markdown, sessionId).catch(() => {});
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [markdown, projectId, lockState.status, sessionId]);
 
   const handleChange = useCallback(
     (value: string) => {
@@ -280,7 +293,10 @@ export function App() {
       </header>
 
       <main className={`ed-main${mode === 'preview' ? ' ed-main--preview' : ''}`}>
-        <aside className="ed-sidebar">
+        <aside className="ed-sidebar" style={{
+          width: mode === 'preview' ? undefined : (panelStyle.width || undefined),
+          height: mode === 'preview' ? undefined : (panelStyle.height || undefined),
+        }}>
           {/* Markdown accordion */}
           <div className={`ed-accordion${markdownOpen ? ' ed-accordion--open' : ''}`}>
             <button className="ed-accordion__header" onClick={() => setMarkdownOpen((o) => !o)}>
@@ -335,6 +351,8 @@ export function App() {
             )}
           </div>
         </aside>
+
+        {mode !== 'preview' && <Splitter dividerRef={dividerRef} onPointerDown={onPointerDown} />}
 
         <section className="ed-canvas">
           <Preview
