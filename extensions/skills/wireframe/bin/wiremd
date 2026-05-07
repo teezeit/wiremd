@@ -19528,6 +19528,33 @@ function switchNodeFromParts(text6, attrs) {
     props
   };
 }
+function parseBracketToken(text6, isPrimary, attrs) {
+  if (/^\s*$/.test(text6) || /^[xX]$/.test(text6)) {
+    return {
+      type: "checkbox",
+      checked: /^[xX]$/i.test(text6.trim()),
+      label: "",
+      props: parseAttributes(attrs || "")
+    };
+  }
+  const switchNode2 = switchNodeFromParts(text6, attrs);
+  if (switchNode2)
+    return switchNode2;
+  const props = parseAttributes(attrs || "");
+  if (/_{1,}v$/.test(text6)) {
+    const placeholder = text6.replace(/_{1,}v$/, "").trim() || void 0;
+    return { type: "select", props: { ...props, ...placeholder ? { placeholder } : {} }, options: [] };
+  }
+  if (/^[_*]+$/.test(text6) || /_{3,}$/.test(text6)) {
+    const placeholderMatch = text6.match(/^([^_*]+)_{3,}$/);
+    if (placeholderMatch)
+      props.placeholder = placeholderMatch[1].trim();
+    return { type: "input", props };
+  }
+  if (isPrimary)
+    props.variant = "primary";
+  return { type: "button", content: text6, props };
+}
 function parseBracketControlsFromLine(line) {
   const trimmed = line.trim();
   if (!trimmed || !/\[/.test(trimmed))
@@ -20517,7 +20544,7 @@ function transformTable(node2, ctx) {
       const cellAlign = align[cellIndex] || "left";
       const cellChildren = [];
       const pushCellTextWithInline = (value) => {
-        const parts = value.split(new RegExp(`(${BADGE_TOKEN_PATTERN.source}|:[a-z0-9-]+:)`, "g"));
+        const parts = value.split(INLINE_TEXT_TOKEN_SPLIT);
         for (const part of parts) {
           if (!part)
             continue;
@@ -20529,6 +20556,11 @@ function transformTable(node2, ctx) {
           const iconOnly = part.match(/^:([a-z0-9-]+):$/);
           if (iconOnly) {
             cellChildren.push({ type: "icon", props: { name: iconOnly[1] } });
+            continue;
+          }
+          const bracketMatch = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
+          if (bracketMatch) {
+            cellChildren.push(parseBracketToken(bracketMatch[1], bracketMatch[2], bracketMatch[3]));
             continue;
           }
           if (part.trim()) {
@@ -20548,7 +20580,7 @@ function transformTable(node2, ctx) {
             if (remainder) {
               pushCellTextWithInline(remainder);
             }
-          } else if (BADGE_TOKEN_SPLIT.test(child.value)) {
+          } else if (INLINE_TEXT_TOKEN_SPLIT.test(child.value)) {
             pushCellTextWithInline(child.value);
           } else {
             cellChildren.push({
