@@ -5,6 +5,7 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [react(), viteTsconfigPaths()],
+  base: process.env.VITE_BASE ?? "/",
   resolve: {
     alias: {
       "@eclectic-ai/wiremd": resolve(
