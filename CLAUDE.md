@@ -20,7 +20,7 @@ pnpm turbo run lint
 # Run a single workspace:
 pnpm --filter wiremd run build
 pnpm --filter wiremd run test
-pnpm --filter wiremd-editor-v2 run typecheck  # run before pushing editor-v2 changes
+pnpm --filter wiremd-editor run typecheck
 pnpm --filter wiremd run test:watch
 pnpm --filter wiremd-editor run dev
 pnpm --filter wiremd-docs run dev
@@ -59,7 +59,7 @@ wiremd/                          ← monorepo root (private, NOT published)
 ├── apps/
 │   ├── docs/                   ← VitePress docs, port 5173
 │   ├── landing/                ← marketing site (Vue), port 5175
-│   └── editor/                 ← web editor (Monaco), port 5174
+│   └── editor/                 ← web editor (React + CodeMirror), port 5174
 ├── extensions/
 │   ├── vscode/                 ← VS Code live preview extension
 │   ├── figma/                  ← imports wiremd JSON into Figma as native designs

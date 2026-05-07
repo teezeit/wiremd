@@ -1,18 +1,27 @@
-import { resolve } from 'path';
-import { defineConfig } from 'vitest/config';
+import { resolve } from "path";
+import { defineConfig } from "vitest/config";
+import viteTsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  root: __dirname,
+  plugins: [viteTsconfigPaths()],
+  resolve: {
+    alias: {
+      "@eclectic-ai/wiremd": resolve(
+        __dirname,
+        "../../packages/core/src/index.ts",
+      ),
+    },
+  },
   test: {
+    environment: "happy-dom",
     globals: true,
-    environment: 'node',
-    include: ['tests/**/*.test.ts'],
+    passWithNoTests: true,
+    setupFiles: ["./tests/setup.ts"],
+    include: ["tests/**/*.test.{ts,tsx}"],
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html', 'lcov'],
-      reportsDirectory: './coverage',
-      include: ['src/**/*.ts'],
-      exclude: ['src/examples.ts'],
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      include: ["src/**/*.{ts,tsx}"],
       thresholds: {
         global: {
           branches: 65,
@@ -21,11 +30,6 @@ export default defineConfig({
           statements: 70,
         },
       },
-    },
-  },
-  resolve: {
-    alias: {
-      wiremd: resolve(__dirname, '../../packages/core/src/index.ts'),
     },
   },
 });

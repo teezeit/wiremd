@@ -1,58 +1,42 @@
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
-
-const projectSrcRoot = resolve(__dirname, '../../packages/core/src/');
+import { resolve } from "path";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import viteTsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  root: resolve(__dirname),
-  base: process.env.VITE_BASE ?? '/',
+  plugins: [react(), viteTsconfigPaths()],
+  base: process.env.VITE_BASE ?? "/",
+  resolve: {
+    alias: {
+      "@eclectic-ai/wiremd": resolve(
+        __dirname,
+        "../../packages/core/src/index.ts",
+      ),
+      fs: resolve(__dirname, "src/stubs/fs.ts"),
+      path: resolve(__dirname, "src/stubs/path.ts"),
+    },
+  },
   server: {
     port: 5174,
     open: true,
-  },
-  resolve: {
-    alias: {
-      '@eclectic-ai/wiremd': resolve(__dirname, '../../packages/core/src/index.ts'),
-      // Stub Node.js built-ins — only used in resolveIncludes, which is never called in the browser
-      fs: resolve(__dirname, 'src/stubs/fs.ts'),
-      path: resolve(__dirname, 'src/stubs/path.ts'),
+    strictPort: true,
+    fs: { allow: [resolve(__dirname), resolve(__dirname, '../docs')] },
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_BASE_URL || 'http://localhost:3030',
+        changeOrigin: true,
+      },
     },
   },
   build: {
-    target: 'esnext',
-    outDir: 'dist',
-    // Monaco remains the primary editor dependency. We budget its isolated chunk
-    // explicitly instead of relying on Vite's generic 500 kB warning.
+    target: "esnext",
+    outDir: "dist",
     chunkSizeWarningLimit: 3900,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('/node_modules/monaco-editor/esm/vs/basic-languages/html/')) {
-            return 'monaco-html';
-          }
-
-          if (id.includes('/node_modules/monaco-editor/')) {
-            return 'monaco';
-          }
-
-          if (
-            id.startsWith(projectSrcRoot) ||
-            id.includes('/node_modules/unified/') ||
-            id.includes('/node_modules/remark/') ||
-            id.includes('/node_modules/remark-parse/') ||
-            id.includes('/node_modules/remark-gfm/') ||
-            id.includes('/node_modules/mdast-util-') ||
-            id.includes('/node_modules/unist-util-') ||
-            id.includes('/node_modules/micromark') ||
-            id.includes('/node_modules/decode-named-character-reference') ||
-            id.includes('/node_modules/html-void-elements') ||
-            id.includes('/node_modules/property-information') ||
-            id.includes('/node_modules/hast-util-') ||
-            id.includes('/node_modules/vfile') ||
-            id.includes('/node_modules/trough')
-          ) {
-            return 'wiremd-core';
-          }
+        manualChunks: {
+          "codemirror": ["codemirror", "@codemirror/lang-markdown", "@codemirror/theme-one-dark"],
+          "wiremd-core": ["@eclectic-ai/wiremd"],
         },
       },
     },
