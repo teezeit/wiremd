@@ -80,7 +80,7 @@ pnpm --filter wiremd-landing run dev         # marketing site at :5175
 |---|---|---|
 | `packages/core/` | `wiremd` | Published npm package — parser, renderers, CLI |
 | `apps/docs/` | `wiremd-docs` | VitePress documentation site |
-| `apps/editor/` | `wiremd-editor` | Browser editor (Vite + Monaco) |
+| `apps/editor/` | `wiremd-editor` | Browser editor (React + CodeMirror) |
 | `apps/landing/` | `wiremd-landing` | Marketing site (Vite + Vue) |
 | `extensions/vscode/` | `wiremd-preview` | VS Code live preview extension |
 | `extensions/figma/` | `wiremd-figma-plugin` | Figma plugin |
@@ -276,7 +276,7 @@ Run through this before opening a PR for any new syntax, render option, or user-
 
 ### Entry points
 - [ ] **CLI** — add flag(s) to `CLIOptions` and `parseArgs` in `packages/core/src/cli/index.ts`; pass through `generateOutput`
-- [ ] **Web editor** (`apps/editor/`) — update `src/renderMarkup.ts`, `src/preview.ts` (state + setter), `src/main.ts` (event wiring), `index.html` (UI control)
+- [ ] **Web editor** (`apps/editor/`) — update relevant components in `src/` (preview rendering, toolbar, state) and `index.html` if new UI controls are needed
 - [ ] **VS Code extension** (`extensions/vscode/`) — update `src/preview-provider.ts` (state, `handleMessage` case, toolbar button); register command in `src/extension.ts` if needed
 
 ### Quality

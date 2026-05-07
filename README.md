@@ -102,7 +102,7 @@ wiremd/
 │   └── core/                 # published "wiremd" npm package — parser, renderers, CLI
 ├── apps/
 │   ├── docs/                 # VitePress documentation site         :5173
-│   ├── editor/               # web editor (Vite + Monaco)            :5174
+│   ├── editor/               # web editor (React + CodeMirror)       :5174
 │   └── landing/              # marketing site (Vite + Vue)           :5175
 ├── extensions/
 │   ├── vscode/               # VS Code live-preview extension

@@ -157,7 +157,7 @@ describe('App', () => {
     render(<App />);
     expect(screen.getByText('Template Gallery')).toBeInTheDocument();
     expect(screen.getByText('Start from Scratch')).toBeInTheDocument();
-    expect(lastPreviewProps.markdown).toContain('Anything is possible');
+    expect(lastPreviewProps.markdown).toContain('# wiremd');
     expect(screen.getByTestId('editor')).toBeInTheDocument();
   });
 
