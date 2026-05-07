@@ -283,6 +283,179 @@ Security actions
   },
 ];
 
+export interface ComponentGroup {
+  name: string;
+  items: Example[];
+}
+
+export const componentGroups: ComponentGroup[] = [
+  {
+    name: 'Inputs',
+    items: [
+      {
+        name: 'Buttons',
+        description: 'Primary, secondary and danger variants',
+        code: `[Primary]* [Secondary]{secondary} [Danger]{danger}`,
+      },
+      {
+        name: 'Text Input',
+        description: 'Single-line text fields',
+        code: `[Full name___]
+
+[Email address___]{type:email}`,
+      },
+      {
+        name: 'Textarea & Select',
+        description: 'Multi-line input and dropdown',
+        code: `[Message____]{rows:3}
+
+[Priority___]{select: Low, Medium, High}`,
+      },
+      {
+        name: 'Checkbox & Radio',
+        description: 'Toggle and choice controls',
+        code: `- [x] Remember me
+- [ ] Subscribe to newsletter
+
+- (x) Monthly billing
+- ( ) Annual billing`,
+      },
+    ],
+  },
+  {
+    name: 'Display',
+    items: [
+      {
+        name: 'Card',
+        description: 'Bordered content card',
+        code: `::: card
+## Card Title
+
+Card content and supporting description.
+:::`,
+      },
+      {
+        name: 'Tabs',
+        description: 'Tabbed content panel',
+        code: `::: tabs
+::: tab Overview
+First tab content.
+:::
+::: tab Details
+Second tab content.
+:::
+:::`,
+      },
+      {
+        name: 'Badges',
+        description: 'Status pills and labels',
+        code: `((Active)){success} ((Draft)) ((Archived)){danger}`,
+      },
+      {
+        name: 'Table',
+        description: 'Data table with status badges',
+        code: `| Name | Role | Status |
+|------|------|--------|
+| Alice | Admin | ((Active)){success} |
+| Bob | User | ((Pending)) |
+| Carol | Viewer | ((Inactive)){danger} |`,
+      },
+      {
+        name: 'Navigation',
+        description: 'Top nav bar',
+        code: `[[ nav :logo: Brand | Features | Pricing | Docs | [Sign in]* ]]`,
+      },
+    ],
+  },
+  {
+    name: 'Layout',
+    items: [
+      {
+        name: 'Two Columns',
+        description: 'Equal-width two-column layout',
+        code: `::: columns-2
+::: column
+Left column content.
+:::
+::: column
+Right column content.
+:::
+:::`,
+      },
+      {
+        name: 'Three Columns',
+        description: 'Equal-width three-column layout',
+        code: `::: columns-3
+::: column
+**Column A**
+
+Content here.
+:::
+::: column
+**Column B**
+
+Content here.
+:::
+::: column
+**Column C**
+
+Content here.
+:::
+:::`,
+      },
+      {
+        name: 'Sidebar Layout',
+        description: 'Narrow sidebar + wide main area',
+        code: `::: columns-3
+::: column
+**Sidebar**
+
+- Item 1
+- Item 2
+- Item 3
+:::
+::: column {span-2}
+**Main Content**
+
+Your content here.
+:::
+:::`,
+      },
+      {
+        name: 'Action Row',
+        description: 'Right-aligned button row',
+        code: `::: row {right}
+[Cancel]{secondary} [Save Changes]*
+:::`,
+      },
+    ],
+  },
+  {
+    name: 'Advanced',
+    items: [
+      {
+        name: 'Button Link',
+        description: 'Buttons that navigate to a URL',
+        code: `[View documentation](/guide)* [Learn more](/guide){secondary}`,
+      },
+      {
+        name: 'Icons',
+        description: 'Inline icon tokens',
+        code: `:home: Home  :users: Team  :settings: Settings`,
+      },
+      {
+        name: 'Inline Comment',
+        description: 'Design annotation visible in editor only',
+        code: `# Section Title
+
+<!-- Review this copy before shipping -->
+
+Content goes here.`,
+      },
+    ],
+  },
+];
+
 export const componentExamples: Example[] = [
   {
     name: 'Hero Section',

@@ -19,7 +19,8 @@ import { useCommentCount } from './hooks/useCommentCount';
 import { useSessionIdentity } from './hooks/useSessionIdentity';
 import { useProjectLock } from './hooks/useProjectLock';
 import { decodeShareHash, encodeShareHash } from './lib/urlShare';
-import { componentExamples, examples } from './lib/examples';
+import { examples } from './lib/examples';
+import { docComponentGroups } from './lib/docExamples';
 
 function getProjectId(): string | null {
   const params = new URLSearchParams(window.location.search);
@@ -100,7 +101,31 @@ export function App() {
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
   const [markdownOpen, setMarkdownOpen] = useState(true);
   const [componentsOpen, setComponentsOpen] = useState(true);
+  const [innerSplit, setInnerSplit] = useState(60);
+  const innerDividerRef = useRef<HTMLDivElement>(null);
   const { dividerRef, onPointerDown, panelStyle } = useSplitter();
+
+  const onInnerPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const divider = innerDividerRef.current;
+    if (!divider) return;
+    divider.setPointerCapture(e.pointerId);
+    document.body.style.userSelect = 'none';
+    function onMove(ev: PointerEvent) {
+      const sidebar = divider!.parentElement;
+      if (!sidebar) return;
+      const rect = sidebar.getBoundingClientRect();
+      const pct = ((ev.clientY - rect.top) / rect.height) * 100;
+      setInnerSplit(Math.min(80, Math.max(20, pct)));
+    }
+    function onUp() {
+      document.body.style.userSelect = '';
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+    }
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+  }, []);
   const [shareOpen, setShareOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(conflictContent !== null);
@@ -124,6 +149,18 @@ export function App() {
     },
     onRemoteContent: setMarkdown,
   });
+  const isLockedByOther = lockState.status === 'taken' && !!projectId;
+
+  // Load server content once when joining an existing session via URL
+  useEffect(() => {
+    if (!initialProjectId) return;
+    import('./lib/projectApi').then(({ getProjectLockInfo }) => {
+      getProjectLockInfo(initialProjectId).then((info) => {
+        if (info.content) setMarkdown(info.content);
+      }).catch(() => {});
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionally empty — runs once on mount
 
   // Push content to API while holding the lock (debounced)
   useEffect(() => {
@@ -146,11 +183,13 @@ export function App() {
   }, []);
 
   const handleAddComponent = useCallback((code: string, name: string) => {
+    if (isLockedByOther) return;
+
     const result = insertMarkdownSnippet(markdown, code, selectionRef.current);
     selectionRef.current = { from: result.cursor, to: result.cursor };
     setMarkdown(result.markdown);
     showToast(`Added ${name}`);
-  }, [markdown, setMarkdown, showToast]);
+  }, [isLockedByOther, markdown, setMarkdown, showToast]);
 
   const handleReset = useCallback(() => {
     setMarkdown(examples[0]?.code ?? '');
@@ -204,7 +243,8 @@ export function App() {
     setProjectId(null);
     setMode('edit');
     setShareOpen(false);
-  }, [projectId, sessionId]);
+    showToast("It's yours now. You left the live session.");
+  }, [projectId, sessionId, showToast]);
 
   const sessionUrl = projectId
     ? `${window.location.origin}${window.location.pathname}?p=${projectId}`
@@ -230,32 +270,28 @@ export function App() {
             hasActiveSession={!!projectId}
             isEditor={lockState.status === 'solo' || lockState.status === 'mine'}
           />
-          <button
-            className={`ed-btn ed-btn--icon${
-              lockState.status === 'mine' || (lockState.status === 'solo' && mode === 'edit')
-                ? ' ed-btn--icon-active'
-                : ''
-            }`}
-            onClick={toggleEdit}
-            title={mode === 'edit' ? 'Hide editor' : 'Show editor'}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-            </svg>
-          </button>
+          {mode === 'preview' && (
+            <button
+              className="ed-btn ed-btn--icon"
+              onClick={toggleEdit}
+              title="Show editor"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            </button>
+          )}
 
           {/* Lock status — shown only in shared project mode */}
           {lockState.status === 'taken' && (
             <div className="ed-lock-status">
-              <Avatar name={lockState.lockedByName ?? '?'} size={20} />
               <span className="ed-lock-status__name">{lockState.lockedByName}</span>
               <span className="ed-lock-status__label">is already editing</span>
             </div>
           )}
           {lockState.status === 'mine' && (
-            <div className="ed-lock-status ed-lock-status--mine">
-              <Avatar name={myName} size={20} />
+            <div className="ed-lock-status">
               <span className="ed-lock-status__name">{myName}</span>
               <span className="ed-lock-status__label">(you) is editing</span>
             </div>
@@ -293,20 +329,31 @@ export function App() {
       </header>
 
       <main className={`ed-main${mode === 'preview' ? ' ed-main--preview' : ''}`}>
-        <aside className="ed-sidebar" style={{
+        <div className="ed-sidebar-wrap" style={{
           width: mode === 'preview' ? undefined : (panelStyle.width || undefined),
           height: mode === 'preview' ? undefined : (panelStyle.height || undefined),
         }}>
+        {mode !== 'preview' && (
+          <button className="ed-sidebar__floating-collapse" onClick={toggleEdit} title="Collapse sidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+        )}
+        <aside className="ed-sidebar">
           {/* Markdown accordion */}
-          <div className={`ed-accordion${markdownOpen ? ' ed-accordion--open' : ''}`}>
+          <div
+            className={`ed-accordion${markdownOpen ? ' ed-accordion--open' : ''}`}
+            style={markdownOpen && componentsOpen ? { flex: 'none', height: `${innerSplit}%` } : undefined}
+          >
             <button className="ed-accordion__header" onClick={() => setMarkdownOpen((o) => !o)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
               </svg>
-              Markdown
               <svg className="ed-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9" />
+                <polyline points="9 18 15 12 9 6" />
               </svg>
+              Markdown
             </button>
             {markdownOpen && (
               <>
@@ -317,40 +364,53 @@ export function App() {
                     onSteal={() => setLockModalOpen(true)}
                   />
                 )}
-                <div className={`ed-codemirror-wrap${lockState.status === 'taken' && projectId ? ' ed-codemirror-wrap--locked' : ''}`}>
+                <div className={`ed-codemirror-wrap${isLockedByOther ? ' ed-codemirror-wrap--locked' : ''}`}>
                   <Editor
                     value={markdown}
                     onChange={handleChange}
                     onSelectionChange={handleSelectionChange}
-                    readOnly={lockState.status === 'taken' && !!projectId}
+                    readOnly={isLockedByOther}
                   />
                 </div>
               </>
             )}
           </div>
 
+          {/* Inner drag handle — only when both panels open */}
+          {markdownOpen && componentsOpen && (
+            <div
+              ref={innerDividerRef}
+              className="ed-inner-divider"
+              onPointerDown={onInnerPointerDown}
+            />
+          )}
+
           {/* Components accordion */}
-          <div className={`ed-accordion ed-accordion--components${componentsOpen ? ' ed-accordion--open' : ''}`}>
+          <div
+            className={`ed-accordion ed-accordion--components${componentsOpen ? ' ed-accordion--open' : ''}`}
+            style={markdownOpen && componentsOpen ? { flex: 'none', height: `${100 - innerSplit}%` } : undefined}
+          >
             <button className="ed-accordion__header" onClick={() => setComponentsOpen((o) => !o)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.856.497.926.968a.979.979 0 0 1-.277.817l-1.61 1.61a2.404 2.404 0 0 1-3.408 0l-1.518-1.518a.977.977 0 0 0-.895-.277 2.5 2.5 0 0 1-2.31-3.31c.207-.54.116-1.172-.24-1.527l-1.521-1.521a2.404 2.404 0 0 1 0-3.408l1.518-1.518a.976.976 0 0 0 .277-.895 2.5 2.5 0 0 1 3.31-2.31c.54.207 1.172.116 1.527-.24l1.521-1.521a2.404 2.404 0 0 1 3.408 0z" />
               </svg>
-              Components
               <svg className="ed-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9" />
+                <polyline points="9 18 15 12 9 6" />
               </svg>
+              Components
             </button>
             {componentsOpen && (
               <ComponentsPanel
                 templates={examples}
-                components={componentExamples}
+                groups={docComponentGroups}
                 style={style}
-                disabled={lockState.status === 'taken' && !!projectId}
+                disabled={isLockedByOther}
                 onAdd={handleAddComponent}
               />
             )}
           </div>
         </aside>
+        </div>
 
         {mode !== 'preview' && <Splitter dividerRef={dividerRef} onPointerDown={onPointerDown} />}
 

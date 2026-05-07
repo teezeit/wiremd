@@ -146,12 +146,12 @@ describe('useProjectLock — acquire conflict', () => {
 });
 
 describe('useProjectLock — onRemoteContent', () => {
-  it('calls onRemoteContent with server content when lock is unlocked', async () => {
+  it('does NOT call onRemoteContent when lock is unlocked (prevents poll overwriting local edits)', async () => {
     const onRemoteContent = vi.fn();
     vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue(freeProject('# From server'));
     renderHook(() => useProjectLock({ ...BASE, projectId: 'proj1', onRemoteContent }));
     await act(async () => { await vi.advanceTimersByTimeAsync(100); });
-    expect(onRemoteContent).toHaveBeenCalledWith('# From server');
+    expect(onRemoteContent).not.toHaveBeenCalled();
   });
 
   it('calls onRemoteContent when someone else holds the lock', async () => {

@@ -20,6 +20,7 @@ export default defineConfig({
     port: 5176,
     open: true,
     strictPort: true,
+    fs: { allow: [resolve(__dirname), resolve(__dirname, '../docs')] },
     proxy: {
       '/api': {
         target: process.env.VITE_API_BASE_URL || 'http://localhost:3030',

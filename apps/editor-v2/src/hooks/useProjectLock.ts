@@ -55,8 +55,8 @@ export function useProjectLock({ projectId, sessionId, name, onStolen, onRemoteC
         lastEditedAt: info.updatedAt,
       });
 
-      // Apply remote content for readers (anyone not holding the lock)
-      if (status !== 'mine' && info.content !== undefined) {
+      // Apply remote content only when someone else is actively editing
+      if (status === 'taken' && info.content !== undefined) {
         onRemoteContentRef.current?.(info.content);
       }
     },

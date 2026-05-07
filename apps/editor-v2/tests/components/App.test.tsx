@@ -112,13 +112,13 @@ describe('App', () => {
 
   it('edit toggle switches to preview mode', () => {
     const { container } = render(<App />);
-    fireEvent.click(screen.getByTitle('Hide editor'));
+    fireEvent.click(screen.getByTitle('Collapse sidebar'));
     expect(container.querySelector('.ed-main')).toHaveClass('ed-main--preview');
   });
 
   it('edit toggle switches back to edit mode', () => {
     const { container } = render(<App />);
-    fireEvent.click(screen.getByTitle('Hide editor'));
+    fireEvent.click(screen.getByTitle('Collapse sidebar'));
     fireEvent.click(screen.getByTitle('Show editor'));
     expect(container.querySelector('.ed-main')).not.toHaveClass('ed-main--preview');
   });
@@ -131,7 +131,7 @@ describe('App', () => {
     vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
     const { container } = render(<App />);
     await flushProjectLockPoll();
-    fireEvent.click(screen.getByTitle('Hide editor'));
+    fireEvent.click(screen.getByTitle('Collapse sidebar'));
     expect(container.querySelector('.ed-main')).toHaveClass('ed-main--preview');
     vi.unstubAllGlobals();
   });
@@ -198,9 +198,12 @@ describe('App', () => {
 
   it('adds a component to the current document and keeps both accordions open', () => {
     render(<App />);
+    // Expand the Inputs group first (groups are collapsed by default)
+    fireEvent.click(screen.getByTestId('group-Inputs'));
     fireEvent.click(within(screen.getByTestId('component-gallery')).getAllByRole('button', { name: /^add$/i })[0]!);
-    expect(lastPreviewProps.markdown).toContain('Launch faster with wiremd');
-    expect(screen.getByText('Component Library')).toBeInTheDocument();
+    // First demo in buttons.md is the basic example
+    expect(lastPreviewProps.markdown).toContain('[Save]*');
+    expect(screen.getByTestId('group-Inputs')).toBeInTheDocument();
     expect(screen.getByTestId('editor')).toBeInTheDocument();
   });
 
@@ -211,11 +214,13 @@ describe('App', () => {
       lastEditorProps?.onSelectionChange?.({ from: 7, to: 7 });
     });
 
+    // Expand the Inputs group and click the first Add button
+    fireEvent.click(screen.getByTestId('group-Inputs'));
     fireEvent.click(within(screen.getByTestId('component-gallery')).getAllByRole('button', { name: /^add$/i })[0]!);
 
     const markdown = String(lastPreviewProps.markdown);
-    expect(markdown.indexOf('Launch faster with wiremd')).toBeGreaterThan(markdown.indexOf('# Hello'));
-    expect(markdown.indexOf('Launch faster with wiremd')).toBeLessThan(markdown.indexOf('Goodbye'));
+    expect(markdown.indexOf('[Save]*')).toBeGreaterThan(markdown.indexOf('# Hello'));
+    expect(markdown.indexOf('[Save]*')).toBeLessThan(markdown.indexOf('Goodbye'));
   });
 
   it('comment button is disabled with "No comments yet" tooltip when there are no comments', () => {
@@ -278,6 +283,7 @@ describe('App', () => {
     expect(replaceState).toHaveBeenCalledWith(null, '', window.location.pathname);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /^share$/i })).toBeInTheDocument();
+    expect(screen.getByText("It's yours now. You left the live session.")).toBeInTheDocument();
     replaceState.mockRestore();
     vi.unstubAllGlobals();
   });
@@ -503,6 +509,25 @@ describe('App — editor read-only in live session when not lock holder', () => 
     const { container } = render(<App />);
     await flushProjectLockPoll();
     expect(container.querySelector('[data-readonly="true"]')).toBeInTheDocument();
+    vi.unstubAllGlobals();
+  });
+
+  it('component Add buttons are disabled when someone else holds the lock', async () => {
+    vi.mocked(projectApi.getProjectLockInfo).mockResolvedValue({
+      lockedBy: 'other-session', lockedName: 'Red Bear', lastEditorName: 'Red Bear',
+      updatedAt: new Date().toISOString(), content: '# Remote content',
+    });
+    vi.stubGlobal('location', { ...window.location, search: '?p=abc123' });
+    render(<App />);
+    await flushProjectLockPoll();
+
+    const before = lastPreviewProps.markdown;
+    const addButtons = screen.getAllByRole('button', { name: /^add$/i });
+    expect(addButtons.length).toBeGreaterThan(0);
+    for (const button of addButtons) expect(button).toBeDisabled();
+
+    fireEvent.click(addButtons[0]!);
+    expect(lastPreviewProps.markdown).toBe(before);
     vi.unstubAllGlobals();
   });
 
