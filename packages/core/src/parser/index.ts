@@ -16,6 +16,7 @@ import type { DocumentNode, ParseOptions, ValidationError } from '../types.js';
 import { transformToWiremdAST } from './transformer.js';
 import {
   normalizeContainerDirectiveSpacing,
+  remapMdastPositions,
   remarkWiremdContainers,
 } from './remark-containers.js';
 import { remarkWiremdInlineContainers } from './remark-inline-containers.js';
@@ -63,7 +64,7 @@ export function resolveIncludes(markdown: string, basePath: string): string {
  * ```
  */
 export function parse(input: string, options: ParseOptions = {}): DocumentNode {
-  const normalizedInput = normalizeContainerDirectiveSpacing(input);
+  const { text: normalizedInput, lineMap } = normalizeContainerDirectiveSpacing(input);
 
   // Create unified processor with remark
   const processor = unified()
@@ -72,8 +73,13 @@ export function parse(input: string, options: ParseOptions = {}): DocumentNode {
     .use(remarkWiremdInlineContainers)
     .use(remarkWiremdContainers);
 
-  // Parse markdown to MDAST
+  // Parse markdown to MDAST — positions are in normalized-text coordinates
   const mdast = processor.parse(normalizedInput);
+
+  // Remap all positions back to original-source line numbers before plugins run.
+  // normalizeContainerDirectiveSpacing inserts synthetic blank lines around ::: directives
+  // so remark can parse them; those lines shift position.start.line for every inner node.
+  remapMdastPositions(mdast, lineMap);
 
   // Run the processor to apply plugins
   const processed = processor.runSync(mdast) as any;

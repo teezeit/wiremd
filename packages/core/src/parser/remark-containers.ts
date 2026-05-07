@@ -24,9 +24,17 @@ interface ContainerOpener {
   inline: string;
 }
 
-export function normalizeContainerDirectiveSpacing(markdown: string): string {
+export interface NormalizeResult {
+  text: string;
+  /** lineMap[i] is the 1-based original-source line for normalized line i+1.
+   *  0 means the normalized line was synthetically inserted (no source equivalent). */
+  lineMap: number[];
+}
+
+export function normalizeContainerDirectiveSpacing(markdown: string): NormalizeResult {
   const lines = markdown.split(/\r?\n/);
   const out: string[] = [];
+  const lineMap: number[] = [];
   let inFence = false;
   let fenceMarker: "`" | "~" | null = null;
 
@@ -37,6 +45,8 @@ export function normalizeContainerDirectiveSpacing(markdown: string): string {
 
   const isDirectiveLine = (line: string) =>
     !inFence && /^:::(?:\s|$)/.test(line.trim());
+
+  const pushSynthetic = () => { out.push(""); lineMap.push(0); };
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -54,13 +64,14 @@ export function normalizeContainerDirectiveSpacing(markdown: string): string {
 
     const directive = isDirectiveLine(line);
     if (directive && out.length > 0 && out[out.length - 1].trim() !== "") {
-      out.push("");
+      pushSynthetic();
     }
 
     // Strip leading whitespace from ::: directive lines so that 4-space
     // indented openers are not consumed by CommonMark's indented code block
     // rule before remark-containers gets to process them.
     out.push(directive ? line.trimStart() : line);
+    lineMap.push(i + 1); // 1-based original line
 
     const nextLine = lines[i + 1];
     if (
@@ -68,11 +79,36 @@ export function normalizeContainerDirectiveSpacing(markdown: string): string {
       nextLine !== undefined &&
       nextLine.trim() !== ""
     ) {
-      out.push("");
+      pushSynthetic();
     }
   }
 
-  return out.join("\n");
+  return { text: out.join("\n"), lineMap };
+}
+
+/** Remap positions in an MDAST tree from normalized-text coordinates back to
+ *  original-source coordinates using the lineMap from normalizeContainerDirectiveSpacing. */
+export function remapMdastPositions(node: any, lineMap: number[]): void {
+  if (node?.position) {
+    const remap = (line: number): number => {
+      const mapped = lineMap[line - 1];
+      if (mapped) return mapped;
+      // Synthetic inserted line — walk back to nearest real line
+      for (let i = line - 2; i >= 0; i--) {
+        if (lineMap[i]) return lineMap[i];
+      }
+      return line;
+    };
+    if (node.position.start?.line != null) {
+      node.position.start = { ...node.position.start, line: remap(node.position.start.line) };
+    }
+    if (node.position.end?.line != null) {
+      node.position.end = { ...node.position.end, line: remap(node.position.end.line) };
+    }
+  }
+  for (const child of node?.children ?? []) {
+    remapMdastPositions(child, lineMap);
+  }
 }
 
 /** Parse a paragraph node as a container opener. Returns null if not an opener. */
@@ -156,7 +192,7 @@ function finishContainer(
 }
 
 function parseMarkdownBlocks(markdown: string): any[] {
-  const trimmed = normalizeContainerDirectiveSpacing(markdown.trim());
+  const { text: trimmed } = normalizeContainerDirectiveSpacing(markdown.trim());
   if (!trimmed) return [];
   const processor = unified()
     .use(remarkParse)
