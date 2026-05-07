@@ -15020,8 +15020,12 @@ body.${prefix}root {
 /* Separator */
 .${prefix}separator {
   border: none;
-  border-top: 3px dashed #666;
+  height: 14px;
   margin: 24px 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='180' height='14' viewBox='0 0 180 14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 7 C18 5 33 8 49 6 C65 4 79 9 96 7 C113 5 128 8 145 6 C159 5 169 7 178 6' fill='none' stroke='%23666' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M3 8 C20 7 34 6 50 8 C66 9 80 5 97 6 C114 8 130 6 146 7 C160 8 171 6 177 7' fill='none' stroke='%23666' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' opacity='0.55'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: repeat-x;
+  background-size: 180px 14px;
 }
 
 /* Table */
@@ -18686,7 +18690,7 @@ function renderToHTML(ast, options = {}) {
   const css = inlineStyles ? getStyleCSS(style, classPrefix) : "";
   const p = classPrefix;
   const cursorCSS = cursorSync ? `[data-cursor-active]{background:rgba(99,102,241,.08)!important;border-radius:4px;}` : "";
-  const cursorScript = cursorSync ? `<script>(function(){function activateTab(panel){var root=panel.closest('[data-wmd-tabs]');if(!root)return;var idx=panel.getAttribute('data-wmd-tab-panel');root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(x){x.getAttribute('data-wmd-tab-panel')===idx?x.removeAttribute('hidden'):x.setAttribute('hidden','');});root.querySelectorAll('[data-wmd-tab]').forEach(function(b){if(b.getAttribute('data-wmd-tab')===idx){b.classList.add('${p}active');}else{b.classList.remove('${p}active');b.removeAttribute('data-cursor-active');}});}window.addEventListener('message',function(e){if(!e.data)return;if(e.data.type==='wiremd-cursor-blur'){document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});return;}if(e.data.type!=='wiremd-cursor')return;var line=e.data.line;document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});var els=document.querySelectorAll('[data-source-line]');var best=null,bestLine=0;for(var i=0;i<els.length;i++){var l=parseInt(els[i].getAttribute('data-source-line'),10);if(l<=line&&l>bestLine){bestLine=l;best=els[i];}}if(best){best.setAttribute('data-cursor-active','');var panel=best.closest('[data-wmd-tab-panel]');if(panel)activateTab(panel);best.scrollIntoView({behavior:'smooth',block:'nearest'});}});})();</script>` : "";
+  const cursorScript = cursorSync ? `<script>(function(){function activateTab(panel){var root=panel.closest('[data-wmd-tabs]');if(!root)return;var idx=panel.getAttribute('data-wmd-tab-panel');root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(x){x.getAttribute('data-wmd-tab-panel')===idx?x.removeAttribute('hidden'):x.setAttribute('hidden','');});root.querySelectorAll('[data-wmd-tab]').forEach(function(b){if(b.getAttribute('data-wmd-tab')===idx){b.classList.add('${p}active');}else{b.classList.remove('${p}active');b.removeAttribute('data-cursor-active');}});}window.addEventListener('message',function(e){if(!e.data)return;if(e.data.type==='wiremd-cursor-blur'){document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});return;}if(e.data.type==='wiremd-set-scroll'){window.scrollTo(0,e.data.scrollY);return;}if(e.data.type!=='wiremd-cursor')return;var line=e.data.line;document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});var els=document.querySelectorAll('[data-source-line]');var best=null,bestLine=0;for(var i=0;i<els.length;i++){var l=parseInt(els[i].getAttribute('data-source-line'),10);if(l<=line&&l>bestLine){bestLine=l;best=els[i];}}if(best){best.setAttribute('data-cursor-active','');var panel=best.closest('[data-wmd-tab-panel]');if(panel)activateTab(panel);best.scrollIntoView({behavior:'smooth',block:'nearest'});}});var _st;window.addEventListener('scroll',function(){clearTimeout(_st);_st=setTimeout(function(){parent.postMessage({type:'wiremd-scroll',scrollY:window.scrollY},'*');},100);},true);})();</script>` : "";
   const styleBlock = css || cursorCSS ? `<style>
 ${css}${cursorCSS ? "\n" + cursorCSS : ""}
   </style>` : "";
