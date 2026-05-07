@@ -7,6 +7,7 @@ on:
     paths:
       - 'apps/docs/**'
       - 'apps/editor/**'
+      - 'apps/editor-v2/**'
       - 'apps/landing/**'
       - 'packages/core/src/**'
       - '.github/workflows/docs.yml'
@@ -64,6 +65,17 @@ jobs:
         run: |
           mkdir -p apps/docs/.vitepress/dist/editor
           cp -r apps/editor/dist/. apps/docs/.vitepress/dist/editor/
+
+      - name: Build editor v2
+        run: pnpm --filter wiremd-editor-v2 run build
+        env:
+          VITE_BASE: /wiremd/editor-v2/
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+
+      - name: Copy editor v2 into docs dist
+        run: |
+          mkdir -p apps/docs/.vitepress/dist/editor-v2
+          cp -r apps/editor-v2/dist/. apps/docs/.vitepress/dist/editor-v2/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

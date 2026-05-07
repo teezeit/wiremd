@@ -20,6 +20,7 @@ pnpm turbo run lint
 # Run a single workspace:
 pnpm --filter wiremd run build
 pnpm --filter wiremd run test
+pnpm --filter wiremd-editor-v2 run typecheck  # run before pushing editor-v2 changes
 pnpm --filter wiremd run test:watch
 pnpm --filter wiremd-editor run dev
 pnpm --filter wiremd-docs run dev

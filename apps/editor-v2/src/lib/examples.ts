@@ -1,0 +1,524 @@
+/** wiremd Editor - Example snippets */
+
+export interface Example {
+  name: string;
+  description: string;
+  code: string;
+}
+
+const landingPageExample: Example = {
+  name: 'Landing Page',
+  description: 'Marketing hero with features',
+  code: `[[ :logo: wiremd | Features | Pricing | Docs | [Get Started] ]]
+
+::: hero
+# Design UI with Markdown
+### The fastest way to create wireframes and mockups
+
+> Write markdown. Get wireframes. Ship faster.
+
+[Get Started - Free]* [View Documentation]{secondary}
+:::
+
+::: columns-3 card
+::: column :rocket: Lightning Fast
+Write your UI in markdown and see it rendered instantly. No drag and drop needed.
+
+:::
+::: column :device-desktop: Multiple Styles
+Choose from Sketch, Clean, Material, Tailwind, Brutal, and more visual styles.
+
+<!-- Should this say "For Engineering Teams" with more specifics? @sara -->
+<!-- Agreed — mention CLI + VS Code explicitly. @tobias -->
+<!-- +1, updated copy sounds way stronger. @mike -->
+:::
+::: column :settings: Developer First
+CLI tool, VS Code extension, and npm package. Fits your existing workflow.
+
+:::
+:::
+
+::: row {right}
+[Install CLI] [Open Editor]*
+:::
+
+---
+
+## What developers are saying
+
+> "wiremd changed how our team communicates about UI. We sketch ideas in markdown during standup and everyone gets it."
+>
+> — **Sarah Chen**, Staff Engineer at Acme Corp
+`,
+};
+
+export const examples: Example[] = [
+  {
+    name: 'Start from Scratch',
+    description: 'Blank page — just a title',
+    code: '# Anything is possible',
+  },
+  landingPageExample,
+  {
+    name: 'Login Form',
+    description: 'Simple authentication page',
+    code: `::: card
+## Sign In
+
+Continue to your workspace.
+
+Email
+[name@company.com_____________]{type:email required}
+
+Password
+[*****************************]{type:password required}
+
+[Keep me signed in]{switch checked}
+
+<!-- Should the primary action say "Sign In" or "Log In"? @sara -->
+<!-- "Sign In" is the standard — matches Google, GitHub, etc. @tobias -->
+[Sign In]* [Forgot password?]
+:::
+`,
+  },
+  {
+    name: 'Dashboard',
+    description: 'Stats cards with navigation',
+    code: `[[ :logo: WireOps | *Dashboard* | Reports | :settings: Settings | [Profile] ]]
+
+## Dashboard Overview
+
+::: columns-4 card
+::: column :users: Users
+**12,847**
+((+14.5%)){success}
+:::
+
+::: column :currency-dollar: Revenue
+**$45,230**
+((+8.2%)){success}
+:::
+
+::: column :activity: Sessions
+**1,429**
+((-3.1%)){warning}
+:::
+
+::: column :circle-check: Uptime
+**99.98%**
+((Healthy)){success}
+:::
+:::
+
+::: row
+[Search activity___________]{type:search}
+
+[Workspace                 _v]
+- [Acme Inc](./acme.md)
+- [Personal](./personal.md)
+
+[Refresh] [Export]{secondary}
+:::
+
+### Recent Activity
+
+| Time | User | Action | Status |
+|------|------|--------|--------|
+| 2 min ago | Alice | Uploaded file | ((Success)){success} |
+| 5 min ago | Bob | Created project | ((Pending)){warning} |
+| 12 min ago | Carol | Updated settings | ((Success)){success} |
+`,
+  },
+  {
+    name: 'Contact Form',
+    description: 'Multi-field form with validation',
+    code: `## Contact Us
+
+> We'd love to hear from you! Fill out the form below and we'll get back to you as soon as possible.
+
+::: columns-2
+::: column First Name
+[_____________________________]{required}
+
+:::
+::: column Last Name
+[_____________________________]{required}
+:::
+:::
+
+::: columns-2
+::: column Email
+[_____________________________]{type:email required}
+
+:::
+::: column Subject
+[Select subject             v]{required}
+- Product question
+- Support request
+- Partnership
+:::
+:::
+
+Message
+[Tell us what you need...]{rows:5 required}
+
+[Subscribe to newsletter]{switch checked}
+
+[Send Message]* [Cancel]{secondary}
+`,
+  },
+  {
+    name: 'E-commerce Product',
+    description: 'Product detail page layout',
+    code: `[[ :shopping-cart: Store | Products | Categories | Cart ((3)){primary} | [Account] ]]
+
+[[ Home > Products > Headphones ]]
+
+::: columns-2
+::: column
+::: card
+### :photo: Product Gallery
+
+![Premium headphones]
+:::
+
+::: column
+::: card
+### Premium Wireless Headphones
+**$299.99**  ((Sale)){warning}
+
+Rating: :star: :star: :star: :star: :star: (128 reviews)
+
+Color
+- (x) Midnight Black
+- ( ) Arctic White
+- ( ) Ocean Blue
+
+Quantity
+[1                         v]
+- 1
+- 2
+- 3
+- 4
+
+Product actions
+[Actions                   v]
+- [Compare]
+- [Share]
+- [Report issue]
+
+[Add to Cart]* [Save]{secondary}
+:::
+:::
+:::
+
+::: columns-3 card
+::: column :truck: Shipping
+Free 2-day delivery.
+
+:::
+::: column :shield: Warranty
+Two-year protection.
+
+:::
+::: column :refresh: Returns
+30-day returns.
+:::
+:::
+`,
+  },
+  {
+    name: 'Settings Page',
+    description: 'User settings with switches and actions',
+    code: `[[ :logo: App | Dashboard | *Settings* ]]
+
+## Account Settings
+
+::: tabs
+
+::: tab Profile
+First Name
+[_____________________________]{required}
+
+Email
+[user@example.com_____________]{type:email}
+
+Role
+[Select role                v]
+- Admin
+- Editor
+- Viewer
+
+Bio
+[Short profile summary...]{rows:3}
+
+[Save Profile]*
+:::
+
+::: tab Notifications
+[Email notifications]{switch checked}
+[Push notifications]{switch checked}
+[SMS alerts]{switch}
+[Weekly digest]{switch disabled}
+
+[Save Preferences]*
+:::
+
+::: tab Security
+[Two-factor authentication]{switch checked}
+[Require SSO]{switch}
+[Session timeout alerts]{switch checked}
+
+Security actions
+[Actions                   v]
+- [Reset password]
+- [Revoke sessions]
+- [Download audit log]
+
+[Update Security]* [Discard]{secondary}
+:::
+
+:::
+`,
+  },
+];
+
+export interface ComponentGroup {
+  name: string;
+  items: Example[];
+}
+
+export const componentGroups: ComponentGroup[] = [
+  {
+    name: 'Inputs',
+    items: [
+      {
+        name: 'Buttons',
+        description: 'Primary, secondary and danger variants',
+        code: `[Primary]* [Secondary]{secondary} [Danger]{danger}`,
+      },
+      {
+        name: 'Text Input',
+        description: 'Single-line text fields',
+        code: `[Full name___]
+
+[Email address___]{type:email}`,
+      },
+      {
+        name: 'Textarea & Select',
+        description: 'Multi-line input and dropdown',
+        code: `[Message____]{rows:3}
+
+[Priority___]{select: Low, Medium, High}`,
+      },
+      {
+        name: 'Checkbox & Radio',
+        description: 'Toggle and choice controls',
+        code: `- [x] Remember me
+- [ ] Subscribe to newsletter
+
+- (x) Monthly billing
+- ( ) Annual billing`,
+      },
+    ],
+  },
+  {
+    name: 'Display',
+    items: [
+      {
+        name: 'Card',
+        description: 'Bordered content card',
+        code: `::: card
+## Card Title
+
+Card content and supporting description.
+:::`,
+      },
+      {
+        name: 'Tabs',
+        description: 'Tabbed content panel',
+        code: `::: tabs
+::: tab Overview
+First tab content.
+:::
+::: tab Details
+Second tab content.
+:::
+:::`,
+      },
+      {
+        name: 'Badges',
+        description: 'Status pills and labels',
+        code: `((Active)){success} ((Draft)) ((Archived)){danger}`,
+      },
+      {
+        name: 'Table',
+        description: 'Data table with status badges',
+        code: `| Name | Role | Status |
+|------|------|--------|
+| Alice | Admin | ((Active)){success} |
+| Bob | User | ((Pending)) |
+| Carol | Viewer | ((Inactive)){danger} |`,
+      },
+      {
+        name: 'Navigation',
+        description: 'Top nav bar',
+        code: `[[ nav :logo: Brand | Features | Pricing | Docs | [Sign in]* ]]`,
+      },
+    ],
+  },
+  {
+    name: 'Layout',
+    items: [
+      {
+        name: 'Two Columns',
+        description: 'Equal-width two-column layout',
+        code: `::: columns-2
+::: column
+Left column content.
+:::
+::: column
+Right column content.
+:::
+:::`,
+      },
+      {
+        name: 'Three Columns',
+        description: 'Equal-width three-column layout',
+        code: `::: columns-3
+::: column
+**Column A**
+
+Content here.
+:::
+::: column
+**Column B**
+
+Content here.
+:::
+::: column
+**Column C**
+
+Content here.
+:::
+:::`,
+      },
+      {
+        name: 'Sidebar Layout',
+        description: 'Narrow sidebar + wide main area',
+        code: `::: columns-3
+::: column
+**Sidebar**
+
+- Item 1
+- Item 2
+- Item 3
+:::
+::: column {span-2}
+**Main Content**
+
+Your content here.
+:::
+:::`,
+      },
+      {
+        name: 'Action Row',
+        description: 'Right-aligned button row',
+        code: `::: row {right}
+[Cancel]{secondary} [Save Changes]*
+:::`,
+      },
+    ],
+  },
+  {
+    name: 'Advanced',
+    items: [
+      {
+        name: 'Button Link',
+        description: 'Buttons that navigate to a URL',
+        code: `[View documentation](/guide)* [Learn more](/guide){secondary}`,
+      },
+      {
+        name: 'Icons',
+        description: 'Inline icon tokens',
+        code: `:home: Home  :users: Team  :settings: Settings`,
+      },
+      {
+        name: 'Inline Comment',
+        description: 'Design annotation visible in editor only',
+        code: `# Section Title
+
+<!-- Review this copy before shipping -->
+
+Content goes here.`,
+      },
+    ],
+  },
+];
+
+export const componentExamples: Example[] = [
+  {
+    name: 'Hero Section',
+    description: 'Headline, supporting copy, and primary actions',
+    code: `::: hero
+# Launch faster with wiremd
+### Turn product ideas into shareable UI drafts
+
+> Start with markdown, then refine the interface visually.
+
+[Start drafting]* [See examples]{secondary}
+:::
+`,
+  },
+  {
+    name: 'Stats Cards',
+    description: 'Four metric cards for dashboards',
+    code: `::: columns-4 card
+::: column :users: Users
+**12,847**
+((+14.5%)){success}
+:::
+
+::: column :currency-dollar: Revenue
+**$45,230**
+((+8.2%)){success}
+:::
+
+::: column :activity: Sessions
+**1,429**
+((-3.1%)){warning}
+:::
+
+::: column :circle-check: Uptime
+**99.98%**
+((Healthy)){success}
+:::
+:::
+`,
+  },
+  {
+    name: 'Form Fields',
+    description: 'Two-column contact form fields',
+    code: `::: columns-2
+::: column First Name
+[_____________________________]{required}
+:::
+
+::: column Last Name
+[_____________________________]{required}
+:::
+:::
+
+Email
+[name@company.com_____________]{type:email required}
+`,
+  },
+  {
+    name: 'Action Row',
+    description: 'Right-aligned primary and secondary actions',
+    code: `::: row {right}
+[Cancel]{secondary} [Save Changes]*
+:::
+`,
+  },
+];

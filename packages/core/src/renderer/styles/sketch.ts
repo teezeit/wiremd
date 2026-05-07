@@ -471,8 +471,12 @@ body.${prefix}root {
 /* Separator */
 .${prefix}separator {
   border: none;
-  border-top: 3px dashed #666;
+  height: 14px;
   margin: 24px 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='180' height='14' viewBox='0 0 180 14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 7 C18 5 33 8 49 6 C65 4 79 9 96 7 C113 5 128 8 145 6 C159 5 169 7 178 6' fill='none' stroke='%23666' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M3 8 C20 7 34 6 50 8 C66 9 80 5 97 6 C114 8 130 6 146 7 C160 8 171 6 177 7' fill='none' stroke='%23666' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' opacity='0.55'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: repeat-x;
+  background-size: 180px 14px;
 }
 
 /* Table */

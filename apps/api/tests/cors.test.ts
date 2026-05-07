@@ -8,7 +8,8 @@ describe("CORS", () => {
 
   beforeEach(async () => {
     ctx = await createTestContext();
-    delete process.env.CORS_ALLOWED_ORIGINS;
+    process.env.CORS_ALLOWED_ORIGINS =
+      "http://localhost:5173,http://localhost:5174,http://localhost:5175,http://localhost:5176";
   });
 
   afterEach(async () => {
@@ -20,7 +21,7 @@ describe("CORS", () => {
     await ctx.cleanup();
   });
 
-  it("allows local editor origins by default", async () => {
+  it("allows local editor origins from CORS_ALLOWED_ORIGINS", async () => {
     const res = await ctx.app.request("/api/projects", {
       method: "OPTIONS",
       headers: {
