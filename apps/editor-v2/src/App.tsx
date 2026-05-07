@@ -84,7 +84,7 @@ function getInitialContent(): InitialContent {
 const fileSupported = isFileSystemAccessSupported();
 
 export function App() {
-  const { markdown: initialMarkdown, conflictContent, isFirstVisit } = getInitialContent();
+  const { markdown: initialMarkdown, conflictContent } = getInitialContent();
   const { markdown, setMarkdown, style, setStyle, showComments, setShowComments } =
     useEditorState(initialMarkdown);
 
@@ -96,7 +96,8 @@ export function App() {
   const [projectId, setProjectId] = useState<string | null>(initialProjectId);
 
   const [mode, setMode] = useState<'preview' | 'edit'>('edit');
-  const [sidebarTab, setSidebarTab] = useState<'insert' | 'markdown'>(isFirstVisit && !initialProjectId ? 'insert' : 'markdown');
+  const [markdownOpen, setMarkdownOpen] = useState(true);
+  const [componentsOpen, setComponentsOpen] = useState(true);
   const [shareOpen, setShareOpen] = useState(false);
   const [saveOpen, setSaveOpen] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(conflictContent !== null);
@@ -162,7 +163,7 @@ export function App() {
     const result = await openLocalFile(w.showOpenFilePicker as never);
     if (result) {
       setMarkdown(result.content);
-      setSidebarTab('markdown');
+      setMarkdownOpen(true);
       window.history.replaceState(null, '', window.location.pathname);
       showToast(`Opened ${result.handle.name}`);
     }
@@ -280,53 +281,59 @@ export function App() {
 
       <main className={`ed-main${mode === 'preview' ? ' ed-main--preview' : ''}`}>
         <aside className="ed-sidebar">
-          <div className="ed-sidebar__tabs">
-            <button
-              className={`ed-sidebar__tab${sidebarTab === 'insert' ? ' ed-sidebar__tab--active' : ''}`}
-              onClick={() => setSidebarTab('insert')}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              Components
-            </button>
-            <button
-              className={`ed-sidebar__tab${sidebarTab === 'markdown' ? ' ed-sidebar__tab--active' : ''}`}
-              onClick={() => setSidebarTab('markdown')}
-            >
+          {/* Markdown accordion */}
+          <div className={`ed-accordion${markdownOpen ? ' ed-accordion--open' : ''}`}>
+            <button className="ed-accordion__header" onClick={() => setMarkdownOpen((o) => !o)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
               </svg>
               Markdown
+              <svg className="ed-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </button>
+            {markdownOpen && (
+              <>
+                {lockState.status === 'taken' && (
+                  <SidebarLockBanner
+                    lockedByName={lockState.lockedByName ?? 'Someone'}
+                    lastEditedAt={lockState.lastEditedAt}
+                    onSteal={() => setLockModalOpen(true)}
+                  />
+                )}
+                <div className={`ed-codemirror-wrap${lockState.status === 'taken' && projectId ? ' ed-codemirror-wrap--locked' : ''}`}>
+                  <Editor
+                    value={markdown}
+                    onChange={handleChange}
+                    onSelectionChange={handleSelectionChange}
+                    readOnly={lockState.status === 'taken' && !!projectId}
+                  />
+                </div>
+              </>
+            )}
           </div>
 
-          {lockState.status === 'taken' && (
-            <SidebarLockBanner
-              lockedByName={lockState.lockedByName ?? 'Someone'}
-              lastEditedAt={lockState.lastEditedAt}
-              onSteal={() => setLockModalOpen(true)}
-            />
-          )}
-
-          {sidebarTab === 'insert' ? (
-            <ComponentsPanel
-              templates={examples}
-              components={componentExamples}
-              style={style}
-              disabled={lockState.status === 'taken' && !!projectId}
-              onAdd={handleAddComponent}
-            />
-          ) : (
-            <div className={`ed-codemirror-wrap${lockState.status === 'taken' && projectId ? ' ed-codemirror-wrap--locked' : ''}`}>
-              <Editor
-                value={markdown}
-                onChange={handleChange}
-                onSelectionChange={handleSelectionChange}
-                readOnly={lockState.status === 'taken' && !!projectId}
+          {/* Components accordion */}
+          <div className={`ed-accordion ed-accordion--components${componentsOpen ? ' ed-accordion--open' : ''}`}>
+            <button className="ed-accordion__header" onClick={() => setComponentsOpen((o) => !o)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.856.497.926.968a.979.979 0 0 1-.277.817l-1.61 1.61a2.404 2.404 0 0 1-3.408 0l-1.518-1.518a.977.977 0 0 0-.895-.277 2.5 2.5 0 0 1-2.31-3.31c.207-.54.116-1.172-.24-1.527l-1.521-1.521a2.404 2.404 0 0 1 0-3.408l1.518-1.518a.976.976 0 0 0 .277-.895 2.5 2.5 0 0 1 3.31-2.31c.54.207 1.172.116 1.527-.24l1.521-1.521a2.404 2.404 0 0 1 3.408 0z" />
+              </svg>
+              Components
+              <svg className="ed-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            {componentsOpen && (
+              <ComponentsPanel
+                templates={examples}
+                components={componentExamples}
+                style={style}
+                disabled={lockState.status === 'taken' && !!projectId}
+                onAdd={handleAddComponent}
               />
-            </div>
-          )}
+            )}
+          </div>
         </aside>
 
         <section className="ed-canvas">

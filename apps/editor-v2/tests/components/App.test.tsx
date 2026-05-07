@@ -146,20 +146,18 @@ describe('App', () => {
     expect(screen.queryByRole('button', { name: /steal edit/i })).not.toBeInTheDocument();
   });
 
-  it('first-time user story: opens Template Gallery with Start from Scratch loaded by default', () => {
+  it('first-time user story: shows both accordions with Start from Scratch loaded by default', () => {
     render(<App />);
     expect(screen.getByText('Template Gallery')).toBeInTheDocument();
     expect(screen.getByText('Start from Scratch')).toBeInTheDocument();
     expect(lastPreviewProps.markdown).toContain('Anything is possible');
-    expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
+    expect(screen.getByTestId('editor')).toBeInTheDocument();
   });
 
-  it('switches to Components tab showing template cards', () => {
+  it('shows Components accordion with template cards by default', () => {
     render(<App />);
-    fireEvent.click(screen.getByRole('button', { name: /components/i }));
     expect(screen.getByText('Template Gallery')).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: /^add$/i }).length).toBeGreaterThan(0);
-    expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
   it('shows a plus icon in template Add buttons', () => {
@@ -169,28 +167,34 @@ describe('App', () => {
     expect(addButton.querySelector('path[d="M12 5v14"]')).toBeInTheDocument();
   });
 
-  it('switches back to Markdown tab', () => {
+  it('collapses Components accordion when header is clicked', () => {
     render(<App />);
-    fireEvent.click(screen.getByRole('button', { name: /components/i }));
-    fireEvent.click(screen.getByRole('button', { name: /^markdown$/i }));
-    expect(screen.getByTestId('editor')).toBeInTheDocument();
+    expect(screen.getByText('Template Gallery')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^components$/i }));
+    expect(screen.queryByText('Template Gallery')).not.toBeInTheDocument();
   });
 
-  it('adds a template to the document without switching tabs', () => {
+  it('collapses Markdown accordion when header is clicked', () => {
     render(<App />);
-    // Click the Landing Page (second template) Add button
-    fireEvent.click(screen.getAllByRole('button', { name: /^add$/i })[1]!);
-    expect(lastPreviewProps.markdown).toContain('Design UI with Markdown');
-    expect(screen.getByText('Template Gallery')).toBeInTheDocument();
+    expect(screen.getByTestId('editor')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^markdown$/i }));
     expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
-  it('adds a component to the current document without leaving the Components tab', () => {
+  it('adds a template to the document and keeps both accordions open', () => {
+    render(<App />);
+    fireEvent.click(screen.getAllByRole('button', { name: /^add$/i })[1]!);
+    expect(lastPreviewProps.markdown).toContain('Design UI with Markdown');
+    expect(screen.getByText('Template Gallery')).toBeInTheDocument();
+    expect(screen.getByTestId('editor')).toBeInTheDocument();
+  });
+
+  it('adds a component to the current document and keeps both accordions open', () => {
     render(<App />);
     fireEvent.click(within(screen.getByTestId('component-gallery')).getAllByRole('button', { name: /^add$/i })[0]!);
     expect(lastPreviewProps.markdown).toContain('Launch faster with wiremd');
     expect(screen.getByText('Component Library')).toBeInTheDocument();
-    expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
+    expect(screen.getByTestId('editor')).toBeInTheDocument();
   });
 
   it('adds a component at the last known markdown cursor', () => {
@@ -200,7 +204,6 @@ describe('App', () => {
       lastEditorProps?.onSelectionChange?.({ from: 7, to: 7 });
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /components/i }));
     fireEvent.click(within(screen.getByTestId('component-gallery')).getAllByRole('button', { name: /^add$/i })[0]!);
 
     const markdown = String(lastPreviewProps.markdown);
@@ -372,7 +375,6 @@ describe('App', () => {
       fireEvent.click(screen.getByText('Open from file'));
     });
     expect(lastPreviewProps.markdown).toBe(initialContent);
-    expect(screen.queryByTestId('editor')).not.toBeInTheDocument();
   });
 
   // URL hash
@@ -380,7 +382,7 @@ describe('App', () => {
     window.location.hash = encodeShareHash('# From hash');
     render(<App />);
     expect(screen.getByTestId('editor').textContent).toBe('# From hash');
-    expect(screen.queryByText('Template Gallery')).not.toBeInTheDocument();
+    expect(screen.getByText('Template Gallery')).toBeInTheDocument();
   });
 
   it('clears the hash from URL after loading', () => {
@@ -396,7 +398,7 @@ describe('App', () => {
     localStorage.setItem('wiremd-content', '# From local storage');
     render(<App />);
     expect(screen.getByTestId('editor').textContent).toBe('# From local storage');
-    expect(screen.queryByText('Template Gallery')).not.toBeInTheDocument();
+    expect(screen.getByText('Template Gallery')).toBeInTheDocument();
   });
 
   // conflict modal: hash + localStorage
