@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "tsx watch src/local.ts",
     "build": "tsc -p tsconfig.build.json",
+    "postbuild": "tsx scripts/migrate.ts",
     "typecheck": "tsc --noEmit",
     "db:up": "docker compose up -d db",
     "db:down": "docker compose down",

@@ -14,7 +14,7 @@ export const corsMiddleware = cors({
     if (process.env.ALLOW_ALL_ORIGINS === "1") return origin;
     return undefined;
   },
-  allowMethods: ["GET", "POST", "PUT", "HEAD", "OPTIONS"],
+  allowMethods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"],
   allowHeaders: ["Content-Type", "X-Wmd-Session"],
   maxAge: 86400,
 });
