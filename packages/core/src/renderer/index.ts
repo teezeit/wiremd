@@ -122,13 +122,18 @@ export function renderToHTML(
           `el=el.parentElement;` +
         `}` +
         // If cursor is exactly on the opener line of a container, place indicator
-        // inside (before the first direct child) instead of after the whole block.
+        // inside the container. Skip any injected title headings (no data-source-line)
+        // so the indicator lands after the title, before the first source-mapped child.
         `if(target===best){` +
           `var startLine=parseInt(best.getAttribute('data-source-line'),10);` +
           `if(startLine===line&&best.firstElementChild){` +
+            `var insertBefore=best.firstElementChild;` +
+            `if(!insertBefore.getAttribute('data-source-line')&&insertBefore.nextElementSibling){` +
+              `insertBefore=insertBefore.nextElementSibling;` +
+            `}` +
             `_indicator=document.createElement('div');` +
             `_indicator.className='wmd-cursor-indicator';` +
-            `best.insertBefore(_indicator,best.firstElementChild);` +
+            `best.insertBefore(_indicator,insertBefore);` +
             `_indicator.scrollIntoView({behavior:'smooth',block:'nearest'});` +
             `return;` +
           `}` +

@@ -172,9 +172,11 @@ describe('cursor sync — iframe JS (DOM integration)', () => {
               // No indicator expected (cursor before any block)
               expect(getIndicator()).toBeNull();
             } else if (c.expectedAfterSourceLine === 0) {
-              // Opener fix: indicator is first child inside the container, no prev sibling
+              // Opener fix: indicator is at the top of container content.
+              // Any preceding element (e.g. injected tab-headers, title headings) has no data-source-line.
               expect(getIndicator()).not.toBeNull();
-              expect(getIndicatorPrecedingSibling()).toBeNull();
+              const prevSrcLine = getIndicatorPrecedingSibling()?.getAttribute('data-source-line') ?? null;
+              expect(prevSrcLine).toBeNull();
             } else {
               expect(getIndicator()).not.toBeNull();
               expect(getIndicatorPrecedingSibling()?.getAttribute('data-source-line')).toBe(
