@@ -85,6 +85,7 @@ function getInitialContent(): InitialContent {
 }
 
 const fileSupported = isFileSystemAccessSupported();
+const VISUAL_EDITING_ENABLED = import.meta.env.VITE_VISUAL_EDITING === 'true';
 
 export function App() {
   const { markdown: initialMarkdown, conflictContent } = getInitialContent();
@@ -312,18 +313,20 @@ export function App() {
         </div>
 
         <div className="ed-header__actions">
-          <button
-            className={`ed-btn ed-btn--icon${visualEditing ? ' ed-btn--icon-active' : ''}`}
-            onClick={() => setVisualEditing((v) => !v)}
-            disabled={isLockedByOther}
-            title={visualEditing ? 'Visual editing on — click to disable' : 'Enable visual editing'}
-            aria-pressed={visualEditing}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-          </button>
+          {VISUAL_EDITING_ENABLED && (
+            <button
+              className={`ed-btn ed-btn--icon${visualEditing ? ' ed-btn--icon-active' : ''}`}
+              onClick={() => setVisualEditing((v) => !v)}
+              disabled={isLockedByOther}
+              title={visualEditing ? 'Visual editing on — click to disable' : 'Enable visual editing'}
+              aria-pressed={visualEditing}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          )}
           {projectId ? (
             <button className="ed-btn ed-btn--primary ed-btn--live-session" onClick={() => setShareOpen(true)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
