@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
+import { renderToHTML, parse } from '@eclectic-ai/wiremd';
 
 // ── types ─────────────────────────────────────────────────────────────────────
 
@@ -105,11 +106,10 @@ function getIndicatorPrecedingSibling(): Element | null {
 }
 
 // ── render helpers ────────────────────────────────────────────────────────────
+// renderToHTML and parse are statically imported at the top of the file.
+// A dynamic import in beforeEach caused 10s+ cold-load timeouts on Windows CI.
 
-let renderToHTML: (ast: any, opts: any) => string;
-let parse: (md: string) => any;
-
-beforeEach(async () => {
+beforeEach(() => {
   _trackedListeners = [];
   _origWindowAdd = window.addEventListener.bind(window);
   _origWindowRemove = window.removeEventListener.bind(window);
@@ -127,10 +127,6 @@ beforeEach(async () => {
     _trackedListeners.push({ target: 'document', args: [type, handler, opts] });
     _origDocAdd.call(document, type, handler as EventListener, opts);
   } as typeof document.addEventListener;
-
-  const wiremd = await import('@eclectic-ai/wiremd');
-  renderToHTML = wiremd.renderToHTML;
-  parse = wiremd.parse;
 });
 
 afterEach(() => {
