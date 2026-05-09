@@ -1,0 +1,17 @@
+[
+  {
+    "clickSourceLine": 1,
+    "expectedEditorLine": 1,
+    "description": "click first paragraph"
+  },
+  {
+    "clickSourceLine": 3,
+    "expectedEditorLine": 3,
+    "description": "click heading"
+  },
+  {
+    "clickSourceLine": 5,
+    "expectedEditorLine": 5,
+    "description": "click third paragraph"
+  }
+]

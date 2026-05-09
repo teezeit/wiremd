@@ -1,0 +1,22 @@
+[
+  {
+    "cursorLine": 1,
+    "expectedAfterSourceLine": 1,
+    "description": "cursor on first paragraph (line 1)"
+  },
+  {
+    "cursorLine": 2,
+    "expectedAfterSourceLine": 1,
+    "description": "cursor on blank line after first paragraph → still pinned to line 1 block"
+  },
+  {
+    "cursorLine": 3,
+    "expectedAfterSourceLine": 3,
+    "description": "cursor on heading (line 3)"
+  },
+  {
+    "cursorLine": 5,
+    "expectedAfterSourceLine": 5,
+    "description": "cursor on third paragraph (line 5)"
+  }
+]

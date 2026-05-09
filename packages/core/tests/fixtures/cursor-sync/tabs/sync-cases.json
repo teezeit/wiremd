@@ -1,0 +1,12 @@
+[
+  {
+    "cursorLine": 1,
+    "expectedAfterSourceLine": 0,
+    "description": "cursor on tabs opener → indicator is first child inside the tabs block (opener fix)"
+  },
+  {
+    "cursorLine": 3,
+    "expectedAfterSourceLine": 3,
+    "description": "cursor on line 3 (Alpha content paragraph) → indicator after that paragraph"
+  }
+]

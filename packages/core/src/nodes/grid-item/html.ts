@@ -3,6 +3,7 @@ import {
   type RenderContext,
   buildClasses,
   renderChildrenList,
+  sourceLine,
 } from '../../renderer/html-renderer.js';
 
 type GridItemNode = Extract<WiremdNode, { type: 'grid-item' }>;
@@ -18,7 +19,7 @@ export function renderGridItemHTML(node: GridItemNode, context: RenderContext): 
   const classes = buildClasses(prefix, 'grid-item', itemProps);
   const childrenHTML = renderChildrenList(node.children || [], context);
 
-  return `<div class="${classes}">
+  return `<div class="${classes}"${sourceLine(node)}>
     ${childrenHTML}
   </div>`;
 }

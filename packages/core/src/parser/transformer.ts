@@ -454,6 +454,7 @@ function transformColumnContainer(
     type: 'grid-item',
     props: { ...props, classes },
     children,
+    position: node.position,
   };
 }
 

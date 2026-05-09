@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { Editor } from './components/Editor';
+import type { EditorHandle } from './components/Editor';
 import { Preview } from './components/Preview';
 import { HamburgerMenu } from './components/HamburgerMenu';
 import { CommentButton } from './components/CommentButton';
@@ -84,6 +85,7 @@ function getInitialContent(): InitialContent {
 }
 
 const fileSupported = isFileSystemAccessSupported();
+const VISUAL_EDITING_ENABLED = import.meta.env.VITE_VISUAL_EDITING === 'true';
 
 export function App() {
   const { markdown: initialMarkdown, conflictContent } = getInitialContent();
@@ -131,7 +133,10 @@ export function App() {
   const [lockModalOpen, setLockModalOpen] = useState(false);
   const [pendingSharedContent] = useState(conflictContent);
   const [toast, setToast] = useState({ message: '', visible: false });
+  const [cursorLine, setCursorLine] = useState<number | null>(null);
+  const [visualEditing, setVisualEditing] = useState(false);
   const selectionRef = useRef<MarkdownSelection | null>(null);
+  const editorHandleRef = useRef<EditorHandle>(null);
 
   const showToast = useCallback((message: string) => {
     setToast({ message, visible: true });
@@ -177,6 +182,18 @@ export function App() {
 
   const handleSelectionChange = useCallback((range: MarkdownSelection) => {
     selectionRef.current = range;
+  }, []);
+
+  const handleCursorLineChange = useCallback((line: number) => {
+    setCursorLine(line);
+  }, []);
+
+  const handleEditorBlur = useCallback(() => {
+    setCursorLine(null);
+  }, []);
+
+  const handleComponentClick = useCallback((line: number) => {
+    editorHandleRef.current?.moveCursorToLine(line);
   }, []);
 
   const handleAddComponent = useCallback((code: string, name: string) => {
@@ -296,6 +313,20 @@ export function App() {
         </div>
 
         <div className="ed-header__actions">
+          {VISUAL_EDITING_ENABLED && (
+            <button
+              className={`ed-btn ed-btn--icon${visualEditing ? ' ed-btn--icon-active' : ''}`}
+              onClick={() => setVisualEditing((v) => !v)}
+              disabled={isLockedByOther}
+              title={visualEditing ? 'Visual editing on — click to disable' : 'Enable visual editing'}
+              aria-pressed={visualEditing}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          )}
           {projectId ? (
             <button className="ed-btn ed-btn--primary ed-btn--live-session" onClick={() => setShareOpen(true)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -364,9 +395,12 @@ export function App() {
             {markdownOpen && (
               <div className={`ed-codemirror-wrap${isLockedByOther ? ' ed-codemirror-wrap--locked' : ''}`}>
                 <Editor
+                  ref={editorHandleRef}
                   value={markdown}
                   onChange={handleChange}
                   onSelectionChange={handleSelectionChange}
+                  onCursorLineChange={handleCursorLineChange}
+                  onBlur={handleEditorBlur}
                   readOnly={isLockedByOther}
                 />
               </div>
@@ -431,6 +465,9 @@ export function App() {
             style={style}
             activeTab="preview"
             showComments={showComments}
+            cursorLine={cursorLine}
+            visualEditing={visualEditing}
+            onComponentClick={handleComponentClick}
           />
         </section>
       </main>

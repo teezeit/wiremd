@@ -450,12 +450,18 @@ function collectContainer(
   // Helper: build the finished container node and (optionally) trailing siblings.
   // Hoisted above the opener-content branches so early returns from those
   // branches (e.g. rcSplit and the leading-`\n:::` paths) can call it.
+  // Captured when the explicit closer ::: is found; used to set position.end.
+  let _closerPosition: any = undefined;
+
   const finishWithTrailing = (trailing?: any[]) => {
+    const position = _closerPosition
+      ? { start: openerNode.position?.start, end: _closerPosition?.end }
+      : openerNode.position;
     const finished = makeContainerNode(
       opener.containerType,
       opener.attrs,
       containerChildren,
-      openerNode.position,
+      position,
     );
     if (opener.inline) finished.inline = opener.inline;
     if (opener.containerType === "demo")
@@ -596,6 +602,7 @@ function collectContainer(
     const child = nodes[i];
 
     if (isContainerCloser(child)) {
+      _closerPosition = child.position;
       i++;
       break;
     }

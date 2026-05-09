@@ -93,32 +93,95 @@ export function renderToHTML(
 
   const p = classPrefix;
   const cursorCSS = cursorSync
-    ? `[data-cursor-active]{background:rgba(99,102,241,.08)!important;border-radius:4px;}`
+    ? `.wmd-cursor-indicator{` +
+        `display:block;width:8px;height:8px;border-radius:50%;` +
+        `background:#3b82f6;margin:6px auto 0;` +
+        `opacity:0.85;pointer-events:none;` +
+      `}`
     : '';
   const cursorScript = cursorSync
     ? `<script>(function(){` +
+      `var _indicator=null;` +
+      `var _visualMode=false;` +
+      `var _clickHandler=null;` +
       `function activateTab(panel){` +
         `var root=panel.closest('[data-wmd-tabs]');if(!root)return;` +
         `var idx=panel.getAttribute('data-wmd-tab-panel');` +
         `root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(x){x.getAttribute('data-wmd-tab-panel')===idx?x.removeAttribute('hidden'):x.setAttribute('hidden','');});` +
-        `root.querySelectorAll('[data-wmd-tab]').forEach(function(b){if(b.getAttribute('data-wmd-tab')===idx){b.classList.add('${p}active');}else{b.classList.remove('${p}active');b.removeAttribute('data-cursor-active');}});` +
+        `root.querySelectorAll('[data-wmd-tab]').forEach(function(b){if(b.getAttribute('data-wmd-tab')===idx){b.classList.add('${p}active');}else{b.classList.remove('${p}active');}});` +
       `}` +
-      `window.addEventListener('message',function(e){` +
-        `if(!e.data)return;` +
-        `if(e.data.type==='wiremd-cursor-blur'){document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});return;}` +
-        `if(e.data.type==='wiremd-set-scroll'){window.scrollTo(0,e.data.scrollY);return;}` +
-        `if(e.data.type!=='wiremd-cursor')return;` +
-        `var line=e.data.line;` +
-        `document.querySelectorAll('[data-cursor-active]').forEach(function(el){el.removeAttribute('data-cursor-active');});` +
+      `function placeIndicator(best,line){` +
+        `if(_indicator&&_indicator.parentNode)_indicator.parentNode.removeChild(_indicator);` +
+        `if(!best){_indicator=null;return;}` +
+        // Walk up from best: find the ended container closest (from above) to cursor line.
+        // "Ended" means data-source-line-end < cursorLine, so the cursor is past that block.
+        `var target=best,bestEnd=0,el=best;` +
+        `while(el&&el.tagName!=='BODY'){` +
+          `var ep=parseInt(el.getAttribute('data-source-line-end')||'0',10);` +
+          `if(ep&&ep<line&&ep>bestEnd){target=el;bestEnd=ep;}` +
+          `el=el.parentElement;` +
+        `}` +
+        // If cursor is exactly on the opener line of a container, place indicator
+        // inside the container. Skip any injected title headings (no data-source-line)
+        // so the indicator lands after the title, before the first source-mapped child.
+        `if(target===best){` +
+          `var startLine=parseInt(best.getAttribute('data-source-line'),10);` +
+          `if(startLine===line&&best.firstElementChild){` +
+            `var insertBefore=best.firstElementChild;` +
+            `if(!insertBefore.getAttribute('data-source-line')&&insertBefore.nextElementSibling){` +
+              `insertBefore=insertBefore.nextElementSibling;` +
+            `}` +
+            `_indicator=document.createElement('div');` +
+            `_indicator.className='wmd-cursor-indicator';` +
+            `best.insertBefore(_indicator,insertBefore);` +
+            `_indicator.scrollIntoView({behavior:'smooth',block:'nearest'});` +
+            `return;` +
+          `}` +
+        `}` +
+        `_indicator=document.createElement('div');` +
+        `_indicator.className='wmd-cursor-indicator';` +
+        `target.parentNode.insertBefore(_indicator,target.nextSibling);` +
+        `_indicator.scrollIntoView({behavior:'smooth',block:'nearest'});` +
+      `}` +
+      `function removeIndicator(){` +
+        `if(_indicator&&_indicator.parentNode)_indicator.parentNode.removeChild(_indicator);` +
+        `_indicator=null;` +
+      `}` +
+      `function findBestElement(line){` +
         `var els=document.querySelectorAll('[data-source-line]');` +
         `var best=null,bestLine=0;` +
         `for(var i=0;i<els.length;i++){var l=parseInt(els[i].getAttribute('data-source-line'),10);if(l<=line&&l>bestLine){bestLine=l;best=els[i];}}` +
-        `if(best){` +
-          `best.setAttribute('data-cursor-active','');` +
-          `var panel=best.closest('[data-wmd-tab-panel]');` +
-          `if(panel)activateTab(panel);` +
-          `best.scrollIntoView({behavior:'smooth',block:'nearest'});` +
+        `return best;` +
+      `}` +
+      `function enableVisualMode(){` +
+        `if(_clickHandler)return;` +
+        `_clickHandler=function(e){` +
+          `var target=e.target;` +
+          `var el=target.closest('[data-source-line]');` +
+          `if(!el)return;` +
+          `var line=parseInt(el.getAttribute('data-source-line'),10);` +
+          `parent.postMessage({type:'wiremd-component-click',line:line},'*');` +
+        `};` +
+        `document.addEventListener('click',_clickHandler);` +
+      `}` +
+      `function disableVisualMode(){` +
+        `if(_clickHandler)document.removeEventListener('click',_clickHandler);` +
+        `_clickHandler=null;` +
+      `}` +
+      `window.addEventListener('message',function(e){` +
+        `if(!e.data)return;` +
+        `if(e.data.type==='wiremd-cursor-blur'){removeIndicator();return;}` +
+        `if(e.data.type==='wiremd-set-scroll'){window.scrollTo(0,e.data.scrollY);return;}` +
+        `if(e.data.type==='wiremd-visual-mode'){` +
+          `_visualMode=!!e.data.enabled;` +
+          `_visualMode?enableVisualMode():disableVisualMode();` +
+          `return;` +
         `}` +
+        `if(e.data.type!=='wiremd-cursor')return;` +
+        `var line=e.data.line;` +
+        `var best=findBestElement(line);` +
+        `placeIndicator(best,line);` +
+        `if(best){var panel=best.closest('[data-wmd-tab-panel]');if(panel)activateTab(panel);}` +
       `});` +
       `var _st;window.addEventListener('scroll',function(){clearTimeout(_st);_st=setTimeout(function(){parent.postMessage({type:'wiremd-scroll',scrollY:window.scrollY},'*');},100);},true);` +
       `})();</script>`
