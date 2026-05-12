@@ -1,163 +1,122 @@
-# Wiremd Live Preview - VS Code Extension
+<p align="center">
+  <img src="./icon.png" alt="Wiremd" width="80" />
+</p>
 
-Live preview for Wiremd markdown mockups directly in VS Code.
+# Wiremd Live Preview
 
-## Features
+> Live wireframe preview for `.md` files — see your mockup update as you type, directly in VS Code. Part of [wiremd](https://tobiashoelzer.com/wiremd/).
 
-- **Live Preview** - See your wireframe mockups update in real-time as you type
-- **Multiple Styles** - Switch between sketch, clean, wireframe, material, tailwind, and brutal styles
-- **Responsive Preview** - Test your designs at different viewport sizes (desktop, laptop, tablet, mobile)
-- **Side-by-Side Editing** - Preview panel syncs with your active markdown file
-- **Error Overlay** - Clear error messages when syntax issues occur
-- **Auto-Refresh** - Configurable auto-refresh with debouncing
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/eclectic-ai.wiremd-preview)](https://marketplace.visualstudio.com/items?itemName=eclectic-ai.wiremd-preview)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/eclectic-ai.wiremd-preview)](https://marketplace.visualstudio.com/items?itemName=eclectic-ai.wiremd-preview)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+![VS Code extension showing wiremd preview alongside markdown](https://teezeit.github.io/wiremd/assets/guides/guide-screenshot-vscode.png)
+
+wiremd converts Markdown with extended wireframing syntax into visual HTML mockups. This extension adds a live preview panel that updates as you type — no CLI, no browser tab, no extra setup.
 
 ## Installation
 
-### From the Marketplace
-
-Search for **Wiremd Live Preview** in the VS Code Extensions sidebar, or install directly from the [marketplace page](https://marketplace.visualstudio.com/items?itemName=eclectic-ai.wiremd-preview).
-
-### From source (development build)
+Search for **Wiremd** in the VS Code Extensions sidebar, or:
 
 ```bash
-# Clone the wiremd monorepo
-git clone https://github.com/teezeit/wiremd.git
-cd wiremd
-
-# Install all workspaces
-pnpm install
-
-# Build core + bundle the extension
-pnpm turbo run build
-pnpm --filter wiremd-preview run bundle
-
-# Launch VS Code with the dev extension loaded
-code --extensionDevelopmentPath=$(pwd)/extensions/vscode .
+code --install-extension eclectic-ai.wiremd-preview
 ```
 
-See [`DEVELOPMENT.md`](./DEVELOPMENT.md) for the full contributor workflow.
+> [!NOTE]
+> The extension bundles its own copy of the wiremd core library — no `npm install` or project setup needed. Open any `.md` file and it works.
 
 ## Usage
 
-### Opening Preview
+Open a `.md` file and launch the preview with any of:
 
-There are multiple ways to open the Wiremd preview:
+- `Cmd+K V` / `Ctrl+K V` — open preview to the side
+- Command Palette → **Wiremd: Open Preview to the Side**
+- Click the preview icon in the editor title bar
 
-1. **Command Palette**: `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac) → "Wiremd: Open Preview to the Side"
-2. **Keyboard Shortcut**: `Ctrl+K V` (or `Cmd+K V` on Mac) when editing a markdown file
-3. **Editor Title Menu**: Click the preview icon when viewing a markdown file
-4. **Status Bar**: Click "Wiremd" in the status bar (shown when editing markdown files)
+The preview updates live as you edit. Switch styles and viewport sizes from the toolbar inside the preview panel.
 
-### Changing Styles
+## Claude skill
 
-- Click the style dropdown in the preview toolbar, or
-- Use command palette: "Wiremd: Change Preview Style"
+On first preview open, the extension prompts you to install the wiremd Claude skill into your workspace (`.claude/skills/wireframe/`). This lets Claude Code generate and edit wireframes for you directly from chat.
 
-Available styles:
-- **Sketch** - Balsamiq-inspired hand-drawn look (default)
-- **Clean** - Modern minimal design
-- **Wireframe** - Traditional grayscale with hatching
-- **None** - Unstyled semantic HTML
-- **Tailwind** - Modern utility-first design with purple accents
-- **Material** - Google Material Design with elevation system
-- **Brutal** - Neo-brutalism with bold colors and thick borders
+You can also install or update it manually via Command Palette → **Install Wiremd Claude Skill**.
 
-### Responsive Preview
+## Component reference
 
-Switch between viewport sizes using the toolbar buttons:
-- **Full** - Full width preview
-- **Desktop** - 1440px width
-- **Laptop** - 1024px width
-- **Tablet** - 768px width
-- **Mobile** - 375px width
+Command Palette → **Open Quick Reference** opens the full wiremd component docs as a panel inside VS Code — buttons, inputs, tables, layouts, and more, all rendered with live examples. No browser needed.
 
-Or use command palette: "Wiremd: Change Preview Viewport"
+## Styles
+
+Seven built-in visual themes, switchable from the preview toolbar:
+
+| Style | Description |
+|-------|-------------|
+| `sketch` | Balsamiq-inspired hand-drawn look (default) |
+| `clean` | Modern minimal |
+| `wireframe` | Traditional grayscale |
+| `material` | Google Material Design |
+| `tailwind` | Utility-first with purple accents |
+| `brutal` | Neo-brutalism |
+| `none` | Unstyled semantic HTML |
+
+## Responsive preview
+
+Test at different viewport widths from the toolbar:
+
+| Preset | Width |
+|--------|-------|
+| Full | panel width |
+| Desktop | 1440px |
+| Laptop | 1024px |
+| Tablet | 768px |
+| Mobile | 375px |
 
 ## Configuration
 
-Configure the extension through VS Code settings:
-
-```json
-{
-  "wiremd.defaultStyle": "sketch",
-  "wiremd.autoRefresh": true,
-  "wiremd.refreshDelay": 300,
-  "wiremd.showErrorOverlay": true
-}
-```
-
-### Settings
-
-- `wiremd.defaultStyle` - Default visual style for previews (default: "sketch")
-- `wiremd.autoRefresh` - Automatically refresh preview on file changes (default: true)
-- `wiremd.refreshDelay` - Delay in milliseconds before refreshing (default: 300)
-- `wiremd.showErrorOverlay` - Show error overlay when rendering fails (default: true)
-
-## Requirements
-
-The published extension bundles its own copy of the wiremd core library — no `npm install` or workspace setup is needed in the project you are previewing. Just open any `.md` file and the preview works.
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `wiremd.defaultStyle` | `"sketch"` | Default visual style |
+| `wiremd.autoRefresh` | `true` | Auto-refresh on file change |
+| `wiremd.refreshDelay` | `300` | Debounce delay in ms |
+| `wiremd.showErrorOverlay` | `true` | Show error overlay on syntax issues |
 
 ## Commands
 
-| Command | Description | Shortcut |
-|---------|-------------|----------|
-| `wiremd.openPreview` | Open preview in current column | - |
-| `wiremd.openPreviewToSide` | Open preview to the side | `Ctrl+K V` / `Cmd+K V` |
-| `wiremd.refreshPreview` | Manually refresh preview | - |
-| `wiremd.changeStyle` | Change preview style | - |
-| `wiremd.changeViewport` | Change viewport size | - |
+| Command | Shortcut | Description |
+|---------|----------|-------------|
+| Wiremd: Open Preview | — | Open in current column |
+| Wiremd: Open Preview to the Side | `Cmd+K V` | Open alongside editor |
+| Wiremd: Refresh Preview | — | Force refresh |
+| Wiremd: Change Preview Style | — | Switch visual theme |
+| Wiremd: Change Preview Viewport | — | Switch viewport size |
+| Wiremd: Open Quick Reference | — | Component docs panel |
+| Wiremd: Install Claude Skill | — | Install skill into workspace |
 
-## Extension Development
+## CLI
 
-All development happens inside the wiremd monorepo. From the repo root:
+The extension is the easiest way to preview wiremd files in VS Code, but you can also use the CLI for batch rendering or live-reload in any browser:
 
 ```bash
-# Install everything
-pnpm install
-
-# One-shot bundle (esbuild → dist/extension.js + dist/preview-provider.js)
-pnpm --filter wiremd-preview run bundle
-
-# Watch mode — rebuilds on changes to packages/core/dist/
-cd extensions/vscode && pnpm run dev
-
-# Package as .vsix (lands in extensions/vscode/)
-pnpm --filter wiremd-preview run package
+npm install -g @eclectic-ai/wiremd
+wiremd my-screen.md --serve 3000 --watch
 ```
 
-See [`DEVELOPMENT.md`](./DEVELOPMENT.md) for the full workflow.
+## Related
 
-## Known Issues
+- [wiremd docs](https://teezeit.github.io/wiremd) — full syntax reference and examples
+- [Web editor](https://tobiashoelzer.com/wiremd/editor/) — browser-based editor, no install needed
+- [wiremd on npm](https://www.npmjs.com/package/@eclectic-ai/wiremd) — programmatic API and CLI
 
-- Preview may not work if wiremd is not installed locally
-- Large markdown files may cause performance issues
-- Some complex nested structures might not render perfectly
+## Development
 
-## Release Notes
+The extension lives at `extensions/vscode/` inside the [wiremd monorepo](https://github.com/teezeit/wiremd). See [`DEVELOPMENT.md`](./DEVELOPMENT.md) for the full contributor workflow.
 
-### 0.1.0
+```bash
+# From monorepo root
+pnpm install
+pnpm --filter wiremd run dev          # core watcher
+cd extensions/vscode && pnpm run dev  # extension watcher
 
-Initial release:
-- Live preview support
-- Multiple style options
-- Responsive viewport switcher
-- Error overlay
-- Auto-refresh with debouncing
-
-## Contributing
-
-Contributions are welcome! Please see the main [Wiremd repository](https://github.com/teezeit/wiremd) for contribution guidelines.
-
-## License
-
-MIT License - see LICENSE file for details
-
-## Links
-
-- [Wiremd Documentation](https://github.com/teezeit/wiremd)
-- [Report Issues](https://github.com/teezeit/wiremd/issues)
-- [VS Code Extension API](https://code.visualstudio.com/api)
-
----
-
-**Enjoy creating wireframes with Wiremd!** ⚡
+# Load dev build into VS Code
+code --extensionDevelopmentPath=$(pwd)/extensions/vscode .
+```
