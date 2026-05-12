@@ -32,9 +32,9 @@
     "bin"
   ],
   "scripts": {
-    "prepublishOnly": "cp ../../README.md ./README.md && pnpm run build",
+    "prepublishOnly": "pnpm run build",
     "version": "node ../../scripts/sync-versions.mjs && git add ../../extensions/vscode/package.json ../../extensions/skills/wireframe/.claude-plugin/plugin.json",
-    "build": "tsc && vite build",
+    "build": "cp ../../README.md ./README.md && tsc && vite build",
     "cli": "node ./bin/wiremd.js",
     "dev": "vite build --watch",
     "test": "vitest run --config vitest.config.ts",
