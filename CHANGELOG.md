@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2026-05-12
 
+## [0.6.0] - 2026-05-12
+
 ### Added
 - Added `scripts/migrate-v0.4.py` — a migration script to convert wiremd files from pre-v0.4 syntax to current syntax in bulk. Covers all four v0.4.0 breaking changes: layout wrapper removal, `grid-N` → `columns-N`, `row` column headings → `:::columns-N`, semantic tokens (`{.danger}` → `{danger}`), and pills (`|text|` → `((text))`). Idempotent and fenced-code-block-aware.
 
