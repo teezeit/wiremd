@@ -92,13 +92,13 @@ export type WiremdNode =
 
   // UI Components
   | { type: 'tabs'; props: ComponentProps; children: WiremdNode[]; position?: Location }
-  | { type: 'tab'; label: string; active: boolean; props: ComponentProps; children: WiremdNode[]; position?: Location }
+  | { type: 'tab'; label: string; labelChildren?: WiremdNode[]; active: boolean; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'accordion'; props: ComponentProps; children: WiremdNode[]; position?: Location }
-  | { type: 'accordion-item'; summary: string; expanded: boolean; props: ComponentProps; children: WiremdNode[]; position?: Location }
+  | { type: 'accordion-item'; summary: string; summaryChildren?: WiremdNode[]; expanded: boolean; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'breadcrumbs'; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'breadcrumb-item'; content?: string; children?: WiremdNode[]; href?: string; current?: boolean; position?: Location }
   | { type: 'alert'; alertType: 'success' | 'info' | 'warning' | 'error'; props: ComponentProps; children: WiremdNode[]; position?: Location }
-  | { type: 'badge'; content: string; props: ComponentProps & { variant?: 'default' | 'primary' | 'success' | 'warning' | 'error' }; position?: Location }
+  | { type: 'badge'; content: string; children?: WiremdNode[]; props: ComponentProps & { variant?: 'default' | 'primary' | 'success' | 'warning' | 'error' }; position?: Location }
   | { type: 'separator'; props: ComponentProps; position?: Location }
 
   // State Components

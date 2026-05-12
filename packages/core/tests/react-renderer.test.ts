@@ -34,6 +34,19 @@ describe('React Renderer', () => {
       expect(jsx).toContain('Submit');
     });
 
+    it('should render icons inside buttons and badges', () => {
+      const ast = parse('[ :check: button text]\n\n(( :check: Currently shown in)){primary}');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('<button className="wmd-button">');
+      expect(jsx).toContain('className="wmd-icon"');
+      expect(jsx).toContain('data-icon="check"');
+      expect(jsx).toContain('button text');
+      expect(jsx).toContain('<span className="wmd-badge wmd-badge-primary"><svg');
+      expect(jsx).not.toContain(':check: button text');
+      expect(jsx).not.toContain(':check: Currently shown in');
+    });
+
     it('should render a disabled button', () => {
       const ast = parse('[Submit]{state:disabled}');
       const jsx = renderToReact(ast);

@@ -21,6 +21,19 @@ describe('HTML Renderer', () => {
       expect(html).toContain('Submit');
     });
 
+    it('should render icons inside buttons and badges', () => {
+      const ast = parse('[ :check: button text]\n\n(( :check: Currently shown in)){primary}');
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toMatch(/<button class="wmd-button"[^>]*><svg/);
+      expect(html).toContain('data-icon="check"');
+      expect(html).toContain('button text');
+      expect(html).toContain('<span class="wmd-badge wmd-badge-primary"><svg');
+      expect(html).toContain('Currently shown in');
+      expect(html).not.toContain(':check: button text');
+      expect(html).not.toContain(':check: Currently shown in');
+    });
+
     it('should render no-dot button tokens', () => {
       const ast = parse('[Delete]{danger large disabled}');
       const html = renderToHTML(ast, { style: 'sketch' });

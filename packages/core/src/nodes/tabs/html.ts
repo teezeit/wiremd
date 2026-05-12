@@ -4,6 +4,7 @@ import {
   buildClasses,
   escapeHtml,
   renderChildrenList,
+  renderNode,
   sourceLine,
 } from '../../renderer/html-renderer.js';
 
@@ -15,6 +16,7 @@ export function renderTabsHTML(node: TabsNode, context: RenderContext): string {
   const tabs = (node.children || []) as Array<{
     children?: WiremdNode[];
     label?: string;
+    labelChildren?: WiremdNode[];
     active?: boolean;
   }>;
 
@@ -39,7 +41,10 @@ export function renderTabsHTML(node: TabsNode, context: RenderContext): string {
       const annotatedClass = renderedPanels[i].hasAnnotations
         ? ` ${prefix}tab-header-annotated`
         : '';
-      return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}${annotatedClass}" data-wmd-tab="${i}">${escapeHtml(tab.label || '')}</button>`;
+      const labelHTML = tab.labelChildren?.length
+        ? tab.labelChildren.map((child) => renderNode(child, context)).join('')
+        : escapeHtml(tab.label || '');
+      return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}${annotatedClass}" data-wmd-tab="${i}">${labelHTML}</button>`;
     })
     .join('');
 
