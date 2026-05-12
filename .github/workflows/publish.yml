@@ -31,6 +31,7 @@ jobs:
         with:
           node-version: 20.x
           registry-url: https://registry.npmjs.org
+          package-manager-cache: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -67,6 +68,6 @@ jobs:
 
       - name: Publish npm package
         working-directory: packages/core
-        run: |
-          echo "registry=https://registry.npmjs.org/" > ~/.npmrc
-          npm publish --access public --provenance
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
