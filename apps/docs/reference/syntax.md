@@ -233,6 +233,46 @@ For a simple switcher without panels, keep the buttons on one line and use `*` t
 
 ---
 
+## Accordion
+
+`::: accordion` creates collapsible sections. Child `::: item Label` containers become the accordion items:
+
+```markdown
+::: accordion
+
+::: item Getting Started {open}
+Content shown by default.
+:::
+
+::: item Advanced Usage
+Collapsed by default.
+:::
+
+:::
+```
+
+Use container modifiers to change behavior or appearance:
+
+```markdown
+::: accordion exclusive card
+
+::: item Billing
+...
+:::
+
+::: item Security
+...
+:::
+
+:::
+```
+
+- `exclusive`: only one item can be open at a time
+- `card`: adds card-style chrome around the accordion
+- `open` on an item: starts that item expanded
+
+---
+
 ## Containers
 
 ```markdown
@@ -605,6 +645,7 @@ All standard Markdown works: `# headings`, `**bold**`, `*italic*`, `` `code` ``,
 | Right-aligned action | `::: row {right}` |
 | Section header + right action | `::: columns-2` with `::: column {right}` |
 | `<Tabs>` | `::: tabs` with `::: tab Label` children |
+| `<Accordion>` / `<Details>` | `::: accordion` with `::: item Label` children |
 | Loading state | `> **Loading state:** ...` |
 | Empty state | `> **Empty state:** ...` |
 | Error state | `::: alert {error}` or `{error}` on input |

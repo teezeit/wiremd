@@ -17,10 +17,12 @@ export function renderRadioHTML(node: RadioNode, context: RenderContext): string
   const name = props.name ? ` name="${escapeHtml(props.name as string)}"` : '';
   const value = props.value ? ` value="${escapeHtml(props.value as string)}"` : '';
 
-  const labelHTML = escapeHtml(node.label);
-  const childrenHTML = node.children
-    ? node.children.map((child) => renderNode(child, context)).join('')
-    : '';
+  const inlineChildren = (node.children || []).filter((child) => child.type !== 'list');
+  const nestedChildren = (node.children || []).filter((child) => child.type === 'list');
+  const labelHTML = inlineChildren.length > 0
+    ? inlineChildren.map((child) => renderNode(child, context)).join('')
+    : escapeHtml(node.label);
+  const childrenHTML = nestedChildren.map((child) => renderNode(child, context)).join('');
 
   return `<label class="${classes}">
     <input type="radio"${checked}${disabled}${name}${value} />

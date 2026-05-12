@@ -76,6 +76,17 @@ describe('Parser', () => {
       });
     });
 
+    it('should parse icons inside button labels', () => {
+      const result = parse('[ :check: button text]');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        children: [
+          { type: 'icon', props: { name: 'check' } },
+          { type: 'text', content: ' button text' },
+        ],
+      });
+    });
+
     it('should parse a button with class attribute', () => {
       const result = parse('[Click Me]{.primary}');
       expect(result.children[0]).toMatchObject({
@@ -140,6 +151,21 @@ describe('Parser', () => {
         content: 'Active',
         props: {
           variant: 'success',
+        },
+      });
+    });
+
+    it('should parse icons inside badge labels', () => {
+      const result = parse('(( :check: Currently shown in)){primary}');
+      expect(result.children[0]).toMatchObject({
+        type: 'badge',
+        content: ':check: Currently shown in',
+        children: [
+          { type: 'icon', props: { name: 'check' } },
+          { type: 'text', content: ' Currently shown in' },
+        ],
+        props: {
+          variant: 'primary',
         },
       });
     });
