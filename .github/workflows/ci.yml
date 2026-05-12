@@ -73,9 +73,9 @@ jobs:
     - name: Run tests with coverage
       run: |
         pnpm --filter @eclectic-ai/wiremd build
-        pnpm --filter @eclectic-ai/wiremd test:coverage
-        pnpm --filter wiremd-editor test:coverage
-        pnpm --filter wiremd-figma-plugin test:coverage
+        pnpm --filter @eclectic-ai/wiremd test:coverage -- --reporter=default --reporter=junit --outputFile=junit.xml
+        pnpm --filter wiremd-editor test:coverage -- --reporter=default --reporter=junit --outputFile=junit.xml
+        pnpm --filter wiremd-figma-plugin test:coverage -- --reporter=default --reporter=junit --outputFile=junit.xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
@@ -84,6 +84,14 @@ jobs:
         files: ./packages/core/coverage/lcov.info,./apps/editor/coverage/lcov.info,./extensions/figma/coverage/lcov.info
         flags: unittests
         name: codecov-umbrella
+        fail_ci_if_error: false
+
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./packages/core/junit.xml,./apps/editor/junit.xml,./extensions/figma/junit.xml
         fail_ci_if_error: false
 
   lint-package:
