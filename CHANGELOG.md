@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Added `scripts/migrate-v0.4.py` — a migration script to convert wiremd files from pre-v0.4 syntax to current syntax in bulk. Covers all four v0.4.0 breaking changes: layout wrapper removal, `grid-N` → `columns-N`, `row` column headings → `:::columns-N`, semantic tokens (`{.danger}` → `{danger}`), and pills (`|text|` → `((text))`). Idempotent and fenced-code-block-aware.
+
+  ```bash
+  python3 scripts/migrate-v0.4.py              # all .md files under cwd
+  python3 scripts/migrate-v0.4.py src/         # specific directory
+  python3 scripts/migrate-v0.4.py page.md      # single file
+  ```
+
 ### Fixed
 - Buttons, checkboxes, inputs, and selects inside table cells now render as proper wiremd nodes instead of leaking literal syntax (e.g. `[Edit]`, `[ ]`, `[___]`) into the HTML output.
 
