@@ -15,7 +15,6 @@ wiremd converts Markdown with extended wireframing syntax into visual HTML mocku
 
 ```bash
 npm install -g @eclectic-ai/wiremd   # installs the 'wiremd' CLI
-# or: brew install teezeit/wiremd/wiremd
 ```
 
 ```bash
