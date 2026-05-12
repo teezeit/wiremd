@@ -8,7 +8,7 @@ How wiremd ships. Four artifacts ship together under a single version: the npm p
 |---|---|---|
 | `wiremd` npm package | `packages/core/` | npm registry |
 | VS Code extension | `extensions/vscode/` | VS Code Marketplace + GitHub Release `.vsix` |
-| Claude skill (wireframe) | `extensions/skills/wireframe/` | `/plugin marketplace add teezeit/wiremd` + GitHub Release zip |
+| Claude skill (wireframe) | `extensions/skills/wireframe/` | `npx skills add teezeit/wiremd/extensions/skills` + GitHub Release zip |
 | Standalone CLI bundle | built from `packages/core/src/cli/` | GitHub Release (`releases/wiremd.js`, also bundled into the Claude skill) |
 
 ## CI/CD pipelines
