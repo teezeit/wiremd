@@ -20,10 +20,10 @@ export default defineConfig({
       reporter: ['text', 'json', 'html', 'lcov'],
       thresholds: {
         global: {
-          branches: 65,
-          functions: 65,
-          lines: 70,
-          statements: 70,
+          branches: 78,
+          functions: 85,
+          lines: 82,
+          statements: 82,
         },
       },
     },
