@@ -9,7 +9,7 @@
 
 wiremd converts Markdown with extended wireframing syntax into visual HTML mockups. Write a screen description, Claude renders it. Or write the Markdown directly. Every wireframe is version-controlled, diff-able, and readable by any LLM — no image generation required.
 
-![wiremd web editor](https://teezeit.github.io/wiremd/assets/guides/guide-screenshot-webeditor.png)
+![wiremd web editor](https://raw.githubusercontent.com/teezeit/wiremd/main/apps/docs/assets/guides/guide-screenshot-webeditor.png)
 
 ## Getting started
 
