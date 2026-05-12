@@ -13853,8 +13853,10 @@ function renderRadioHTML(node2, context) {
   const disabled = props.disabled ? " disabled" : "";
   const name = props.name ? ` name="${escapeHtml(props.name)}"` : "";
   const value = props.value ? ` value="${escapeHtml(props.value)}"` : "";
-  const labelHTML = escapeHtml(node2.label);
-  const childrenHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : "";
+  const inlineChildren = (node2.children || []).filter((child) => child.type !== "list");
+  const nestedChildren = (node2.children || []).filter((child) => child.type === "list");
+  const labelHTML = inlineChildren.length > 0 ? inlineChildren.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.label);
+  const childrenHTML = nestedChildren.map((child) => renderNode(child, context)).join("");
   return `<label class="${classes}">
     <input type="radio"${checked}${disabled}${name}${value} />
     <span>${labelHTML}</span>
@@ -13876,23 +13878,27 @@ function renderRadioReact(node2, context, indent2 = 0) {
     attrs.push(`value="${escapeJSX(props.value)}"`);
   if (props.disabled)
     attrs.push("disabled");
+  const labelChildren = (node2.children || []).filter((child) => child.type !== "list");
+  const labelJSX = labelChildren.length > 0 ? labelChildren.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.label);
   return `${indentStr}<label ${classAttr}="${classes}">
 ${indentStr}  <input type="radio"${checked ? " defaultChecked" : ""} ${attrs.join(" ")} />
-${indentStr}  <span>${escapeJSX(node2.label)}</span>
+${indentStr}  <span>${labelJSX}</span>
 ${indentStr}</label>`;
 }
 
 // packages/core/src/nodes/radio/tailwind.ts
-function renderRadioTailwind(node2, _context) {
+function renderRadioTailwind(node2, context) {
   const props = node2.props;
   const classes = "flex items-center gap-2 cursor-pointer";
   const checked = node2.selected ? " checked" : "";
   const disabled = props.disabled ? " disabled" : "";
   const name = props.name ? ` name="${escapeHtml2(props.name)}"` : "";
   const value = props.value ? ` value="${escapeHtml2(props.value)}"` : "";
+  const labelChildren = (node2.children || []).filter((child) => child.type !== "list");
+  const labelHTML = labelChildren.length > 0 ? labelChildren.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.label);
   return `<label class="${classes}">
     <input type="radio" class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"${checked}${disabled}${name}${value} />
-    <span class="text-gray-900">${escapeHtml2(node2.label)}</span>
+    <span class="text-gray-900">${labelHTML}</span>
   </label>`;
 }
 
@@ -13994,7 +14000,8 @@ var radioGroup = {
 function renderBadgeHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, "badge", node2.props);
-  return `<span class="${classes}">${escapeHtml(node2.content)}</span>`;
+  const contentHTML = node2.children ? node2.children.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.content);
+  return `<span class="${classes}">${contentHTML}</span>`;
 }
 
 // packages/core/src/nodes/badge/react.ts
@@ -14003,11 +14010,12 @@ function renderBadgeReact(node2, context, indent2 = 0) {
   const { classPrefix: prefix } = context;
   const classes = buildClasses2(prefix, "badge", node2.props);
   const classAttr = context.useClassName ? "className" : "class";
-  return `${indentStr}<span ${classAttr}="${classes}">${escapeJSX(node2.content)}</span>`;
+  const contentJSX = node2.children ? node2.children.map((child) => renderNode2(child, context, 0)).join("") : escapeJSX(node2.content);
+  return `${indentStr}<span ${classAttr}="${classes}">${contentJSX}</span>`;
 }
 
 // packages/core/src/nodes/badge/tailwind.ts
-function renderBadgeTailwind(node2, _context) {
+function renderBadgeTailwind(node2, context) {
   const props = node2.props;
   const variant = props.variant;
   const nodeClasses = props.classes || [];
@@ -14023,7 +14031,8 @@ function renderBadgeTailwind(node2, _context) {
   } else {
     classes += " bg-gray-100 text-gray-800";
   }
-  return `<span class="${classes}">${escapeHtml2(node2.content)}</span>`;
+  const contentHTML = node2.children ? node2.children.map((child) => renderNode3(child, context)).join("") : escapeHtml2(node2.content);
+  return `<span class="${classes}">${contentHTML}</span>`;
 }
 
 // packages/core/src/nodes/badge/index.ts
@@ -14099,7 +14108,7 @@ function renderBreadcrumbsHTML(node2, context) {
   const items = node2.children || [];
   const crumbsHTML = items.map((crumb, i) => {
     const isLast = i === items.length - 1;
-    const label = escapeHtml(crumb.content || "");
+    const label = crumb.children?.length ? crumb.children.map((child) => renderNode(child, context)).join("") : escapeHtml(crumb.content || "");
     return isLast ? `<span class="${prefix}breadcrumb-item ${prefix}breadcrumb-current" aria-current="page">${label}</span>` : `<span class="${prefix}breadcrumb-item"><a href="#">${label}</a></span><span class="${prefix}breadcrumb-sep" aria-hidden="true">\u203A</span>`;
   }).join("");
   return `<nav class="${prefix}breadcrumbs"${sourceLine(node2)} aria-label="breadcrumb">${crumbsHTML}</nav>`;
@@ -14131,7 +14140,8 @@ function renderTabsHTML(node2, context) {
   const headers = tabs2.map((tab2, i) => {
     const activeClass = tab2.active ? ` ${prefix}active` : "";
     const annotatedClass = renderedPanels[i].hasAnnotations ? ` ${prefix}tab-header-annotated` : "";
-    return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}${annotatedClass}" data-wmd-tab="${i}">${escapeHtml(tab2.label || "")}</button>`;
+    const labelHTML = tab2.labelChildren?.length ? tab2.labelChildren.map((child) => renderNode(child, context)).join("") : escapeHtml(tab2.label || "");
+    return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}${annotatedClass}" data-wmd-tab="${i}">${labelHTML}</button>`;
   }).join("");
   const panels = renderedPanels.map((r) => r.html).join("\n  ");
   return `<div class="${classes}"${sourceLine(node2)} data-wmd-tabs>
@@ -14174,8 +14184,9 @@ function renderAccordionHTML(node2, context) {
   const renderedItems = items.map((item) => {
     const openAttr = item.expanded ? " open" : "";
     const bodyContent = renderChildrenList3(item.children || [], context);
+    const summaryHTML = item.summaryChildren?.length ? item.summaryChildren.map((child) => renderNode(child, context)).join("") : escapeHtml(item.summary);
     return `<details class="${prefix}accordion-item"${openAttr}>
-  <summary class="${prefix}accordion-summary">${item.summary}</summary>
+  <summary class="${prefix}accordion-summary">${summaryHTML}</summary>
   <div class="${prefix}accordion-body">
   ${bodyContent}
   </div>
@@ -14201,8 +14212,9 @@ function renderAccordionItemHTML(node2, context) {
   const { classPrefix: prefix } = context;
   const openAttr = node2.expanded ? " open" : "";
   const bodyContent = renderChildrenList3(node2.children || [], context);
+  const summaryHTML = node2.summaryChildren?.length ? node2.summaryChildren.map((child) => renderNode(child, context)).join("") : escapeHtml(node2.summary);
   return `<details class="${prefix}accordion-item"${openAttr}${sourceLine(node2)}>
-  <summary class="${prefix}accordion-summary">${node2.summary}</summary>
+  <summary class="${prefix}accordion-summary">${summaryHTML}</summary>
   <div class="${prefix}accordion-body">
   ${bodyContent}
   </div>
@@ -18847,9 +18859,12 @@ function transformNode(node2, ctx) {
         props: {}
       };
     case "link": {
-      const linkChildren = [];
-      for (const child of node2.children || []) {
-        pushTransformed(linkChildren, ctx.transformChild(child));
+      const label = extractTextContent(node2);
+      const linkChildren = inlineChildrenFromLabel(label) || [];
+      if (linkChildren.length === 0) {
+        for (const child of node2.children || []) {
+          pushTransformed(linkChildren, ctx.transformChild(child));
+        }
       }
       return {
         type: "link",
@@ -19227,9 +19242,11 @@ function transformContainer(node2, ctx) {
         contentChildren = contentChildren.slice(1);
       }
     }
+    const labelChildren = inlineChildrenFromLabel(label);
     return {
       type: "tab",
       label,
+      ...labelChildren ? { labelChildren } : {},
       active: isActive,
       props,
       children: ctx.transformChildren(contentChildren)
@@ -19271,9 +19288,11 @@ function transformContainer(node2, ctx) {
         contentChildren = contentChildren.slice(1);
       }
     }
+    const summaryChildren = inlineChildrenFromLabel(summary);
     return {
       type: "accordion-item",
       summary,
+      ...summaryChildren ? { summaryChildren } : {},
       expanded: isExpanded,
       props,
       children: ctx.transformChildren(contentChildren)
@@ -19295,12 +19314,16 @@ function transformInlineContainer(node2, _ctx) {
     return {
       type: "breadcrumbs",
       props,
-      children: crumbs.map((crumb, i) => ({
-        type: "breadcrumb-item",
-        content: crumb,
-        current: i === crumbs.length - 1,
-        props: {}
-      }))
+      children: crumbs.map((crumb, i) => {
+        const children2 = inlineChildrenFromLabel(crumb);
+        return {
+          type: "breadcrumb-item",
+          content: crumb,
+          ...children2 ? { children: children2 } : {},
+          current: i === crumbs.length - 1,
+          props: {}
+        };
+      })
     };
   }
   let brandEmitted = false;
@@ -19308,18 +19331,22 @@ function transformInlineContainer(node2, _ctx) {
     const trimmed = item.trim();
     const activeMatch = trimmed.match(/^\*\*?([^*]+)\*\*?$/);
     if (activeMatch) {
+      const labelChildren = inlineChildrenFromLabel(activeMatch[1]);
       children.push({
         type: "nav-item",
         content: activeMatch[1],
+        ...labelChildren ? { children: labelChildren } : {},
         props: { classes: ["active"] }
       });
       continue;
     }
     const linkMatch = trimmed.match(/^\[([^\]]+)\]\(([^)]+)\)(\*)?$/);
     if (linkMatch) {
+      const labelChildren = inlineChildrenFromLabel(linkMatch[1]);
       children.push({
         type: "nav-item",
         content: linkMatch[1],
+        ...labelChildren ? { children: labelChildren } : {},
         href: linkMatch[2],
         props: { variant: linkMatch[3] ? "primary" : void 0 }
       });
@@ -19327,13 +19354,9 @@ function transformInlineContainer(node2, _ctx) {
     }
     const buttonMatch = trimmed.match(/^\[([^\]]+)\](\*)?$/);
     if (buttonMatch) {
-      children.push({
-        type: "button",
-        content: buttonMatch[1],
-        props: {
-          variant: buttonMatch[2] ? "primary" : void 0
-        }
-      });
+      children.push(buttonNodeFromContent(buttonMatch[1], {
+        variant: buttonMatch[2] ? "primary" : void 0
+      }));
       continue;
     }
     const iconMatch = trimmed.match(/^:([a-z0-9-]+):$/);
@@ -19370,9 +19393,11 @@ function transformInlineContainer(node2, _ctx) {
         props: {}
       });
     } else {
+      const itemChildren = inlineChildrenFromLabel(trimmed);
       children.push({
         type: "nav-item",
         content: trimmed,
+        ...itemChildren ? { children: itemChildren } : {},
         props: {}
       });
     }
@@ -19451,10 +19476,11 @@ function tryParseButtonLinkSequence(children) {
     const attrStr = closeMatch && closeMatch[2] || "";
     const attrs = attrStr ? parseAttributes(attrStr) : {};
     return {
-      type: "button",
-      content: extractTextContent(linkNode),
-      href: linkNode.url || "#",
-      props: { ...attrs, variant: isPrimary ? "primary" : attrs.variant }
+      ...buttonNodeFromContent(extractTextContent(linkNode), {
+        ...attrs,
+        variant: isPrimary ? "primary" : attrs.variant
+      }),
+      href: linkNode.url || "#"
     };
   });
 }
@@ -19477,10 +19503,11 @@ function parseButtonLinkLines(serialized) {
       const [, text6, href, isPrimary, attrs] = match;
       const props = attrs ? parseAttributes(attrs) : {};
       buttons.push({
-        type: "button",
-        content: text6,
-        href,
-        props: { ...props, variant: isPrimary ? "primary" : props.variant }
+        ...buttonNodeFromContent(text6, {
+          ...props,
+          variant: isPrimary ? "primary" : props.variant
+        }),
+        href
       });
       remaining = remaining.slice(match[0].length);
     }
@@ -19530,12 +19557,45 @@ function switchNodeFromParts(text6, attrs) {
   const checked = Boolean(props.checked);
   delete props.switch;
   delete props.checked;
+  const children = inlineChildrenFromLabel(text6);
   return {
     type: "switch",
     label: text6.trim(),
+    ...children ? { children } : {},
     checked,
     props
   };
+}
+function parseIconInlineNodes(text6) {
+  const nodes = [];
+  const parts = text6.split(/:([a-z0-9-]+):/);
+  for (let i = 0; i < parts.length; i++) {
+    if (i % 2 === 0) {
+      if (parts[i])
+        nodes.push({ type: "text", content: parts[i], props: {} });
+    } else {
+      nodes.push({ type: "icon", props: { name: parts[i] } });
+    }
+  }
+  return nodes;
+}
+function inlineChildrenFromLabel(text6) {
+  if (!/:([a-z0-9-]+):/.test(text6))
+    return void 0;
+  const children = parseIconInlineNodes(text6.trim());
+  return children.length > 0 ? children : void 0;
+}
+function buttonNodeFromContent(text6, props) {
+  const children = inlineChildrenFromLabel(text6) || [];
+  if (children.length > 0) {
+    return {
+      type: "button",
+      content: text6,
+      children,
+      props
+    };
+  }
+  return { type: "button", content: text6, props };
 }
 function parseBracketToken(text6, isPrimary, attrs) {
   if (/^\s*$/.test(text6) || /^[xX]$/.test(text6)) {
@@ -19562,7 +19622,7 @@ function parseBracketToken(text6, isPrimary, attrs) {
   }
   if (isPrimary)
     props.variant = "primary";
-  return { type: "button", content: text6, props };
+  return buttonNodeFromContent(text6, props);
 }
 function parseBracketControlsFromLine(line) {
   const trimmed = line.trim();
@@ -19599,22 +19659,7 @@ function parseBracketControlsFromLine(line) {
     }
     if (isPrimary)
       props.variant = "primary";
-    if (/:([a-z0-9-]+):/.test(text6)) {
-      const iconPattern = /:([a-z0-9-]+):/g;
-      const parts = text6.split(iconPattern);
-      const children = [];
-      for (let i = 0; i < parts.length; i++) {
-        if (i % 2 === 0) {
-          if (parts[i].trim())
-            children.push({ type: "text", content: parts[i], props: {} });
-        } else {
-          children.push({ type: "icon", props: { name: parts[i] } });
-        }
-      }
-      controls.push({ type: "button", content: "", children, props });
-    } else {
-      controls.push({ type: "button", content: text6, props });
-    }
+    controls.push(buttonNodeFromContent(text6, props));
   }
   if (controls.length === 0)
     return null;
@@ -19654,14 +19699,10 @@ function transformParagraph(node2, ctx) {
       if (switchNode2)
         return switchNode2;
       const attrs = buttonMatch[3] ? parseAttributes(buttonMatch[3]) : {};
-      return {
-        type: "button",
-        content: buttonMatch[1],
-        props: {
-          ...attrs,
-          variant: buttonMatch[2] ? "primary" : void 0
-        }
-      };
+      return buttonNodeFromContent(buttonMatch[1], {
+        ...attrs,
+        variant: buttonMatch[2] ? "primary" : void 0
+      });
     }
     const processedChildren = [];
     let currentText = "";
@@ -19688,14 +19729,10 @@ function transformParagraph(node2, ctx) {
               continue;
             }
             const attrs = buttonMatch2[3] ? parseAttributes(buttonMatch2[3]) : {};
-            processedChildren.push({
-              type: "button",
-              content: buttonMatch2[1],
-              props: {
-                ...attrs,
-                variant: buttonMatch2[2] ? "primary" : void 0
-              }
-            });
+            processedChildren.push(buttonNodeFromContent(buttonMatch2[1], {
+              ...attrs,
+              variant: buttonMatch2[2] ? "primary" : void 0
+            }));
           } else if (part.match(/^:([a-z0-9-]+):$/)) {
             flushText();
             const iconMatch2 = part.match(/^:([a-z0-9-]+):$/);
@@ -19745,11 +19782,12 @@ function transformParagraph(node2, ctx) {
         });
       } else if (child.type === "link") {
         flushText();
+        const label = extractTextContent(child);
         processedChildren.push({
           type: "link",
           href: child.url || "#",
           title: child.title,
-          children: [{ type: "text", content: extractTextContent(child), props: {} }],
+          children: inlineChildrenFromLabel(label) || [{ type: "text", content: label, props: {} }],
           props: {}
         });
       } else {
@@ -19799,11 +19837,13 @@ function transformParagraph(node2, ctx) {
       label = attrMatch[1].trim();
       props = parseAttributes(attrMatch[2]);
     }
+    const children = inlineChildrenFromLabel(label);
     return {
       type: "checkbox",
       label,
       checked,
-      props
+      props,
+      ...children ? { children } : {}
     };
   }
   const standaloneSwitchMatch = content3.match(/^\[([^\]]+)\](?:\s*(\{[^}]*\}))$/);
@@ -19825,11 +19865,13 @@ function transformParagraph(node2, ctx) {
         label = attrMatch[1].trim();
         props = parseAttributes(attrMatch[2]);
       }
+      const children = inlineChildrenFromLabel(label);
       radioButtons.push({
         type: "radio",
         label,
         selected,
-        props
+        props,
+        ...children ? { children } : {}
       });
     }
     return {
@@ -20163,7 +20205,7 @@ function transformParagraph(node2, ctx) {
           continue;
         if (isPrimary)
           props.variant = "primary";
-        buttons.push({ type: "button", content: text6, props });
+        buttons.push(buttonNodeFromContent(text6, props));
       }
       if (buttons.length > 0) {
         if (labelLinesAreButtons) {
@@ -20292,23 +20334,7 @@ function transformParagraph(node2, ctx) {
         continue;
       if (isPrimary)
         props.variant = "primary";
-      if (/:([a-z0-9-]+):/.test(text6)) {
-        const iconPattern = /:([a-z0-9-]+):/g;
-        const parts = text6.split(iconPattern);
-        const children = [];
-        for (let i = 0; i < parts.length; i++) {
-          if (i % 2 === 0) {
-            if (parts[i].trim()) {
-              children.push({ type: "text", content: parts[i], props: {} });
-            }
-          } else {
-            children.push({ type: "icon", props: { name: parts[i] } });
-          }
-        }
-        elements.push({ type: "button", content: "", children, props });
-      } else {
-        elements.push({ type: "button", content: text6, props });
-      }
+      elements.push(buttonNodeFromContent(text6, props));
     }
     const buttons = elements.filter((e) => e.type === "button");
     const hasMixed = elements.some((e) => e.type !== "button");
@@ -20497,12 +20523,14 @@ function transformListItem(node2, ctx) {
       label = attrMatch[1].trim();
       props = parseAttributes(attrMatch[2]);
     }
+    const inlineChildren = inlineChildrenFromLabel(label) || [];
+    const children = [...inlineChildren, ...nestedChildren];
     return {
       type: "radio",
       label,
       selected: radioMatch[1] !== " ",
       props,
-      children: nestedChildren.length > 0 ? nestedChildren : void 0
+      children: children.length > 0 ? children : void 0
     };
   }
   if (/:([a-z0-9-]+):/.test(content3)) {
@@ -20715,9 +20743,12 @@ function parseBadgeToken(token) {
     props.variant = variantClass === "danger" ? "error" : variantClass;
     props.classes = props.classes.filter((className) => className !== variantClass);
   }
+  const content3 = (parenContent ?? pipeContent).trim();
+  const children = /:([a-z0-9-]+):/.test(content3) ? parseIconInlineNodes(content3) : [];
   return {
     type: "badge",
-    content: (parenContent ?? pipeContent).trim(),
+    content: content3,
+    ...children.length > 0 ? { children } : {},
     props
   };
 }
@@ -20732,15 +20763,7 @@ function parseInlineToNodes(content3) {
       nodes.push(badge2);
       continue;
     }
-    const iconSplit = part.split(/:([a-z0-9-]+):/);
-    for (let i = 0; i < iconSplit.length; i++) {
-      if (i % 2 === 0) {
-        if (iconSplit[i])
-          nodes.push({ type: "text", content: iconSplit[i], props: {} });
-      } else {
-        nodes.push({ type: "icon", props: { name: iconSplit[i] } });
-      }
-    }
+    nodes.push(...parseIconInlineNodes(part));
   }
   return nodes;
 }

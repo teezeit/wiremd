@@ -157,9 +157,12 @@ function transformNode(
       };
 
     case 'link': {
-      const linkChildren: WiremdNode[] = [];
-      for (const child of node.children || []) {
-        pushTransformed(linkChildren, ctx.transformChild(child));
+      const label = extractTextContent(node);
+      const linkChildren: WiremdNode[] = inlineChildrenFromLabel(label) || [];
+      if (linkChildren.length === 0) {
+        for (const child of node.children || []) {
+          pushTransformed(linkChildren, ctx.transformChild(child));
+        }
       }
       return {
         type: 'link',
@@ -618,12 +621,14 @@ function transformContainer(node: any, ctx: TransformContext): WiremdNode {
         firstChild?.type === 'paragraph' &&
         extractTextContent(firstChild).trim() === node.inline.trim()
       ) {
-        contentChildren = contentChildren.slice(1);
+      contentChildren = contentChildren.slice(1);
       }
     }
+    const labelChildren = inlineChildrenFromLabel(label);
     return {
       type: 'tab',
       label,
+      ...(labelChildren ? { labelChildren: labelChildren as any } : {}),
       active: isActive,
       props,
       children: ctx.transformChildren(contentChildren) as any,
@@ -673,12 +678,14 @@ function transformContainer(node: any, ctx: TransformContext): WiremdNode {
         firstChild?.type === 'paragraph' &&
         extractTextContent(firstChild).trim() === node.inline.trim()
       ) {
-        contentChildren = contentChildren.slice(1);
+      contentChildren = contentChildren.slice(1);
       }
     }
+    const summaryChildren = inlineChildrenFromLabel(summary);
     return {
       type: 'accordion-item',
       summary,
+      ...(summaryChildren ? { summaryChildren: summaryChildren as any } : {}),
       expanded: isExpanded,
       props,
       children: ctx.transformChildren(contentChildren) as any,
@@ -707,12 +714,16 @@ function transformInlineContainer(node: any, _ctx: TransformContext): WiremdNode
     return {
       type: 'breadcrumbs',
       props,
-      children: crumbs.map((crumb: string, i: number) => ({
-        type: 'breadcrumb-item',
-        content: crumb,
-        current: i === crumbs.length - 1,
-        props: {},
-      })) as any,
+      children: crumbs.map((crumb: string, i: number) => {
+        const children = inlineChildrenFromLabel(crumb);
+        return {
+          type: 'breadcrumb-item',
+          content: crumb,
+          ...(children ? { children: children as any } : {}),
+          current: i === crumbs.length - 1,
+          props: {},
+        };
+      }) as any,
     };
   }
 
@@ -724,9 +735,11 @@ function transformInlineContainer(node: any, _ctx: TransformContext): WiremdNode
     // Check if it's an active/emphasized item: *Text* or **Text**
     const activeMatch = trimmed.match(/^\*\*?([^*]+)\*\*?$/);
     if (activeMatch) {
+      const labelChildren = inlineChildrenFromLabel(activeMatch[1]);
       children.push({
         type: 'nav-item',
         content: activeMatch[1],
+        ...(labelChildren ? { children: labelChildren as any } : {}),
         props: { classes: ['active'] },
       });
       continue;
@@ -735,9 +748,11 @@ function transformInlineContainer(node: any, _ctx: TransformContext): WiremdNode
     // Check if it's a link nav-item: [Text](url) or [Text](url)*
     const linkMatch = trimmed.match(/^\[([^\]]+)\]\(([^)]+)\)(\*)?$/);
     if (linkMatch) {
+      const labelChildren = inlineChildrenFromLabel(linkMatch[1]);
       children.push({
         type: 'nav-item',
         content: linkMatch[1],
+        ...(labelChildren ? { children: labelChildren as any } : {}),
         href: linkMatch[2],
         props: { variant: linkMatch[3] ? 'primary' : undefined },
       });
@@ -747,13 +762,9 @@ function transformInlineContainer(node: any, _ctx: TransformContext): WiremdNode
     // Check if it's a button: [Text] or [Text]*
     const buttonMatch = trimmed.match(/^\[([^\]]+)\](\*)?$/);
     if (buttonMatch) {
-      children.push({
-        type: 'button',
-        content: buttonMatch[1],
-        props: {
-          variant: buttonMatch[2] ? 'primary' : undefined,
-        },
-      });
+      children.push(buttonNodeFromContent(buttonMatch[1], {
+        variant: buttonMatch[2] ? 'primary' : undefined,
+      }));
       continue;
     }
 
@@ -799,9 +810,11 @@ function transformInlineContainer(node: any, _ctx: TransformContext): WiremdNode
         props: {},
       });
     } else {
+      const itemChildren = inlineChildrenFromLabel(trimmed);
       children.push({
         type: 'nav-item',
         content: trimmed,
+        ...(itemChildren ? { children: itemChildren as any } : {}),
         props: {},
       });
     }
@@ -906,11 +919,12 @@ function tryParseButtonLinkSequence(children: any[]): WiremdNode[] | null {
       const attrStr = (closeMatch && closeMatch[2]) || '';
       const attrs = attrStr ? parseAttributes(attrStr) : {};
       return {
-        type: 'button' as const,
-        content: extractTextContent(linkNode),
+        ...buttonNodeFromContent(extractTextContent(linkNode), {
+          ...attrs,
+          variant: isPrimary ? 'primary' : (attrs as any).variant,
+        }),
         href: linkNode.url || '#',
-        props: { ...attrs, variant: isPrimary ? 'primary' : (attrs as any).variant },
-      };
+      } as Extract<WiremdNode, { type: 'button' }>;
     });
 }
 
@@ -936,11 +950,12 @@ function parseButtonLinkLines(serialized: string): WiremdNode | WiremdNode[] | n
       const [, text, href, isPrimary, attrs] = match;
       const props = attrs ? parseAttributes(attrs) : {};
       buttons.push({
-        type: 'button',
-        content: text,
+        ...buttonNodeFromContent(text, {
+          ...props,
+          variant: isPrimary ? 'primary' : (props as any).variant,
+        }),
         href,
-        props: { ...props, variant: isPrimary ? 'primary' : (props as any).variant },
-      });
+      } as Extract<WiremdNode, { type: 'button' }>);
       remaining = remaining.slice(match[0].length);
     }
 
@@ -988,12 +1003,49 @@ function switchNodeFromParts(text: string, attrs?: string): WiremdNode | null {
   const checked = Boolean(props.checked);
   delete props.switch;
   delete props.checked;
+  const children = inlineChildrenFromLabel(text);
   return {
     type: 'switch',
     label: text.trim(),
+    ...(children ? { children: children as any } : {}),
     checked,
     props,
   };
+}
+
+function parseIconInlineNodes(text: string): WiremdNode[] {
+  const nodes: WiremdNode[] = [];
+  const parts = text.split(/:([a-z0-9-]+):/);
+
+  for (let i = 0; i < parts.length; i++) {
+    if (i % 2 === 0) {
+      if (parts[i]) nodes.push({ type: 'text', content: parts[i], props: {} });
+    } else {
+      nodes.push({ type: 'icon', props: { name: parts[i] } });
+    }
+  }
+
+  return nodes;
+}
+
+function inlineChildrenFromLabel(text: string): WiremdNode[] | undefined {
+  if (!/:([a-z0-9-]+):/.test(text)) return undefined;
+  const children = parseIconInlineNodes(text.trim());
+  return children.length > 0 ? children : undefined;
+}
+
+function buttonNodeFromContent(text: string, props: any): WiremdNode {
+  const children = inlineChildrenFromLabel(text) || [];
+  if (children.length > 0) {
+    return {
+      type: 'button',
+      content: text,
+      children: children as any,
+      props,
+    };
+  }
+
+  return { type: 'button', content: text, props };
 }
 
 // Dispatch a single bracket token `[text]*{attrs}` to the appropriate node type.
@@ -1021,7 +1073,7 @@ function parseBracketToken(text: string, isPrimary: string | undefined, attrs: s
     return { type: 'input', props } as unknown as WiremdNode;
   }
   if (isPrimary) props.variant = 'primary';
-  return { type: 'button', content: text, props };
+  return buttonNodeFromContent(text, props);
 }
 
 function parseBracketControlsFromLine(line: string): WiremdNode[] | null {
@@ -1063,23 +1115,7 @@ function parseBracketControlsFromLine(line: string): WiremdNode[] | null {
 
     if (isPrimary) props.variant = 'primary';
 
-    if (/:([a-z0-9-]+):/.test(text)) {
-      const iconPattern = /:([a-z0-9-]+):/g;
-      const parts = text.split(iconPattern);
-      const children: WiremdNode[] = [];
-
-      for (let i = 0; i < parts.length; i++) {
-        if (i % 2 === 0) {
-          if (parts[i].trim()) children.push({ type: 'text', content: parts[i], props: {} });
-        } else {
-          children.push({ type: 'icon', props: { name: parts[i] } });
-        }
-      }
-
-      controls.push({ type: 'button', content: '', children: children as any, props });
-    } else {
-      controls.push({ type: 'button', content: text, props });
-    }
+    controls.push(buttonNodeFromContent(text, props));
   }
 
   if (controls.length === 0) return null;
@@ -1133,14 +1169,10 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
       if (switchNode) return switchNode;
 
       const attrs = buttonMatch[3] ? parseAttributes(buttonMatch[3]) : {};
-      return {
-        type: 'button',
-        content: buttonMatch[1],
-        props: {
-          ...attrs,
-          variant: buttonMatch[2] ? 'primary' : undefined,
-        },
-      };
+      return buttonNodeFromContent(buttonMatch[1], {
+        ...attrs,
+        variant: buttonMatch[2] ? 'primary' : undefined,
+      });
     }
 
     // For other rich content, check if we have mixed content with buttons
@@ -1175,14 +1207,10 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
               continue;
             }
             const attrs = buttonMatch[3] ? parseAttributes(buttonMatch[3]) : {};
-            processedChildren.push({
-              type: 'button',
-              content: buttonMatch[1],
-              props: {
-                ...attrs,
-                variant: buttonMatch[2] ? 'primary' : undefined,
-              },
-            });
+            processedChildren.push(buttonNodeFromContent(buttonMatch[1], {
+              ...attrs,
+              variant: buttonMatch[2] ? 'primary' : undefined,
+            }));
           } else if (part.match(/^:([a-z0-9-]+):$/)) {
             // It's an icon
             flushText();
@@ -1235,11 +1263,12 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
         });
       } else if (child.type === 'link') {
         flushText();
+        const label = extractTextContent(child);
         processedChildren.push({
           type: 'link',
           href: child.url || '#',
           title: child.title,
-          children: [{ type: 'text', content: extractTextContent(child), props: {} }],
+          children: (inlineChildrenFromLabel(label) || [{ type: 'text', content: label, props: {} }]) as any,
           props: {},
         });
       } else {
@@ -1310,11 +1339,13 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
       props = parseAttributes(attrMatch[2]);
     }
 
+    const children = inlineChildrenFromLabel(label);
     return {
       type: 'checkbox',
       label,
       checked,
       props,
+      ...(children ? { children: children as any } : {}),
     };
   }
 
@@ -1344,11 +1375,13 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
         props = parseAttributes(attrMatch[2]);
       }
 
+      const children = inlineChildrenFromLabel(label);
       radioButtons.push({
         type: 'radio',
         label,
         selected,
         props,
+        ...(children ? { children: children as any } : {}),
       });
     }
 
@@ -1734,7 +1767,7 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
         const props = parseAttributes(attrs || '');
         if (isInputTextMulti(text) || 'rows' in props) continue;
         if (isPrimary) props.variant = 'primary';
-        buttons.push({ type: 'button', content: text, props });
+        buttons.push(buttonNodeFromContent(text, props));
       }
 
       if (buttons.length > 0) {
@@ -1898,26 +1931,7 @@ function transformParagraph(node: any, ctx: TransformContext): WiremdNode | Wire
 
       if (isPrimary) props.variant = 'primary';
 
-      // Parse icons in button text
-      if (/:([a-z0-9-]+):/.test(text)) {
-        const iconPattern = /:([a-z0-9-]+):/g;
-        const parts = text.split(iconPattern);
-        const children: WiremdNode[] = [];
-
-        for (let i = 0; i < parts.length; i++) {
-          if (i % 2 === 0) {
-            if (parts[i].trim()) {
-              children.push({ type: 'text', content: parts[i], props: {} });
-            }
-          } else {
-            children.push({ type: 'icon', props: { name: parts[i] } });
-          }
-        }
-
-        elements.push({ type: 'button', content: '', children: children as any, props });
-      } else {
-        elements.push({ type: 'button', content: text, props });
-      }
+      elements.push(buttonNodeFromContent(text, props));
     }
 
     const buttons = elements.filter(e => e.type === 'button');
@@ -2171,12 +2185,14 @@ function transformListItem(node: any, ctx: TransformContext): WiremdNode {
       props = parseAttributes(attrMatch[2]);
     }
 
+    const inlineChildren = inlineChildrenFromLabel(label) || [];
+    const children = [...inlineChildren, ...nestedChildren];
     return {
       type: 'radio',
       label,
       selected: radioMatch[1] !== ' ',
       props,
-      children: nestedChildren.length > 0 ? (nestedChildren as any) : undefined,
+      children: children.length > 0 ? (children as any) : undefined,
     };
   }
 
@@ -2434,9 +2450,13 @@ function parseBadgeToken(token: string): WiremdNode | null {
     props.classes = props.classes.filter((className: string) => className !== variantClass);
   }
 
+  const content = (parenContent ?? pipeContent).trim();
+  const children = /:([a-z0-9-]+):/.test(content) ? parseIconInlineNodes(content) : [];
+
   return {
     type: 'badge',
-    content: (parenContent ?? pipeContent).trim(),
+    content,
+    ...(children.length > 0 ? { children: children as any } : {}),
     props,
   };
 }
@@ -2457,14 +2477,7 @@ function parseInlineToNodes(content: string): WiremdNode[] {
       nodes.push(badge);
       continue;
     }
-    const iconSplit = part.split(/:([a-z0-9-]+):/);
-    for (let i = 0; i < iconSplit.length; i++) {
-      if (i % 2 === 0) {
-        if (iconSplit[i]) nodes.push({ type: 'text', content: iconSplit[i], props: {} });
-      } else {
-        nodes.push({ type: 'icon', props: { name: iconSplit[i] } });
-      }
-    }
+    nodes.push(...parseIconInlineNodes(part));
   }
   return nodes;
 }
