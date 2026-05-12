@@ -3,6 +3,7 @@ import {
   type ReactRenderContext,
   buildClasses,
   escapeJSX,
+  renderNode,
   repeatString,
 } from '../../renderer/react-renderer.js';
 
@@ -17,5 +18,8 @@ export function renderBadgeReact(
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'badge', node.props);
   const classAttr = context.useClassName ? 'className' : 'class';
-  return `${indentStr}<span ${classAttr}="${classes}">${escapeJSX(node.content)}</span>`;
+  const contentJSX = node.children
+    ? node.children.map((child) => renderNode(child, context, 0)).join('')
+    : escapeJSX(node.content);
+  return `${indentStr}<span ${classAttr}="${classes}">${contentJSX}</span>`;
 }

@@ -2,6 +2,7 @@ import type { WiremdNode } from '../../types.js';
 import {
   type RenderContext,
   escapeHtml,
+  renderNode,
   sourceLine,
 } from '../../renderer/html-renderer.js';
 
@@ -9,11 +10,13 @@ type BreadcrumbsNode = Extract<WiremdNode, { type: 'breadcrumbs' }>;
 
 export function renderBreadcrumbsHTML(node: BreadcrumbsNode, context: RenderContext): string {
   const { classPrefix: prefix } = context;
-  const items = (node.children || []) as Array<{ content?: string }>;
+  const items = (node.children || []) as Array<{ content?: string; children?: WiremdNode[] }>;
   const crumbsHTML = items
     .map((crumb, i) => {
       const isLast = i === items.length - 1;
-      const label = escapeHtml(crumb.content || '');
+      const label = crumb.children?.length
+        ? crumb.children.map((child) => renderNode(child, context)).join('')
+        : escapeHtml(crumb.content || '');
       return isLast
         ? `<span class="${prefix}breadcrumb-item ${prefix}breadcrumb-current" aria-current="page">${label}</span>`
         : `<span class="${prefix}breadcrumb-item"><a href="#">${label}</a></span><span class="${prefix}breadcrumb-sep" aria-hidden="true">›</span>`;

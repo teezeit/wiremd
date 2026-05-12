@@ -1,9 +1,13 @@
 import type { WiremdNode } from '../../types.js';
-import { type TailwindRenderContext, escapeHtml } from '../../renderer/tailwind-renderer.js';
+import {
+  type TailwindRenderContext,
+  escapeHtml,
+  renderNode,
+} from '../../renderer/tailwind-renderer.js';
 
 type BadgeNode = Extract<WiremdNode, { type: 'badge' }>;
 
-export function renderBadgeTailwind(node: BadgeNode, _context: TailwindRenderContext): string {
+export function renderBadgeTailwind(node: BadgeNode, context: TailwindRenderContext): string {
   const props = node.props as Record<string, unknown>;
   const variant = props.variant as string | undefined;
   const nodeClasses = (props.classes as string[] | undefined) || [];
@@ -21,5 +25,8 @@ export function renderBadgeTailwind(node: BadgeNode, _context: TailwindRenderCon
     classes += ' bg-gray-100 text-gray-800';
   }
 
-  return `<span class="${classes}">${escapeHtml(node.content)}</span>`;
+  const contentHTML = node.children
+    ? node.children.map((child) => renderNode(child, context)).join('')
+    : escapeHtml(node.content);
+  return `<span class="${classes}">${contentHTML}</span>`;
 }

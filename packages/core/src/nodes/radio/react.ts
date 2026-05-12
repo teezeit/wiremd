@@ -3,6 +3,7 @@ import {
   type ReactRenderContext,
   buildClasses,
   escapeJSX,
+  renderNode,
   repeatString,
 } from '../../renderer/react-renderer.js';
 
@@ -24,9 +25,13 @@ export function renderRadioReact(
   if (props.name) attrs.push(`name="${escapeJSX(props.name as string)}"`);
   if (props.value) attrs.push(`value="${escapeJSX(props.value as string)}"`);
   if (props.disabled) attrs.push('disabled');
+  const labelChildren = (node.children || []).filter((child) => child.type !== 'list');
+  const labelJSX = labelChildren.length > 0
+    ? labelChildren.map((child) => renderNode(child, context, 0)).join('')
+    : escapeJSX(node.label);
 
   return `${indentStr}<label ${classAttr}="${classes}">
 ${indentStr}  <input type="radio"${checked ? ' defaultChecked' : ''} ${attrs.join(' ')} />
-${indentStr}  <span>${escapeJSX(node.label)}</span>
+${indentStr}  <span>${labelJSX}</span>
 ${indentStr}</label>`;
 }
