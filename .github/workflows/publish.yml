@@ -68,5 +68,5 @@ jobs:
       - name: Publish npm package
         working-directory: packages/core
         run: |
-          npm config delete //registry.npmjs.org/:_authToken 2>/dev/null || true
+          echo "registry=https://registry.npmjs.org/" > ~/.npmrc
           npm publish --access public --provenance
