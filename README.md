@@ -14,7 +14,8 @@ wiremd converts Markdown with extended wireframing syntax into visual HTML mocku
 ## Getting started
 
 ```bash
-npm install -g @eclectic-ai/wiremd
+npm install -g @eclectic-ai/wiremd   # installs the 'wiremd' CLI
+# or: brew install teezeit/wiremd/wiremd
 ```
 
 ```bash
@@ -22,6 +23,8 @@ wiremd login.md --style sketch --serve 3000
 ```
 
 Open `http://localhost:3000` — the preview live-reloads as you edit.
+
+![wiremd CLI serve mode](https://raw.githubusercontent.com/teezeit/wiremd/main/apps/docs/assets/guides/guide-serve-cli.png)
 
 > [!TIP]
 > Not sure where to start? The [interactive editor](https://tobiashoelzer.com/wiremd/editor/) runs in the browser — no install needed.
