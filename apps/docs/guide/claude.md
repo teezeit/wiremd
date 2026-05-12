@@ -10,12 +10,14 @@ Three modes — pick based on what you want to see:
 
 Run `/wireframe` and Claude will ask which mode you want before doing anything else.
 
-Install once to unlock Claude mode:
+Rendering requires CLI execution — wiremd works fully in **Claude Code** and **Claude Desktop Cowork**. Chat-only contexts can write wiremd Markdown but cannot render it.
 
+**Claude Code:**
+```bash
+npx skills add teezeit/wiremd/extensions/skills
 ```
-/plugin marketplace add teezeit/wiremd
-/plugin install wireframe@wiremd
-```
+
+**Claude Desktop Cowork:** download [wireframe-skill.zip](https://github.com/teezeit/wiremd/releases/latest/download/wireframe-skill.zip) → Settings → Plugins → + Add → Upload (`.zip`) (recommended), or Settings → Skills → + Add → Upload (`.zip`).
 
 ---
 
