@@ -34,6 +34,20 @@ describe('Tailwind Renderer', () => {
       expect(html.includes('bg-indigo-600') || html.includes('wmd-primary')).toBe(true);
     });
 
+    it('should render icons inside buttons and badges', () => {
+      const ast = parse('[ :check: button text]\n\n(( :check: Currently shown in)){primary}');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('<button class="px-4 py-2 rounded-md');
+      expect(html).toContain('<svg class="inline-block align-middle"');
+      expect(html).toContain('data-icon="check"');
+      expect(html).toContain('button text');
+      expect(html).toContain('<span class="inline-block px-2.5 py-0.5 rounded-full');
+      expect(html).toContain('Currently shown in');
+      expect(html).not.toContain(':check: button text');
+      expect(html).not.toContain(':check: Currently shown in');
+    });
+
     it('should render a danger button with .danger class', () => {
       const ast = parse('[Delete]{.danger}');
       const html = renderToTailwind(ast);

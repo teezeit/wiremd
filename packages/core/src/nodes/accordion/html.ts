@@ -2,6 +2,8 @@ import type { WiremdNode } from '../../types.js';
 import {
   type RenderContext,
   buildClasses,
+  escapeHtml,
+  renderNode,
   sourceLine,
   renderChildrenList,
 } from '../../renderer/html-renderer.js';
@@ -18,8 +20,11 @@ export function renderAccordionHTML(node: AccordionNode, context: RenderContext)
     .map((item) => {
       const openAttr = item.expanded ? ' open' : '';
       const bodyContent = renderChildrenList(item.children || [], context);
+      const summaryHTML = item.summaryChildren?.length
+        ? item.summaryChildren.map((child) => renderNode(child, context)).join('')
+        : escapeHtml(item.summary);
       return `<details class="${prefix}accordion-item"${openAttr}>
-  <summary class="${prefix}accordion-summary">${item.summary}</summary>
+  <summary class="${prefix}accordion-summary">${summaryHTML}</summary>
   <div class="${prefix}accordion-body">
   ${bodyContent}
   </div>
