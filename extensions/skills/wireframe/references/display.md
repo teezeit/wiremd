@@ -24,9 +24,7 @@ After rendering: show the HTML as an artifact in your panel AND share the file p
 
 **2. Multi-page — navigable without a server:**
 ```bash
-for f in wireframes/*.md; do
-  wiremd "$f" -o "${f%.md}.html" -s wireframe
-done
+wiremd wireframes/ -s wireframe
 # macOS: sed -i '' — Linux: sed -i
 sed -i '' 's|href="\./\([^"]*\)\.md"|href="./\1.html"|g' wireframes/*.html
 ```

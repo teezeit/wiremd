@@ -135,7 +135,7 @@ pnpm turbo run test
 pnpm turbo run build
 
 # npm
-pnpm --filter wiremd run build
+pnpm --filter @eclectic-ai/wiremd run build
 cd packages/core && npm publish --access public
 
 # VS Code Marketplace (requires VSCE_PAT exported in your shell)

@@ -151,7 +151,7 @@ When running `wiremd --serve`, clicking a button link navigates to and renders t
 [[ :logo: MyApp | [Home](./home.md) | [About](./about.md) | [Contact](./contact.md)* ]]
 ```
 
-The dev server (`--serve <port>`) redirects `/` to the entry file and renders any `.md` on demand — no build step needed between page navigations.
+The dev server (`--serve [port]`) defaults to port `3000`, tries the next ports if the default is busy, redirects `/` to the entry file, and renders any `.md` on demand — no build step needed between page navigations.
 
 ## Columns Pattern
 

@@ -11,19 +11,19 @@ All commands run from the repo root.
 pnpm turbo run test
 
 # Only the core library
-pnpm --filter wiremd run test
+pnpm --filter @eclectic-ai/wiremd run test
 
 # Watch mode (core)
-pnpm --filter wiremd run test:watch
+pnpm --filter @eclectic-ai/wiremd run test:watch
 
 # Coverage (core)
-pnpm --filter wiremd run test:coverage
+pnpm --filter @eclectic-ai/wiremd run test:coverage
 
 # Single test file (run from packages/core/)
-pnpm --filter wiremd run test -- tests/parser.test.ts
+pnpm --filter @eclectic-ai/wiremd run test -- tests/parser.test.ts
 
 # Single test by name
-pnpm --filter wiremd run test -- tests/parser.test.ts -t "Button"
+pnpm --filter @eclectic-ai/wiremd run test -- tests/parser.test.ts -t "Button"
 
 # Editor tests only
 pnpm --filter wiremd-editor run test
@@ -104,17 +104,28 @@ The `ci.yml` workflow runs on every push to `main` and every pull request. Jobs:
 | Job | Matrix | Runs |
 |---|---|---|
 | `test` | Node 20 + 22, Linux + macOS + Windows | `pnpm turbo run build`, `typecheck`, `lint`, `test` |
-| `coverage` | Node 20 / Linux | `pnpm --filter wiremd run test:coverage`, uploads to Codecov |
+| `coverage` | Node 20 / Linux | `pnpm --filter @eclectic-ai/wiremd run test:coverage`, uploads to Codecov |
 | `lint-package` | Node 20 / Linux | Builds the core, runs `npm pack` to verify the published package shape |
 | `test-editor` | Node 20 / Linux | `pnpm turbo run test --filter=wiremd-editor` |
 | `test-figma-plugin` | Node 20 / Linux | `pnpm turbo run test --filter=wiremd-figma-plugin` |
 
 A green PR means: every workspace's tests pass, the core compiles + lints cleanly on three OSes, and the published shape is intact.
 
+## Local pre-push hook
+
+`pnpm install` configures Git to use the repo's `.githooks/` directory. The pre-push hook runs:
+
+```bash
+pnpm --filter @eclectic-ai/wiremd build
+pnpm --filter @eclectic-ai/wiremd test:coverage
+```
+
+This catches fixture snapshot drift and core build failures before a branch is pushed. Run `pnpm run prepare` if hooks need to be re-enabled after cloning or changing Git config.
+
 ## Coverage
 
 ```bash
-pnpm --filter wiremd run test:coverage
+pnpm --filter @eclectic-ai/wiremd run test:coverage
 ```
 
 Coverage targets (current goals, not enforced):
@@ -175,13 +186,13 @@ vi.mock('http', () => ({ createServer: vi.fn() }));
 ### Run a single test by name
 
 ```bash
-pnpm --filter wiremd run test -- -t "should render sketch style"
+pnpm --filter @eclectic-ai/wiremd run test -- -t "should render sketch style"
 ```
 
 ### Verbose reporter
 
 ```bash
-pnpm --filter wiremd run test -- --reporter=verbose
+pnpm --filter @eclectic-ai/wiremd run test -- --reporter=verbose
 ```
 
 ### Debug under VS Code
@@ -194,7 +205,7 @@ pnpm --filter wiremd run test -- --reporter=verbose
   "request": "launch",
   "name": "Debug wiremd tests",
   "runtimeExecutable": "pnpm",
-  "runtimeArgs": ["--filter", "wiremd", "run", "test", "--", "--no-coverage"],
+  "runtimeArgs": ["--filter", "@eclectic-ai/wiremd", "run", "test", "--", "--no-coverage"],
   "console": "integratedTerminal"
 }
 ```
@@ -204,5 +215,5 @@ pnpm --filter wiremd run test -- --reporter=verbose
 Vitest reports per-test timings. Tests over a second or two should either be optimized or moved to `integration.test.ts` so they can be filtered out with `--exclude`.
 
 ```bash
-pnpm --filter wiremd run test -- --reporter=verbose
+pnpm --filter @eclectic-ai/wiremd run test -- --reporter=verbose
 ```

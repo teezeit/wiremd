@@ -4,15 +4,18 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { writeFileSync, unlinkSync, existsSync, mkdirSync, rmSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
-import { resolve } from 'path';
+import { join, resolve } from 'path';
 import {
   parseArgs,
   showHelp,
   showVersion,
   checkFileSize,
   generateOutput,
+  listMarkdownPages,
+  outputPathForMarkdown,
+  generateDirectoryOutputs,
   type CLIOptions,
 } from '../src/cli/index.js';
 
@@ -71,6 +74,12 @@ describe('CLI Unit Tests', () => {
     it('should parse serve option', () => {
       const result = parseArgs(['test.md', '--serve', '3000']);
       expect(result?.serve).toBe(3000);
+    });
+
+    it('should default serve option to port 3000 when no port is provided', () => {
+      const result = parseArgs(['test.md', '--serve', '--watch']);
+      expect(result?.serve).toBe(3000);
+      expect(result?.watch).toBe(true);
     });
 
     it('should parse watch-pattern option', () => {
@@ -234,6 +243,14 @@ describe('CLI Unit Tests', () => {
       expect(output).toContain('OPTIONS:');
       expect(output).toContain('EXAMPLES:');
       expect(output).toContain('STYLES:');
+    });
+
+    it('should document directory input support', () => {
+      showHelp();
+      const output = consoleLogSpy.mock.calls[0][0];
+
+      expect(output).toContain('wiremd <input.md|dir>');
+      expect(output).toContain('wiremd wireframes/');
     });
 
     it('should list all available options', () => {
@@ -472,6 +489,80 @@ describe('CLI Unit Tests', () => {
 
       // Should not throw - parser handles malformed input
       expect(() => generateOutput(options)).not.toThrow();
+    });
+  });
+
+  describe('directory rendering', () => {
+    const TEST_DIR = resolve(tmpdir(), 'wiremd-test-temp-cli-unit-directory');
+
+    beforeEach(() => {
+      rmSync(TEST_DIR, { recursive: true, force: true });
+      mkdirSync(join(TEST_DIR, 'nested'), { recursive: true });
+      mkdirSync(join(TEST_DIR, 'node_modules'), { recursive: true });
+      mkdirSync(join(TEST_DIR, '.cache'), { recursive: true });
+
+      writeFileSync(join(TEST_DIR, 'index.md'), '# Home\n\n[Start]', 'utf-8');
+      writeFileSync(join(TEST_DIR, 'about.md'), '# About\n\nA page.', 'utf-8');
+      writeFileSync(join(TEST_DIR, '_nav.md'), '[Home](./index.md)', 'utf-8');
+      writeFileSync(join(TEST_DIR, 'nested', 'detail.md'), '# Detail\n\nNested page.', 'utf-8');
+      writeFileSync(join(TEST_DIR, 'node_modules', 'ignored.md'), '# Ignored', 'utf-8');
+      writeFileSync(join(TEST_DIR, '.cache', 'ignored.md'), '# Ignored', 'utf-8');
+    });
+
+    afterEach(() => {
+      rmSync(TEST_DIR, { recursive: true, force: true });
+    });
+
+    const relativePosixPath = (filePath: string) => filePath.replace(TEST_DIR, '').replace(/\\/g, '/');
+
+    it('lists renderable markdown pages recursively and skips partials and ignored folders', () => {
+      const pages = listMarkdownPages(TEST_DIR).map(relativePosixPath);
+
+      expect(pages).toEqual([
+        '/about.md',
+        '/index.md',
+        '/nested/detail.md',
+      ]);
+    });
+
+    it('derives output paths from markdown paths and format', () => {
+      expect(outputPathForMarkdown(join(TEST_DIR, 'index.md'))).toBe(join(TEST_DIR, 'index.html'));
+      expect(outputPathForMarkdown(join(TEST_DIR, 'index.md'), 'json')).toBe(join(TEST_DIR, 'index.json'));
+    });
+
+    it('generates adjacent HTML files for a directory input', () => {
+      const outputs = generateDirectoryOutputs({
+        input: TEST_DIR,
+        format: 'html',
+        style: 'sketch',
+        pretty: true,
+      });
+
+      expect(outputs.map((output) => relativePosixPath(output.output))).toEqual([
+        '/about.html',
+        '/index.html',
+        '/nested/detail.html',
+      ]);
+      expect(readFileSync(join(TEST_DIR, 'index.html'), 'utf-8')).toContain('Home');
+      expect(readFileSync(join(TEST_DIR, 'nested', 'detail.html'), 'utf-8')).toContain('Detail');
+      expect(existsSync(join(TEST_DIR, '_nav.html'))).toBe(false);
+      expect(existsSync(join(TEST_DIR, 'node_modules', 'ignored.html'))).toBe(false);
+    });
+
+    it('generates adjacent JSON files for a directory input', () => {
+      const outputs = generateDirectoryOutputs({
+        input: TEST_DIR,
+        format: 'json',
+        pretty: true,
+      });
+
+      expect(outputs.map((output) => relativePosixPath(output.output))).toEqual([
+        '/about.json',
+        '/index.json',
+        '/nested/detail.json',
+      ]);
+      expect(() => JSON.parse(readFileSync(join(TEST_DIR, 'index.json'), 'utf-8'))).not.toThrow();
+      expect(existsSync(join(TEST_DIR, '_nav.json'))).toBe(false);
     });
   });
 

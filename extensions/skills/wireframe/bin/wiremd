@@ -126,11 +126,16 @@ var require_extend = __commonJS({
 var cli_exports = {};
 __export(cli_exports, {
   checkFileSize: () => checkFileSize,
+  generateDirectoryOutputs: () => generateDirectoryOutputs,
   generateOutput: () => generateOutput,
+  listMarkdownPages: () => listMarkdownPages,
   main: () => main,
+  matchesWatchPattern: () => matchesWatchPattern,
+  outputPathForMarkdown: () => outputPathForMarkdown,
   parseArgs: () => parseArgs,
   showHelp: () => showHelp,
-  showVersion: () => showVersion
+  showVersion: () => showVersion,
+  watchPathsForPattern: () => watchPathsForPattern
 });
 module.exports = __toCommonJS(cli_exports);
 var import_fs5 = require("fs");
@@ -12602,316 +12607,316 @@ var image2 = {
   render: { html: renderImageHTML, react: renderImageReact, tailwind: renderImageTailwind }
 };
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/activity.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/activity.svg
 var activity_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-activity"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12h4l3 8l4 -16l3 8h4" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/alert-circle.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/alert-circle.svg
 var alert_circle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-circle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />\n  <path d="M12 8v4" />\n  <path d="M12 16h.01" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/alert-triangle.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/alert-triangle.svg
 var alert_triangle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 9v4" />\n  <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />\n  <path d="M12 16h.01" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-down.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-down.svg
 var arrow_down_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-down"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 5l0 14" />\n  <path d="M18 13l-6 6" />\n  <path d="M6 13l6 6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-left.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-left.svg
 var arrow_left_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l14 0" />\n  <path d="M5 12l6 6" />\n  <path d="M5 12l6 -6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-right.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-right.svg
 var arrow_right_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l14 0" />\n  <path d="M13 18l6 -6" />\n  <path d="M13 6l6 6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-up.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/arrow-up.svg
 var arrow_up_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-up"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 5l0 14" />\n  <path d="M18 11l-6 -6" />\n  <path d="M6 11l6 -6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/bell.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/bell.svg
 var bell_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-bell"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />\n  <path d="M9 17v1a3 3 0 0 0 6 0v-1" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/bookmark.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/bookmark.svg
 var bookmark_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-bookmark"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-facebook.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-facebook.svg
 var brand_facebook_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-facebook"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-github.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-github.svg
 var brand_github_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-instagram.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-instagram.svg
 var brand_instagram_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-instagram"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4l0 -8" />\n  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />\n  <path d="M16.5 7.5v.01" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-linkedin.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-linkedin.svg
 var brand_linkedin_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-linkedin"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M8 11v5" />\n  <path d="M8 8v.01" />\n  <path d="M12 16v-5" />\n  <path d="M16 16v-3a2 2 0 1 0 -4 0" />\n  <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-x.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-x.svg
 var brand_x_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-x"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 4l11.733 16h4.267l-11.733 -16l-4.267 0" />\n  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-youtube.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/brand-youtube.svg
 var brand_youtube_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-youtube"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8" />\n  <path d="M10 9l5 3l-5 3l0 -6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/briefcase.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/briefcase.svg
 var briefcase_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-briefcase"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -9" />\n  <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />\n  <path d="M12 12l0 .01" />\n  <path d="M3 13a20 20 0 0 0 18 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/bulb.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/bulb.svg
 var bulb_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-bulb"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />\n  <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />\n  <path d="M9.7 17l4.6 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/building.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/building.svg
 var building_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-building"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 21l18 0" />\n  <path d="M9 8l1 0" />\n  <path d="M9 12l1 0" />\n  <path d="M9 16l1 0" />\n  <path d="M14 8l1 0" />\n  <path d="M14 12l1 0" />\n  <path d="M14 16l1 0" />\n  <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/calendar.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/calendar.svg
 var calendar_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" />\n  <path d="M16 3v4" />\n  <path d="M8 3v4" />\n  <path d="M4 11h16" />\n  <path d="M11 15h1" />\n  <path d="M12 15v3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/cash.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/cash.svg
 var cash_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-cash"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 15h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v3" />\n  <path d="M7 10a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -8" />\n  <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chart-bar.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chart-bar.svg
 var chart_bar_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />\n  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />\n  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />\n  <path d="M4 20h14" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chart-line.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chart-line.svg
 var chart_line_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-line"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 19l16 0" />\n  <path d="M4 15l4 -6l4 2l4 -5l4 4" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chart-pie.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chart-pie.svg
 var chart_pie_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-pie"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10 3.2a9 9 0 1 0 10.8 10.8a1 1 0 0 0 -1 -1h-6.8a2 2 0 0 1 -2 -2v-7a.9 .9 0 0 0 -1 -.8" />\n  <path d="M15 3.5a9 9 0 0 1 5.5 5.5h-4.5a1 1 0 0 1 -1 -1v-4.5" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/check.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/check.svg
 var check_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-check"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l5 5l10 -10" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-down.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-down.svg
 var chevron_down_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-down"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 9l6 6l6 -6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-left.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-left.svg
 var chevron_left_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M15 6l-6 6l6 6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-right.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-right.svg
 var chevron_right_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 6l6 6l-6 6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-up.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/chevron-up.svg
 var chevron_up_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-up"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 15l6 -6l6 6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/circle.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/circle.svg
 var circle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-circle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/circle-check.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/circle-check.svg
 var circle_check_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />\n  <path d="M9 12l2 2l4 -4" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/clipboard-list.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/clipboard-list.svg
 var clipboard_list_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-list"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />\n  <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />\n  <path d="M9 12l.01 0" />\n  <path d="M13 12l2 0" />\n  <path d="M9 16l.01 0" />\n  <path d="M13 16l2 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/clock.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/clock.svg
 var clock_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-clock"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />\n  <path d="M12 7v5l3 3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/cloud.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/cloud.svg
 var cloud_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-cloud"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6.657 18c-2.572 0 -4.657 -2.007 -4.657 -4.483c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486c0 1.927 -1.551 3.487 -3.465 3.487h-11.878" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/code.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/code.svg
 var code_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-code"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 8l-4 4l4 4" />\n  <path d="M17 8l4 4l-4 4" />\n  <path d="M14 4l-4 16" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/coin.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/coin.svg
 var coin_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-coin"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />\n  <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" />\n  <path d="M12 7v10" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/copy.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/copy.svg
 var copy_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-copy"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667l0 -8.666" />\n  <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/credit-card.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/credit-card.svg
 var credit_card_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-credit-card"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -8" />\n  <path d="M3 10l18 0" />\n  <path d="M7 15l.01 0" />\n  <path d="M11 15l2 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/currency-dollar.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/currency-dollar.svg
 var currency_dollar_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-currency-dollar"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />\n  <path d="M12 3v3m0 12v3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/currency-euro.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/currency-euro.svg
 var currency_euro_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-currency-euro"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M17.2 7a6 7 0 1 0 0 10" />\n  <path d="M13 10h-8m0 4h8" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/currency-pound.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/currency-pound.svg
 var currency_pound_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-currency-pound"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M17 18.5a6 6 0 0 1 -5 0a6 6 0 0 0 -5 .5a3 3 0 0 0 2 -2.5v-7.5a4 4 0 0 1 7.45 -2m-2.55 6h-7" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/database.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/database.svg
 var database_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-database"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />\n  <path d="M4 6v6a8 3 0 0 0 16 0v-6" />\n  <path d="M4 12v6a8 3 0 0 0 16 0v-6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/device-desktop.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/device-desktop.svg
 var device_desktop_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-device-desktop"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10" />\n  <path d="M7 20h10" />\n  <path d="M9 16v4" />\n  <path d="M15 16v4" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/device-mobile.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/device-mobile.svg
 var device_mobile_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-device-mobile"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14" />\n  <path d="M11 4h2" />\n  <path d="M12 17v.01" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/diamond.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/diamond.svg
 var diamond_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-diamond"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 5h12l3 5l-8.5 9.5a.7 .7 0 0 1 -1 0l-8.5 -9.5l3 -5" />\n  <path d="M10 12l-2 -2.2l.6 -1" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/dots.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/dots.svg
 var dots_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-dots"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n  <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n  <path d="M18 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/download.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/download.svg
 var download_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-download"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />\n  <path d="M7 11l5 5l5 -5" />\n  <path d="M12 4l0 12" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/edit.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/edit.svg
 var edit_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-edit"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />\n  <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415" />\n  <path d="M16 5l3 3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/external-link.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/external-link.svg
 var external_link_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-external-link"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />\n  <path d="M11 13l9 -9" />\n  <path d="M15 4h5v5" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/eye.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/eye.svg
 var eye_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />\n  <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/eye-off.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/eye-off.svg
 var eye_off_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />\n  <path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" />\n  <path d="M3 3l18 18" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/file.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/file.svg
 var file_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-file"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M14 3v4a1 1 0 0 0 1 1h4" />\n  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/file-text.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/file-text.svg
 var file_text_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-file-text"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M14 3v4a1 1 0 0 0 1 1h4" />\n  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />\n  <path d="M9 9l1 0" />\n  <path d="M9 13l6 0" />\n  <path d="M9 17l6 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/file-type-pdf.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/file-type-pdf.svg
 var file_type_pdf_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-file-type-pdf"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M14 3v4a1 1 0 0 0 1 1h4" />\n  <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />\n  <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" />\n  <path d="M17 18h2" />\n  <path d="M20 15h-3v6" />\n  <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/filter.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/filter.svg
 var filter_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-filter"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/flag.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/flag.svg
 var flag_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-flag"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9" />\n  <path d="M5 21v-7" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/folder.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/folder.svg
 var folder_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-folder"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/gift.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/gift.svg
 var gift_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-gift"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 9a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1l0 -2" />\n  <path d="M12 8l0 13" />\n  <path d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7" />\n  <path d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/heart.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/heart.svg
 var heart_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-heart"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/home.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/home.svg
 var home_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-home"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l-2 0l9 -9l9 9l-2 0" />\n  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />\n  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/info-circle.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/info-circle.svg
 var info_circle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-info-circle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />\n  <path d="M12 9h.01" />\n  <path d="M11 12h1v4h1" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/key.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/key.svg
 var key_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-key"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0" />\n  <path d="M15 9h.01" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/layout-dashboard.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/layout-dashboard.svg
 var layout_dashboard_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />\n  <path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />\n  <path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />\n  <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/link.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/link.svg
 var link_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-link"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 15l6 -6" />\n  <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />\n  <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/lock.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/lock.svg
 var lock_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-lock"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />\n  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />\n  <path d="M8 11v-4a4 4 0 1 1 8 0v4" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/lock-open.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/lock-open.svg
 var lock_open_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -6" />\n  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n  <path d="M8 11v-5a4 4 0 0 1 8 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/login.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/login.svg
 var login_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-login"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M15 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />\n  <path d="M21 12h-13l3 -3" />\n  <path d="M11 15l-3 -3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/logout.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/logout.svg
 var logout_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />\n  <path d="M9 12h12l-3 -3" />\n  <path d="M18 15l3 -3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/mail.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/mail.svg
 var mail_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" />\n  <path d="M3 7l9 6l9 -6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/map.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/map.svg
 var map_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-map"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />\n  <path d="M9 4v13" />\n  <path d="M15 7v13" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/map-pin.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/map-pin.svg
 var map_pin_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />\n  <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/menu-2.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/menu-2.svg
 var menu_2_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-menu-2"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 6l16 0" />\n  <path d="M4 12l16 0" />\n  <path d="M4 18l16 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/message-circle.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/message-circle.svg
 var message_circle_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-message-circle"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/microphone.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/microphone.svg
 var microphone_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-microphone"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M9 5a3 3 0 0 1 3 -3a3 3 0 0 1 3 3v5a3 3 0 0 1 -3 3a3 3 0 0 1 -3 -3l0 -5" />\n  <path d="M5 10a7 7 0 0 0 14 0" />\n  <path d="M8 21l8 0" />\n  <path d="M12 17l0 4" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/minus.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/minus.svg
 var minus_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 12l14 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/package.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/package.svg
 var package_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-package"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />\n  <path d="M12 12l8 -4.5" />\n  <path d="M12 12l0 9" />\n  <path d="M12 12l-8 -4.5" />\n  <path d="M16 5.25l-8 4.5" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/phone.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/phone.svg
 var phone_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-phone"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/photo.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/photo.svg
 var photo_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-photo"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M15 8h.01" />\n  <path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12" />\n  <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" />\n  <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/player-pause.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/player-pause.svg
 var player_pause_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-player-pause"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6 6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -12" />\n  <path d="M14 6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -12" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/player-play.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/player-play.svg
 var player_play_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-player-play"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M7 4v16l13 -8l-13 -8" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/player-stop.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/player-stop.svg
 var player_stop_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-player-stop"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 7a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -10" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/plus.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/plus.svg
 var plus_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 5l0 14" />\n  <path d="M5 12l14 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/refresh.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/refresh.svg
 var refresh_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-refresh"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />\n  <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/rocket.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/rocket.svg
 var rocket_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-rocket"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3" />\n  <path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3" />\n  <path d="M14 9a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/search.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/search.svg
 var search_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-search"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />\n  <path d="M21 21l-6 -6" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/send.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/send.svg
 var send_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-send"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10 14l11 -11" />\n  <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/server.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/server.svg
 var server_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-server"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 7a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3" />\n  <path d="M3 15a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -2" />\n  <path d="M7 8l0 .01" />\n  <path d="M7 16l0 .01" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/settings.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/settings.svg
 var settings_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-settings"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />\n  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/shield.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/shield.svg
 var shield_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-shield"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/shopping-cart.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/shopping-cart.svg
 var shopping_cart_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M15 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M17 17h-11v-14h-2" />\n  <path d="M6 5l14 1l-1 7h-13" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/sort-ascending.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/sort-ascending.svg
 var sort_ascending_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-sort-ascending"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 6l7 0" />\n  <path d="M4 12l7 0" />\n  <path d="M4 18l9 0" />\n  <path d="M15 9l3 -3l3 3" />\n  <path d="M18 6l0 12" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/sort-descending.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/sort-descending.svg
 var sort_descending_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-sort-descending"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 6l9 0" />\n  <path d="M4 12l7 0" />\n  <path d="M4 18l7 0" />\n  <path d="M15 15l3 3l3 -3" />\n  <path d="M18 6l0 12" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/star.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/star.svg
 var star_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-star"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/tag.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/tag.svg
 var tag_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-tag"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M6.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />\n  <path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/trash.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/trash.svg
 var trash_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 7l16 0" />\n  <path d="M10 11l0 6" />\n  <path d="M14 11l0 6" />\n  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />\n  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/trophy.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/trophy.svg
 var trophy_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-trophy"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M8 21l8 0" />\n  <path d="M12 17l0 4" />\n  <path d="M7 4l10 0" />\n  <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />\n  <path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/truck.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/truck.svg
 var truck_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-truck"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />\n  <path d="M5 17h-2v-11a1 1 0 0 1 1 -1h9v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/upload.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/upload.svg
 var upload_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-upload"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />\n  <path d="M7 9l5 -5l5 5" />\n  <path d="M12 4l0 12" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/user.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/user.svg
 var user_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-user"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />\n  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/users.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/users.svg
 var users_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-users"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />\n  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />\n  <path d="M16 3.13a4 4 0 0 1 0 7.75" />\n  <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/video.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/video.svg
 var video_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-video"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4" />\n  <path d="M3 8a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -8" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/wallet.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/wallet.svg
 var wallet_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-wallet"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12" />\n  <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/wifi.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/wifi.svg
 var wifi_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-wifi"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M12 18l.01 0" />\n  <path d="M9.172 15.172a4 4 0 0 1 5.656 0" />\n  <path d="M6.343 12.343a8 8 0 0 1 11.314 0" />\n  <path d="M3.515 9.515c4.686 -4.687 12.284 -4.687 17 0" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/world.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/world.svg
 var world_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-world"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />\n  <path d="M3.6 9h16.8" />\n  <path d="M3.6 15h16.8" />\n  <path d="M11.5 3a17 17 0 0 0 0 18" />\n  <path d="M12.5 3a17 17 0 0 1 0 18" />\n</svg>';
 
-// svg-raw:/home/runner/work/wiremd/wiremd/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/x.svg
+// svg-raw:/Users/tobiashoelzer/.supacode/repos/wiremd/bug-issue-135-render-icons-inbuttons-pills/node_modules/.pnpm/@tabler+icons@3.41.1/node_modules/@tabler/icons/icons/outline/x.svg
 var x_default = '<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  height="24"\n  viewBox="0 0 24 24"\n  fill="none"\n  stroke="currentColor"\n  stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round"\n  class="icon icon-tabler icons-tabler-outline icon-tabler-x"\n>\n  <path stroke="none" d="M0 0h24v24H0z" fill="none" />\n  <path d="M18 6l-12 12" />\n  <path d="M6 6l12 12" />\n</svg>';
 
 // packages/core/src/nodes/icon/_iconmap.ts
@@ -22037,7 +22042,9 @@ a:hover{background:#f0f0f0}
 </head><body><h1>${dirName}/</h1><ul>${inner}</ul></body></html>`;
 }
 function startServer(options) {
-  const { port, outputPath, renderFile, inputFile } = options;
+  const { outputPath, renderFile, inputFile } = options;
+  let port = options.port;
+  let portRetries = 0;
   const rootDir = options.rootDir || (outputPath ? (0, import_path2.dirname)(outputPath) : process.cwd());
   const injectScript = (html2) => {
     const script = liveReloadScript.replace("__PORT__", String(port));
@@ -22137,6 +22144,27 @@ Sec-WebSocket-Accept: ${hash}\r
         wsClients.delete(socket);
       });
     }
+  });
+  server.on("error", (error) => {
+    if (error.code === "EADDRINUSE") {
+      if (options.autoIncrementPort) {
+        const maxPortRetries = options.maxPortRetries ?? 10;
+        if (portRetries >= maxPortRetries) {
+          console.error(`Error: Ports ${options.port}-${port} are already in use. Pass a different port with --serve <port>.`);
+          process.exit(1);
+        }
+        const nextPort = port + 1;
+        portRetries += 1;
+        console.log(`Port ${port} is already in use, trying ${nextPort}...`);
+        port = nextPort;
+        server.listen(port);
+        return;
+      }
+      console.error(`Error: Port ${port} is already in use. Pass a different port with --serve <port>.`);
+    } else {
+      console.error(`Error starting dev server: ${error.message}`);
+    }
+    process.exit(1);
   });
   server.listen(port, () => {
     console.log(`\u{1F680} Dev server running at http://localhost:${port}`);
@@ -24361,14 +24389,14 @@ function showHelp() {
 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518
 
 USAGE:
-  wiremd <input.md> [options]
+  wiremd <input.md|dir> [options]
 
 OPTIONS:
   -o, --output <file>        Output file path (default: <input>.html)
   -f, --format <format>      Output format: html, json (default: html)
   -s, --style <style>        Visual style: sketch, clean, wireframe, none, tailwind, material, brutal (default: sketch)
   -w, --watch                Watch for changes and regenerate
-  --serve <port>             Start dev server with live-reload (default: 3000)
+  --serve [port]             Start dev server with live-reload (default: 3000)
   --watch-pattern <pattern>  Glob pattern for files to watch (e.g., "**/*.md")
   --ignore <pattern>         Glob pattern for files to ignore (e.g., "**/node_modules/**")
   -p, --pretty               Pretty print output (default: true)
@@ -24394,6 +24422,15 @@ EXAMPLES:
 
   # Generate JSON output
   wiremd wireframe.md --format json
+
+  # Generate HTML for every .md file in a directory
+  wiremd wireframes/
+
+  # Watch and regenerate a directory
+  wiremd wireframes/ --watch
+
+  # Serve a directory
+  wiremd wireframes/ --serve 3000
 
 STYLES:
   sketch     - Balsamiq-inspired hand-drawn look (default)
@@ -24463,13 +24500,16 @@ function parseArgs(args) {
       case "--watch":
         options.watch = true;
         break;
-      case "--serve":
-        options.serve = parseInt(args[++i], 10);
+      case "--serve": {
+        const nextArg = args[i + 1];
+        options.servePortExplicit = !!nextArg && !nextArg.startsWith("-");
+        options.serve = options.servePortExplicit ? parseInt(args[++i], 10) : 3e3;
         if (isNaN(options.serve)) {
           console.error("Error: --serve requires a numeric port");
           process.exit(1);
         }
         break;
+      }
       case "--watch-pattern":
         options.watchPattern = args[++i];
         break;
@@ -24536,6 +24576,112 @@ function generateOutput(options) {
     return renderToHTML(ast, { style, pretty, inlineStyles: true, showComments: showComments ?? false });
   }
 }
+var DIRECTORY_IGNORE_NAMES = /* @__PURE__ */ new Set(["node_modules", ".git", "dist", "build"]);
+function normalizeForGlob(path2) {
+  return path2.replace(/\\/g, "/");
+}
+function hasGlobPattern(pattern) {
+  return /[*?[\]{}]/.test(pattern);
+}
+function globWatchRoot(pattern) {
+  if (!hasGlobPattern(pattern))
+    return pattern;
+  const normalized = normalizeForGlob(pattern);
+  const segments = normalized.split("/");
+  const rootSegments = [];
+  for (const segment of segments) {
+    if (hasGlobPattern(segment))
+      break;
+    rootSegments.push(segment);
+  }
+  const root2 = rootSegments.join("/") || ".";
+  return root2 === "" ? "/" : root2;
+}
+function globToRegExp(pattern) {
+  const normalized = normalizeForGlob(pattern);
+  let source = "";
+  for (let i = 0; i < normalized.length; i++) {
+    const char = normalized[i];
+    const next = normalized[i + 1];
+    if (char === "*" && next === "*") {
+      const afterNext = normalized[i + 2];
+      if (afterNext === "/") {
+        source += "(?:.*/)?";
+        i += 2;
+      } else {
+        source += ".*";
+        i += 1;
+      }
+    } else if (char === "*") {
+      source += "[^/]*";
+    } else if (char === "?") {
+      source += "[^/]";
+    } else {
+      source += char.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+    }
+  }
+  return new RegExp(`^${source}$`);
+}
+function watchPathsForPattern(pattern) {
+  return [globWatchRoot(pattern)];
+}
+function matchesWatchPattern(filePath, pattern) {
+  if (!pattern)
+    return true;
+  if (!hasGlobPattern(pattern))
+    return (0, import_path3.resolve)(filePath) === (0, import_path3.resolve)(pattern);
+  return globToRegExp(pattern).test(normalizeForGlob(filePath));
+}
+function listMarkdownPages(rootDir) {
+  const files = [];
+  const walk = (dir) => {
+    for (const entry of (0, import_fs5.readdirSync)(dir).sort()) {
+      if (entry.startsWith(".") || DIRECTORY_IGNORE_NAMES.has(entry))
+        continue;
+      const fullPath = (0, import_path3.join)(dir, entry);
+      const stat4 = (0, import_fs5.statSync)(fullPath);
+      if (stat4.isDirectory()) {
+        walk(fullPath);
+        continue;
+      }
+      if (entry.endsWith(".md") && !entry.startsWith("_")) {
+        files.push(fullPath);
+      }
+    }
+  };
+  walk(rootDir);
+  return files;
+}
+function outputPathForMarkdown(inputFile, format = "html") {
+  const ext = format === "json" ? ".json" : ".html";
+  return inputFile.replace(/\.md$/, ext);
+}
+function generateDirectoryOutputs(options) {
+  const rootDir = (0, import_path3.resolve)(options.input);
+  const pages = listMarkdownPages(rootDir);
+  const outputs = [];
+  for (const inputFile of pages) {
+    const outputFile = outputPathForMarkdown(inputFile, options.format);
+    (0, import_fs5.mkdirSync)((0, import_path3.dirname)(outputFile), { recursive: true });
+    const output = generateOutput({ ...options, input: inputFile, output: outputFile });
+    (0, import_fs5.writeFileSync)(outputFile, output, "utf-8");
+    outputs.push({ input: inputFile, output: outputFile });
+  }
+  return outputs;
+}
+function preferredDirectoryOutput(outputs) {
+  return outputs.find(({ output }) => (0, import_path3.basename)(output).startsWith("index."))?.output ?? outputs[0]?.output;
+}
+function logDirectoryOpenAddress(outputs, format) {
+  const output = preferredDirectoryOutput(outputs);
+  if (!output)
+    return;
+  if (format === "json") {
+    logger.info(`Output: ${source_default.bold(output)}`);
+  } else {
+    logger.info(`Open: ${source_default.bold((0, import_url.pathToFileURL)(output).href)}`);
+  }
+}
 function main() {
   const args = process.argv.slice(2);
   if (args.length === 0) {
@@ -24549,16 +24695,44 @@ function main() {
   }
   const inputIsDir = (0, import_fs5.existsSync)(options.input) && (0, import_fs5.statSync)(options.input).isDirectory();
   if (inputIsDir) {
-    if (!options.serve && !options.watch) {
-      console.error("Error: Directory input requires --serve or --watch");
-      process.exit(1);
-    }
     const rootDir = (0, import_path3.resolve)(options.input);
-    logger.watching(`Watching: ${source_default.bold(options.input)}`);
+    const renderDirectory = (label) => {
+      const outputs = generateDirectoryOutputs(options);
+      const timestamp = source_default.dim((/* @__PURE__ */ new Date()).toLocaleTimeString());
+      logger.success(`${label}: ${source_default.bold(outputs.length)} file${outputs.length === 1 ? "" : "s"} ${timestamp}`);
+      logger.style(`Style: ${source_default.bold(options.style)}`);
+      logger.format(`Format: ${source_default.bold(options.format)}`);
+      return outputs;
+    };
+    if (!options.serve || options.watch) {
+      try {
+        logger.info(`Parsing directory: ${source_default.bold(options.input)}`);
+        const outputs = renderDirectory(options.watch ? "Generated" : "Generated directory");
+        if (!options.serve) {
+          logDirectoryOpenAddress(outputs, options.format);
+        }
+        if (!options.watch && !options.serve)
+          return;
+        console.log("");
+      } catch (error) {
+        logger.error(`Directory generation failed: ${error.message}`);
+        if (!options.watch) {
+          if (error.stack)
+            console.error(error.stack);
+          process.exit(1);
+        }
+        logger.info("Watching for changes to retry...");
+      }
+    }
+    if (options.watch || options.serve) {
+      logger.watching(`Watching: ${source_default.bold(options.input)}`);
+    }
     if (options.serve) {
       const indexFile = (0, import_fs5.existsSync)((0, import_path3.join)(rootDir, "index.md")) ? "index.md" : void 0;
       startServer({
         port: options.serve,
+        autoIncrementPort: !options.servePortExplicit,
+        maxPortRetries: 10,
         rootDir,
         inputFile: indexFile,
         renderFile: (mdPath) => generateOutput({ ...options, input: mdPath, showComments: true })
@@ -24572,7 +24746,7 @@ function main() {
       "**/build/**",
       ...options.ignorePattern ? [options.ignorePattern] : []
     ];
-    const watchPaths = options.watchPattern ? [options.watchPattern] : [(0, import_path3.join)(rootDir, "**/*.md")];
+    const watchPaths = options.watchPattern ? watchPathsForPattern(options.watchPattern) : [rootDir];
     logger.info(`Ignoring: ${source_default.gray(ignorePatterns.join(", "))}`);
     console.log("");
     const watcher = esm_default.watch(watchPaths, {
@@ -24581,20 +24755,72 @@ function main() {
       ignoreInitial: true,
       awaitWriteFinish: { stabilityThreshold: 100, pollInterval: 50 }
     });
-    watcher.on("change", (path2) => {
-      logger.changed(`${source_default.bold("changed")}: ${source_default.dim(path2.replace(process.cwd(), "."))}`);
-      if (options.serve)
-        notifyReload();
-    }).on("add", (path2) => {
-      logger.info(`New file: ${source_default.dim(path2.replace(process.cwd(), "."))}`);
-      if (options.serve)
-        notifyReload();
-    }).on("unlink", (path2) => {
+    let isProcessing = false;
+    let pendingRegeneration = false;
+    const regenerateDirectory = async (filePath, event) => {
+      if (!filePath.endsWith(".md"))
+        return;
+      if (!matchesWatchPattern(filePath, options.watchPattern))
+        return;
+      if (isProcessing) {
+        pendingRegeneration = true;
+        return;
+      }
+      isProcessing = true;
+      pendingRegeneration = false;
+      try {
+        logger.changed(`${source_default.bold(event)}: ${source_default.dim(filePath.replace(process.cwd(), "."))}`);
+        if (options.watch) {
+          renderDirectory("Regenerated");
+        }
+        if (options.serve) {
+          notifyReload();
+        }
+      } catch (error) {
+        logger.error(`${error.message}`);
+        if (error.stack) {
+          console.log(source_default.dim(error.stack.split("\n").slice(1, 4).join("\n")));
+        }
+        if (options.serve) {
+          notifyError(error.message);
+        }
+        logger.info("Watching for changes to retry...");
+      } finally {
+        isProcessing = false;
+        if (pendingRegeneration) {
+          setTimeout(() => regenerateDirectory(filePath, event), 50);
+        }
+      }
+    };
+    watcher.on("change", (path2) => regenerateDirectory(path2, "changed")).on("add", (path2) => regenerateDirectory(path2, "added")).on("unlink", (path2) => {
+      if (!path2.endsWith(".md"))
+        return;
+      if (!matchesWatchPattern(path2, options.watchPattern))
+        return;
       logger.warning(`Removed: ${source_default.dim(path2.replace(process.cwd(), "."))}`);
+      if (options.watch) {
+        try {
+          renderDirectory("Regenerated");
+        } catch (error) {
+          logger.error(`${error.message}`);
+        }
+      }
       if (options.serve)
         notifyReload();
+    }).on("error", (error) => {
+      logger.error(`Watcher error: ${error.message}`);
+      if (error.code === "EMFILE") {
+        logger.info("Too many files are being watched. Stop other watch processes or raise the OS file watcher limit.");
+      }
+      if (options.serve) {
+        notifyError(error.message);
+      }
     }).on("ready", () => logger.info("Watcher ready. Press Ctrl+C to stop."));
     return;
+  }
+  if (!options.input.endsWith(".md")) {
+    logger.error("Input file must use the .md extension");
+    process.exit(1);
   }
   if (!options.output) {
     const ext = options.format === "json" ? ".json" : ".html";
@@ -24616,6 +24842,8 @@ function main() {
       const port = options.serve;
       startServer({
         port,
+        autoIncrementPort: !options.servePortExplicit,
+        maxPortRetries: 10,
         outputPath: options.output,
         renderFile: (mdPath) => generateOutput({ ...options, input: mdPath, showComments: true }),
         rootDir: (0, import_path3.dirname)(options.input),
@@ -24634,7 +24862,7 @@ function main() {
       ignorePatterns.push(options.ignorePattern);
     }
     if (options.watchPattern) {
-      watchPaths.push(options.watchPattern);
+      watchPaths.push(...watchPathsForPattern(options.watchPattern));
       logger.info(`Watch pattern: ${source_default.bold(options.watchPattern)}`);
     } else {
       watchPaths.push(options.input);
@@ -24660,6 +24888,8 @@ function main() {
     let isProcessing = false;
     let pendingRegeneration = false;
     const regenerate = async (filePath, event) => {
+      if (!matchesWatchPattern(filePath, options.watchPattern))
+        return;
       if (isProcessing) {
         pendingRegeneration = true;
         return;
@@ -24701,6 +24931,8 @@ function main() {
       logger.info(`New file detected: ${source_default.dim(path2.replace(process.cwd(), "."))}`);
       regenerate(path2, "added");
     }).on("unlink", (path2) => {
+      if (!matchesWatchPattern(path2, options.watchPattern))
+        return;
       const relativePath = path2.replace(process.cwd(), ".");
       logger.warning(`File removed: ${source_default.dim(relativePath)}`);
       if (path2 === options.input) {
@@ -24745,11 +24977,16 @@ if (isMainModule) {
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   checkFileSize,
+  generateDirectoryOutputs,
   generateOutput,
+  listMarkdownPages,
   main,
+  matchesWatchPattern,
+  outputPathForMarkdown,
   parseArgs,
   showHelp,
-  showVersion
+  showVersion,
+  watchPathsForPattern
 });
 /*! Bundled license information:
 

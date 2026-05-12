@@ -9,17 +9,17 @@ If you're in a remote or co-work session, re-run `/wireframe` and select **displ
 ## Workflow
 
 ```bash
-wiremd <file-or-folder> --serve 3001 --watch
+wiremd <file-or-folder> --serve --watch
 ```
 
-Tell the user to open `http://localhost:3001`. Every `.md` save triggers a reload.
+Tell the user to open the `http://localhost:PORT` address printed by the CLI. Every `.md` save triggers a reload.
 
 For a folder (multi-page):
 ```bash
-wiremd wireframes/ --serve 3001 --watch
+wiremd wireframes/ --serve --watch
 ```
 
-Port `3001` is the default — use a different port if it's taken.
+Port `3000` is the default. If it is busy, wiremd tries the next ports up to 10 times. If you pass an explicit port, wiremd uses exactly that port and fails if it is taken.
 
 ---
 
@@ -28,7 +28,7 @@ Port `3001` is the default — use a different port if it's taken.
 Default to `wireframe`. Pass `-s <style>` to override.
 
 ```bash
-wiremd wireframes/ --serve 3001 --watch -s clean
+wiremd wireframes/ --serve --watch -s clean
 ```
 
 See `${CLAUDE_PLUGIN_ROOT}/references/styles.md` for descriptions.

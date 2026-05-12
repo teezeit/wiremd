@@ -19,6 +19,7 @@ CLI (global):
 ```bash
 npm install -g @eclectic-ai/wiremd
 wiremd input.md --style sketch --serve 3001 --watch
+wiremd wireframes/ --style sketch
 ```
 
 ## Programmatic usage
