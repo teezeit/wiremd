@@ -202,14 +202,14 @@ Search existing issues first at [github.com/teezeit/wiremd/issues](https://githu
 Install globally or use npx:
 
 ```bash
-npm install -g wiremd   # then: wiremd file.md
+npm install -g @eclectic-ai/wiremd   # then: wiremd file.md
 # or without installing:
 npx wiremd file.md
 ```
 
 ### Port already in use (`EADDRINUSE`)
 
-`--serve` requires an explicit port. If it's taken, pick another:
+`--serve` without a port starts at `3000` and tries the next ports automatically. If you pass an explicit port and it is taken, pick another:
 
 ```bash
 wiremd file.md --serve 3001

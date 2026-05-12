@@ -89,7 +89,7 @@ Works with Claude Code or Claude Desktop (Cowork) running on the same machine as
 | Mode | Use when |
 |------|----------|
 | **editor** | Default — File System Access API, Chrome/Edge/Safari |
-| **serve** | Firefox or any browser — starts `localhost:3001` with hot-reload |
+| **serve** | Firefox or any browser — starts a local hot-reload server and prints the address |
 | **display** | You want a rendered HTML artifact instead of a live browser tab |
 
 ### What you can ask

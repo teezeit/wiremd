@@ -13,6 +13,8 @@ import { dirname, join, relative } from 'path';
 
 interface ServerOptions {
   port: number;
+  autoIncrementPort?: boolean;
+  maxPortRetries?: number;
   outputPath?: string;
   renderFile?: (mdPath: string) => string;
   /** Root directory for resolving linked .md files. Defaults to dirname(outputPath). */
@@ -469,7 +471,9 @@ a:hover{background:#f0f0f0}
 }
 
 export function startServer(options: ServerOptions): ReturnType<typeof createServer> {
-  const { port, outputPath, renderFile, inputFile } = options;
+  const { outputPath, renderFile, inputFile } = options;
+  let port = options.port;
+  let portRetries = 0;
   const rootDir = options.rootDir || (outputPath ? dirname(outputPath) : process.cwd());
 
   const injectScript = (html: string) => {
@@ -579,6 +583,28 @@ export function startServer(options: ServerOptions): ReturnType<typeof createSer
         wsClients.delete(socket);
       });
     }
+  });
+
+  server.on('error', (error: NodeJS.ErrnoException) => {
+    if (error.code === 'EADDRINUSE') {
+      if (options.autoIncrementPort) {
+        const maxPortRetries = options.maxPortRetries ?? 10;
+        if (portRetries >= maxPortRetries) {
+          console.error(`Error: Ports ${options.port}-${port} are already in use. Pass a different port with --serve <port>.`);
+          process.exit(1);
+        }
+        const nextPort = port + 1;
+        portRetries += 1;
+        console.log(`Port ${port} is already in use, trying ${nextPort}...`);
+        port = nextPort;
+        server.listen(port);
+        return;
+      }
+      console.error(`Error: Port ${port} is already in use. Pass a different port with --serve <port>.`);
+    } else {
+      console.error(`Error starting dev server: ${error.message}`);
+    }
+    process.exit(1);
   });
 
   server.listen(port, () => {

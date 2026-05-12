@@ -9,7 +9,7 @@
  * https://github.com/teezeit/wiremd/blob/main/LICENSE
  */
 
-import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, statSync, readdirSync, mkdirSync } from 'fs';
 import { resolve, dirname, join, basename } from 'path';
 import { pathToFileURL } from 'url';
 import { parse, resolveIncludes } from '../parser/index.js';
@@ -25,6 +25,7 @@ export interface CLIOptions {
   style?: 'sketch' | 'clean' | 'wireframe' | 'none';
   watch?: boolean;
   serve?: number;
+  servePortExplicit?: boolean;
   pretty?: boolean;
   watchPattern?: string;
   ignorePattern?: string;
@@ -39,14 +40,14 @@ export function showHelp(): void {
 └─────────────────────────────────────────────────────────────────┘
 
 USAGE:
-  wiremd <input.md> [options]
+  wiremd <input.md|dir> [options]
 
 OPTIONS:
   -o, --output <file>        Output file path (default: <input>.html)
   -f, --format <format>      Output format: html, json (default: html)
   -s, --style <style>        Visual style: sketch, clean, wireframe, none, tailwind, material, brutal (default: sketch)
   -w, --watch                Watch for changes and regenerate
-  --serve <port>             Start dev server with live-reload (default: 3000)
+  --serve [port]             Start dev server with live-reload (default: 3000)
   --watch-pattern <pattern>  Glob pattern for files to watch (e.g., "**/*.md")
   --ignore <pattern>         Glob pattern for files to ignore (e.g., "**/node_modules/**")
   -p, --pretty               Pretty print output (default: true)
@@ -72,6 +73,15 @@ EXAMPLES:
 
   # Generate JSON output
   wiremd wireframe.md --format json
+
+  # Generate HTML for every .md file in a directory
+  wiremd wireframes/
+
+  # Watch and regenerate a directory
+  wiremd wireframes/ --watch
+
+  # Serve a directory
+  wiremd wireframes/ --serve 3000
 
 STYLES:
   sketch     - Balsamiq-inspired hand-drawn look (default)
@@ -153,13 +163,16 @@ export function parseArgs(args: string[]): CLIOptions | null {
         options.watch = true;
         break;
 
-      case '--serve':
-        options.serve = parseInt(args[++i], 10);
+      case '--serve': {
+        const nextArg = args[i + 1];
+        options.servePortExplicit = !!nextArg && !nextArg.startsWith('-');
+        options.serve = options.servePortExplicit ? parseInt(args[++i], 10) : 3000;
         if (isNaN(options.serve)) {
           console.error('Error: --serve requires a numeric port');
           process.exit(1);
         }
         break;
+      }
 
       case '--watch-pattern':
         options.watchPattern = args[++i];
@@ -255,6 +268,129 @@ export function generateOutput(options: CLIOptions): string {
   }
 }
 
+const DIRECTORY_IGNORE_NAMES = new Set(['node_modules', '.git', 'dist', 'build']);
+
+function normalizeForGlob(path: string): string {
+  return path.replace(/\\/g, '/');
+}
+
+function hasGlobPattern(pattern: string): boolean {
+  return /[*?[\]{}]/.test(pattern);
+}
+
+function globWatchRoot(pattern: string): string {
+  if (!hasGlobPattern(pattern)) return pattern;
+
+  const normalized = normalizeForGlob(pattern);
+  const segments = normalized.split('/');
+  const rootSegments: string[] = [];
+
+  for (const segment of segments) {
+    if (hasGlobPattern(segment)) break;
+    rootSegments.push(segment);
+  }
+
+  const root = rootSegments.join('/') || '.';
+  return root === '' ? '/' : root;
+}
+
+function globToRegExp(pattern: string): RegExp {
+  const normalized = normalizeForGlob(pattern);
+  let source = '';
+
+  for (let i = 0; i < normalized.length; i++) {
+    const char = normalized[i];
+    const next = normalized[i + 1];
+
+    if (char === '*' && next === '*') {
+      const afterNext = normalized[i + 2];
+      if (afterNext === '/') {
+        source += '(?:.*/)?';
+        i += 2;
+      } else {
+        source += '.*';
+        i += 1;
+      }
+    } else if (char === '*') {
+      source += '[^/]*';
+    } else if (char === '?') {
+      source += '[^/]';
+    } else {
+      source += char.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+    }
+  }
+
+  return new RegExp(`^${source}$`);
+}
+
+export function watchPathsForPattern(pattern: string): string[] {
+  return [globWatchRoot(pattern)];
+}
+
+export function matchesWatchPattern(filePath: string, pattern?: string): boolean {
+  if (!pattern) return true;
+  if (!hasGlobPattern(pattern)) return resolve(filePath) === resolve(pattern);
+  return globToRegExp(pattern).test(normalizeForGlob(filePath));
+}
+
+export function listMarkdownPages(rootDir: string): string[] {
+  const files: string[] = [];
+
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir).sort()) {
+      if (entry.startsWith('.') || DIRECTORY_IGNORE_NAMES.has(entry)) continue;
+      const fullPath = join(dir, entry);
+      const stat = statSync(fullPath);
+      if (stat.isDirectory()) {
+        walk(fullPath);
+        continue;
+      }
+      if (entry.endsWith('.md') && !entry.startsWith('_')) {
+        files.push(fullPath);
+      }
+    }
+  };
+
+  walk(rootDir);
+  return files;
+}
+
+export function outputPathForMarkdown(inputFile: string, format: CLIOptions['format'] = 'html'): string {
+  const ext = format === 'json' ? '.json' : '.html';
+  return inputFile.replace(/\.md$/, ext);
+}
+
+export function generateDirectoryOutputs(options: CLIOptions): Array<{ input: string; output: string }> {
+  const rootDir = resolve(options.input);
+  const pages = listMarkdownPages(rootDir);
+  const outputs: Array<{ input: string; output: string }> = [];
+
+  for (const inputFile of pages) {
+    const outputFile = outputPathForMarkdown(inputFile, options.format);
+    mkdirSync(dirname(outputFile), { recursive: true });
+    const output = generateOutput({ ...options, input: inputFile, output: outputFile });
+    writeFileSync(outputFile, output, 'utf-8');
+    outputs.push({ input: inputFile, output: outputFile });
+  }
+
+  return outputs;
+}
+
+function preferredDirectoryOutput(outputs: Array<{ input: string; output: string }>): string | undefined {
+  return outputs.find(({ output }) => basename(output).startsWith('index.'))?.output ?? outputs[0]?.output;
+}
+
+function logDirectoryOpenAddress(outputs: Array<{ input: string; output: string }>, format: CLIOptions['format']): void {
+  const output = preferredDirectoryOutput(outputs);
+  if (!output) return;
+
+  if (format === 'json') {
+    logger.info(`Output: ${chalk.bold(output)}`);
+  } else {
+    logger.info(`Open: ${chalk.bold(pathToFileURL(output).href)}`);
+  }
+}
+
 export function main(): void {
   const args = process.argv.slice(2);
 
@@ -272,19 +408,46 @@ export function main(): void {
   const inputIsDir = existsSync(options.input) && statSync(options.input).isDirectory();
 
   if (inputIsDir) {
-    // Directory mode: serve all .md files, no single output file
-    if (!options.serve && !options.watch) {
-      console.error('Error: Directory input requires --serve or --watch');
-      process.exit(1);
+    const rootDir = resolve(options.input);
+
+    const renderDirectory = (label: string) => {
+      const outputs = generateDirectoryOutputs(options);
+      const timestamp = chalk.dim(new Date().toLocaleTimeString());
+      logger.success(`${label}: ${chalk.bold(outputs.length)} file${outputs.length === 1 ? '' : 's'} ${timestamp}`);
+      logger.style(`Style: ${chalk.bold(options.style)}`);
+      logger.format(`Format: ${chalk.bold(options.format)}`);
+      return outputs;
+    };
+
+    if (!options.serve || options.watch) {
+      try {
+        logger.info(`Parsing directory: ${chalk.bold(options.input)}`);
+        const outputs = renderDirectory(options.watch ? 'Generated' : 'Generated directory');
+        if (!options.serve) {
+          logDirectoryOpenAddress(outputs, options.format);
+        }
+        if (!options.watch && !options.serve) return;
+        console.log('');
+      } catch (error: any) {
+        logger.error(`Directory generation failed: ${error.message}`);
+        if (!options.watch) {
+          if (error.stack) console.error(error.stack);
+          process.exit(1);
+        }
+        logger.info('Watching for changes to retry...');
+      }
     }
 
-    const rootDir = resolve(options.input);
-    logger.watching(`Watching: ${chalk.bold(options.input)}`);
+    if (options.watch || options.serve) {
+      logger.watching(`Watching: ${chalk.bold(options.input)}`);
+    }
 
     if (options.serve) {
       const indexFile = existsSync(join(rootDir, 'index.md')) ? 'index.md' : undefined;
       startServer({
         port: options.serve,
+        autoIncrementPort: !options.servePortExplicit,
+        maxPortRetries: 10,
         rootDir,
         inputFile: indexFile,
         renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath, showComments: true }),
@@ -296,7 +459,7 @@ export function main(): void {
       '**/node_modules/**', '**/.git/**', '**/dist/**', '**/build/**',
       ...(options.ignorePattern ? [options.ignorePattern] : []),
     ];
-    const watchPaths = options.watchPattern ? [options.watchPattern] : [join(rootDir, '**/*.md')];
+    const watchPaths = options.watchPattern ? watchPathsForPattern(options.watchPattern) : [rootDir];
     logger.info(`Ignoring: ${chalk.gray(ignorePatterns.join(', '))}`);
     console.log('');
 
@@ -305,22 +468,81 @@ export function main(): void {
       awaitWriteFinish: { stabilityThreshold: 100, pollInterval: 50 },
     });
 
+    let isProcessing = false;
+    let pendingRegeneration = false;
+
+    const regenerateDirectory = async (filePath: string, event: string) => {
+      if (!filePath.endsWith('.md')) return;
+      if (!matchesWatchPattern(filePath, options.watchPattern)) return;
+
+      if (isProcessing) {
+        pendingRegeneration = true;
+        return;
+      }
+
+      isProcessing = true;
+      pendingRegeneration = false;
+
+      try {
+        logger.changed(`${chalk.bold(event)}: ${chalk.dim(filePath.replace(process.cwd(), '.'))}`);
+
+        if (options.watch) {
+          renderDirectory('Regenerated');
+        }
+
+        if (options.serve) {
+          notifyReload();
+        }
+      } catch (error: any) {
+        logger.error(`${error.message}`);
+        if (error.stack) {
+          console.log(chalk.dim(error.stack.split('\n').slice(1, 4).join('\n')));
+        }
+        if (options.serve) {
+          notifyError(error.message);
+        }
+        logger.info('Watching for changes to retry...');
+      } finally {
+        isProcessing = false;
+        if (pendingRegeneration) {
+          setTimeout(() => regenerateDirectory(filePath, event), 50);
+        }
+      }
+    };
+
     watcher
-      .on('change', (path) => {
-        logger.changed(`${chalk.bold('changed')}: ${chalk.dim(path.replace(process.cwd(), '.'))}`);
-        if (options.serve) notifyReload();
-      })
-      .on('add', (path) => {
-        logger.info(`New file: ${chalk.dim(path.replace(process.cwd(), '.'))}`);
-        if (options.serve) notifyReload();
-      })
+      .on('change', (path) => regenerateDirectory(path, 'changed'))
+      .on('add', (path) => regenerateDirectory(path, 'added'))
       .on('unlink', (path) => {
+        if (!path.endsWith('.md')) return;
+        if (!matchesWatchPattern(path, options.watchPattern)) return;
         logger.warning(`Removed: ${chalk.dim(path.replace(process.cwd(), '.'))}`);
+        if (options.watch) {
+          try {
+            renderDirectory('Regenerated');
+          } catch (error: any) {
+            logger.error(`${error.message}`);
+          }
+        }
         if (options.serve) notifyReload();
+      })
+      .on('error', (error: any) => {
+        logger.error(`Watcher error: ${error.message}`);
+        if (error.code === 'EMFILE') {
+          logger.info('Too many files are being watched. Stop other watch processes or raise the OS file watcher limit.');
+        }
+        if (options.serve) {
+          notifyError(error.message);
+        }
       })
       .on('ready', () => logger.info('Watcher ready. Press Ctrl+C to stop.'));
 
     return;
+  }
+
+  if (!options.input.endsWith('.md')) {
+    logger.error('Input file must use the .md extension');
+    process.exit(1);
   }
 
   // Determine output path
@@ -351,6 +573,8 @@ export function main(): void {
       const port = options.serve;
       startServer({
         port,
+        autoIncrementPort: !options.servePortExplicit,
+        maxPortRetries: 10,
         outputPath: options.output,
         renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath, showComments: true }),
         rootDir: dirname(options.input),
@@ -376,7 +600,7 @@ export function main(): void {
     // Determine watch paths based on options
     if (options.watchPattern) {
       // Watch using custom pattern
-      watchPaths.push(options.watchPattern);
+      watchPaths.push(...watchPathsForPattern(options.watchPattern));
       logger.info(`Watch pattern: ${chalk.bold(options.watchPattern)}`);
     } else {
       // Default: watch the input file and its directory for new .md files
@@ -411,6 +635,8 @@ export function main(): void {
      * Regenerate output with error recovery
      */
     const regenerate = async (filePath: string, event: string) => {
+      if (!matchesWatchPattern(filePath, options.watchPattern)) return;
+
       // If already processing, mark for re-processing
       if (isProcessing) {
         pendingRegeneration = true;
@@ -475,6 +701,8 @@ export function main(): void {
         regenerate(path, 'added');
       })
       .on('unlink', (path) => {
+        if (!matchesWatchPattern(path, options.watchPattern)) return;
+
         const relativePath = path.replace(process.cwd(), '.');
         logger.warning(`File removed: ${chalk.dim(relativePath)}`);
 

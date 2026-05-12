@@ -7,7 +7,7 @@ No terminal? [Install the VS Code extension](./vscode.md) instead.
 ## Install
 
 ```bash
-npm install -g wiremd
+npm install -g @eclectic-ai/wiremd
 ```
 
 Verify:
@@ -24,7 +24,7 @@ The most useful workflow — write your wireframe, see it update live in any bro
 wiremd my-screen.md --serve 3001 --watch
 ```
 
-Open `http://localhost:3001`. The page reloads automatically on every save. Works in any browser including Firefox.
+Open the printed `http://localhost:PORT` address. The page reloads automatically on every save. Works in any browser including Firefox.
 
 <img src="../assets/guides/guide-serve-cli.png" alt="wireframe rendered in the browser via the local dev server" class="doc-shot" />
 
@@ -34,13 +34,16 @@ For a whole folder of screens:
 wiremd ./screens --serve 3001
 ```
 
-All `.md` files under `./screens` are watched. If `screens/index.md` exists it becomes the default page. Navigate between screens at `http://localhost:3001/screen-name.html`.
+All `.md` files under `./screens` are watched. If `screens/index.md` exists it becomes the default page. Navigate between screens at the printed server address, for example `/screen-name.html`.
 
 ## One-shot render
 
 ```bash
 # Render to HTML (default: same name as input)
 wiremd login.md
+
+# Render every .md page in a folder
+wiremd ./screens
 
 # Specify output path and style
 wiremd login.md -o dist/login.html --style clean
@@ -52,7 +55,7 @@ wiremd login.md -o dist/login.html --style clean
 |------|-------|---------|-------------|
 | `--output <file>` | `-o` | `<input>.html` | Output file path |
 | `--style <style>` | `-s` | `sketch` | Visual style |
-| `--serve <port>` | — | — | Start live-reload dev server on port |
+| `--serve [port]` | — | `3000` | Start live-reload dev server on port |
 | `--watch` | `-w` | — | Regenerate on file change (no server) |
 | `--format <format>` | `-f` | `html` | `html` or `json` |
 | `--show-comments` | — | off | Render `<!-- comments -->` as callout panels |
@@ -76,9 +79,9 @@ wiremd login.md -o dist/login.html --style clean
 
 ## Notes
 
-- `--serve` starts the server but does **not** auto-enable `--watch`. Pass both to get live reload: `--serve 3001 --watch`.
+- `--serve` starts the server on port `3000` by default and tries the next ports automatically if needed. It does **not** auto-enable `--watch`. Pass both to get live reload: `--serve --watch` or `--serve 3001 --watch`.
 - `--watch` without `--serve` regenerates the file on disk only — no browser sync.
-- Directory mode ignores `-o`. Use `-s` to set the style for all files.
+- Directory mode renders each page-shaped `.md` file next to its source and ignores `-o`. Files prefixed with `_` are treated as partials. Use `-s` to set the style for all files.
 
 ## Programmatic use
 

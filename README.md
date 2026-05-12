@@ -94,12 +94,12 @@ This creates a responsive 3-column layout with icons and descriptions.
 
 ## Project Structure
 
-wiremd is a pnpm + Turborepo monorepo. The published `wiremd` npm package lives in `packages/core/`; everything else (frontend apps, VS Code extension, Figma plugin, Claude skill) consumes it via `"wiremd": "workspace:*"`.
+wiremd is a pnpm + Turborepo monorepo. The published `@eclectic-ai/wiremd` npm package lives in `packages/core/`; everything else (frontend apps, VS Code extension, Figma plugin, Claude skill) consumes it via workspace dependencies.
 
 ```
 wiremd/
 ├── packages/
-│   └── core/                 # published "wiremd" npm package — parser, renderers, CLI
+│   └── core/                 # published "@eclectic-ai/wiremd" npm package — parser, renderers, CLI
 ├── apps/
 │   ├── docs/                 # VitePress documentation site         :5173
 │   ├── editor/               # web editor (React + CodeMirror)       :5174
@@ -196,23 +196,23 @@ pnpm turbo run build   # build everything (core first, then apps/extensions)
 pnpm turbo run test    # run the full test suite
 ```
 
-Run a single workspace: `pnpm --filter wiremd run build` (the core library) or `pnpm --filter wiremd-editor run dev` (the editor app).
+Run a single workspace: `pnpm --filter @eclectic-ai/wiremd run build` (the core library) or `pnpm --filter wiremd-editor run dev` (the editor app).
 
 ## Installation
 
 ### npm
 ```bash
-npm install -g wiremd
+npm install -g @eclectic-ai/wiremd
 ```
 
 ### yarn
 ```bash
-yarn global add wiremd
+yarn global add @eclectic-ai/wiremd
 ```
 
 ### pnpm
 ```bash
-pnpm add -g wiremd
+pnpm add -g @eclectic-ai/wiremd
 ```
 
 ### Homebrew (macOS)
@@ -226,7 +226,14 @@ git clone https://github.com/teezeit/wiremd.git
 cd wiremd
 pnpm install
 pnpm turbo run build
-pnpm --filter wiremd exec npm link    # exposes the `wiremd` CLI globally
+pnpm --filter @eclectic-ai/wiremd exec npm link    # exposes the `wiremd` CLI globally
+```
+
+For local repo testing without linking:
+
+```bash
+pnpm wiremd wireframe.md --style sketch
+pnpm wiremd wireframes/ --serve 3001 --watch
 ```
 
 ## Use with Claude
@@ -274,10 +281,18 @@ wiremd wireframe.md --style none       # Unstyled semantic HTML
 # Watch mode with live-reload dev server
 wiremd wireframe.md --watch --serve 3000
 
+# Render every page-shaped .md file in a folder
+wiremd wireframes/
+
+# Watch and regenerate a folder
+wiremd wireframes/ --watch
+
+# Serve a folder
+wiremd wireframes/ --serve 3000
+
 # Generate different output formats
 wiremd wireframe.md --format json      # JSON AST output
-wiremd wireframe.md --format react     # React/JSX component
-wiremd wireframe.md --format tailwind  # HTML with Tailwind CSS classes
+# React and Tailwind output are available through the programmatic API
 ```
 
 ## Exporting to Figma
@@ -517,7 +532,7 @@ pnpm turbo run build
 pnpm turbo run typecheck
 
 # Iterate on the core library only
-pnpm --filter wiremd run test:watch
+pnpm --filter @eclectic-ai/wiremd run test:watch
 ```
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the full feature checklist, plugin maintenance, and release process.

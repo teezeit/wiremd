@@ -11,7 +11,7 @@
 wiremd converts Markdown with wireframing syntax into HTML wireframes.
 :::
 ::: item Can I export to React?
-Yes. Use `--format react` or pass `{ format: 'react' }` to the API.
+Yes. Use the programmatic `renderToReact` API.
 :::
 ::: item Is it free?
 Yes, MIT licensed. See the LICENSE file for details.
@@ -46,10 +46,10 @@ Add `{open}` to any `:::item` to start it expanded.
 ::: item Getting started
 [Download CLI]* [Read docs]
 
-Install with `npm install -g wiremd`, then run `wiremd input.md`.
+Install with `npm install -g @eclectic-ai/wiremd`, then run `wiremd input.md`.
 :::
 ::: item Advanced usage {open}
-Pass `--style sketch` for a hand-drawn look, or `--format react` to output JSX.
+Pass `--style sketch` for a hand-drawn look. Use the programmatic API for React output.
 
 Run `wiremd --help` for all options.
 :::

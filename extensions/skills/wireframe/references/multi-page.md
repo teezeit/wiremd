@@ -52,9 +52,7 @@ preserves the original link targets:
 
 ```bash
 # Render each page
-for p in index about detail; do
-  wiremd $p.md --style sketch -o $p.html
-done
+wiremd . --style sketch
 
 # Rewrite ./x.md → ./x.html in every generated file
 for f in *.html; do
@@ -68,7 +66,7 @@ For live iteration (user runs wiremd themselves), the dev server handles link
 rewriting automatically:
 
 ```bash
-wiremd index.md --style sketch --serve 3001 --watch --watch-pattern "*.md"
+wiremd . --style sketch --serve 3001 --watch
 ```
 
 See `rendering-modes.md` for when to use each.
@@ -86,7 +84,7 @@ Render the whole folder:
 
 ```bash
 cd examples/multi-page
-for p in index detail; do wiremd $p.md --style sketch -o $p.html; done
+wiremd . --style sketch
 for f in *.html; do sed -i -E 's|href="\./([A-Za-z0-9_-]+)\.md"|href="./\1.html"|g' "$f"; done
 open index.html   # or: double-click
 ```

@@ -234,7 +234,7 @@ See the renderable version at `${CLAUDE_PLUGIN_ROOT}/references/examples/dashboa
 4. **`::: accordion` syntax:** Use `::: accordion` with `::: item Label` children; add `{open}` on an item to expand it by default, and use `exclusive` or `card` on the wrapper for single-open behavior or card chrome.
 5. **Use `![[file.md]]` for includes, not `:::display`.** `:::display` is obsolete. `![[path/to/file.md]]` works in both the CLI and VS Code preview — path resolves relative to the current file.
 6. **Sandbox `--serve` is unreachable from the user's browser.** `wiremd --serve PORT` binds to `localhost` on Claude's host, not the user's. When Claude is running in co-work/Desktop and the user is elsewhere, use **display** mode instead.
-7. **Static HTML keeps `.md` hrefs — rewrite after build.** `wiremd x.md -o x.html` preserves `./page.md` link targets. For `file://` double-click delivery, rewrite with: `sed -i -E 's|href="\./([A-Za-z0-9_-]+)\.md"|href="./\1.html"|g' *.html`. On macOS without GNU sed, use `sed -i ''`.
+7. **Static HTML keeps `.md` hrefs — rewrite after build.** `wiremd x.md -o x.html` and `wiremd wireframes/` preserve `./page.md` link targets. For `file://` double-click delivery, rewrite with: `sed -i -E 's|href="\./([A-Za-z0-9_-]+)\.md"|href="./\1.html"|g' *.html`. On macOS without GNU sed, use `sed -i ''`.
 
 ---
 

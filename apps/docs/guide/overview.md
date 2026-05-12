@@ -54,11 +54,11 @@ Install the [VS Code extension](./vscode.md) — open any `.md` file, click the 
 ### Local dev server
 
 ```bash
-npm install -g wiremd
-wiremd my-wireframe.md --serve 3001 --watch
+npm install -g @eclectic-ai/wiremd
+wiremd my-wireframe.md --serve --watch
 ```
 
-Open `http://localhost:3001` — reloads on every save. Works with any browser, including Firefox. [Install guide →](./installation.md)
+Open the printed `http://localhost:PORT` address — reloads on every save. Works with any browser, including Firefox. [Install guide →](./installation.md)
 
 ---
 

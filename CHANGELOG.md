@@ -15,9 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   python3 scripts/migrate-v0.4.py src/         # specific directory
   python3 scripts/migrate-v0.4.py page.md      # single file
   ```
+- Added local repo CLI scripts: `pnpm wiremd ...` from the repo root and `pnpm --filter @eclectic-ai/wiremd run cli ...` from the core package.
+- Added one-shot CLI directory rendering: `wiremd <folder>` now renders each page-shaped `.md` file to an adjacent `.html` or `.json` file, skips `_*.md` partials, and prints the file URL to open.
+- Added implicit dev-server port handling: `--serve` now defaults to port `3000` and tries the next ports automatically when the default is busy.
 
 ### Fixed
 - Buttons, checkboxes, inputs, and selects inside table cells now render as proper wiremd nodes instead of leaking literal syntax (e.g. `[Edit]`, `[ ]`, `[___]`) into the HTML output.
+- Fixed CLI directory watch mode so it performs an initial render, regenerates on Markdown changes, and handles watcher errors without an unhandled Node stack trace.
+- Fixed `--watch-pattern` under chokidar v4 by watching a stable root and filtering events, preserving simple glob support.
+- Fixed CLI dev-server port conflicts so explicit busy ports fail with a clear message instead of an unhandled `EADDRINUSE` stack trace.
+- Fixed static CLI handling for unsupported input extensions so non-`.md` inputs are rejected instead of risking source overwrite.
 
 ## [0.5.0] - 2026-05-05
 
