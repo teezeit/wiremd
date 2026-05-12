@@ -34,12 +34,14 @@ Open **[teezeit.github.io/wiremd/editor](https://teezeit.github.io/wiremd/editor
 
 Describe the screen you want — Claude writes and renders the wireframe for you.
 
-Install the plugin once (works for Claude Desktop, claude.ai, and Claude Code):
+**Claude Code:**
+```bash
+npx skills add teezeit/wiremd/extensions/skills
+```
 
-```
-/plugin marketplace add teezeit/wiremd
-/plugin install wireframe@wiremd
-```
+**Claude Desktop Cowork:** download [wireframe-skill.zip](https://github.com/teezeit/wiremd/releases/latest/download/wireframe-skill.zip) → Settings → Plugins → + Add → Upload (`.zip`) (recommended), or Settings → Skills → + Add → Upload (`.zip`).
+
+Full rendering (serve/watch modes) requires local CLI access — Claude Code and Claude Desktop Cowork. In chat contexts, the bundled CLI runs in the sandbox for display mode; or paste the Markdown into the [web editor](https://tobiashoelzer.com/wiremd/editor/) to render it.
 
 Three modes — see the [full guide](./claude.md) to pick yours:
 
