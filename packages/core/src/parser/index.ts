@@ -20,6 +20,7 @@ import {
   remarkWiremdContainers,
 } from './remark-containers.js';
 import { remarkWiremdInlineContainers } from './remark-inline-containers.js';
+export { lint } from './lint.js';
 
 const INCLUDE_PATTERN = /!\[\[\s*([^\]]+?\.md)\s*\]\]/g;
 
