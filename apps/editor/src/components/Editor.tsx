@@ -2,7 +2,9 @@ import { forwardRef, memo, useEffect, useImperativeHandle, useRef } from 'react'
 import { EditorView, basicSetup } from 'codemirror';
 import { EditorState, Compartment } from '@codemirror/state';
 import { markdown } from '@codemirror/lang-markdown';
+import { lintGutter, linter } from '@codemirror/lint';
 import { wiremdLanguage } from '../lib/wiremdLanguage';
+import { getWiremdDiagnostics } from '../lib/wiremdDiagnostics';
 import { useDebounce } from '../hooks/useDebounce';
 
 const wiremdTheme = EditorView.theme({
@@ -24,6 +26,21 @@ const wiremdTheme = EditorView.theme({
   '.cm-selectionBackground': { background: 'rgba(60,60,67,0.1) !important' },
   '&.cm-focused .cm-selectionBackground': { background: 'rgba(60,60,67,0.12) !important' },
   '.cm-foldPlaceholder': { background: '#f6f6f7', border: '1px solid rgba(60,60,67,0.12)', color: 'rgba(60,60,67,0.5)' },
+  '.cm-lintRange-warning': {
+    backgroundColor: 'rgba(245, 158, 11, 0.16)',
+    backgroundImage: 'none',
+    textDecoration: 'underline wavy #b45309',
+    textDecorationThickness: '1.5px',
+    textUnderlineOffset: '3px',
+  },
+  '.cm-lint-marker-warning': {
+    width: '11px',
+    height: '11px',
+    margin: '3px auto 0',
+    borderRadius: '999px',
+    background: '#f59e0b',
+    boxShadow: '0 0 0 2px rgba(245, 158, 11, 0.22)',
+  },
   '.cm-tooltip': {
     background: '#fff',
     border: '1px solid rgba(60,60,67,0.12)',
@@ -81,6 +98,8 @@ export const Editor = memo(forwardRef<EditorHandle, Props>(function Editor(
           basicSetup,
           markdown({ addKeymap: true }),
           wiremdLanguage,
+          lintGutter(),
+          linter((view) => getWiremdDiagnostics(view.state.doc)),
           wiremdTheme,
           readOnlyCompartment.of(EditorState.readOnly.of(readOnly)),
           EditorView.updateListener.of((update) => {
