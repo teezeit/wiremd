@@ -6,6 +6,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import { lint } from '@eclectic-ai/wiremd';
 import { WiremdPreviewProvider } from './preview-provider';
 
 let previewProvider: WiremdPreviewProvider;
@@ -26,6 +27,61 @@ function copyDirSync(src: string, dest: string) {
 export function activate(context: vscode.ExtensionContext) {
   // Create preview provider
   previewProvider = new WiremdPreviewProvider(context);
+  const diagnostics = vscode.languages.createDiagnosticCollection('wiremd');
+  context.subscriptions.push(diagnostics);
+
+  const isMarkdownDocument = (document: vscode.TextDocument) =>
+    document.languageId === 'markdown' && document.uri.scheme === 'file';
+
+  const updateDiagnostics = (document: vscode.TextDocument) => {
+    if (!isMarkdownDocument(document)) {
+      diagnostics.delete(document.uri);
+      return;
+    }
+
+    const wiremdDiagnostics = lint(document.getText()).map((diagnostic) => {
+      const range = new vscode.Range(
+        Math.max(diagnostic.position.start.line - 1, 0),
+        Math.max(diagnostic.position.start.column - 1, 0),
+        Math.max(diagnostic.position.end.line - 1, 0),
+        Math.max(diagnostic.position.end.column - 1, 0),
+      );
+      const severity =
+        diagnostic.severity === 'error'
+          ? vscode.DiagnosticSeverity.Error
+          : diagnostic.severity === 'info'
+            ? vscode.DiagnosticSeverity.Information
+            : vscode.DiagnosticSeverity.Warning;
+      const vscodeDiagnostic = new vscode.Diagnostic(range, diagnostic.message, severity);
+      vscodeDiagnostic.code = diagnostic.code;
+      vscodeDiagnostic.source = 'wiremd';
+      return vscodeDiagnostic;
+    });
+
+    diagnostics.set(document.uri, wiremdDiagnostics);
+  };
+
+  for (const document of vscode.workspace.textDocuments) {
+    updateDiagnostics(document);
+  }
+
+  context.subscriptions.push(
+    vscode.workspace.onDidOpenTextDocument((document) => {
+      updateDiagnostics(document);
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeTextDocument((event) => {
+      updateDiagnostics(event.document);
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.workspace.onDidCloseTextDocument((document) => {
+      diagnostics.delete(document.uri);
+    })
+  );
 
   // Register preview provider
   context.subscriptions.push(

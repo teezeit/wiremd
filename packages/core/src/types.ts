@@ -195,3 +195,10 @@ export interface ValidationError {
   code?: string;
   node?: WiremdNode;
 }
+
+export interface WiremdDiagnostic {
+  message: string;
+  code: string;
+  severity: 'error' | 'warning' | 'info';
+  position: Location;
+}
